@@ -1,3 +1,4 @@
+import { Raleway, Roboto } from "next/font/google";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -12,6 +13,25 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+      colors: {
+        lightViolet: "#E35AFF",
+        softViolet: "#C15AEC",
+        BGdark: "#301048",
+        BGlight: "#49176B",
+        white: "#ffffff",
+        greenAlert: "#2AEB1D"
+      },
+
+      fontFamily: {
+        Raleway: ["Raleway", "sans-serif"],
+        Roboto: ["Roboto", "sans-serif"]
+      },
+
+      spacing: {
+        'small': '1rem',
+        'medium': '3.5rem',
+        'large': '7.5rem'
       },
     },
   },
