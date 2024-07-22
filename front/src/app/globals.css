@@ -4,24 +4,24 @@
 
 /* text styles */
 
-.heanding1 {
-  @apply font-Raleway font-black text-5xl
+.heading1 {
+  @apply font-Raleway text-center text-lightViolet text-3xl md:text-5xl 
 }
 
-.heanding2 {
-  @apply font-Raleway font-black text-4xl
+.heading2 {
+  @apply font-Raleway text-center text-lightViolet text-2xl md:text-4xl 
 }
 
-.heanding3 {
-  @apply font-Raleway font-black text-3xl
+.heading3 {
+  @apply font-Raleway text-center text-lightViolet text-xl md:text-3xl 
 }
 
-.heanding4 {
-  @apply font-Raleway font-black text-2xl
+.heading4 {
+  @apply font-Raleway text-center text-lightViolet text-sm md:text-2xl 
 }
 
-.heanding5 {
-  @apply font-Raleway font-black text-base
+.heading5 {
+  @apply font-Raleway text-center text-lightViolet text-base
 }
 
 .body {
@@ -72,4 +72,17 @@
 
 body {
   @apply bg-gradient-to-b from-BGlight to-BGdark
+}
+
+.loading {
+  @apply text-softViolet text-5xl text-center
+}
+
+.icon {
+
+  @apply h-8 w-8 md:h-12 md:w-12 p-1 rounded-full bg-lightViolet
+}
+
+.description {
+  @apply font-Roboto text-xs md:text-sm text-left text-white
 }

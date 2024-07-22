@@ -3,7 +3,7 @@ import React, { Suspense } from "react";
 
 export const RegisterBanner: React.FC = () => {
     return (
-        <Suspense>
+        <Suspense fallback={<div className="loading">Loading banner...</div>}>
         <>
         </>
         </Suspense>
