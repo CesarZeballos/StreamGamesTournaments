@@ -27,6 +27,12 @@ const config: Config = {
         Raleway: ["Raleway", "sans-serif"],
         Roboto: ["Roboto", "sans-serif"]
       },
+
+      spacing: {
+        'small': '1rem',
+        'medium': '3.5rem',
+        'large': '7.5rem'
+      },
     },
   },
   plugins: [],

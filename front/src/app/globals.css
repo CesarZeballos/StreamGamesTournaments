@@ -63,3 +63,13 @@
 .infoTorunaments {
   @apply font-Raleway font-black text-2xl text-white px-4 py-2 flex flex-row gap-6
 }
+
+/* utils */
+
+.bodyContainer {
+  @apply px-large
+}
+
+body {
+  @apply bg-gradient-to-b from-BGlight to-BGdark
+}
