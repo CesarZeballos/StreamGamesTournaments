@@ -2,32 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* text styles */
+
+.heanding1 {
+  @apply font-Raleway font-black text-5xl
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.heanding2 {
+  @apply font-Raleway font-black text-4xl
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.heanding3 {
+  @apply font-Raleway font-black text-3xl
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.heanding4 {
+  @apply font-Raleway font-black text-2xl
+}
+
+.heanding5 {
+  @apply font-Raleway font-black text-base
+}
+
+.body {
+  @apply font-Roboto font-normal text-base
+}
+
+.numberCard {
+  @apply font-Roboto font-black text-2xl
+}
+
+.numberCard {
+  @apply font-Roboto font-black text-4xl
+}
+
+/* buttons */
+
+.buttonPrimary {
+  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-md shadow-lightViolet
+  hover:bg-lightViolet
+}
+
+.buttonSecondary {
+  @apply font-Raleway font-bold text-base text-white px-9 py-2
+  hover:text-lightViolet
+}
+
+.buttonSection {
+  @apply font-Raleway font-bold text-3xl text-white pl-6 pr-11 py-6 rounded-full shadow-md shadow-lightViolet flex flex-row gap-6
+  hover:bg-lightViolet
+  hover:text-BGdark
+}
+
+.buttonFilter {
+  @apply font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-md shadow-lightViolet flex flex-row gap-4
+  hover:bg-lightViolet
+  hover:text-BGdark
+}
+
+.infoTorunaments {
+  @apply font-Raleway font-black text-2xl text-white px-4 py-2 flex flex-row gap-6
 }
