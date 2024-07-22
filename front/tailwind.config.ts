@@ -27,10 +27,6 @@ const config: Config = {
         Raleway: ["Raleway", "sans-serif"],
         Roboto: ["Roboto", "sans-serif"]
       },
-
-      textShadow: {
-        sm: "0 1px 2px rgba(0, 0, 0, 0.05)",
-      }
     },
   },
   plugins: [],
