@@ -27,6 +27,7 @@ export const RegisterForm: React.FC = () => {
             <h1 className="heanding2 text-white mt-9 mb-16">Register</h1>
             <FourColumsContainer>
                 <h2 className="heanding4 text-white">Your data</h2>
+                <div className="col-span-2">
                         <FormContainer>
                             <div className="flex flex-col gap-2 w-fit">
                                 <label className="body text-white">Name</label>
@@ -96,10 +97,9 @@ export const RegisterForm: React.FC = () => {
 
                             <button className="buttonPrimary mt-7" type="submit">Register</button>
                         </FormContainer>
-                        <div className="col-span-2">
-                            <div>
-
-                            </div>
+                        </div>
+                        <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
+                            <img  className="w-full h-full object-cover" src="/register.jpg" alt="login" />
                         </div>
             </FourColumsContainer>
         </form>
