@@ -39,12 +39,12 @@
 /* buttons */
 
 .buttonPrimary {
-  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-md shadow-lightViolet
+  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit
   hover:bg-lightViolet
 }
 
 .buttonSecondary {
-  @apply font-Raleway font-bold text-base text-white px-9 py-2
+  @apply font-Raleway font-bold text-base text-white px-9 py-2 w-fit
   hover:text-lightViolet
 }
 
@@ -72,4 +72,12 @@
 
 body {
   @apply bg-gradient-to-b from-BGlight to-BGdark
+}
+
+.input {
+  @apply bg-white rounded-lg px-3 py-1 font-Roboto text-BGdark
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
 }
