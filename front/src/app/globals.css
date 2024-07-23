@@ -90,10 +90,10 @@ body {
 }
 
 .icon {
-  @apply h-8 w-8 md:h-12 md:w-12 p-1 rounded-full bg-lightViolet
+  @apply w-20 h-20 p-1 rounded-full bg-lightViolet
 }
 
 
 .description {
-  @apply font-Roboto text-base text-left text-white
+  @apply font-Roboto text-lg text-left text-white p-2
 }
