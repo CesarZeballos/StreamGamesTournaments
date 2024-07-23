@@ -64,6 +64,17 @@
   @apply font-Raleway font-black text-2xl text-white px-4 py-2 flex flex-row gap-6
 }
 
+.buttonCarousel {
+  @apply bg-blue-950 text-4xl p-2 rounded-3xl w-20 h-20 top-1/2 -translate-y-1/2
+}
+
+.buttonCarousel:hover {
+  transition: 0.5s;
+  background-color: #0d0835;
+  box-shadow: inset 0px 0px 25px #1479EA;
+  border: 2px solid darkcyan;
+}
+
 /* utils */
 
 .bodyContainer {
@@ -79,10 +90,10 @@ body {
 }
 
 .icon {
-
   @apply h-8 w-8 md:h-12 md:w-12 p-1 rounded-full bg-lightViolet
 }
 
+
 .description {
-  @apply font-Roboto text-xs md:text-sm text-left text-white
+  @apply font-Roboto text-base text-left text-white
 }

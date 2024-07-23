@@ -4,50 +4,53 @@ import React, { Suspense, useState } from "react";
 import csgo from "../../app/assets/images/banners/csgo.jpg";
 import fortnite from "../../app/assets/images/banners/fortnite.jpg";
 import lol from "../../app/assets/images/banners/lol.png";
-import csIcon from "../../app/assets/images/icons/cs-A.png";
-import ftIcon from "../../app/assets/images/icons/fortnite-A.png";
-import lolIcon from "../../app/assets/images/icons/lol-A.png";
+import previous from "../../app/assets/images/icons/previous.png"
+import next from "../../app/assets/images/icons/next.png"
+
+
+const banners = [
+    { image: csgo, description: 'CS: GO Tournament' },
+    { image: fortnite, description: 'Fortnite Tournament' },
+    { image: lol, description: 'League of Legends Tournament' },
+];
 
 const LiveBanner: React.FC = () => {
-    const [background, setBackground] = useState({ image: csgo, description: 'CS: GO Tournament' });
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-    const handleIconClick = (game: string) => {
-        switch (game) {
-            case 'CS:GO':
-                setBackground({ image: csgo, description: 'CS: GO Tournament' });
-                break;
-            case 'Fortnite':
-                setBackground({ image: fortnite, description: 'Fortnite Tournament' });
-                break;
-            case 'LoL':
-                setBackground({ image: lol, description: 'League of Legends Tournament' });
-                break;
-            default:
-                setBackground({ image: csgo, description: 'CS: GO Tournament' });
-        }
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
+    };
+
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + banners.length) % banners.length);
     };
 
     return (
         <Suspense fallback={<div className="loading">Loading banner...</div>}>
-            <div className="relative flex flex-col justify-center m-large rounded-xl border-2 border-lightViolet md:flex-row">
-                <div className="w-full rounded-r-xl lg:w-6/10 rounded-l-xl overflow-hidden z-0">
-                    <Image
-                        src={background.image}
-                        alt={background.description}
-                        className="object-cover h-40 lg:h-full"
-                    />
-                </div>
-                <div className="absolute w-full h-full flex justify-end z-10 lg:w-6/10 rounded-l-xl bg-BGdark bg-opacity-0">
-                    <div className="flex flex-col justify-start p-5 bg-BGdark md:w-3/10 rounded-r-xl">
+            <div className="relative flex flex-row justify-center m-large rounded-xl">
+                <Image
+                    src={previous}
+                    alt="Previous"
+                    className="buttonCarousel absolute left-0 z-0"
+                    onClick={handlePrev}
+                />
+                <Image
+                    src={banners[currentIndex].image}
+                    alt={banners[currentIndex].description}
+                    className="w-3/4 h-3/4 z-10 rounded-xl rounded-r-3xl"
+                />
+                <div className="absolute w-3/4 h-full flex justify-end z-20 bg-opacity-0">
+                    <div className="flex flex-col justify-start p-5 bg-BGdark rounded-3xl w-1/2 md:w-1/3">
                         <h1 className="heading3 text-center">Live Tournament</h1>
-                        <div className="flex justify-center space-x-4 mt-4">
-                            <Image src={csIcon} alt="CS: GO" className="icon cursor-pointer" onClick={() => handleIconClick("CS:GO")} />
-                            <Image src={ftIcon} alt="Fortnite" className="icon cursor-pointer" onClick={() => handleIconClick("Fortnite")} />
-                            <Image src={lolIcon} alt="LoL" className="icon cursor-pointer" onClick={() => handleIconClick("LoL")} />
-                        </div>
-                        <p className="description mt-4 text-center">{background.description}</p>
+                        <p className="description mt-4 text-center">{banners[currentIndex].description}</p>
                     </div>
                 </div>
+                <Image
+                    src={next}
+                    alt="Next"
+                    className="buttonCarousel absolute right-0 z-0 "
+                    onClick={handleNext}
+                />
             </div>
         </Suspense>
     );
