@@ -10,19 +10,19 @@ export const FindBanner: React.FC = () => {
         <Suspense fallback={<div className="loading">Loading banner...</div>}>
 <>
   <div className="ml-medium mr-medium mb-medium">
-    <h1 className="heading2 text-left mb-6 ml-6">Find your tournament:</h1>
+    <h1 className="heading2 text-left mb-6 ml-6 text-white">Find your tournament:</h1>
     <div className="flex flex-row justify-around p-2">
       <button className="buttonSection">
         <Image src={csIcon} alt="CSGO" className="icon" />
-        <p className="whitespace-pre-line text-left">CS: GO</p>
+        <p className="textButton">CS: GO</p>
       </button>
       <button className="buttonSection">
         <Image src={ftIcon} alt="Fortnite" className="icon" />
-        <p className="text-wrap">Fortnite</p>
+        <p className="textButton">Fortnite</p>
       </button>
       <button className="buttonSection">
         <Image src={lolIcon} alt="LOL" className="icon" />
-        <p className="text-wrap">League of Legends</p>
+        <p className="textButton">League of Legends</p>
       </button>
     </div>
   </div>

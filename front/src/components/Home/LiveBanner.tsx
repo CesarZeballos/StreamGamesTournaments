@@ -12,8 +12,8 @@ import lolIcon from "../../app/assets/images/icons/lol-A.png";
 import bronze from "../../app/assets/images/icons/medal-bronze.png";
 import silver from "../../app/assets/images/icons/medal-silver.png";
 import gold from "../../app/assets/images/icons/medal-gold.png";
-import free from "../../app/assets/images/icons/free2.png";
-import vip from "../../app/assets/images/icons/premium-C.png";
+import free from "../../app/assets/images/icons/free.png";
+import vip from "../../app/assets/images/icons/premium.png";
 
 
 
@@ -47,12 +47,12 @@ const LiveBanner: React.FC = () => {
                 <Image
                     src={banners[currentIndex].image}
                     alt={banners[currentIndex].name}
-                    className="w-3/4 h-1/3 z-10 rounded-xl rounded-r-3xl"
+                    className="w-3/4 h-1/3 z-10 rounded-3xl rounded-r-3xl"
                 />
                 <div className="absolute w-3/4 h-full flex justify-end z-20 bg-opacity-0">
                 <div className="w-2/5 p-2 bg-BGdark rounded-3xl overflow-hidden father-container">
                     <div className="flex flex-col gap-x-4 m-2 child-container">
-                    <h1 className="heading3 text-center">Live Tournament</h1>
+                    <h1 className="heading3 text-center text-lightViolet">Live Tournament</h1>
                     <div className="flex flex-row justify-around gap-x-4 m-2">
                     <Image src={banners[currentIndex].icon1} alt="Icon" className="icon" />
                     <Image src={banners[currentIndex].icon2} alt="Icon" className="icon" />
