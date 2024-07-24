@@ -4,6 +4,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: ILoginState = {
     token: "",
     userName: "",
+    // rol: "",
+    // tournament: [],
 }
 
 const userSlice = createSlice({
@@ -12,8 +14,11 @@ const userSlice = createSlice({
     reducers: {
         login(state, action: PayloadAction<ILoginPayload>) {
             const { email, password } = action.payload;
-            console.log(email)
-            console.log(password)
+            try {
+                // postlogin(email, password)
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 })
