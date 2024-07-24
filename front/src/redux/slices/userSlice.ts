@@ -1,22 +1,35 @@
-import { ILoginPayload, ILoginState, IRegisterPayload } from "@/interfaces/interfaceRedux";
+import { ILoginPayload, IRegisterPayload, IUserState } from "@/interfaces/interfaceRedux";
+import { IUser } from "@/interfaces/interfaceUser";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: ILoginState = {
-    token: "",
-    userName: "",
-    // rol: "",
-    // tournament: [],
+const initialState: IUser = {
+    id: "",
+    nickname: "",
+    email: "",
+    birthdate: "",
+    role: "",
+    teams: [],
 }
 
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
+        setUser(state, action: PayloadAction<IUser>) {
+            const { id, nickname, email, birthdate, role, teams } = action.payload;
+            state.id = id
+            state.nickname = nickname
+            state.email = email
+            state.birthdate = birthdate
+            state.role = role
+            state.teams = teams
+        },
+        
         login(state, action: PayloadAction<ILoginPayload>) {
             const { email, password } = action.payload;
-
             try {
                 console.log("login redux", email, password)
+                // router...
             } catch (error) {
                 console.log(error)
             }
@@ -29,7 +42,6 @@ const userSlice = createSlice({
                 console.log("register redux", nickname, email, password, birthdate)
                 setTimeout(() => {
                     login({ email, password })
-                    //router
                 }, 2000)
             } catch (error) {
                 console.log(error)

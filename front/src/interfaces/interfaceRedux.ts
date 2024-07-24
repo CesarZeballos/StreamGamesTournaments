@@ -1,3 +1,5 @@
+import { ITournament } from "./interfaceTournaments";
+
 export interface ILoginState {
     token: string;
     userName: string;
@@ -13,4 +15,8 @@ export interface IRegisterPayload {
     email: string;
     password: string;
     birthdate: string;
+}
+
+export interface ITournamentState {
+    tuornaments: ITournament[];
 }
