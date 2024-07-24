@@ -5,23 +5,23 @@
 /* text styles */
 
 .heading1 {
-  @apply font-Raleway text-center text-lightViolet text-3xl md:text-5xl 
+  @apply font-Raleway font-black text-5xl
 }
 
 .heading2 {
-  @apply font-Raleway text-left text-white text-2xl md:text-4xl 
+  @apply font-Raleway font-black text-4xl
 }
 
 .heading3 {
-  @apply font-Raleway text-center text-lightViolet text-xl md:text-3xl 
+  @apply font-Raleway font-black text-3xl
 }
 
 .heading4 {
-  @apply font-Raleway text-center text-lightViolet text-sm md:text-2xl 
+  @apply font-Raleway font-black text-2xl
 }
 
 .heading5 {
-  @apply font-Raleway text-center text-lightViolet text-base
+  @apply font-Raleway font-black text-base
 }
 
 .body {

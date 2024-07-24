@@ -32,9 +32,9 @@ export const LoginForm: React.FC = () => {
     
     return (
         <form onSubmit={handleSubmit}>
-            <h1 className="heanding2 text-white mt-9 mb-16">Login</h1>
+            <h1 className="heading2 text-white mt-9 mb-16">Login</h1>
             <FourColumsContainer>
-                <h2 className="heanding4 text-white">Enter your data</h2>
+                <h2 className="heading4 text-white">Enter your data</h2>
                 <div className="col-span-2">
                     <FormContainer>
                         <div className="flex flex-col gap-2 w-fit">

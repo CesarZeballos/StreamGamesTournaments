@@ -15,7 +15,7 @@ const userSlice = createSlice({
         login(state, action: PayloadAction<ILoginPayload>) {
             const { email, password } = action.payload;
             try {
-                // postlogin(email, password)
+                console.log("redux", email, password)
             } catch (error) {
                 console.log(error)
             }
