@@ -4,7 +4,6 @@ import LiveBanner from "@/components/Home/LiveBanner";
 import FindBanner from "@/components/Home/FindBanner";
 import RegisterBanner from "@/components/Home/RegisterBanner";
 
-
 const HomePage: React.FC = () => {
 return (
     <>

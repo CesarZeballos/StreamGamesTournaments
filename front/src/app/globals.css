@@ -39,23 +39,23 @@
 /* buttons */
 
 .buttonPrimary {
-  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-md shadow-lightViolet
+  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit
   hover:bg-lightViolet
 }
 
 .buttonSecondary {
-  @apply font-Raleway font-bold text-base text-white px-9 py-2
+  @apply font-Raleway font-bold text-base text-white px-9 py-2 w-fit
   hover:text-lightViolet
 }
 
 .buttonSection {
-  @apply flex items-center gap-4 font-Raleway font-bold text-3xl text-white text-left p-4 rounded-full shadow-md shadow-lightViolet w-72
+  @apply flex items-center font-Raleway font-bold text-3xl text-white pl-6 pr-11 py-6 rounded-full shadow-md shadow-lightViolet flex flex-row gap-6 w-72
   hover:bg-lightViolet
   hover:text-BGdark
 }
 
 .buttonFilter {
-  @apply font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-md shadow-lightViolet flex flex-row gap-4
+  @apply font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-sm shadow-lightViolet flex flex-row gap-4
   hover:bg-lightViolet
   hover:text-BGdark
 }
@@ -83,6 +83,14 @@
 
 body {
   @apply bg-gradient-to-b from-BGlight to-BGdark
+}
+
+.input {
+  @apply bg-white rounded-lg px-3 py-1 font-Roboto text-BGdark
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
 }
 
 .loading {
@@ -144,4 +152,3 @@ body {
     overflow: hidden;
   }
 }
-
