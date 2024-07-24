@@ -38,7 +38,6 @@
 
 .heading5 {
   @apply font-Raleway font-black text-base
->>>>>>> 7799a3cb9f80950191ab60e0903a0f2227321c41
 }
 
 .body {
@@ -80,7 +79,7 @@
 }
 
 .buttonFilter {
-  @apply flex items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-sm shadow-lightViolet flex flex-row gap-4
+  @apply flex flex-row items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-sm shadow-lightViolet gap-4
   hover:bg-lightViolet
   hover:text-BGdark
 }
