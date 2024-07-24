@@ -3,11 +3,13 @@ import { useDispatch } from "react-redux";
 
 import rootReducer from './reducer';
 
-export const store = configureStore({
+const store = configureStore({
     reducer: rootReducer,
 });
 
-export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+// export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+export default store;

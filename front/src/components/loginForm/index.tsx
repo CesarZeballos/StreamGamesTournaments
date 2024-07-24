@@ -3,8 +3,14 @@ import { useState } from "react"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
 import { ILoginForm } from "@/interfaces/interfaceLogin"
+import { useDispatch } from "react-redux"
+import { login } from "@/redux/slices/loginSlice"
+import { useRouter } from "next/navigation"
+
 
 export const LoginForm: React.FC = () => {
+    const dispatch = useDispatch();
+    const Router = useRouter();
     const [data, setData] = useState<ILoginForm>({
         email: "",
         password: ""
@@ -17,9 +23,15 @@ export const LoginForm: React.FC = () => {
             [name]: value
         })
     }
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        dispatch(login(data))
+        Router.push("/")
+    }
     
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <h1 className="heanding2 text-white mt-9 mb-16">Login</h1>
             <FourColumsContainer>
                 <h2 className="heanding4 text-white">Enter your data</h2>
