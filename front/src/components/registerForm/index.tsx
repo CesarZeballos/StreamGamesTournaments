@@ -29,7 +29,7 @@ export const RegisterForm: React.FC = () => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
         const errors = validateRegister(data)
-
+        
         if (errors.nickname || errors.email || errors.password || errors.birthdate) {
             setErrorRegister(errors)
         } else {
@@ -50,6 +50,7 @@ export const RegisterForm: React.FC = () => {
         event.preventDefault()
         if (!errorRegister.nickname || !errorRegister.email || !errorRegister.password || !errorRegister.birthdate) {
             dispatch(register(data))
+            //revisar el push, deberia estar en el slice
             Router.push("/")
         }else {
             alert ("")
