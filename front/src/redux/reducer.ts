@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import loginSlice from "./slices/loginSlice";
+import userSlice from "./slices/userSlice";
 
 const rootReducer = combineReducers({
-    login: loginSlice,
+    user: userSlice,
 
 })
 

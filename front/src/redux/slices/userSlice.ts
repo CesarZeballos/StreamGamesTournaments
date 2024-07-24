@@ -6,8 +6,8 @@ const initialState: ILoginState = {
     userName: "",
 }
 
-const loginSlice = createSlice({
-    name: "login",
+const userSlice = createSlice({
+    name: "user",
     initialState,
     reducers: {
         login(state, action: PayloadAction<ILoginPayload>) {
@@ -18,5 +18,5 @@ const loginSlice = createSlice({
     }
 })
 
-export const { login } = loginSlice.actions;
-export default loginSlice.reducer;
+export const { login } = userSlice.actions;
+export default userSlice.reducer;

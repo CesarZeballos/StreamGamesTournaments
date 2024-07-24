@@ -4,7 +4,7 @@ import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
 import { ILoginForm } from "@/interfaces/interfaceLogin"
 import { useDispatch } from "react-redux"
-import { login } from "@/redux/slices/loginSlice"
+import { login } from "@/redux/slices/userSlice"
 import { useRouter } from "next/navigation"
 
 
