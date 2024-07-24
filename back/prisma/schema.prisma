@@ -27,11 +27,9 @@ enum Categories {
 model User {
   id          String      @id @default(uuid())
   email       String      @unique @db.VarChar(80)
-  name        String
   nickName    String      @unique
   password    String
   birthDate   DateTime
-  country     String
   role        Role        @default(user)
   urlSelfie   String
   actived     Boolean     @default(true)
@@ -52,7 +50,7 @@ model Tournament {
   organizerId String     @unique
   game        Games      @relation(fields: [gameId], references: [id]) // uno a uno
   gameId      String     @unique
-  teams       Teams[]    // uno a muchos
+  teams       Teams[] // uno a muchos
 }
 
 model Teams {
@@ -62,7 +60,7 @@ model Teams {
   urlAvatar    String
   tournament   Tournament @relation(fields: [tournamentId], references: [id]) // muchos a uno
   tournamentId String
-  user         User[]     // uno a muchos
+  user         User[] // uno a muchos
 }
 
 model Games {
