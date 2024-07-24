@@ -2,44 +2,68 @@
 import { useState } from "react"
 import { FormContainer } from "../formContainer"
 import { FourColumsContainer } from "../fourColumsContainer"
-import { IRegisterForm } from "@/interfaces/interfaceRegister"
+import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceRegister"
+import { useDispatch } from "react-redux"
+import { register } from "@/redux/slices/userSlice"
+import { useRouter } from "next/navigation"
+import { validateRegister } from "@/utils/validateForms/validationRegister"
 
 export const RegisterForm: React.FC = () => {
+    const dispatch = useDispatch();
+    const Router = useRouter();
+
     const [data, setData] = useState<IRegisterForm>({
-        name: "",
         nickname: "",
         email: "",
         password: "",
-        country: "",
+        birthdate: ""
+    })
+
+    const [errorRegister, setErrorRegister] = useState<IRegisterError>({
+        nickname: "",
+        email: "",
+        password: "",
         birthdate: ""
     })
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
+        const errors = validateRegister(data)
+        
+        if (errors.nickname || errors.email || errors.password || errors.birthdate) {
+            setErrorRegister(errors)
+        } else {
+            setErrorRegister({
+                nickname: "",
+                email: "",
+                password: "",
+                birthdate: ""
+            })
+        }
         setData({
             ...data,
             [name]: value
         })
     }
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        if (!errorRegister.nickname || !errorRegister.email || !errorRegister.password || !errorRegister.birthdate) {
+            dispatch(register(data))
+            //revisar el push, deberia estar en el slice
+            Router.push("/")
+        }else {
+            alert ("")
+        }
+    }
+
     return (
-        <form>
-            <h1 className="heanding2 text-white mt-9 mb-16">Register</h1>
+        <form onSubmit={handleSubmit}>
+            <h1 className="heading2 text-white mt-9 mb-16">Register</h1>
             <FourColumsContainer>
-                <h2 className="heanding4 text-white">Your data</h2>
+                <h2 className="heading4 text-white">Your data</h2>
                 <div className="col-span-2">
                         <FormContainer>
-                            <div className="flex flex-col gap-2 w-fit">
-                                <label className="body text-white">Name</label>
-                                <input type="text"
-                                name="name"
-                                value={data.name}
-                                onChange={handleChange}
-                                className="input"
-                                required
-                                />
-                            </div>
-
                             <div className="flex flex-col gap-2 w-fit">
                                 <label className="body text-white">Nickname</label>
                                 <input type="text"
@@ -49,6 +73,7 @@ export const RegisterForm: React.FC = () => {
                                 className="input"
                                 required
                                 />
+                                {errorRegister.nickname ? (<p className="errorForm">{errorRegister.nickname}</p>) : (<p className="errorForm"><br/></p>)}
                             </div>
 
                             <div className="flex flex-col gap-2 w-fit">
@@ -60,6 +85,7 @@ export const RegisterForm: React.FC = () => {
                                 className="input"
                                 required
                                 />
+                                {errorRegister.email ? (<p className="errorForm">{errorRegister.email}</p>) : (<p className="errorForm"><br/></p>)}
                             </div>
 
                             <div className="flex flex-col gap-2 w-fit">
@@ -71,17 +97,7 @@ export const RegisterForm: React.FC = () => {
                                 className="input"
                                 required
                                 />
-                            </div>
-
-                            <div className="flex flex-col gap-2 w-fit">
-                                <label className="body text-white">Country</label>
-                                <input type="text"
-                                name="country"
-                                value={data.country}
-                                onChange={handleChange}
-                                className="input"
-                                required
-                                />
+                                {errorRegister.password ? (<p className="errorForm">{errorRegister.password}</p>) : (<p className="errorForm"><br/></p>)}
                             </div>
 
                             <div className="flex flex-col gap-2 w-fit">
@@ -93,9 +109,10 @@ export const RegisterForm: React.FC = () => {
                                 className="input"
                                 required
                                 />
+                                {errorRegister.birthdate ? (<p className="errorForm">{errorRegister.birthdate}</p>) : (<p className="errorForm"><br/></p>)}
                             </div>
 
-                            <button className="buttonPrimary mt-7" type="submit">Register</button>
+                            <button className="buttonPrimary mt-4" type="submit">Register</button>
                         </FormContainer>
                         </div>
                         <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">

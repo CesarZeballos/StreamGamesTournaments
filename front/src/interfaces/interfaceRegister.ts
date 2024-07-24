@@ -1,8 +1,13 @@
 export interface IRegisterForm {
-    name: string;
     nickname: string;
     email: string;
     password: string;
-    country: string;
     birthdate: string;
+}
+
+export interface IRegisterError {
+    nickname?: string;
+    email?: string;
+    password?: string;
+    birthdate?: string;
 }

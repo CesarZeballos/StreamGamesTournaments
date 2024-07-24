@@ -4,7 +4,7 @@ import { RegisterForm } from "@/components/registerForm";
 
 const Login: React.FC = () => {
     return (
-        <div className="bodyContainer">
+        <div className="bodyContainer mb-16">
             <RegisterForm />
         </div>
     );
