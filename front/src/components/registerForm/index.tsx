@@ -95,7 +95,7 @@ export const RegisterForm: React.FC = () => {
                                 />
                             </div>
 
-                            <button className="buttonPrimary mt-7" type="submit">Register</button>
+                            <button className="buttonPrimary mt-4" type="submit">Register</button>
                         </FormContainer>
                         </div>
                         <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">

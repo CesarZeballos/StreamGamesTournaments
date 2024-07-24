@@ -2,22 +2,38 @@
 import { useState } from "react"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
-import { ILoginForm } from "@/interfaces/interfaceLogin"
+import { ILoginError, ILoginForm } from "@/interfaces/interfaceLogin"
 import { useDispatch } from "react-redux"
 import { login } from "@/redux/slices/userSlice"
 import { useRouter } from "next/navigation"
+import { validateLogin } from "@/utils/validateForms/validationLogin"
 
 
 export const LoginForm: React.FC = () => {
     const dispatch = useDispatch();
     const Router = useRouter();
+
     const [data, setData] = useState<ILoginForm>({
+        email: "",
+        password: ""
+    })
+
+    const [errorLogin, setErrorLogin] = useState<ILoginError>({
         email: "",
         password: ""
     })
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
+        const errors = validateLogin(data)
+        if (errors.email || errors.password) {
+            setErrorLogin(errors)
+        } else {
+            setErrorLogin({
+                email: "",
+                password: ""
+            })
+        }
         setData({
             ...data,
             [name]: value
@@ -26,8 +42,12 @@ export const LoginForm: React.FC = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        dispatch(login(data))
-        Router.push("/")
+        if (!errorLogin.email || !errorLogin.password) {
+            dispatch(login(data))
+            Router.push("/")
+        } else {
+            alert ("Email or password incorrect")
+        }
     }
     
     return (
@@ -46,6 +66,7 @@ export const LoginForm: React.FC = () => {
                                 className="input"
                                 required
                             />
+                            {errorLogin.email ? (<p className="errorForm">{errorLogin.email}</p>) : (<p className="errorForm"><br/></p>)}
                         </div>
 
                         <div className="flex flex-col gap-2 w-fit">
@@ -57,8 +78,9 @@ export const LoginForm: React.FC = () => {
                                 className="input"
                                 required
                             />
+                            {errorLogin.password ? (<p className="errorForm">{errorLogin.password}</p>) : (<p className="errorForm"><br/></p>)}
                         </div>
-                        <button className="buttonPrimary mt-7">Login</button>
+                        <button className="buttonPrimary mt-4">Login</button>
                     </FormContainer>
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
