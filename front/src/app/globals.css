@@ -24,6 +24,23 @@
   @apply font-Raleway font-black text-base;
 }
 
+.heading2 {
+  @apply font-Raleway font-black text-4xl
+}
+
+.heading3 {
+  @apply font-Raleway font-black text-3xl
+}
+
+.heading4 {
+  @apply font-Raleway font-black text-2xl
+}
+
+.heading5 {
+  @apply font-Raleway font-black text-base
+>>>>>>> 7799a3cb9f80950191ab60e0903a0f2227321c41
+}
+
 .body {
   @apply font-Roboto font-normal text-base;
 }
@@ -32,12 +49,16 @@
   @apply font-Roboto font-thin text-xs text-lightViolet;
 }
 
+.errorForm {
+  @apply font-Roboto font-thin text-xs text-lightViolet
+}
+
 .numberCard {
   @apply font-Roboto font-black text-2xl;
 }
 
 .numberInfo {
-  @apply font-Roboto font-black text-4xl;
+  @apply font-Roboto font-black text-4xl
 }
 
 /* buttons */

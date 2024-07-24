@@ -10,6 +10,7 @@ const SideBar: React.FC = () => {
     return (
         <>
         <div className="flex flex-col justify-start p-medium bg-BGdark rounded-3xl mt-medium mb-medium w-fit h-fit">
+        <h1 className="heading4">Filters</h1>
         <div className="section">
         <h1 className="heading5 text-lightViolet">Competition Difficulty</h1>
         <div className="item">
