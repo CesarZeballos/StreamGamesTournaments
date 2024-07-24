@@ -8,8 +8,18 @@ export class GamesService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async getAllGames() {
-    return this.prisma.user.findMany();
+  async getAllGames(page: number, limit: number) {
+    const skip = (page - 1) * limit
+    const games = await this.prisma.games.findMany({
+      take: limit,
+      skip
+    });
+
+    return games
+  }
+
+  async getAllGamesById(id) {
+    return this.prisma.games.findUnique({ where: { id } })
   }
 }
 
