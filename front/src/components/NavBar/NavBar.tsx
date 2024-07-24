@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import logo from "../../app/assets/images/icons/logo.png"
 
 const NavBar: React.FC = () => {
@@ -8,10 +9,10 @@ const NavBar: React.FC = () => {
         <Image src={logo} alt="Logo" className="flex justify-center items-center w-3/4 h-12"/>
         </div>
         <div className="flex justify-end gap-x-10">
-            <button className="buttonSecondary">Tournaments</button>
-            <button className="buttonSecondary">Teams</button>
-            <button className="buttonSecondary">Sign In</button>
-            <button className="buttonPrimary">Sign Up</button>
+            <Link className="buttonSecondary" href="/tournaments">Tournaments</Link>
+            <Link className="buttonSecondary" href="/teams">Teams</Link>
+            <Link className="buttonSecondary" href="/signin">Sign In</Link>
+            <Link className="buttonPrimary" href="/signup">Sign Up</Link>
         </div>
         </div>
     )

@@ -7,9 +7,11 @@ const HomePage: React.FC = () => {
 return (
     <>
         <Suspense fallback={<p className="loading">Loading Home Page...</p>}>
+        <div className="bodyContainer">
         <LiveBanner/>
         <FindBanner/>
         <RegisterBanner/>
+        </div>
         </Suspense>
     </>
 );

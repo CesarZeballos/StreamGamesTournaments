@@ -7,7 +7,7 @@ const RegisterBanner: React.FC = () => {
 
     return (
         <Suspense fallback={<div className="loading">Loading banner...</div>}>
-        <div className="grid grid-cols-[40%_60%] bodyContainer">
+        <div className="grid grid-cols-[40%_60%]">
         <div>
         <h1 className="heading2 text-left ml-6 mt-6 text-white">Subscribe and take part in the best tournaments!</h1>
         <button className="buttonPrimary m-4">Subscribe</button>
