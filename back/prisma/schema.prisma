@@ -65,6 +65,7 @@ model Teams {
 
 model Games {
   id         String      @id @default(uuid())
-  name       String      @db.VarChar(80)
+  name       String      @unique @db.VarChar(80)
+  urlImage   String      @db.Text
   tournament Tournament?
 }
