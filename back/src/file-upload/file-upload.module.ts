@@ -1,9 +1,12 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { FileUploadService } from './file-upload.service';
 import { FileUploadController } from './file-upload.controller';
+import { FileUploadService } from './file-upload.service';
+import { FileUploadRepository } from './file-upload.repository';
+import { CloudinaryProvider } from './cloudinary.provider';
 
 @Module({
-  providers: [FileUploadService],
-  controllers: [FileUploadController]
+  controllers: [FileUploadController],
+  providers: [CloudinaryProvider, FileUploadService, FileUploadRepository],
 })
 export class FileUploadModule {}
