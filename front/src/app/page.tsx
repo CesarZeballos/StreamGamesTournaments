@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { Suspense } from "react";
 import LiveBanner from "@/components/Home/LiveBanner";
 import FindBanner from "@/components/Home/FindBanner";
