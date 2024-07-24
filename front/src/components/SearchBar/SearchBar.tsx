@@ -8,22 +8,22 @@ import lolIcon from "../../app/assets/images/icons/lol-A.png";
 const SearchBar: React.FC = () => {
     return (
         <>
-        <div className="flex flex-row justify-around p-2">
+        <div className="flex flex-row justify-around p-2 gap-6 overflow-hidden">
         <button className="buttonFilter">
-        <Image src={allIcon} alt="All Tournaments" className="icon" />
-        <p className="textButton">All Tournaments</p>
+        <Image src={allIcon} alt="All Tournaments" className="s-icon" />
+        <p className="">All Tournaments</p>
         </button>
         <button className="buttonFilter">
-        <Image src={csIcon} alt="CS: GO" className="icon" />
-        <p className="textButton">CS: GO</p>
+        <Image src={csIcon} alt="CS: GO" className="s-icon" />
+        <p className="">CS: GO</p>
         </button>
         <button className="buttonFilter">
-        <Image src={ftIcon} alt="Fortnite" className="icon" />
-        <p className="textButton">Fortnite</p>
+        <Image src={ftIcon} alt="Fortnite" className="s-icon" />
+        <p className="">Fortnite</p>
         </button>
         <button className="buttonFilter">
-        <Image src={lolIcon} alt="LoL" className="icon" />
-        <p className="textButton">League of Legends</p>
+        <Image src={lolIcon} alt="LoL" className="s-icon" />
+        <p className="">League of Legends</p>
         </button>
         </div>
         </>

@@ -10,7 +10,7 @@ const SideBar: React.FC = () => {
     return (
         <>
         <div className="flex flex-col justify-start p-medium bg-BGdark rounded-3xl mt-medium mb-medium w-fit h-fit">
-        <h1 className="heading4">Filters</h1>
+        <h1 className="heading4 text-white">Filters</h1>
         <div className="section">
         <h1 className="heading5 text-lightViolet">Competition Difficulty</h1>
         <div className="item">
@@ -29,17 +29,17 @@ const SideBar: React.FC = () => {
         <div className="section">
         <h1 className="heading5 text-lightViolet">Price-Range</h1>
         <div>
-        <p className="item-text">$0 - $500</p>
-        <p className="item-text">$501 - $1000</p>
-        <p className="item-text">$1001 - More</p>
+        <p className="section-text">$0 - $500</p>
+        <p className="section-text">$501 - $1000</p>
+        <p className="section-text">$1001 - More</p>
         </div>
         </div>
         <div className="section">
         <h1 className="heading5 text-lightViolet">Date</h1>
         <div>
-        <p className="item-text">Next Week</p>
-        <p className="item-text">Next Two Week</p>
-        <p className="item-text">Next Mounth</p>
+        <p className="section-text">Next Week</p>
+        <p className="section-text">Next Two Week</p>
+        <p className="section-text">Next Mounth</p>
         </div>
         </div>
         </div>

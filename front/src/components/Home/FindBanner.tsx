@@ -15,7 +15,7 @@ export const FindBanner: React.FC = () => {
     <div className="flex flex-row justify-around gap-6">
     <button className="buttonSection">
         <Image src={allIcon} alt="All Tournaments" className="icon" />
-        <p className="textButton text-xl">All Tournaments</p>
+        <p className="textButton">All Tournaments</p>
       </button>
       <button className="buttonSection">
         <Image src={csIcon} alt="CSGO" className="icon" />
