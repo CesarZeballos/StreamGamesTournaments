@@ -29,6 +29,7 @@ const userSlice = createSlice({
                 console.log("register redux", nickname, email, password, birthdate)
                 setTimeout(() => {
                     login({ email, password })
+                    //router
                 }, 2000)
             } catch (error) {
                 console.log(error)
