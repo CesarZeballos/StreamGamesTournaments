@@ -26,6 +26,7 @@ export const LoginForm: React.FC = () => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
         const errors = validateLogin(data)
+        
         if (errors.email || errors.password) {
             setErrorLogin(errors)
         } else {
