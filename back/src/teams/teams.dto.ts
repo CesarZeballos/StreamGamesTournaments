@@ -1,7 +1,9 @@
-import { IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID, Length } from "class-validator";
+import { PartialType, PickType } from "@nestjs/mapped-types";
+import { User } from "@prisma/client";
+import { IsArray, IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID, Length } from "class-validator";
 
 
-export class CreateTeamsDto {
+export class CreateTeamDto {
     @IsUUID()
     @IsOptional()
     id?: string
@@ -16,6 +18,20 @@ export class CreateTeamsDto {
     urlAvatar: string
 
     @IsUUID()
-    @IsNotEmpty()
-    tournamentId: string
+    @IsOptional()
+    tournamentId?: string
+
+    @IsArray()
+    @IsOptional()
+    user?: User[]
+}
+
+export class UpdateTeamDto extends PartialType(CreateTeamDto) { }
+
+export class DeleteMemberDto {
+    @IsUUID()
+    idMember: string;
+
+    @IsUUID()
+    idTeam: string;
 }
