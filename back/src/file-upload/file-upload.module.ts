@@ -6,7 +6,7 @@ import { FileUploadRepository } from './file-upload.repository';
 import { CloudinaryProvider } from './cloudinary.provider';
 
 @Module({
-  controllers: [FileUploadController],
-  providers: [CloudinaryProvider, FileUploadService, FileUploadRepository],
+	controllers: [FileUploadController],
+	providers: [CloudinaryProvider, FileUploadService, FileUploadRepository],
 })
 export class FileUploadModule {}
