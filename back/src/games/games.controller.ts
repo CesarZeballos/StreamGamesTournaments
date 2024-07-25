@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
 import { GamesService } from './games.service';
 import { CreateGameDto } from './games.dto';
 
@@ -10,24 +10,29 @@ export class GamesController {
   async getAllGames(@Query('page') page: string, @Query('limit') limit: string) {
     !page ? (page = '1') : page
     !limit ? (limit = '9') : limit
-    if (page && limit) return this.gamesService.getAllGames(Number(page), Number(limit));
+    if (page && limit) return await this.gamesService.getAllGames(Number(page), Number(limit));
   }
 
   @Get(':id')
   async getGameById(@Param('id', ParseUUIDPipe) id: string) {
-    return this.gamesService.getGameById(id)
+    return await this.gamesService.getGameById(id)
   }
 
   @Post()
   async postNewGame(@Body() game: CreateGameDto) {
     const { name, urlImage } = game
 
-    return this.gamesService.postNewGame(name, urlImage)
+    return await this.gamesService.postNewGame(name, urlImage)
   }
 
   @Put()
   async updateGame(@Param('id', ParseUUIDPipe) id: string, @Body() game: Partial<CreateGameDto>) {
 
-    return this.gamesService.updateGame(id, game)
+    return await this.gamesService.updateGame(id, game)
+  }
+
+  @Delete()
+  async deleteGame(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.gamesService.deleteGame(id)
   }
 }
