@@ -4,62 +4,62 @@ import { RootState } from "@/redux/store";
 import { IBanner } from "@/interfaces/interfaceCards";
 import { banners, Tournaments } from "../Tournaments/Tournaments";
 import { useMemo, useEffect } from "react";
-import { setCartas, setPaginaActual } from "@/redux/slices/cardsSlice";
+import { setCards, setCurrentPage } from "@/redux/slices/cardsSlice";
 
 const Cards: React.FC = () => {
   const cardsState = useSelector((state: RootState) => state.cards);
   const dispatch = useDispatch();
   
-  const cartasRandomizadas = useMemo(() => {
-    const duplicados = [...banners, ...banners, ...banners];
-    return duplicados.sort(() => Math.random() - 0.5);
-  }, []);
+  useEffect(() => {
+    if (cardsState.cards.length === 0) {
+      // Ensure we have exactly 27 cards by repeating the banners array if necessary
+      const duplicates = Array.from({ length: 27 }, (_, index) => banners[index % banners.length]);
+      const randomizedCards = duplicates.sort(() => Math.random() - 0.5);
+      console.log("Randomized Cards:", randomizedCards);
+      dispatch(setCards({ cards: randomizedCards }));
+    }
+  }, [dispatch, cardsState.cards.length]);
 
   useEffect(() => {
-    console.log("Cartas Aleatorizadas:", cartasRandomizadas);
-    dispatch(setCartas({ cartas: cartasRandomizadas }));
-  }, [cartasRandomizadas, dispatch]);
+    console.log("Updated Redux State:", cardsState.cards);
+  }, [cardsState.cards]);
 
-  useEffect(() => {
-    console.log("Estado de Redux Actualizado:", cardsState.cartas);
-  }, [cardsState.cartas]);
+  const totalPages = useMemo(() => {
+    if (cardsState.cards.length === 0) return 0;
+    return Math.min(Math.ceil(cardsState.cards.length / (cardsState.cardsPerpage || 1)), 3);
+  }, [cardsState.cards, cardsState.cardsPerpage]);
 
-  const totalPaginas = useMemo(() => {
-    if (cardsState.cartas.length === 0) return 0;
-    return Math.min(Math.ceil(cardsState.cartas.length / (cardsState.cartasPorPagina || 1)), 3);
-  }, [cardsState.cartas, cardsState.cartasPorPagina]);
+  const cardsPaginated: IBanner[] = useMemo(() => {
+    const indexStart = Math.max((cardsState.currentPage - 1) * (cardsState.cardsPerpage || 1), 0);
+    const indexEnd = Math.min(indexStart + (cardsState.cardsPerpage || 1), cardsState.cards.length);
+    return cardsState.cards.slice(indexStart, indexEnd);
+  }, [cardsState.cards, cardsState.currentPage, cardsState.cardsPerpage]);
 
-  const cartasPaginadas: IBanner[] = useMemo(() => {
-    const indiceInicio = Math.max((cardsState.paginaActual - 1) * (cardsState.cartasPorPagina || 1), 0);
-    const indiceFin = Math.min(indiceInicio + (cardsState.cartasPorPagina || 1), cardsState.cartas.length);
-    return cardsState.cartas.slice(indiceInicio, indiceFin);
-  }, [cardsState.cartas, cardsState.paginaActual, cardsState.cartasPorPagina]);
+  console.log("Total Pages:", totalPages);
+  console.log("Cards on Current Page:", cardsPaginated);
 
-  console.log("Número de Páginas:", totalPaginas);
-  console.log("Cartas en Página Actual:", cartasPaginadas);
-
-  const handleCambioPagina = (pagina: number) => {
-    console.log(`Cambio a Página: ${pagina}`);
-    dispatch(setPaginaActual(pagina));
+  const handleChangePage = (page: number) => {
+    console.log(`Change to Page: ${page}`);
+    dispatch(setCurrentPage(page));
   };
 
   return (
     <div>
-      {cardsState.cartas.length > 0 && (
+      {cardsState.cards.length > 0 && (
         <>
           <div className="grid grid-cols-3 gap-4 w-full ml-small mt-8">
-            {cartasPaginadas.map((banner: IBanner, index: number) => (
+            {cardsPaginated.map((banner: IBanner, index: number) => (
               <Tournaments key={`${banner.number}-${index}`} banner={banner} />
             ))}
           </div>
           <div className="flex justify-center mt-4">
-            {Array.from({ length: totalPaginas }, (_, index) => index + 1).map((pagina) => (
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
               <button
-                key={pagina}
-                onClick={() => handleCambioPagina(pagina)}
-                className={`px-2 py-1 mx-1 ${cardsState.paginaActual === pagina ? 'bg-gray-200' : ''}`}
+                key={page}
+                onClick={() => handleChangePage(page)}
+                className="buttonPage"
               >
-                {pagina}
+                {page}
               </button>
             ))}
           </div>

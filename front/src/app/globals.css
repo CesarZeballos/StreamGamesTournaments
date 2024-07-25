@@ -88,13 +88,18 @@
   @apply bg-blue-950 text-4xl p-2 rounded-3xl w-20 h-20 top-1/2 -translate-y-1/2;
 }
 
-.buttonCarousel:hover, .buttonFilter:hover, .buttonSection:hover {
+.buttonPage {
+  @apply p-2 m-4 rounded-md bg-lightViolet
+}
+
+.buttonCarousel:hover, .buttonFilter:hover, .buttonSection:hover, .buttonPage:hover {
   transition: 0.5s;
   background-color: #0d0835;
   box-shadow: inset 0px 0px 25px #1479EA, /* Nueva sombra */
               0 1px 2px 0 rgba(0, 0, 0, 0.05), /* shadow-sm */
               0 3px 5px 0 #E35AFF; /* shadow-lightViolet */
 }
+
 
 /* utils */
 

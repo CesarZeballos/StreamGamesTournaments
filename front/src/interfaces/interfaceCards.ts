@@ -1,9 +1,9 @@
 import { StaticImageData } from "next/image";
 
 export interface ICardsState {
-    paginaActual: number;
-    cartasPorPagina: number;
-    cartas: IBanner[];
+    cards: IBanner[];
+    currentPage: number;
+    cardsPerpage: number;
 }
 
 export interface ICardsAction {
