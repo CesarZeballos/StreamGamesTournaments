@@ -2,22 +2,55 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
 import { Games } from '@prisma/client';
+import { gamesData } from 'src/helpers/games.helpers';
 
 
+export interface GameWithTournamentId {
+  id: string;
+  name: string;
+  urlImage: string;
+  tournamentId?: string;
+}
 
 @Injectable()
 export class GamesService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async getAllGames(page: number, limit: number): Promise<Games[]> {
-    const skip = (page - 1) * limit
-    const games = await this.prisma.games.findMany({
-      take: limit,
-      skip
+  // async getAllGames(page: number, limit: number): Promise<Games[]> {
+  // const skip = (page - 1) * limit
+  //const games = await this.prisma.games.findMany({
+  // take: limit,
+  //skip
+  //});
+
+  //return games
+  //}
+
+  async getAllGames(page: number, limit: number): Promise<GameWithTournamentId[]> {
+    const skip = (page - 1) * limit;
+    const gamesfromPrisma = await this.prisma.games.findMany({
+      include: {
+        tournament: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
 
-    return games
+    const dataHelpers: GameWithTournamentId[] = gamesData.map(game => ({
+      id: game.id,
+      name: game.name,
+      urlImage: game.urlImage,
+      tournament: game.tournamentId
+    }))
+
+    const combinedData: GameWithTournamentId[] = [...gamesfromPrisma, ...dataHelpers]
+
+    const paginatedData = combinedData.slice(skip, skip + limit);
+
+    return paginatedData;
   }
 
   async getGameById(id: string): Promise<Games | null> {
