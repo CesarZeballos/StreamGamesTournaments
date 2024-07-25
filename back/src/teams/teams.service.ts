@@ -48,9 +48,6 @@ export class TeamsService {
         return paginatedData;
     }
 
-
-
-
     async getTeamById(id: string): Promise<Teams> {
         const team = await this.prisma.teams.findUnique({ where: { id } })
         if (!team) throw new NotFoundException(`Team id ${id} do not exists`)

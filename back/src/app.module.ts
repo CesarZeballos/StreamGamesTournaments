@@ -21,15 +21,5 @@ import { TeamsModule } from './teams/teams.module';
 	],
 	controllers: [AppController],
 	providers: [AppService],
-	imports: [
-		UsersModule,
-		GamesModule,
-		TournamentsModule,
-		AuthModule,
-		FileUploadModule,
-		TeamsModule,
-	],
-	controllers: [AppController],
-	providers: [AppService],
 })
 export class AppModule {}
