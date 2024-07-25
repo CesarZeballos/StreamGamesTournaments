@@ -9,7 +9,7 @@ const Tournaments: React.FC = () => {
         <>
         <div className="bodyContainer">
         <SearchBar />
-        <div className="grid grid-cols-[30%_70%]">
+        <div className="grid grid-cols-[25%_75%]">
         <SideBar />
         <Cards />
         </div>

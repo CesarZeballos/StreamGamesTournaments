@@ -22,7 +22,7 @@ const Tournament: React.FC<TournamentProps> = ({ params }) => {
       <Image
         src={tournament.image}
         alt={tournament.name}
-        className="w-full h-80"
+        className="w-full max-h-500px"
       />
       <div className='bodyContainer mt-4 mb-12 grid grid-cols-2 gap-4'>
         <div>

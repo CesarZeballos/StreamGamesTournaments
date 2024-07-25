@@ -56,7 +56,7 @@ const LiveBanner: React.FC = () => {
                     <Image src={banners[currentIndex].icon3} alt="Icon" className="icon" />
                     </div>
                     </div>
-                    <p className="description text-left m-2">{banners[currentIndex].description}</p>
+                    <p className="description text-left text-sm m-2">{banners[currentIndex].description}</p>
                 </div>
                 </div>
                 <Image
