@@ -8,6 +8,7 @@ import { TeamsModule } from './teams/teams.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { AuthModule } from './auth/auth.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
+import { PrismaModule } from 'prisma/prisma.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TournamentsModule } from './tournaments/tournaments.module';
     GamesModule,
     TournamentsModule,
     AuthModule,
+    PrismaModule,
     FileUploadModule,
     TeamsModule,
   ],

@@ -27,18 +27,16 @@ enum Categories {
 model User {
   id          String      @id @default(uuid())
   email       String      @unique @db.VarChar(80)
-  name        String
   nickName    String      @unique
   password    String
   birthDate   DateTime
-  country     String
   role        Role        @default(user)
-  urlSelfie   String
+  urlSelfie   String?
   actived     Boolean     @default(true)
   createdAt   DateTime    @default(now())
   tournaments Tournament? // uno a uno
-  team        Teams       @relation(fields: [teamId], references: [id]) // muchos a uno
-  teamId      String
+  team        Teams?      @relation(fields: [teamId], references: [id]) // muchos a uno
+  teamId      String?
 }
 
 model Tournament {

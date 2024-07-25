@@ -1,4 +1,7 @@
+/* eslint-disable prettier/prettier */
 import { Controller } from '@nestjs/common';
 
 @Controller('games')
-export class GamesController {}
+export class GamesController {
+  constructor() {}
+}
