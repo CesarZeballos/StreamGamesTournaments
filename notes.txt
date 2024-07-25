@@ -1,0 +1,15 @@
+      background: {
+        "gradient": "linear-gradient(180deg, #49176B 0%, #301048 50%, #000000 100%)",
+      },
+      colors: {
+        "bgDark": "#301048",
+        "bgLight": "#49176B",
+        "dViolet": "#7927B3",
+        "sViolet": "#C15AEC",
+        "lViolet": "#E35AFF",
+        "green": "#2AEB1D",
+      },
+
+      Font: Raleway
+      Headline1: 
+      Headline2: 

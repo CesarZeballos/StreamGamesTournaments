@@ -25,18 +25,19 @@ enum Categories {
 }
 
 model User {
-  id          String      @id @default(uuid())
-  email       String      @unique @db.VarChar(80)
-  nickName    String      @unique
-  password    String
-  birthDate   DateTime
-  role        Role        @default(user)
-  urlSelfie   String?
-  actived     Boolean     @default(true)
-  createdAt   DateTime    @default(now())
-  tournaments Tournament? // uno a uno
-  team        Teams?      @relation(fields: [teamId], references: [id]) // muchos a uno
-  teamId      String?
+  id            String      @id @default(uuid())
+  email         String      @unique @db.VarChar(80)
+  nickName      String      @unique
+  password      String
+  birthDate     DateTime
+  role          Role        @default(user)
+  urlSelfie     String
+  actived       Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  tournaments   Tournament? // uno a uno
+  team          Teams?      @relation("TeamUsers", fields: [teamId], references: [id]) // muchos a uno
+  teamId        String?
+  organizedTeam Teams?      @relation("TeamOrganizer") // uno a uno con el equipo organizado
 }
 
 model Tournament {
@@ -50,7 +51,7 @@ model Tournament {
   organizerId String     @unique
   game        Games      @relation(fields: [gameId], references: [id]) // uno a uno
   gameId      String     @unique
-  teams       Teams[]    // uno a muchos
+  teams       Teams[] // uno a muchos
 }
 
 model Teams {
@@ -58,13 +59,16 @@ model Teams {
   name         String     @unique @db.VarChar(25)
   createdAt    DateTime   @default(now())
   urlAvatar    String
+  organizer    User       @relation("TeamOrganizer", fields: [organizerId], references: [id])
+  organizerId  String     @unique
   tournament   Tournament @relation(fields: [tournamentId], references: [id]) // muchos a uno
   tournamentId String
-  user         User[]     // uno a muchos
+  user         User[]     @relation("TeamUsers") // uno a muchos
 }
 
 model Games {
   id         String      @id @default(uuid())
-  name       String      @db.VarChar(80)
+  name       String      @unique @db.VarChar(80)
+  urlImage   String      @db.Text
   tournament Tournament?
 }
