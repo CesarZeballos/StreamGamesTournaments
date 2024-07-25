@@ -10,27 +10,26 @@ import { UsersModule } from './users/users.module';
 import { TeamsModule } from './teams/teams.module';
 
 @Module({
-  imports: [
-    UsersModule,
-    GamesModule,
-    TournamentsModule,
-    AuthModule,
-    PrismaModule,
-    FileUploadModule,
-    TeamsModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-    imports: [
-        UsersModule,
-        GamesModule,
-        TournamentsModule,
-        AuthModule,
-        FileUploadModule,
-        TeamsModule,
-    ],
-    controllers: [AppController],
-    providers: [AppService],
+	imports: [
+		UsersModule,
+		GamesModule,
+		TournamentsModule,
+		AuthModule,
+		PrismaModule,
+		FileUploadModule,
+		TeamsModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
+	imports: [
+		UsersModule,
+		GamesModule,
+		TournamentsModule,
+		AuthModule,
+		FileUploadModule,
+		TeamsModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
 })
-
-export class AppModule { }
+export class AppModule {}
