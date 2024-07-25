@@ -15,10 +15,10 @@ import gold from "../../app/assets/images/icons/medal-gold.png";
 import free from "../../app/assets/images/icons/free.png";
 import vip from "../../app/assets/images/icons/premium.png";
 
-const banners = [
-    { image: csgo, description: "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.", icon1: silver, icon2: csIcon, icon3: free, name:"CSGO"},
-    { image: fortnite, description: "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!", icon1: gold, icon2: lolIcon, icon3: vip, name:"Fortnite"},
-    { image: lol, description: "Watch a Fortnite tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament prize!", icon1: bronze, icon2: ftIcon, icon3: free, name:"LoL"},
+export const banners = [
+    {id:1, image: csgo, description: "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.", icon1: silver, icon2: csIcon, icon3: free, name:"CSGO"},
+    {id:2, image: fortnite, description: "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!", icon1: gold, icon2: ftIcon, icon3: free, name:"Fortnite"},
+    {id:3, image: lol, description: "Watch a Fortnite tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament prize!", icon1: bronze, icon2: lolIcon, icon3: vip, name:"LoL"},
 ];
 
 const LiveBanner: React.FC = () => {

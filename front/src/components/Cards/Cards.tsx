@@ -12,7 +12,6 @@ const Cards: React.FC = () => {
   
   useEffect(() => {
     if (cardsState.cards.length === 0) {
-      // Ensure we have exactly 27 cards by repeating the banners array if necessary
       const duplicates = Array.from({ length: 27 }, (_, index) => banners[index % banners.length]);
       const randomizedCards = duplicates.sort(() => Math.random() - 0.5);
       console.log("Randomized Cards:", randomizedCards);
@@ -49,7 +48,7 @@ const Cards: React.FC = () => {
         <>
           <div className="grid grid-cols-3 gap-4 w-full ml-small mt-8">
             {cardsPaginated.map((banner: IBanner, index: number) => (
-              <Tournaments key={`${banner.number}-${index}`} banner={banner} />
+              <Tournaments key={`${banner.id}-${index}`} banner={banner}/>
             ))}
           </div>
           <div className="flex justify-center mt-4">
@@ -57,7 +56,7 @@ const Cards: React.FC = () => {
               <button
                 key={page}
                 onClick={() => handleChangePage(page)}
-                className="buttonPage"
+                className="buttonPage mx-4"
               >
                 {page}
               </button>

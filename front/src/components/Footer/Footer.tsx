@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
           alt="Logo"
           className="flex justify-center items-center w-3/4 h-24 m-8"
         />
-        <div className="flex flex-col justify-between items-start p-2 text-white text-xl gap-4">
+        <div className="flex flex-col justify-between items-start p-2 text-white text-xl gap-4 mb-2">
           <button className="buttonSecondary">Tournaments</button>
           <button className="buttonSecondary">Teams</button>
           <button className="buttonSecondary">Sign In</button>
