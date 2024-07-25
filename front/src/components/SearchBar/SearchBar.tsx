@@ -8,7 +8,7 @@ import lolIcon from "../../app/assets/images/icons/lol-A.png";
 const SearchBar: React.FC = () => {
     return (
         <>
-        <div className="flex flex-row justify-around p-2 gap-6 overflow-hidden">
+        <div className="flex flex-row justify-between p-2 gap-6 overflow-hidden">
         <button className="buttonFilter">
         <Image src={allIcon} alt="All Tournaments" className="s-icon" />
         <p className="">All Tournaments</p>

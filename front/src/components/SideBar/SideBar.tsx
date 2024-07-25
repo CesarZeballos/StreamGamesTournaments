@@ -9,7 +9,7 @@ import gold from "../../app/assets/images/icons/medal-gold.png";
 const SideBar: React.FC = () => {
     return (
         <>
-        <div className="flex flex-col justify-start p-medium bg-BGdark rounded-3xl mt-medium mb-medium w-fit h-fit">
+        <div className="flex flex-col justify-start p-medium bg-BGdark rounded-3xl mt-8 mb-medium w-fit h-fit">
         <h1 className="heading4 text-white">Filters</h1>
         <div className="section">
         <h1 className="heading5 text-lightViolet">Competition Difficulty</h1>
