@@ -23,6 +23,10 @@ const config: Config = {
         greenAlert: "#2AEB1D"
       },
 
+      maxHeight: {
+        '500px': '500px',
+      },
+
       fontFamily: {
         Raleway: ["Raleway", "sans-serif"],
         Roboto: ["Roboto", "sans-serif"]

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { Suspense } from "react";
 import LiveBanner from "@/components/Home/LiveBanner";
 import FindBanner from "@/components/Home/FindBanner";
@@ -8,9 +7,11 @@ const HomePage: React.FC = () => {
 return (
     <>
         <Suspense fallback={<p className="loading">Loading Home Page...</p>}>
+        <div className="bodyContainer">
         <LiveBanner/>
         <FindBanner/>
         <RegisterBanner/>
+        </div>
         </Suspense>
     </>
 );
