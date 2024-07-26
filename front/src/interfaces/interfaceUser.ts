@@ -1,6 +1,6 @@
 export interface IUser {
     id: string
-    nickname: string
+    nickName: string
     email: string
     birthdate: string
     role: string
@@ -15,20 +15,20 @@ export interface ITeam {
 
 export interface ITeamMember {
     id: string
-    nickname: string
+    nickName: string
 }
 
 
 //register
 export interface IRegisterForm {
-    nickname: string;
+    nickName: string;
     email: string;
     password: string;
     birthdate: string;
 }
 
 export interface IRegisterError {
-    nickname?: string;
+    nickName?: string;
     email?: string;
     password?: string;
     birthdate?: string;

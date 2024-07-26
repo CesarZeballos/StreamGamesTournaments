@@ -53,9 +53,9 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const [userData, setUserData] = useState<IUser>({
         id: "",
-        nickname: "",
+        nickName: "",
         email: "",
-        birthdate: "",
+        birthDate: "",
         role: "",
         teams: [],
     });

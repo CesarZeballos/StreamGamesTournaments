@@ -6,3 +6,10 @@ export interface IUserState {
     status: string;
     error: string | null;
 }
+
+export interface IRegisterFormSlice {
+    nickName: string;
+    email: string;
+    password: string;
+    birthDate: string;
+}

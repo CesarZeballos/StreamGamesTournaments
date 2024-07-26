@@ -1,9 +1,10 @@
-import { ILoginForm, IRegisterForm, IUser } from "@/interfaces/interfaceUser"
+import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
+import { ILoginForm } from "@/interfaces/interfaceUser"
 import { loginUser, postUser } from "@/utils/fetchUser"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
-export const registerSlice = createAsyncThunk('user/postRegister', async (data: IRegisterForm) => {
+export const registerSlice = createAsyncThunk('user/postRegister', async (data: IRegisterFormSlice) => {
     try {
         const response = await postUser(data)
         console.log("thunkresponseRegister", response.data)

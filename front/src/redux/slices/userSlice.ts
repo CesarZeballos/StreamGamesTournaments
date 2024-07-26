@@ -1,7 +1,5 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
-import { IUser } from "@/interfaces/interfaceUser";
-import { loginUser } from "@/utils/fetchUser";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { loginSlice, registerSlice } from "../thunks/userSliceThunk";
 import { useRouter } from "next/navigation";
 

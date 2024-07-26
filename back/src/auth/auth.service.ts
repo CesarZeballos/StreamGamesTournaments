@@ -71,12 +71,16 @@ export class AuthService {
 		}
 
 		const payload = { userId: user.id, email: user.email };
-		const token = this.jwtService.sign(payload);
+		const token = await this.jwtService.sign(payload);
 
-		return {
+		const response = {
 			message: 'User logged in successfully',
 			user: user,
 			token,
 		};
+
+		console.log("responseBack", response)
+
+		return response;
 	}
 }
