@@ -53,10 +53,9 @@ export const RegisterForm: React.FC = () => {
             const registerData = {
                 ...data,
                 birthDate: new Date(data.birthDate).toISOString()}
-                console.log(registerData)
             dispatch(registerSlice(registerData))
         }else {
-            alert ("")
+            alert ("error register")
         }
     }
 

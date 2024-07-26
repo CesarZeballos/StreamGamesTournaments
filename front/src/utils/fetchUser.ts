@@ -7,7 +7,7 @@ export async function postUser(data:IRegisterForm) {
         const response = await fetch("http://localhost:3001/auth/signup", {
             method: "POST",
             headers: {
-                // 'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: dataFetch
         })

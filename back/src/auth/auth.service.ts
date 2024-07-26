@@ -46,6 +46,8 @@ export class AuthService {
 			},
 		});
 
+		console.log('user', user);
+
 		return {
 			message: 'User created successfully',
 			user,
@@ -78,8 +80,6 @@ export class AuthService {
 			user: user,
 			token,
 		};
-
-		console.log("responseBack", response)
 
 		return response;
 	}

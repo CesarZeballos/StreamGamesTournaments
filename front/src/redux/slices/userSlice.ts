@@ -14,6 +14,11 @@ const userSlice = createSlice({
     reducers: {
         setUser(state, action: PayloadAction<IUserState>) {
             state.user = action.payload.user
+        },
+        logout(state) {
+            state.user = null
+            state.status = 'idle'
+            state.error = null            
         }
     }, extraReducers: (builder) => {
         builder
@@ -23,10 +28,10 @@ const userSlice = createSlice({
         })
         .addCase(registerSlice.fulfilled, (state, action) => {
             state.status = 'succeeded'
-            alert ("user created")
-            loginSlice({
-                email: action.payload.email, 
-                password: action.payload.password})
+            alert ("user created???")
+            // loginSlice({
+            //     email: action.payload.email, 
+            //     password: action.payload.password})
         })
         .addCase(registerSlice.rejected, (state, action) => {
             state.status = 'failed'
@@ -38,10 +43,10 @@ const userSlice = createSlice({
             state.error = null
         })
         .addCase(loginSlice.fulfilled, (state, action) => {
-            console.log("loginSlice", action.payload)
-
             state.status = 'succeeded'
             state.user = action.payload.user
+
+            alert (`welcome ${action.payload.user.nickName}`)
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
