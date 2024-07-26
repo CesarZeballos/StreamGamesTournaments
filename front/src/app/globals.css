@@ -73,11 +73,11 @@
 }
 
 .buttonSection {
-  @apply flex flex-row items-center font-Raleway font-bold text-3xl text-white pl-6 py-4 rounded-full shadow-md shadow-lightViolet w-full
+  @apply flex flex-row items-center font-Raleway font-bold text-3xl text-white pl-6 py-4 rounded-full w-full border-2 border-lightViolet hover:shadow-md hover:shadow-lightViolet
 }
 
 .buttonFilter {
-  @apply flex flex-row items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-sm shadow-lightViolet gap-4
+  @apply flex flex-row items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full gap-4
 }
 
 .infoTorunaments {
@@ -92,7 +92,11 @@
   @apply p-4 mb-8 rounded-md bg-lightViolet
 }
 
-.buttonCarousel:hover, .buttonFilter:hover, .buttonSection:hover, .buttonPage:hover {
+.buttonFilter:hover {
+  @apply hover:shadow-md hover:shadow-lightViolet
+}
+
+.buttonCarousel:hover, .buttonPage:hover {
   transition: 0.5s;
   background-color: #0d0835;
   box-shadow: inset 0px 0px 25px #1479EA,
@@ -100,7 +104,6 @@
               0 3px 5px 0 #E35AFF;
   color: white;
 }
-
 
 /* utils */
 

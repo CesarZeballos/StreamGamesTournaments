@@ -7,7 +7,7 @@ import gold from "../../app/assets/images/icons/medal-gold.png";
 export const data = [
     {id:1, startDate: "09/08", start: "Tournament Start", quarterDate: "16/08", quarter: "Quarter-Finals", semiDate: "23/08", semi: "Semi-Final", finalDate: "30/08", final: "Final", award1: "4000 Riot Points" , award2: "2000 Riot Points", award3: "1000 Riot Points", icon1: gold, icon2: silver, icon3: bronze},
     {id:2, startDate: "10/08", start: "Tournament Start", quarterDate: "17/08", quarter: "Quarter-Finals", semiDate: "24/08", semi: "Semi-Final", finalDate: "31/08", final: "Final", award1: "4000 Riot Points" , award2: "2000 Riot Points", award3: "1000 Riot Points", icon1: gold, icon2: silver, icon3: bronze},
-    {id:3, startDate: "11/08", start: "Tournament Start", quarterDate: "18/08", quarter: "Quarter-Finals", semiDate: "25/08", semi: "Semi-Final", finalDate: "1/09", final: "Final", award1: "4000 Riot Points" , award2: "2000 Riot Points", award3: "1000 Riot Points", icon1: gold, icon2: silver, icon3: bronze},
+    {id:3, startDate: "11/08", start: "Tournament Start", quarterDate: "18/08", quarter: "Quarter-Finals", semiDate: "25/08", semi: "Semi-Final", finalDate: "01/09", final: "Final", award1: "4000 Riot Points" , award2: "2000 Riot Points", award3: "1000 Riot Points", icon1: gold, icon2: silver, icon3: bronze},
 ];
 
 export const Awards_Dates: React.FC<{ data: IAwardsDates }> = ({ data }) => {

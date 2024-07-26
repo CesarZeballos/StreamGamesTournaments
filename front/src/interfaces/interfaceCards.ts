@@ -4,6 +4,7 @@ export interface ICardsState {
     cards: IBanner[];
     currentPage: number;
     cardsPerpage: number;
+    filter: string;
 }
 
 export interface ICardsAction {
