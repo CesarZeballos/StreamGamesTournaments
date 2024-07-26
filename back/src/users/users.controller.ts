@@ -9,6 +9,7 @@ import {
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { User } from '@prisma/client';
+import { UpdateUserDto } from 'src/auth/auth.user.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -62,6 +63,22 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'Usuario actualizado exitosamente',
+  })
+  @ApiBody({
+    description: 'Datos del usuario a actualizar',
+    type: UpdateUserDto,
+    examples: {
+      default: {
+        summary: 'Ejemplo de actualización de usuario',
+        value: {
+          email: 'newuser@example.com',
+          nickName: 'JaneDoe',
+          password: 'newpassword123',
+          birthDate: '1990-01-01T00:00:00.000Z',
+          teamId: 'teamId456',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 400,
