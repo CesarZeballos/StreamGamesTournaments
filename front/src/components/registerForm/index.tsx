@@ -4,12 +4,13 @@ import { FormContainer } from "../formContainer"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceUser"
 import { useDispatch } from "react-redux"
-import { register } from "@/redux/slices/userSlice"
 import { useRouter } from "next/navigation"
 import { validateRegister } from "@/utils/validateForms/validationRegister"
+import { registerSlice } from "@/redux/thunks/userSliceThunk"
+import { AppDispatch } from "@/redux/store"
 
 export const RegisterForm: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const Router = useRouter();
 
     const [data, setData] = useState<IRegisterForm>({
@@ -49,9 +50,7 @@ export const RegisterForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (!errorRegister.nickname || !errorRegister.email || !errorRegister.password || !errorRegister.birthdate) {
-            dispatch(register(data))
-            //revisar el push, deberia estar en el slice
-            Router.push("/")
+            dispatch(registerSlice(data))
         }else {
             alert ("")
         }
