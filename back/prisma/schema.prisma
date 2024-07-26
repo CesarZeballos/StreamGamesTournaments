@@ -31,7 +31,7 @@ model User {
   password      String
   birthDate     DateTime
   role          Role        @default(user)
-  urlSelfie     String
+  urlSelfie     String?
   actived       Boolean     @default(true)
   createdAt     DateTime    @default(now())
   tournaments   Tournament? // uno a uno
