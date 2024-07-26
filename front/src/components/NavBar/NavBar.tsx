@@ -1,9 +1,8 @@
 'use client';
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../app/assets/images/icons/logo.png"
-import { useEffect, useState } from "react";
-import { RootState, useAppDispatch } from "@/redux/store";
+import logo from "../../app/assets/images/icons/logo2.png";
+import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { logoutSlice } from "@/redux/slices/userSlice";
@@ -24,7 +23,7 @@ const NavBar: React.FC = () => {
     return (
         <div className="bg-BGlight grid grid-cols-[40%_60%] bodyContainer mt-4 overflow-hidden">
         <div>
-        <Image src={logo} alt="Logo" className="flex justify-start items-center w-3/4 h-12"/>
+        <Image src={logo} alt="Logo" className="flex justify-start items-center w-2/4 h-fit"/>
         </div>
         <div className="flex justify-end gap-x-8 overflow-hidden p-1">
             <Link className="buttonSecondary" href="/">Home</Link>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "../../app/assets/images/icons/logo.png";
+import logo from "../../app/assets/images/icons/logo2.png";
 
 const Footer: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
         <Image
           src={logo}
           alt="Logo"
-          className="flex justify-center items-center w-3/4 h-24 m-8"
+          className="flex justify-center items-center w-2/4 h-fit m-8"
         />
         <div className="flex flex-col justify-between items-start p-2 text-white text-xl gap-4 mb-2">
           <button className="buttonSecondary">Tournaments</button>
