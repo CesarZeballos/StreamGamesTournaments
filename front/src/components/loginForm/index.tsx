@@ -9,10 +9,12 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Link from "next/link"
 import { loginSlice } from "@/redux/thunks/userSliceThunk"
 import { AppDispatch } from "@/redux/store"
+import { useRouter } from "next/navigation"
 
 
 export const LoginForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
 
     const [data, setData] = useState<ILoginForm>({
         email: "",
@@ -46,6 +48,9 @@ export const LoginForm: React.FC = () => {
         event.preventDefault()
         if (!errorLogin.email || !errorLogin.password) {
             dispatch(loginSlice(data))
+            setTimeout(() => {
+                router.push("/")
+            }, 1500);
         } else {
             alert ("Email or password incorrect")
         }

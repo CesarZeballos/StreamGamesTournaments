@@ -17,8 +17,8 @@ export const registerSlice = createAsyncThunk('user/postRegister', async (data: 
 export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILoginForm) => {
     try {
         const response = await loginUser(data)
-        console.log("thunkresponseLogin", response.data)
-        return response.data
+        console.log("thunkresponseLogin", response)
+        return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in login")
     }

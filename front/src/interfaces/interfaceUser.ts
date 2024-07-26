@@ -2,7 +2,7 @@ export interface IUser {
     id: string
     nickName: string
     email: string
-    birthdate: string
+    birthDate: string
     role: string
     teams: ITeam[]
 }
@@ -24,14 +24,14 @@ export interface IRegisterForm {
     nickName: string;
     email: string;
     password: string;
-    birthdate: string;
+    birthDate: string;
 }
 
 export interface IRegisterError {
     nickName?: string;
     email?: string;
     password?: string;
-    birthdate?: string;
+    birthDate?: string;
 }
 
 //login

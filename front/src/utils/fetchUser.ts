@@ -20,7 +20,6 @@ export async function postUser(data:IRegisterForm) {
 }
 
 export async function loginUser(data: ILoginForm) {
-    console.log("loginFetch", data)
     try {
         const response = await fetch("http://localhost:3001/auth/signin", {
             method: "POST",
@@ -42,7 +41,7 @@ export async function loginUser(data: ILoginForm) {
 
         const loginData = await response.json();
 
-        console.log("loginData response", loginData);
+        console.log("loginData", loginData)
 
         return loginData;
     } catch (error) {

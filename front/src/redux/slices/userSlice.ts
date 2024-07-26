@@ -1,7 +1,6 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginSlice, registerSlice } from "../thunks/userSliceThunk";
-import { useRouter } from "next/navigation";
 
 const initialState: IUserState = {
     user: null,
@@ -9,11 +8,14 @@ const initialState: IUserState = {
     error: null
 }
 
-
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {}, extraReducers: (builder) => {
+    reducers: {
+        setUser(state, action: PayloadAction<IUserState>) {
+            state.user = action.payload.user
+        }
+    }, extraReducers: (builder) => {
         builder
         .addCase(registerSlice.pending, (state) => {
             state.status = 'loading'
@@ -36,14 +38,10 @@ const userSlice = createSlice({
             state.error = null
         })
         .addCase(loginSlice.fulfilled, (state, action) => {
-            const router = useRouter();
+            console.log("loginSlice", action.payload)
 
             state.status = 'succeeded'
-            state.user = action.payload
-            
-            setTimeout(() => {
-                router.push("/")
-            }, 1500);
+            state.user = action.payload.user
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
@@ -52,5 +50,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {} = userSlice.actions;
+export const {setUser} = userSlice.actions;
 export default userSlice.reducer;

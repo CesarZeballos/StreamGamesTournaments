@@ -6,8 +6,6 @@ import { registerSlice } from './thunks/userSliceThunk';
 const rootReducer = combineReducers({
   user: userSlice,
   cards: cardsSlice,
-  register: registerSlice,
-  // tournament: tournamentSlice,
 });
 
 export default rootReducer;
