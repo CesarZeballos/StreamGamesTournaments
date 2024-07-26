@@ -6,9 +6,9 @@ import fortnite from "../../app/assets/images/banners/fortnite.jpg";
 import lol from "../../app/assets/images/banners/lol.png";
 import previous from "../../app/assets/images/icons/previous.png"
 import next from "../../app/assets/images/icons/next.png"
-import csIcon from "../../app/assets/images/icons/cs-A.png";
-import ftIcon from "../../app/assets/images/icons/fortnite-A.png";
-import lolIcon from "../../app/assets/images/icons/lol-A.png";
+import csIcon from "../../app/assets/images/icons/cs-.png";
+import ftIcon from "../../app/assets/images/icons/fortnite-.png";
+import lolIcon from "../../app/assets/images/icons/lol-.png";
 import bronze from "../../app/assets/images/icons/medal-bronze.png";
 import silver from "../../app/assets/images/icons/medal-silver.png";
 import gold from "../../app/assets/images/icons/medal-gold.png";
