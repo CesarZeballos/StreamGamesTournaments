@@ -21,7 +21,7 @@ export const banners: IBanner[] = [
       icon1: silver,
       icon2: csIcon,
       icon3: free,
-      name: "CSGO",
+      name: "Counter Strike",
       date: "01/08",
     },
     {
@@ -39,7 +39,7 @@ export const banners: IBanner[] = [
       icon1: bronze,
       icon2: lolIcon,
       icon3: vip,
-      name: "LoL",
+      name: "League of Legends",
       date: "03/08",
     },
   ];
@@ -47,18 +47,18 @@ export const banners: IBanner[] = [
   export const Tournaments: React.FC<{ banner: IBanner }> = ({ banner }) => {
     return (
       <Link href={`/tournaments/${banner.id}`}>
-        <div className="relative h-64 cursor-pointer">
+        <div className="relative h-64 cursor-pointer rounded-3xl hover:shadow-lg hover:shadow-lightViolet">
           <Image
             src={banner.image}
             alt={banner.name}
             className="w-full h-52 rounded-3xl"
           />
-          <div className="absolute bottom-5 left-0 right-0 p-4 bg-BGdark rounded-3xl">
+          <div className="absolute bottom-1 left-0 right-0 p-4 bg-BGdark rounded-3xl h-fit">
             <div className="flex justify-between items-center mb-2">
-              <h1 className="heading5 text-lightViolet">{banner.name}</h1>
+              <h1 className="heading5 text-lightViolet text-wrap">{banner.name}</h1>
               <h1 className="numberCard text-white">{banner.date}</h1>
             </div>
-            <div className="flex justify-around mb-2">
+            <div className="flex justify-around">
               <Image src={banner.icon1} alt="Icon" className="s-icon" />
               <Image src={banner.icon2} alt="Icon" className="s-icon" />
               <Image src={banner.icon3} alt="Icon" className="s-icon" />
