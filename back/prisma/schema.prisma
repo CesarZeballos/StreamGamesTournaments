@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -20,8 +14,17 @@ enum Role {
 }
 
 enum Categories {
-  amateur
-  professional
+  beginner
+  advanced
+  expert
+}
+
+enum AccountDeletionReason {
+  NOT_USING
+  PRIVACY_CONCERNS
+  USER_EXPERIENCE
+  TECHNICAL_ISSUES
+  OTHERS
 }
 
 model User {
@@ -32,29 +35,42 @@ model User {
   birthDate     DateTime
   role          Role        @default(user)
   urlSelfie     String?
-  actived       Boolean     @default(true)
   createdAt     DateTime    @default(now())
   tournaments   Tournament? // uno a uno
-  team          Teams?      @relation("TeamUsers", fields: [teamId], references: [id]) // muchos a uno
+  team          Team?       @relation("TeamUsers", fields: [teamId], references: [id]) // muchos a uno
   teamId        String?
-  organizedTeam Teams?      @relation("TeamOrganizer") // uno a uno con el equipo organizado
+  organizedTeam Team?       @relation("TeamOrganizer") // uno a uno con el equipo organizado
+}
+
+model UserDeleted {
+  id          String                @id @default(uuid())
+  email       String                @db.VarChar(80)
+  nickName    String
+  birthDate   DateTime
+  role        Role
+  urlSelfie   String?
+  createdAt   DateTime
+  createdEnd  DateTime
+  description AccountDeletionReason
 }
 
 model Tournament {
-  id          String     @id @default(uuid())
-  startDate   DateTime
-  createdAt   DateTime   @default(now())
-  categories  Categories
-  award       Int
-  urlStream   String
-  organizer   User       @relation(fields: [organizerId], references: [id]) // uno a uno
-  organizerId String     @unique
-  game        Games      @relation(fields: [gameId], references: [id]) // uno a uno
-  gameId      String     @unique
-  teams       Teams[] // uno a muchos
+  id           String     @id @default(uuid())
+  startDate    DateTime
+  createdAt    DateTime   @default(now())
+  categories   Categories
+  award        String[]
+  urlAvatar    String
+  descriptioin String     @db.Text
+  maxMember    Int
+  organizer    User       @relation(fields: [organizerId], references: [id]) // uno a uno
+  organizerId  String     @unique
+  game         Games      @relation(fields: [gameId], references: [id]) // uno a uno
+  gameId       String     @unique
+  teams        Team[] // uno a muchos
 }
 
-model Teams {
+model Team {
   id           String     @id @default(uuid())
   name         String     @unique @db.VarChar(25)
   createdAt    DateTime   @default(now())
@@ -63,7 +79,7 @@ model Teams {
   organizerId  String     @unique
   tournament   Tournament @relation(fields: [tournamentId], references: [id]) // muchos a uno
   tournamentId String
-  user         User[]     @relation("TeamUsers") // uno a muchos
+  users        User[]     @relation("TeamUsers") // uno a muchos
 }
 
 model Games {
