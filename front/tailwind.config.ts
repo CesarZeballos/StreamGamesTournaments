@@ -9,7 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
-        colors: {
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+      colors: {
         lightViolet: "#E35AFF",
         softViolet: "#C15AEC",
         BGdark: "#301048",
@@ -23,10 +28,18 @@ const config: Config = {
         Roboto: ["Roboto", "sans-serif"]
       },
 
+      maxHeight: {
+        '500px': '500px',
+      },
+
+      textShadow: {
+        sm: "0 1px 2px rgba(0, 0, 0, 0.05)",
+      },
+
       spacing: {
         'small': '1rem',
         'medium': '3.5rem',
-        'large': '7.5rem'
+        'large': '7.5rem',
       },
     },
   },

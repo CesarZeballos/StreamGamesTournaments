@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { Suspense } from "react";
 import LiveBanner from "@/components/Home/LiveBanner";
 import FindBanner from "@/components/Home/FindBanner";
@@ -9,8 +8,10 @@ return (
     <>
         <Suspense fallback={<p className="loading">Loading Home Page...</p>}>
         <LiveBanner/>
+        <div className="bodyContainer">
         <FindBanner/>
         <RegisterBanner/>
+        </div>
         </Suspense>
     </>
 );

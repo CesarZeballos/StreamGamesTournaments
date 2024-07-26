@@ -1,11 +1,11 @@
-import { combineReducers } from "redux";
-
-import userSlice from "./slices/userSlice";
+import { combineReducers } from 'redux';
+import userSlice from './slices/userSlice';
+import cardsSlice from './slices/cardsSlice';
 
 const rootReducer = combineReducers({
-    user: userSlice,
-    // tournament: tournamentSlice,
-
-})
+  user: userSlice,
+  cards: cardsSlice,
+  // tournament: tournamentSlice,
+});
 
 export default rootReducer;

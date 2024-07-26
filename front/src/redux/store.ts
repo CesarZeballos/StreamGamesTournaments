@@ -1,9 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import cardsReducer from './slices/cardsSlice';
 
-import rootReducer from './reducer';
+const rootReducer = combineReducers({
+  cards: cardsReducer,
+});
 
 const store = configureStore({
-    reducer: rootReducer,
+  reducer: rootReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
