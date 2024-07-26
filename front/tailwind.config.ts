@@ -9,12 +9,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-      colors: {
+        colors: {
         lightViolet: "#E35AFF",
         softViolet: "#C15AEC",
         BGdark: "#301048",
@@ -23,14 +18,20 @@ const config: Config = {
         greenAlert: "#2AEB1D"
       },
 
+      maxHeight: {
+        '500px': '500px',
+      },
+
       fontFamily: {
         Raleway: ["Raleway", "sans-serif"],
         Roboto: ["Roboto", "sans-serif"]
       },
 
-      textShadow: {
-        sm: "0 1px 2px rgba(0, 0, 0, 0.05)",
-      }
+      spacing: {
+        'small': '1rem',
+        'medium': '3.5rem',
+        'large': '7.5rem'
+      },
     },
   },
   plugins: [],
