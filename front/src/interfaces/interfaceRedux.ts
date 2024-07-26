@@ -5,6 +5,7 @@ export interface IUserState {
     user: IUser | null;
     status: string;
     error: string | null;
+    token: string | null;
 }
 
 export interface IRegisterFormSlice {

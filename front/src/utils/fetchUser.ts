@@ -1,7 +1,7 @@
 import { ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
 
 export async function postUser(data:IRegisterForm) {
-    console.log("registerFetch", data)
+    // console.log("registerFetch", data)
     const dataFetch = JSON.stringify(data)
     try {
         const response = await fetch("http://localhost:3001/auth/signup", {
@@ -40,8 +40,6 @@ export async function loginUser(data: ILoginForm) {
         }
 
         const loginData = await response.json();
-
-        console.log("loginData", loginData)
 
         return loginData;
     } catch (error) {

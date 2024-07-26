@@ -7,17 +7,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit"
 export const registerSlice = createAsyncThunk('user/postRegister', async (data: IRegisterFormSlice) => {
     try {
         const response = await postUser(data)
-        console.log("thunkresponseRegister", response.data)
-        return response.data
+        return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in user creation")
     }
 })
 
 export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILoginForm) => {
+    console.log("loginSlice", data)
     try {
         const response = await loginUser(data)
-        console.log("thunkresponseLogin", response)
         return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in login")
