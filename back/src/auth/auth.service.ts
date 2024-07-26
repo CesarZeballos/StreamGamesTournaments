@@ -75,6 +75,7 @@ export class AuthService {
 
 		return {
 			message: 'User logged in successfully',
+			user: user,
 			token,
 		};
 	}
