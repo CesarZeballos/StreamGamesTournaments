@@ -4,7 +4,7 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateUserDto, SignInDto } from '../auth/auth.user.dto'; 
+import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -12,8 +12,8 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
 	constructor(
 		private readonly prisma: PrismaService,
-		private readonly jwtService: JwtService, 
-	) {}
+		private readonly jwtService: JwtService,
+	) { }
 
 	async signUp(createUserDto: CreateUserDto) {
 		const { email, nickName, password, birthDate, teamId } = createUserDto;
@@ -40,8 +40,8 @@ export class AuthService {
 				birthDate: parsedBirthDate.toISOString(),
 				team: teamId
 					? {
-							connect: { id: teamId },
-						}
+						connect: { id: teamId },
+					}
 					: undefined,
 			},
 		});

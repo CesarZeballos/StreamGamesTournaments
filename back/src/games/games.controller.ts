@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
+import { UpdateTeamDto } from 'src/teams/teams.dto';
 
 @ApiTags('games')
 @Controller('games')
@@ -44,6 +45,21 @@ export class GamesController {
   @Put(':id')
   @ApiOperation({ summary: 'Actualizar un juego por su ID' })
   @ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
+  @ApiBody({
+    description: 'Datos para actualizar el juego',
+    type: UpdateGameDto,
+    examples: {
+      default: {
+        summary: 'Ejemplo de actualización de juego',
+        value: {
+          name: 'Nuevo Nombre del Juego',
+          urlImage: 'https://example.com/new-image.jpg',
+          tournamentId: '123e4567-e89b-12d3-a456-426614174000',
+          user: ['123e4567-e89b-12d3-a456-426614174000'],
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: 'Juego actualizado exitosamente.' })
   @ApiResponse({ status: 400, description: 'Solicitud inválida.' })
   @ApiResponse({ status: 404, description: 'Juego no encontrado.' })
