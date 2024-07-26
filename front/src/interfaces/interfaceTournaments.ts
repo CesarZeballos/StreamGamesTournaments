@@ -1,8 +1,8 @@
 import { StaticImageData } from "next/image";
 
 export interface ITournament {
-    players: number
     id: number | string,
+    players: number
     name: string;
     description: string;
     games: StaticImageData | null;
