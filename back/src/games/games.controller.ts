@@ -1,5 +1,23 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiParam,
+  ApiBody,
+  PartialType,
+} from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
 import { UpdateTeamDto } from 'src/teams/teams.dto';
@@ -11,17 +29,32 @@ export class GamesController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los juegos' })
-  @ApiQuery({ name: 'page', required: false, description: 'Número de página para paginación' })
-  @ApiQuery({ name: 'limit', required: false, description: 'Número de elementos por página' })
-  @ApiResponse({ status: 200, description: 'Lista de juegos obtenida exitosamente.' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Número de página para paginación',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Número de elementos por página',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de juegos obtenida exitosamente.',
+  })
   @ApiResponse({ status: 400, description: 'Solicitud inválida.' })
   async getAllGames(
     @Query('page') page: string,
-    @Query('limit') limit: string
+    @Query('limit') limit: string,
   ) {
     !page ? (page = '1') : page;
     !limit ? (limit = '9') : limit;
-    if (page && limit) return await this.gamesService.getAllGames(Number(page), Number(limit));
+    if (page && limit)
+      return await this.gamesService.getAllGames(
+        Number(page),
+        Number(limit),
+      );
   }
 
   @Get(':id')
@@ -60,12 +93,15 @@ export class GamesController {
       },
     },
   })
-  @ApiResponse({ status: 200, description: 'Juego actualizado exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Juego actualizado exitosamente.',
+  })
   @ApiResponse({ status: 400, description: 'Solicitud inválida.' })
   @ApiResponse({ status: 404, description: 'Juego no encontrado.' })
   async updateGame(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() game: Partial<CreateGameDto>
+    @Body() game: UpdateGameDto,
   ) {
     return await this.gamesService.updateGame(id, game);
   }
