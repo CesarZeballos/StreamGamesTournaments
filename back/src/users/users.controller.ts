@@ -8,7 +8,6 @@ import {
 	ApiBody,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { User } from '@prisma/client';
 import { UpdateUserDto } from 'src/auth/auth.user.dto';
 
 @ApiTags('Users')
@@ -27,15 +26,6 @@ export class UsersController {
 		return this.usersService.getAllUsers();
 	}
 
-	@Get(':id')
-	@ApiOperation({ summary: 'Obtener un usuario por ID' })
-	@ApiParam({ name: 'id', type: 'string', description: 'ID del usuario' })
-	@ApiResponse({ status: 200, description: 'Detalles del usuario' })
-	@ApiResponse({ status: 404, description: 'Usuario no encontrado' })
-	getUserById(@Param('id') id: string) {
-		return this.usersService.getUserById(id);
-	}
-
 	@Get('search')
 	@ApiOperation({ summary: 'Buscar un usuario por correo electrónico' })
 	@ApiQuery({
@@ -50,6 +40,15 @@ export class UsersController {
 	@ApiResponse({ status: 404, description: 'Usuario no encontrado' })
 	getUserByEmail(@Query('email') email: string) {
 		return this.usersService.getUserByEmail(email);
+	}
+
+	@Get(':id')
+	@ApiOperation({ summary: 'Obtener un usuario por ID' })
+	@ApiParam({ name: 'id', type: 'string', description: 'ID del usuario' })
+	@ApiResponse({ status: 200, description: 'Detalles del usuario' })
+	@ApiResponse({ status: 404, description: 'Usuario no encontrado' })
+	getUserById(@Param('id') id: string) {
+		return this.usersService.getUserById(id);
 	}
 
 	@Put('update')
@@ -83,7 +82,7 @@ export class UsersController {
 		description: 'Datos inválidos para actualización',
 	})
 	@ApiResponse({ status: 404, description: 'Usuario no encontrado' })
-	updateUser(@Query('id') id: string, @Body() data: Partial<User>) {
+	updateUser(@Query('id') id: string, @Body() data: UpdateUserDto) {
 		return this.usersService.updateUser(id, data);
 	}
 
