@@ -90,7 +90,7 @@
 }
 
 .buttonCarousel {
-  @apply bg-blue-950 text-4xl p-2 rounded-3xl w-20 h-20 top-1/2 -translate-y-1/2;
+  @apply bg-blue-950 text-4xl p-2 rounded-3xl w-20 h-20 top-2/4 -translate-y-1/2 m-10 cursor-pointer;
 }
 
 .buttonPage {
@@ -113,7 +113,7 @@
 /* utils */
 
 .bodyContainer {
-  @apply px-large;
+  @apply px-16 mb-16;
 }
 
 body {
@@ -133,7 +133,7 @@ body {
 }
 
 .loading {
-  @apply text-softViolet text-5xl text-center;
+  @apply text-softViolet text-5xl text-center m-8;
 }
 
 .icon {

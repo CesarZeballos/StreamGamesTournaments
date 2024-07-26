@@ -32,17 +32,10 @@ export interface TournamentProps {
 export interface IAwardsDates {
     id: number;
     icon1: StaticImageData;
-    icon2: StaticImageData;
-    icon3: StaticImageData;
+    icon2?: StaticImageData;
+    icon3?: StaticImageData;
     startDate: string;
-    quarterDate: string;
-    semiDate: string;
-    finalDate: string;
-    start: string;
-    quarter: string;
-    semi: string;
-    final: string;
-    award1: string;
-    award2: string;
-    award3: string;
+    award1: number;
+    award2?: number;
+    award3?: number;
 }
