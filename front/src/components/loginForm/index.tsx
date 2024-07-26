@@ -2,11 +2,13 @@
 import { useState } from "react"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
-import { ILoginError, ILoginForm } from "@/interfaces/interfaceLogin"
+import { ILoginError, ILoginForm } from "@/interfaces/interfaceUser"
 import { useDispatch } from "react-redux"
 import { login } from "@/redux/slices/userSlice"
 import { useRouter } from "next/navigation"
 import { validateLogin } from "@/utils/validateForms/validationLogin"
+import GoogleIcon from '@mui/icons-material/Google';
+import Link from "next/link"
 
 
 export const LoginForm: React.FC = () => {
@@ -54,10 +56,8 @@ export const LoginForm: React.FC = () => {
     return (
         <form onSubmit={handleSubmit}>
             <h1 className="heading2 text-white mt-9 mb-16">Login</h1>
-            <FourColumsContainer>
-                <h2 className="heading4 text-white">Enter your data</h2>
-                <div className="col-span-2">
-                    <FormContainer>
+            <FourColumsContainer imagen="login" URLimagen={"/login.jpg"}>
+                    <FormContainer section={"Enter your data"}>
                         <div className="flex flex-col gap-2 w-fit">
                             <label className="body text-white">Email</label>
                             <input type="text"
@@ -81,12 +81,15 @@ export const LoginForm: React.FC = () => {
                             />
                             {errorLogin.password ? (<p className="errorForm">{errorLogin.password}</p>) : (<p className="errorForm"><br/></p>)}
                         </div>
-                        <button className="buttonPrimary mt-4">Login</button>
+
+                        <div className="mt-4 flex flex-row gap-2">
+                            <button type="submit" className="buttonPrimary">Login</button>
+                            {/* <button className="buttonSecondary"><GoogleIcon /></button> */}
+                        </div>
+                        
+                        <Link href="/forgotPassword" className="linkButton">Forgot your password?</Link>
+                    
                     </FormContainer>
-                </div>
-                <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                    <img  className="w-full h-full object-cover" src="/login.jpg" alt="login" />
-                </div>
             </FourColumsContainer>
 
         </form>

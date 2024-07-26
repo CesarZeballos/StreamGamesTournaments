@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { FormContainer } from "../formContainer"
 import { FourColumsContainer } from "../fourColumsContainer"
-import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceRegister"
+import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceUser"
 import { useDispatch } from "react-redux"
 import { register } from "@/redux/slices/userSlice"
 import { useRouter } from "next/navigation"
@@ -60,64 +60,58 @@ export const RegisterForm: React.FC = () => {
     return (
         <form onSubmit={handleSubmit}>
             <h1 className="heading2 text-white mt-9 mb-16">Register</h1>
-            <FourColumsContainer>
-                <h2 className="heading4 text-white">Your data</h2>
-                <div className="col-span-2">
-                        <FormContainer>
-                            <div className="flex flex-col gap-2 w-fit">
-                                <label className="body text-white">Nickname</label>
-                                <input type="text"
+            <FourColumsContainer imagen="register" URLimagen={"/register.jpg"}>
+                    <FormContainer section={"Enter your data"}>
+                        <div className="flex flex-col gap-2 w-fit">
+                            <label className="body text-white">Nickname</label>
+                            <input type="text"
                                 name="nickname"
                                 value={data.nickname}
                                 onChange={handleChange}
                                 className="input"
                                 required
-                                />
-                                {errorRegister.nickname ? (<p className="errorForm">{errorRegister.nickname}</p>) : (<p className="errorForm"><br/></p>)}
-                            </div>
+                            />
+                            {errorRegister.nickname ? (<p className="errorForm">{errorRegister.nickname}</p>) : (<p className="errorForm"><br/></p>)}
+                        </div>
 
-                            <div className="flex flex-col gap-2 w-fit">
-                                <label className="body text-white">Email</label>
-                                <input type="text"
+                        <div className="flex flex-col gap-2 w-fit">
+                            <label className="body text-white">Email</label>
+                            <input type="text"
                                 name="email"
                                 value={data.email}
                                 onChange={handleChange}
                                 className="input"
                                 required
-                                />
-                                {errorRegister.email ? (<p className="errorForm">{errorRegister.email}</p>) : (<p className="errorForm"><br/></p>)}
-                            </div>
+                            />
+                            {errorRegister.email ? (<p className="errorForm">{errorRegister.email}</p>) : (<p className="errorForm"><br/></p>)}
+                        </div>
 
-                            <div className="flex flex-col gap-2 w-fit">
-                                <label className="body text-white">Password</label>
-                                <input type="password"
+                        <div className="flex flex-col gap-2 w-fit">
+                            <label className="body text-white">Password</label>
+                            <input type="password"
                                 name="password"
                                 value={data.password}
                                 onChange={handleChange}
                                 className="input"
                                 required
-                                />
-                                {errorRegister.password ? (<p className="errorForm">{errorRegister.password}</p>) : (<p className="errorForm"><br/></p>)}
-                            </div>
+                            />
+                            {errorRegister.password ? (<p className="errorForm">{errorRegister.password}</p>) : (<p className="errorForm"><br/></p>)}
+                        </div>
 
-                            <div className="flex flex-col gap-2 w-fit">
-                                <label className="body text-white">Birthdate</label>
-                                <input type="date"
+                        <div className="flex flex-col gap-2 w-fit">
+                            <label className="body text-white">Birthdate</label>
+                            <input type="date"
                                 name="birthdate"
                                 value={data.birthdate}
                                 onChange={handleChange}
                                 className="input"
                                 required
-                                />
-                                {errorRegister.birthdate ? (<p className="errorForm">{errorRegister.birthdate}</p>) : (<p className="errorForm"><br/></p>)}
-                            </div>
+                            />
+                            {errorRegister.birthdate ? (<p className="errorForm">{errorRegister.birthdate}</p>) : (<p className="errorForm"><br/></p>)}
+                        </div>
 
-                            <button className="buttonPrimary mt-4" type="submit">Register</button>
-                        </FormContainer>
-                        </div>
-                        <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                            <img  className="w-full h-full object-cover" src="/register.jpg" alt="login" />
-                        </div>
+                        <button type="submit" className="buttonPrimary mt-4">Register</button>
+                    </FormContainer>
             </FourColumsContainer>
         </form>
     )

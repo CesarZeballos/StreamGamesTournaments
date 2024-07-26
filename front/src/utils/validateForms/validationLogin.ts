@@ -1,4 +1,4 @@
-import { ILoginError, ILoginForm } from "@/interfaces/interfaceLogin";
+import { ILoginError, ILoginForm } from "@/interfaces/interfaceUser";
 
 export function validateLogin(values: ILoginForm): ILoginError {
     let errors: ILoginError = {};

@@ -43,12 +43,12 @@
 /* buttons */
 
 .buttonPrimary {
-  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit
+  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit h-fit
   hover:bg-lightViolet
 }
 
 .buttonSecondary {
-  @apply font-Raleway font-bold text-base text-white px-9 py-2 w-fit
+  @apply font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit
   hover:text-lightViolet
 }
 
@@ -62,6 +62,11 @@
   @apply font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-sm shadow-lightViolet flex flex-row gap-4
   hover:bg-lightViolet
   hover:text-BGdark
+}
+
+.linkButton {
+  @apply font-Roboto font-light text-xs text-white
+  hover:text-lightViolet
 }
 
 .infoTorunaments {
@@ -90,7 +95,7 @@ body {
 }
 
 .input {
-  @apply bg-white rounded-lg px-3 py-1 font-Roboto text-BGdark
+  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark
   focus:border-solid
   focus:border-lightViolet
   focus:shadow-md
