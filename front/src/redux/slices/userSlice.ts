@@ -1,57 +1,58 @@
-import { ILoginPayload, IRegisterPayload, IUserState } from "@/interfaces/interfaceRedux";
+import { IUserState } from "@/interfaces/interfaceRedux";
 import { IUser } from "@/interfaces/interfaceUser";
 import { loginUser } from "@/utils/fetchUser";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { loginSlice, registerSlice } from "../thunks/userSliceThunk";
+import { useRouter } from "next/navigation";
 
-const initialState: IUser = {
-    id: "",
-    nickname: "",
-    email: "",
-    birthdate: "",
-    role: "",
-    teams: [],
+const initialState: IUserState = {
+    user: null,
+    status: 'idle',
+    error: null
 }
+
 
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {
-        setUser(state, action: PayloadAction<IUser>) {
-            const { id, nickname, email, birthdate, role, teams } = action.payload;
-            state.id = id
-            state.nickname = nickname
-            state.email = email
-            state.birthdate = birthdate
-            state.role = role
-            state.teams = teams
-        },
+    reducers: {}, extraReducers: (builder) => {
+        builder
+        .addCase(registerSlice.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+        })
+        .addCase(registerSlice.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            alert ("user created")
+            loginSlice({
+                email: action.payload.email, 
+                password: action.payload.password})
+        })
+        .addCase(registerSlice.rejected, (state, action) => {
+            state.status = 'failed'
+            alert ("user not created")
+        })
+        
+        .addCase(loginSlice.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+        })
+        .addCase(loginSlice.fulfilled, (state, action) => {
+            const router = useRouter();
 
-        login(state, action: PayloadAction<ILoginPayload>) {
-            const { email, password } = action.payload;
-            try {
-                console.log("login redux", email, password)
-                const dataLogin = loginUser({ email, password })
-                // setUser({dataLogin})
-                // router...
-            } catch (error) {
-                console.log(error)
-            }
-        },
-
-        register(state, action: PayloadAction<IRegisterPayload>) {
-            const { nickname, email, password, birthdate } = action.payload;
+            state.status = 'succeeded'
+            state.user = action.payload
             
-            try {
-                console.log("register redux", nickname, email, password, birthdate)
-                setTimeout(() => {
-                    login({ email, password })
-                }, 2000)
-            } catch (error) {
-                console.log(error)
-            }
-        }
+            setTimeout(() => {
+                router.push("/")
+            }, 1500);
+          })
+        .addCase(loginSlice.rejected, (state, action) => {
+            state.status = 'failed'
+            alert ("fail in login")
+          })
     }
 })
 
-export const { login, register } = userSlice.actions;
+export const {} = userSlice.actions;
 export default userSlice.reducer;

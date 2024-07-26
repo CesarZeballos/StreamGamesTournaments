@@ -3,12 +3,12 @@ import { ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
 export async function postUser(data:IRegisterForm) {
     console.log("registerFetch", data)
     try {
-        const response = await fetch("api", {
+        const response = await fetch("http://localhost:3001/auth/signup", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: `user: ${JSON.stringify(data)}`
         })
         const loginData = await response.json()
 
@@ -21,7 +21,7 @@ export async function postUser(data:IRegisterForm) {
 export async function loginUser(data: ILoginForm) {
     console.log("loginFetch", data)
     try {
-        const response = await fetch("api", {
+        const response = await fetch("http://localhost:3001/auth/signin", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export async function loginUser(data: ILoginForm) {
         })
         const loginData = await response.json()
 
-        return loginData
+        return JSON.parse(loginData)
     } catch (error) {
         console.log("Error logging in user.", error)
     }
