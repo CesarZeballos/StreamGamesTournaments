@@ -1,8 +1,14 @@
 import { ITournament } from "./interfaceTournaments";
+import { IUser } from "./interfaceUser";
 
-export interface ILoginState {
-    token: string;
-    userName: string;
+export interface IUserState {
+    data: IUser;
+}
+export interface IRegisterState {
+    nickname: string;
+    email: string;
+    teams: string[];
+    birthdate: string;
 }
 
 export interface ILoginPayload {

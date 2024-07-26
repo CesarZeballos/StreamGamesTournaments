@@ -1,5 +1,6 @@
 import { ILoginPayload, IRegisterPayload, IUserState } from "@/interfaces/interfaceRedux";
 import { IUser } from "@/interfaces/interfaceUser";
+import { loginUser } from "@/utils/fetchUser";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: IUser = {
@@ -24,11 +25,13 @@ const userSlice = createSlice({
             state.role = role
             state.teams = teams
         },
-        
+
         login(state, action: PayloadAction<ILoginPayload>) {
             const { email, password } = action.payload;
             try {
                 console.log("login redux", email, password)
+                const dataLogin = loginUser({ email, password })
+                // setUser({dataLogin})
                 // router...
             } catch (error) {
                 console.log(error)

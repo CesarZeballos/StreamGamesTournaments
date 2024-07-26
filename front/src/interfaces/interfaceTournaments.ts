@@ -8,3 +8,9 @@ export interface ITournament {
     image: string
     players: number
 }
+
+export interface ITournamentRegister {
+    tournamentId: string
+    teamId: string
+    payment: string
+}

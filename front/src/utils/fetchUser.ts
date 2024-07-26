@@ -1,5 +1,4 @@
-import { ILoginForm } from "@/interfaces/interfaceLogin";
-import { IRegisterForm } from "@/interfaces/interfaceRegister";
+import { ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
 
 export async function postUser(data:IRegisterForm) {
     console.log("registerFetch", data)
