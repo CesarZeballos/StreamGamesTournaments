@@ -2,13 +2,15 @@ import { IUserState } from "@/interfaces/interfaceRedux";
 import { IUser } from "@/interfaces/interfaceUser";
 import { loginUser } from "@/utils/fetchUser";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { registerSlice } from "../thunks/userSliceThunk";
+import { loginSlice, registerSlice } from "../thunks/userSliceThunk";
+import { useRouter } from "next/navigation";
 
 const initialState: IUserState = {
     user: null,
     status: 'idle',
     error: null
 }
+
 
 const userSlice = createSlice({
     name: "user",
@@ -22,11 +24,32 @@ const userSlice = createSlice({
         .addCase(registerSlice.fulfilled, (state, action) => {
             state.status = 'succeeded'
             alert ("user created")
-            // deberia logear
-          })
+            loginSlice({
+                email: action.payload.email, 
+                password: action.payload.password})
+        })
         .addCase(registerSlice.rejected, (state, action) => {
             state.status = 'failed'
             alert ("user not created")
+        })
+        
+        .addCase(loginSlice.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+        })
+        .addCase(loginSlice.fulfilled, (state, action) => {
+            const router = useRouter();
+
+            state.status = 'succeeded'
+            state.user = action.payload
+            
+            setTimeout(() => {
+                router.push("/")
+            }, 1500);
+          })
+        .addCase(loginSlice.rejected, (state, action) => {
+            state.status = 'failed'
+            alert ("fail in login")
           })
     }
 })

@@ -30,7 +30,7 @@ export async function loginUser(data: ILoginForm) {
         })
         const loginData = await response.json()
 
-        return loginData
+        return JSON.parse(loginData)
     } catch (error) {
         console.log("Error logging in user.", error)
     }

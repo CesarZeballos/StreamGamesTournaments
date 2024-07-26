@@ -4,16 +4,15 @@ import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
 import { ILoginError, ILoginForm } from "@/interfaces/interfaceUser"
 import { useDispatch } from "react-redux"
-import { login } from "@/redux/slices/userSlice"
-import { useRouter } from "next/navigation"
 import { validateLogin } from "@/utils/validateForms/validationLogin"
 import GoogleIcon from '@mui/icons-material/Google';
 import Link from "next/link"
+import { loginSlice } from "@/redux/thunks/userSliceThunk"
+import { AppDispatch } from "@/redux/store"
 
 
 export const LoginForm: React.FC = () => {
-    const dispatch = useDispatch();
-    const Router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
 
     const [data, setData] = useState<ILoginForm>({
         email: "",
@@ -46,8 +45,7 @@ export const LoginForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (!errorLogin.email || !errorLogin.password) {
-            dispatch(login(data))
-            Router.push("/")
+            dispatch(loginSlice(data))
         } else {
             alert ("Email or password incorrect")
         }
