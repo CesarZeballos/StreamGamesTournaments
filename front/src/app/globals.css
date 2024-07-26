@@ -63,12 +63,12 @@
 /* buttons */
 
 .buttonPrimary {
-  @apply flex items-center bg-BGdark font-Raleway font-bold text-base text-white p-4 rounded-full shadow-sm shadow-lightViolet w-fit whitespace-nowrap
+  @apply flex items-center bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit h-fit whitespace-nowrap
   hover:bg-lightViolet
 }
 
 .buttonSecondary {
-  @apply flex items-center font-Raleway font-bold text-base text-white px-4 w-fit whitespace-nowrap
+  @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap
   hover:text-lightViolet
 }
 
@@ -78,6 +78,11 @@
 
 .buttonFilter {
   @apply flex flex-row items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-sm shadow-lightViolet gap-4
+}
+
+.linkButton {
+  @apply font-Roboto font-light text-xs text-white
+  hover:text-lightViolet
 }
 
 .infoTorunaments {
@@ -117,7 +122,7 @@ body {
 }
 
 .input {
-  @apply bg-white rounded-lg px-3 py-1 font-Roboto text-BGdark
+  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark
   focus:border-solid
   focus:border-lightViolet
   focus:shadow-md

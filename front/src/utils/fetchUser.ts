@@ -1,5 +1,4 @@
-import { ILoginForm } from "@/interfaces/interfaceLogin";
-import { IRegisterForm } from "@/interfaces/interfaceRegister";
+import { ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
 
 export async function postUser(data:IRegisterForm) {
     console.log("registerFetch", data)
@@ -30,6 +29,8 @@ export async function loginUser(data: ILoginForm) {
             body: JSON.stringify(data)
         })
         const loginData = await response.json()
+
+        return loginData
     } catch (error) {
         console.log("Error logging in user.", error)
     }
