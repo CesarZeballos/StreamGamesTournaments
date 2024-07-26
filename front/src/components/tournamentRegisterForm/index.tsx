@@ -1,4 +1,5 @@
 'use client'
+import { StaticImageData } from "next/image";
 import { ITournament, ITournamentRegister } from "@/interfaces/interfaceTournaments";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -9,18 +10,46 @@ import MenuItem from "@mui/material/MenuItem";
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { IUser } from "@/interfaces/interfaceUser";
 import Link from "next/link";
+import csgo from "../../app/assets/images/banners/csgo.jpg";
+import fortnite from "../../app/assets/images/banners/fortnite.jpg";
+import lol from "../../app/assets/images/banners/lol.png";
 
-export const TournamentRegisterForm = ({tourId}: {tourId: string}) => {
+type ImageSource = StaticImageData | string;
+
+const name: { [key: string]: string } = {
+    "csgo-id": "Counter Strike",
+    "fortnite-id": "Fortnite",
+    "lol-id": "League of Legends",
+};
+
+const descriptions: { [key: string]: string } = {
+    "csgo-id": "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.",
+    "fortnite-id": "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!",
+    "lol-id": "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
+};
+
+const games: { [key: string]: ImageSource } = {
+    "csgo-urlStream": csgo,
+    "fortnite-urlStream": fortnite,
+    "lol-urlStream": lol,
+};
+
+export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
 
     const [tournamentData, setTournamentData] = useState<ITournament>({
-        _id: "",
-        name: "Tournament name",
+        id: "",
+        name: "",
         description: "",
-        date: "25/08/2024",
-        image: "",
-        players: 0
-    })
+        startDate: "",
+        games: null,
+        players: 0,
+        categories: "",
+        award: 0,
+        urlStream: "",
+        organizerId: "",
+        gameId: "",
+    });
 
     const [userData, setUserData] = useState<IUser>({
         id: "",
@@ -71,7 +100,7 @@ export const TournamentRegisterForm = ({tourId}: {tourId: string}) => {
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
                         <h2 className="heading5 text-white">{tournamentData.name}</h2>
-                        <h3 className="body text-white">{tournamentData.date}</h3>
+                        <h3 className="body text-white">{tournamentData.startDate}</h3>
                     </FormContainer>
 
                     {tournamentData.players !== 1 &&

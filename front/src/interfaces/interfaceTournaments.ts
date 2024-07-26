@@ -1,12 +1,17 @@
-
+import { StaticImageData } from "next/image";
 
 export interface ITournament {
-    _id: string
-    name: string
-    description: string
-    date: string
-    image: string
     players: number
+    id: number | string,
+    name: string;
+    description: string;
+    games: StaticImageData | null;
+    startDate: string,
+    categories: string,
+    award: number,
+    urlStream: string,
+    organizerId: string,
+    gameId: string,
 }
 
 export interface ITournamentRegister {

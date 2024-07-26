@@ -35,7 +35,7 @@ export class TournamentsService {
 		//CON HELPER
 
 
-		async  getAllTournaments(page: number, limit: number) {
+		async getAllTournaments(page: number, limit: number) {
 			const skip = (page - 1) * limit;
 		
 			const paginatedTournaments = tournaments.slice(skip, skip + limit);
