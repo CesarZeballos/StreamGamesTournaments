@@ -1,4 +1,4 @@
-import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceRegister";
+import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceUser";
 
 export function validateRegister(values: IRegisterForm): IRegisterError {
     let errors: IRegisterError = {};

@@ -12,16 +12,13 @@ import lolIcon from "../../app/assets/images/icons/lol-A.png";
 import bronze from "../../app/assets/images/icons/medal-bronze.png";
 import silver from "../../app/assets/images/icons/medal-silver.png";
 import gold from "../../app/assets/images/icons/medal-gold.png";
-import free from "../../app/assets/images/icons/free2.png";
-import vip from "../../app/assets/images/icons/premium-C.png";
+import free from "../../app/assets/images/icons/free.png";
+import vip from "../../app/assets/images/icons/premium.png";
 
-
-
-
-const banners = [
-    { image: csgo, description: "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.", icon1: silver, icon2: csIcon, icon3: free, name:"CSGO"},
-    { image: fortnite, description: "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!", icon1: gold, icon2: lolIcon, icon3: vip, name:"Fortnite"},
-    { image: lol, description: "Watch a Fortnite tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament prize!", icon1: bronze, icon2: ftIcon, icon3: free, name:"LoL"},
+export const banners = [
+    {id:1, image: csgo, description: "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.", icon1: silver, icon2: csIcon, icon3: free, name:"CSGO"},
+    {id:2, image: fortnite, description: "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!", icon1: gold, icon2: ftIcon, icon3: free, name:"Fortnite"},
+    {id:3, image: lol, description: "Watch a Fortnite tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament prize!", icon1: bronze, icon2: lolIcon, icon3: vip, name:"LoL"},
 ];
 
 const LiveBanner: React.FC = () => {
@@ -47,19 +44,19 @@ const LiveBanner: React.FC = () => {
                 <Image
                     src={banners[currentIndex].image}
                     alt={banners[currentIndex].name}
-                    className="w-3/4 h-1/3 z-10 rounded-xl rounded-r-3xl"
+                    className="w-3/4 h-1/3 z-10 rounded-3xl"
                 />
                 <div className="absolute w-3/4 h-full flex justify-end z-20 bg-opacity-0">
                 <div className="w-2/5 p-2 bg-BGdark rounded-3xl overflow-hidden father-container">
                     <div className="flex flex-col gap-x-4 m-2 child-container">
-                    <h1 className="heading3 text-center">Live Tournament</h1>
-                    <div className="flex flex-row justify-around gap-x-4 m-2">
+                    <h1 className="heading3 text-center text-lightViolet">Live Tournament</h1>
+                    <div className="flex flex-row justify-between m-2">
                     <Image src={banners[currentIndex].icon1} alt="Icon" className="icon" />
                     <Image src={banners[currentIndex].icon2} alt="Icon" className="icon" />
                     <Image src={banners[currentIndex].icon3} alt="Icon" className="icon" />
                     </div>
                     </div>
-                    <p className="description text-left m-2">{banners[currentIndex].description}</p>
+                    <p className="description text-left text-sm m-2">{banners[currentIndex].description}</p>
                 </div>
                 </div>
                 <Image
