@@ -40,8 +40,8 @@ export class CreateUserDto {
 		description: 'Fecha de nacimiento del usuario',
 		example: '2000-01-01T00:00:00.000Z',
 	})
-	@IsDateString()
-	birthDate: Date;
+	@IsString()
+	birthDate: string;
 
 	@ApiProperty({
 		description: 'ID del equipo asociado al usuario (opcional)',
@@ -77,4 +77,4 @@ export class SignInDto {
  * DTO para actualizar información del usuario.
  * Extiende el DTO de creación con campos opcionales.
  */
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto extends PartialType(CreateUserDto) { }

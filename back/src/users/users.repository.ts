@@ -5,7 +5,7 @@ import { users as helperUsers } from 'src/helpers/users.helper';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   // async getAllUsers(): Promise<User[]> {
   //   try {
@@ -88,9 +88,8 @@ export class UsersRepository {
 
   async disableUser(id: string): Promise<User> {
     try {
-      const updatedUser = await this.prisma.user.update({
-        where: { id },
-        data: { actived: false },
+      const updatedUser = await this.prisma.user.delete({
+        where: { id }
       });
       console.info(`User with id ${id} disabled successfully`);
       return updatedUser;
