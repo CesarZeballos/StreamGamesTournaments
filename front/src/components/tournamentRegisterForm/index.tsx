@@ -96,7 +96,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h1 className="heading1 text-white mt-9 mb-16">Register to tournament</h1>
+            <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
                         <h2 className="heading5 text-white">{tournamentData.name}</h2>
