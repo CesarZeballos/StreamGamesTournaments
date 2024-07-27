@@ -1,16 +1,17 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FormContainer } from "../formContainer"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceUser"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/navigation"
 import { validateRegister } from "@/utils/validateForms/validationRegister"
-import { registerSlice } from "@/redux/thunks/userSliceThunk"
-import { AppDispatch } from "@/redux/store"
+import { loginSlice, registerSlice } from "@/redux/thunks/userSliceThunk"
+import { AppDispatch, RootState } from "@/redux/store"
 
 export const RegisterForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const statusRegister = useSelector((state: RootState) => state.user.statusRegister);
     const Router = useRouter();
 
     const [data, setData] = useState<IRegisterForm>({
@@ -58,7 +59,16 @@ export const RegisterForm: React.FC = () => {
             alert ("error register")
         }
     }
-
+    useEffect(() => {
+        if(statusRegister === "succeeded") {
+            dispatch(loginSlice({
+                email: data.email,
+                password: data.password}))
+            Router.push("/")
+        }
+        
+    }, [handleSubmit])
+    
     return (
         <form onSubmit={handleSubmit}>
             <h1 className="heading2 text-white mt-9 mb-16">Register</h1>
