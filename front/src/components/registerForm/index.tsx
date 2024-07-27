@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { validateRegister } from "@/utils/validateForms/validationRegister"
 import { loginSlice, registerSlice } from "@/redux/thunks/userSliceThunk"
 import { AppDispatch, RootState } from "@/redux/store"
+import { toast } from "sonner"
 
 export const RegisterForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -64,7 +65,10 @@ export const RegisterForm: React.FC = () => {
                 birthDate: new Date(data.birthDate).toISOString()}
             dispatch(registerSlice(registerData))
         }else {
-            alert ("error register")
+            toast('error register', {
+                position: 'top-right',
+                duration: 1500,
+              })
         }
     }
     useEffect(() => {

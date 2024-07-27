@@ -10,6 +10,7 @@ import Link from "next/link"
 import { loginSlice } from "@/redux/thunks/userSliceThunk"
 import { AppDispatch, RootState } from "@/redux/store"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 
 export const LoginForm: React.FC = () => {
@@ -60,7 +61,10 @@ export const LoginForm: React.FC = () => {
                 router.push("/")
             }, 1500);
         } else {
-            alert ("Email or password incorrect")
+            toast('Email or password incorrect', {
+                position: 'top-right',
+                duration: 1500,
+              })
         }
     }
     
