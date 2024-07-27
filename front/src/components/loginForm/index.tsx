@@ -61,7 +61,7 @@ export const LoginForm: React.FC = () => {
                 router.push("/")
             }, 1500);
         } else {
-            toast('Email or password incorrect', {
+            toast.error('Email or password incorrect', {
                 position: 'top-right',
                 duration: 1500,
               })
@@ -70,7 +70,7 @@ export const LoginForm: React.FC = () => {
     
     return (
         <form onSubmit={handleSubmit}>
-            <h1 className="heading2 text-white mt-9 mb-16">Login</h1>
+            <h1 className="heading2 text-white mb-16">Login</h1>
             <FourColumsContainer imagen="login" URLimagen={"/login.jpg"}>
                     <FormContainer section={"Enter your data"}>
                         <div className="flex flex-col gap-2 w-fit">

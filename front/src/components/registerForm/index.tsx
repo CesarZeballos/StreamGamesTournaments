@@ -83,7 +83,7 @@ export const RegisterForm: React.FC = () => {
     
     return (
         <form onSubmit={handleSubmit}>
-            <h1 className="heading2 text-white mt-9 mb-16">Register</h1>
+            <h1 className="heading2 text-white mb-16">Register</h1>
             <FourColumsContainer imagen="register" URLimagen={"/register.jpg"}>
                     <FormContainer section={"Enter your data"}>
                         <div className="flex flex-col gap-2 w-fit">
