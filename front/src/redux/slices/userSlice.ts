@@ -1,6 +1,7 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginSlice, registerSlice } from "../thunks/userSliceThunk";
+import { toast } from "sonner";
 
 const initialState: IUserState = {
     user: null,
@@ -18,7 +19,10 @@ const userSlice = createSlice({
             state.user = action.payload.user
         },
         logoutSlice(state) {
-            alert(`See you later ${state.user?.nickName}`)
+            toast(`See you later ${state.user?.nickName}`, {
+                position: 'top-right',
+                duration: 1500,
+              })
             state.user = null
             state.status = 'idle'
             state.error = null
@@ -33,11 +37,17 @@ const userSlice = createSlice({
         })
         .addCase(registerSlice.fulfilled, (state, action) => {
             state.statusRegister = 'succeeded'
-                alert ("user created")
+            toast('user created', {
+                position: 'top-right',
+                duration: 1500,
+              })
             })
         .addCase(registerSlice.rejected, (state, action) => {
             state.statusRegister = 'failed'
-            alert ("user not created")
+            toast('user not created', {
+                position: 'top-right',
+                duration: 1500,
+              })
         })
         
         .addCase(loginSlice.pending, (state) => {
@@ -50,11 +60,17 @@ const userSlice = createSlice({
             state.user = action.payload.user
             state.token = action.payload.token
 
-            alert (`welcome ${action.payload.user.nickName}`)
+            toast.success(`welcome ${action.payload.user.nickName}`, {
+                position: 'top-right',
+                duration: 1500,
+              })
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
-            alert ("fail in login")
+            toast('fail in login', {
+                position: 'top-right',
+                duration: 1500,
+              })
           })
     }
 })
