@@ -1,6 +1,6 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { loginSlice, registerSlice } from "../thunks/userSliceThunk";
+import { forgotPasswordSlice, loginSlice, registerSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
 
 const initialState: IUserState = {
@@ -37,14 +37,14 @@ const userSlice = createSlice({
         })
         .addCase(registerSlice.fulfilled, (state, action) => {
             state.statusRegister = 'succeeded'
-            toast('user created', {
+            toast.success('user created', {
                 position: 'top-right',
                 duration: 1500,
               })
             })
         .addCase(registerSlice.rejected, (state, action) => {
             state.statusRegister = 'failed'
-            toast('user not created', {
+            toast.error('user not created', {
                 position: 'top-right',
                 duration: 1500,
               })
@@ -67,7 +67,29 @@ const userSlice = createSlice({
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
-            toast('fail in login', {
+            toast.error('fail in login', {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+          .addCase(forgotPasswordSlice.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+          })
+          .addCase(forgotPasswordSlice.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.statusRegister = 'idle'
+            state.user = action.payload.user
+            state.token = action.payload.token
+
+            toast.success(`shortly you will receive an email to recover your password`, {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+          .addCase(forgotPasswordSlice.rejected, (state, action) => {
+            state.status = 'failed'
+            toast.error('fail in password recovery', {
                 position: 'top-right',
                 duration: 1500,
               })

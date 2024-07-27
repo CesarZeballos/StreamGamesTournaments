@@ -1,6 +1,6 @@
 import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
 import { ILoginForm } from "@/interfaces/interfaceUser"
-import { loginUser, postUser } from "@/utils/fetchUser"
+import { loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
@@ -20,5 +20,14 @@ export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILogin
         return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in login")
+    }
+})
+
+export const forgotPasswordSlice = createAsyncThunk('user/postForgotPassword', async (data: string) => {
+    try {
+        const response = await passwordRecovery(data)
+        return response
+    } catch (error: any) {
+        throw Error(error.response.data.message || "Error in password recovery")
     }
 })
