@@ -1,14 +1,14 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
 import { ILoginError, ILoginForm } from "@/interfaces/interfaceUser"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { validateLogin } from "@/utils/validateForms/validationLogin"
 import GoogleIcon from '@mui/icons-material/Google';
 import Link from "next/link"
 import { loginSlice } from "@/redux/thunks/userSliceThunk"
-import { AppDispatch } from "@/redux/store"
+import { AppDispatch, RootState } from "@/redux/store"
 import { useRouter } from "next/navigation"
 
 
@@ -25,6 +25,14 @@ export const LoginForm: React.FC = () => {
         email: "",
         password: ""
     })
+
+    //control de ingreso a la page
+    const user = useSelector((state: RootState) => state.user.user);
+    useEffect(() => {
+        if (user) {
+            router.push("/")
+        }
+    }, [user])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target

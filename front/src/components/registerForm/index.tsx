@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "@/redux/store"
 export const RegisterForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const statusRegister = useSelector((state: RootState) => state.user.statusRegister);
-    const Router = useRouter();
+    const router = useRouter();
 
     const [data, setData] = useState<IRegisterForm>({
         nickName: "",
@@ -27,6 +27,14 @@ export const RegisterForm: React.FC = () => {
         password: "",
         birthDate: ""
     })
+
+        //control de ingreso a la page
+        const user = useSelector((state: RootState) => state.user.user);
+        useEffect(() => {
+            if (user) {
+                router.push("/")
+            }
+        }, [user])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -64,7 +72,7 @@ export const RegisterForm: React.FC = () => {
             dispatch(loginSlice({
                 email: data.email,
                 password: data.password}))
-            Router.push("/")
+            router.push("/")
         }
         
     }, [handleSubmit])
