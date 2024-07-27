@@ -6,7 +6,7 @@ const initialState: ICardsState = {
   cards: [],
   currentPage: 1,
   cardsPerpage: 9,
-  filter: 'All Tournaments',  // Agregar este estado
+  filter: 'All Tournaments',
 };
 
 const cardsSlice = createSlice({

@@ -19,3 +19,8 @@ export async function fetchTournaments(): Promise<ITournament[]> {
         return [];
     }
 }
+
+export async function fetchTournamentById(id: string): Promise<ITournament | null> {
+    const tournaments = await fetchTournaments();
+    return tournaments.find(tournament => tournament.id === id) || null;
+}

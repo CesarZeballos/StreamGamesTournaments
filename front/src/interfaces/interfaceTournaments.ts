@@ -9,6 +9,7 @@ export interface ITournament {
     startDate: string,
     categories: string,
     award: number,
+    price: string,
     urlStream: string,
     organizerId: string,
     gameId: string,

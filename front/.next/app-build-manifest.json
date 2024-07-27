@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/page": [
+    "/tournaments/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/tournaments/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -11,15 +11,10 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/tournaments/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/tournaments/page.js"
-    ],
-    "/tournaments/[tournamentId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/tournaments/[tournamentId]/page.js"
+      "static/chunks/app/page.js"
     ]
   }
 }

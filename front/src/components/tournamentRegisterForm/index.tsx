@@ -45,6 +45,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         games: null,
         players: 0,
         categories: "",
+        price:"",
         award: 0,
         urlStream: "",
         organizerId: "",

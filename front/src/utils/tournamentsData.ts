@@ -6,9 +6,9 @@ import next from "../app/assets/images/icons/next.png";
 import csIcon from "../app/assets/images/icons/cs-A.png";
 import ftIcon from "../app/assets/images/icons/fortnite-A.png";
 import lolIcon from "../app/assets/images/icons/lol-A.png";
-import bronze from "../app/assets/images/icons/medal-bronze.png";
-import silver from "../app/assets/images/icons/medal-silver.png";
-import gold from "../app/assets/images/icons/medal-gold.png";
+import beginner from "../app/assets/images/icons/beginner-dark.png";
+import advanced from "../app/assets/images/icons/advanced-dark.png";
+import expert from "../app/assets/images/icons/expert-dark.png";
 import vip from "../app/assets/images/icons/premium.png";
 import { StaticImageData } from "next/image";
 
@@ -51,13 +51,37 @@ export const name: { [key: string]: string } = {
 };
 
 export const categoryIcons: { [key: string]: ImageSource } = {
-    "CATEGORY1": bronze,
-    "CATEGORY2": silver,
-    "CATEGORY3": gold,
+    "CATEGORY1": beginner,
+    "CATEGORY2": advanced,
+    "CATEGORY3": expert,
+};
+
+export const description: { [key: string]: string } = {
+    "a2b3c4d5-6e7f-8g9h-0i1j-2k3l4m5n6o7p": "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.",
+    "b3c4d5e6-7f8g-9h0i-1j2k-3l4m5n6o7p8q": "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.",
+    "c4d5e6f7-8g9h-0i1j-2k3l-4m5n6o7p8q9r": "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.",
+    "d5e6f7g8-9h0i-1j2k-3l4m-5n6o7p8q9r0s": "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!",
+    "e6f7g8h9-0i1j-2k3l-4m5n-6o7p8q9r0s1t": "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!",
+    "f7g8h9i0-1j2k-3l4m-5n6o-7p8q9r0s1t2u": "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!",
+    "d1f5d4e7-9b64-4d39-aebd-f76980d72f3e": "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
+    "g8h9i0j1-2k3l-4m5n-6o7p-8q9r0s1t2u3v": "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
+    "h9i0j1k2-3l4m-5n6o-7p8q-9r0s1t2u3v4w": "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
 };
 
 export const navigationIcons = {
     previous,
     next,
     vip,
+};
+
+export const price: { [key: string]: {price: string} } = {
+    "a2b3c4d5-6e7f-8g9h-0i1j-2k3l4m5n6o7p": {price: "CHEAP"},
+    "b3c4d5e6-7f8g-9h0i-1j2k-3l4m5n6o7p8q": {price: "MIDDLE"},
+    "c4d5e6f7-8g9h-0i1j-2k3l-4m5n6o7p8q9r": {price:"EXPENSIVE"},
+    "d5e6f7g8-9h0i-1j2k-3l4m-5n6o7p8q9r0s": {price: "CHEAP"},
+    "e6f7g8h9-0i1j-2k3l-4m5n-6o7p8q9r0s1t": {price: "MIDDLE"},
+    "f7g8h9i0-1j2k-3l4m-5n6o-7p8q9r0s1t2u": {price:"EXPENSIVE"},
+    "d1f5d4e7-9b64-4d39-aebd-f76980d72f3e": {price: "CHEAP"},
+    "g8h9i0j1-2k3l-4m5n-6o7p-8q9r0s1t2u3v": {price: "MIDDLE"},
+    "h9i0j1k2-3l4m-5n6o-7p8q-9r0s1t2u3v4w": {price:"EXPENSIVE"},
 };

@@ -11,7 +11,6 @@ const initialState: IUserState = {
     error: null
 }
 
-
 const userSlice = createSlice({
     name: "user",
     initialState,
