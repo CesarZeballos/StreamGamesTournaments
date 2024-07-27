@@ -14,7 +14,7 @@ export interface ITournament {
     gameId: string,
 }
 
-export interface ITournamentRegister {
+export interface IAddTeam {
     tournamentId: string
     teamId: string
     payment: string
