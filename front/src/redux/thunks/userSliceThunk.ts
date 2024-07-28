@@ -1,11 +1,16 @@
 import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
 import { ILoginForm } from "@/interfaces/interfaceUser"
 import { loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
+import { singUpFirebaseWithEmailAndPassword } from "@/utils/firebase/auth"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
 export const registerSlice = createAsyncThunk('user/postRegister', async (data: IRegisterFormSlice) => {
     try {
+        const responseFirebase = await singUpFirebaseWithEmailAndPassword(data)
+        .then((responseFirebase) => {
+            console.log("registerSlicefirebase", JSON.stringify(responseFirebase))
+        })
         const response = await postUser(data)
         return response
     } catch (error: any) {
