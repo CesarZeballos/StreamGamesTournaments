@@ -33,7 +33,7 @@ export const LoginForm: React.FC = () => {
         if (user) {
             router.push("/")
         }
-    }, [router])
+    }, [router, user])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
