@@ -1,17 +1,20 @@
 import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
 import { ILoginForm } from "@/interfaces/interfaceUser"
 import { loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
-import { singUpFirebaseWithEmailAndPassword } from "@/utils/firebase/auth"
+import { singInFirebaseWithEmailAndPassword, singUpFirebaseWithEmailAndPassword } from "@/utils/firebase/auth"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
-
 export const registerSlice = createAsyncThunk('user/postRegister', async (data: IRegisterFormSlice) => {
+    const { nickName, email, password, birthDate } = data
     try {
         const responseFirebase = await singUpFirebaseWithEmailAndPassword(data)
-        .then((responseFirebase) => {
-            console.log("registerSlicefirebase", JSON.stringify(responseFirebase))
+        const response = await postUser({ 
+            nickName: nickName,
+            email: email,
+            password: password,
+            birthDate: birthDate,
+            tokenFirebase: responseFirebase
         })
-        const response = await postUser(data)
         return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in user creation")
@@ -19,9 +22,14 @@ export const registerSlice = createAsyncThunk('user/postRegister', async (data: 
 })
 
 export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILoginForm) => {
-    console.log("loginSlice", data)
+    const { email, password } = data
     try {
-        const response = await loginUser(data)
+        const responseFirebase = await singInFirebaseWithEmailAndPassword(data)
+        const response = await loginUser({
+            email: email,
+            password: password,
+            tokenFirebase: responseFirebase
+        })
         return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in login")

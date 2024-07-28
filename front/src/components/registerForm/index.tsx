@@ -73,9 +73,9 @@ export const RegisterForm: React.FC = () => {
     }
     useEffect(() => {
         if(statusRegister === "succeeded") {
-            dispatch(loginSlice({
-                email: data.email,
-                password: data.password}))
+            // dispatch(loginSlice({
+            //     email: data.email,
+            //     password: data.password}))
             router.push("/")
         }
         

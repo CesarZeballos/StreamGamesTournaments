@@ -25,6 +25,7 @@ export interface IRegisterForm {
     email: string;
     password: string;
     birthDate: string;
+    tokenFirebase?: string
 }
 
 export interface IRegisterError {
@@ -38,6 +39,7 @@ export interface IRegisterError {
 export interface ILoginForm {
     email: string
     password: string
+    tokenFirebase?: string
 }
 
 export interface ILoginError {
