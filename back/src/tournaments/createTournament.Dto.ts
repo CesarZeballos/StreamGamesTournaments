@@ -4,6 +4,8 @@ import {
 	IsEnum,
 	IsNumber,
 	IsDateString,
+	IsArray,
+	IsOptional,
 } from 'class-validator';
 import { Categories } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
@@ -27,19 +29,44 @@ export class CreateTournamentDto {
 
 	@ApiProperty({
 		description: 'Award amount for the tournament',
-		example: 500,
+		example: [500, 300],
 	})
 	@IsNotEmpty()
-	@IsNumber()
-	award: number;
+	@IsArray()
+	@IsString({ each: true }) // Cambiado a IsString para coincidir con el modelo Prisma
+	award: string[];
 
 	@ApiProperty({
-		description: 'URL for the tournament stream',
-		example: 'https://example.com/stream1',
+		description: 'URL for the tournament avatar',
+		example: 'https://example.com/avatar1.jpg',
 	})
 	@IsNotEmpty()
 	@IsString()
-	urlStream: string;
+	urlAvatar: string;
+
+	@ApiProperty({
+		description: 'Description of the tournament',
+		example: 'A thrilling tournament with exciting matches!',
+	})
+	@IsNotEmpty()
+	@IsString()
+	description: string;
+
+	@ApiProperty({
+		description: 'Maximum number of members allowed in the tournament',
+		example: 10,
+	})
+	@IsNotEmpty()
+	@IsNumber()
+	maxMember: number;
+
+	@ApiProperty({
+		description: 'Maximum number of teams allowed in the tournament',
+		example: 16,
+	})
+	@IsNotEmpty()
+	@IsNumber()
+	maxTeam: number;
 
 	@ApiProperty({
 		description: 'ID of the organizer',
@@ -56,4 +83,14 @@ export class CreateTournamentDto {
 	@IsNotEmpty()
 	@IsString()
 	gameId: string;
+
+	@ApiProperty({
+		description: 'IDs of the teams participating in the tournament',
+		example: ['team1-uuid', 'team2-uuid'],
+		required: false,
+	})
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	teams?: string[];
 }

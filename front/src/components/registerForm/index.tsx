@@ -1,17 +1,19 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FormContainer } from "../formContainer"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { IRegisterError, IRegisterForm } from "@/interfaces/interfaceUser"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/navigation"
 import { validateRegister } from "@/utils/validateForms/validationRegister"
-import { registerSlice } from "@/redux/thunks/userSliceThunk"
-import { AppDispatch } from "@/redux/store"
+import { loginSlice, registerSlice } from "@/redux/thunks/userSliceThunk"
+import { AppDispatch, RootState } from "@/redux/store"
+import { toast } from "sonner"
 
 export const RegisterForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const Router = useRouter();
+    const statusRegister = useSelector((state: RootState) => state.user.statusRegister);
+    const router = useRouter();
 
     const [data, setData] = useState<IRegisterForm>({
         nickname: "",
@@ -26,6 +28,14 @@ export const RegisterForm: React.FC = () => {
         password: "",
         birthdate: ""
     })
+
+        //control de ingreso a la page
+        const user = useSelector((state: RootState) => state.user.user);
+        useEffect(() => {
+            if (user) {
+                router.push("/")
+            }
+        }, [router, user])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -50,21 +60,36 @@ export const RegisterForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (!errorRegister.nickname || !errorRegister.email || !errorRegister.password || !errorRegister.birthdate) {
-            dispatch(registerSlice(data))
+            const registerData = {
+                ...data,
+                birthdate: new Date(data.birthdate).toISOString()}
+            dispatch(registerSlice(registerData))
         }else {
-            alert ("")
+            toast('error register', {
+                position: 'top-right',
+                duration: 1500,
+              })
         }
     }
-
+    useEffect(() => {
+        if(statusRegister === "succeeded") {
+            // dispatch(loginSlice({
+            //     email: data.email,
+            //     password: data.password}))
+            router.push("/")
+        }
+        
+    }, [handleSubmit])
+    
     return (
         <form onSubmit={handleSubmit}>
-            <h1 className="heading2 text-white mt-9 mb-16">Register</h1>
+            <h1 className="heading2 text-white mb-16">Register</h1>
             <FourColumsContainer imagen="register" URLimagen={"/register.jpg"}>
                     <FormContainer section={"Enter your data"}>
                         <div className="flex flex-col gap-2 w-fit">
                             <label className="body text-white">Nickname</label>
                             <input type="text"
-                                name="nickname"
+                                name="nickName"
                                 value={data.nickname}
                                 onChange={handleChange}
                                 className="input"
@@ -100,7 +125,7 @@ export const RegisterForm: React.FC = () => {
                         <div className="flex flex-col gap-2 w-fit">
                             <label className="body text-white">Birthdate</label>
                             <input type="date"
-                                name="birthdate"
+                                name="birthDate"
                                 value={data.birthdate}
                                 onChange={handleChange}
                                 className="input"
