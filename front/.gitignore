@@ -58,5 +58,8 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Next.js build output
 .next/
 
+.cache/
+.next/cache
+
 # Cache
 .cache/
