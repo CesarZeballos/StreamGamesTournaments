@@ -21,18 +21,18 @@ export interface ITeamMember {
 
 //register
 export interface IRegisterForm {
-    nickname: string;
+    nickName: string;
     email: string;
     password: string;
-    birthdate: string;
+    birthDate: string;
     tokenFirebase?: string
 }
 
 export interface IRegisterError {
-    nickname?: string;
+    nickName?: string;
     email?: string;
     password?: string;
-    birthdate?: string;
+    birthDate?: string;
 }
 
 //login
