@@ -62,13 +62,16 @@ export const RegisterForm: React.FC = () => {
                 duration: 1500,
             })
         }
-    }, [data, errorRegister, dispatch])
-
-    useEffect(() => {
-        if (statusRegister === "succeeded") {
-            router.push("/")
-        }
-    }, [statusRegister, router])
+    }
+    // useEffect(() => {
+    //     if(statusRegister === "succeeded") {
+    //         // dispatch(loginSlice({
+    //         //     email: data.email,
+    //         //     password: data.password}))
+    //         router.push("/")
+    //     }
+        
+    // }, [handleSubmit, router, statusRegister])
     
     return (
         <form onSubmit={handleSubmit}>
