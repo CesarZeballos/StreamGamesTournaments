@@ -1,15 +1,17 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import cardsReducer from './slices/cardsSlice';
-import userSlice from './slices/userSlice';
+import tournamentsReducer from './slices/tournamentSlice';
+import userReducer from './slices/userSlice';
 import { useDispatch } from 'react-redux';
-// import rootReducer from './reducer';
 
+// Combinamos todos los reducers en uno solo
 const rootReducer = combineReducers({
   cards: cardsReducer,
-  user: userSlice
-  
+  tournaments: tournamentsReducer,
+  user: userReducer
 });
 
+// Configuramos el store con el rootReducer
 const store = configureStore({
   reducer: rootReducer,
 });

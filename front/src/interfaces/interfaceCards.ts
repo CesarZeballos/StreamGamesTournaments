@@ -1,7 +1,8 @@
 import { StaticImageData } from "next/image";
+import { ITournament } from "./interfaceTournaments";
 
 export interface ICardsState {
-    cards: IBanner[];
+    cards: ITournament[];
     currentPage: number;
     cardsPerpage: number;
     filter: string;
@@ -10,17 +11,7 @@ export interface ICardsState {
 export interface ICardsAction {
     type: string;
     pagina: number;
-    cartas: IBanner[];
-}
-
-export interface IBanner {
-    id: number;
-    image: StaticImageData;
-    icon1: StaticImageData;
-    icon2: StaticImageData;
-    icon3: StaticImageData;
-    name: string;
-    date: string;
+    cartas: ITournament[];
 }
 
 export interface TournamentProps {

@@ -1,120 +1,68 @@
-"use client";
-import Link from 'next/link';
-import Image, { StaticImageData } from "next/image";
-import React, { useEffect, useState } from 'react';
-import { fetchTournaments } from '@/utils/fetchTournaments';
 import { ITournament } from '@/interfaces/interfaceTournaments';
-import csIcon from "../../assets/images/icons/cs-A.png";
-import ftIcon from "../../assets/images/icons/fortnite-A.png";
-import lolIcon from "../../assets/images/icons/lol-A.png";
-import bronze from "../../assets/images/icons/medal-bronze.png";
-import silver from "../../assets/images/icons/medal-silver.png";
-import gold from "../../assets/images/icons/medal-gold.png";
-import csgo from "../../assets/images/banners/csgo.jpg";
-import fortnite from "../../assets/images/banners/fortnite.jpg";
-import lol from "../../assets/images/banners/lol.png";
-import vip from "../../assets/images/icons/premium.png";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Awards_Dates } from '@/components/Awards_Dates/Awards_Dates';
+import { fetchTournamentById } from '@/utils/fetchTournaments';
+import { name, navigationIcons, gameIcons, games, categoryIcons, description } from '@/utils/tournamentsData';
 
-type ImageSource = StaticImageData | string;
+interface TournamentPageProps {
+  tournament: ITournament | null;
+}
 
-const gameIcons: { [key: string]: ImageSource } = {
-    "csgo-id": csIcon,
-    "fortnite-id": ftIcon,
-    "lol-id": lolIcon,
-};
+const tournamentIds = Object.keys(games);
 
-const categoryIcons: { [key: string]: ImageSource } = {
-    "CATEGORY1": bronze,
-    "CATEGORY2": silver,
-    "CATEGORY3": gold,
-};
+async function getTournament(tournamentId: string): Promise<ITournament | null> {
+  return fetchTournamentById(tournamentId);
+}
 
-const games: { [key: string]: ImageSource } = {
-    "csgo-urlStream": csgo,
-    "fortnite-urlStream": fortnite,
-    "lol-urlStream": lol,
-};
+export async function generateMetadata({ params }: { params: { tournamentId: string } }) {
+  const tournament = await getTournament(params.tournamentId);
+  return {
+    title: tournament ? tournament.name : 'Tournament Not Found',
+  };
+}
 
-const descriptions: { [key: string]: string } = {
-    "csgo-id": "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.",
-    "fortnite-id": "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!",
-    "lol-id": "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
-};
+export async function generateStaticParams() {
+  return tournamentIds.map(id => ({ tournamentId: id }));
+}
 
-const TournamentPage: React.FC = () => {
-    const [tournaments, setTournaments] = useState<ITournament[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const tournamentsPerPage = 9;
+const TournamentPage: React.FC<{ params: { tournamentId: string } }> = async ({ params }) => {
+  const tournament = await getTournament(params.tournamentId);
 
-    useEffect(() => {
-        async function getTournaments() {
-            const fetchedTournaments = await fetchTournaments();
-            setTournaments(fetchedTournaments);
-        }
+  if (!tournament) {
+    return <div>Tournament not found</div>;
+  }
 
-        getTournaments();
-    }, []);
+  const backgroundImage = games[tournament.id];
+  const gameIcon = gameIcons[tournament.id];
+  const categoryIcon = categoryIcons[tournament.categories];
+  const tournamentName = name[tournament.id] || "Unknown Tournament";
+  const tournamentDescription = description[tournament.id] || "No description available";
 
-    const indexOfLastTournament = currentPage * tournamentsPerPage;
-    const indexOfFirstTournament = indexOfLastTournament - tournamentsPerPage;
-    const currentTournaments = tournaments.slice(indexOfFirstTournament, indexOfLastTournament);
-
-    const totalPages = Math.ceil(tournaments.length / tournamentsPerPage);
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
-    if (tournaments.length === 0) {
-        return <div className="loading">Loading tournaments...</div>;
-    }
-
-    return (
-        <div className="tournament-page">
-            <div className="grid grid-cols-3 gap-4">
-                {currentTournaments.map(tournament => (
-                    <div key={tournament.id} className="tournament-card">
-                        <Image
-                            src={games[`${tournament.urlStream}-urlStream`] || csgo}
-                            alt={tournament.categories}
-                            className="w-full max-h-500px"
-                        />
-                        <div className="bodyContainer mt-4 mb-12">
-                            <h1 className='heading2 text-lightViolet'>Tournament {tournament.categories}</h1>
-                            <Link className="buttonPrimary m-4" href={`/tournaments/${tournament.id}/register`}>
-                                Register
-                            </Link>
-                            <div className="flex flex-row justify-start gap-12 mt-6">
-                                <Image src={categoryIcons[tournament.categories] || bronze} alt="Category Icon" className="icon" />
-                                <Image src={gameIcons[tournament.gameId] || csIcon} alt="Game Icon" className="icon" />
-                                <Image src={vip} alt="Vip Icon" className="icon" />
-                            </div>
-                            <p className='description text-2xl mt-6'>
-                                {descriptions[tournament.gameId] || "Watch the tournament live!"}
-                            </p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className="pagination-controls flex justify-between mt-4">
-                <button onClick={handlePrevPage} disabled={currentPage === 1}>
-                    Previous
-                </button>
-                <span>Page {currentPage} of {totalPages}</span>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                    Next
-                </button>
-            </div>
-        </div>
-    );
+  return (
+    <>
+    <Image
+        src={backgroundImage}
+        alt={tournamentName}
+        className="w-full max-h-500px"
+      />
+      <div className='bodyContainer mt-medium mb-medium grid grid-cols-2 gap-4'>
+        <div className='flex flex-col'>
+          <h1 className='heading2 text-lightViolet'>Tournament {tournamentName}</h1>
+          <Link className="buttonPrimary m-4" href={`/tournaments/${tournament.id}/register`}>
+            Register
+          </Link>
+          <div className="flex flex-row justify-start gap-x-4 mt-6">
+            <Image src={categoryIcon} alt="Icon" className="m-icon" />
+            <Image src={gameIcon} alt="Icon" className="m-icon" />
+            <Image src={navigationIcons.vip} alt="Icon" className="m-icon" />
+          </div>
+          <p className='description text-2xl mt-6'>{tournamentDescription}</p>
+          </div>
+      <Awards_Dates tournament={tournament} />
+      </div>
+      </>
+  );
 };
 
 export default TournamentPage;

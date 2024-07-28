@@ -35,7 +35,7 @@ export const RegisterForm: React.FC = () => {
             if (user) {
                 router.push("/")
             }
-        }, [user])
+        }, [router, user])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -62,7 +62,7 @@ export const RegisterForm: React.FC = () => {
         if (!errorRegister.nickName || !errorRegister.email || !errorRegister.password || !errorRegister.birthDate) {
             const registerData = {
                 ...data,
-                birthDate: new Date(data.birthDate).toISOString()}
+                birthdate: new Date(data.birthDate).toISOString()}
             dispatch(registerSlice(registerData))
         }else {
             toast('error register', {

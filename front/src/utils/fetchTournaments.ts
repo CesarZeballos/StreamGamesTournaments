@@ -1,4 +1,5 @@
-import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
+import { ITournament, IAddTeam } from "@/interfaces/interfaceTournaments";
+import { format } from "date-fns";
 
 export async function fetchTournaments(): Promise<ITournament[]> {
     try {
@@ -9,11 +10,19 @@ export async function fetchTournaments(): Promise<ITournament[]> {
             }
         });
         const allTournaments = await response.json();
-        return allTournaments;
+        return allTournaments.map((tournament: ITournament) => ({
+            ...tournament,
+            startDate: format(new Date(tournament.startDate), "dd/MM")
+        }));
     } catch (error) {
         console.error("Error fetching tournaments.", error);
         return [];
     }
+}
+
+export async function fetchTournamentById(id: string): Promise<ITournament | null> {
+    const tournaments = await fetchTournaments();
+    return tournaments.find(tournament => tournament.id === id) || null;
 }
 
 export async function addTeamFetch(data: IAddTeam) {

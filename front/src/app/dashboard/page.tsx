@@ -13,7 +13,7 @@ const Dashboard: React.FC = () => {
             if (!user) {
                 router.push("/")
             }
-        }, [user])
+        }, [router, user])
 
     return (
         <div className="w-screen h-screen flex items-center justify-center">
