@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { toast } from "sonner"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
+import { sendPasswordReset } from "@/utils/firebase/auth"
 
 
 export const ForgotPasswordForm = () => {
@@ -31,10 +32,10 @@ export const ForgotPasswordForm = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if(!error) {
-            // dispatch(forgotPasswordSlice(data))
+            sendPasswordReset(email)
             setTimeout(() => {
-                router.push("/")
-            }, 2500);
+                router.push("/login")
+            }, 1500);
         } else {
             toast.error('Incorrect email', {
                 position: 'top-right',

@@ -1,5 +1,5 @@
 import { IFirebaseSingProps } from "@/interfaces/interfaceFirebase";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "sonner";
 import { auth } from "../firebase/firebaseConfig";
 
@@ -34,4 +34,18 @@ export const singInFirebaseWithEmailAndPassword = async ({ email, password }: IF
       duration: 1500,
   })
   }
+}
+
+export const sendPasswordReset = async (email: string) => {
+    try {
+      const response = await sendPasswordResetEmail(auth, email)
+      return response
+    } catch (error: any) {
+      const errorCode = error.code
+      const errorMessage = error.message
+      toast.error(errorMessage, {
+        position: 'top-right',
+        duration: 1500,
+    })
+    }
 }
