@@ -9,11 +9,26 @@ export async function fetchTournaments(): Promise<ITournament[]> {
                 'Content-Type': 'application/json',
             }
         });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching tournaments: ${response.statusText}`);
+        }
+
         const allTournaments = await response.json();
-        return allTournaments.map((tournament: ITournament) => ({
+
+        // Verificación y mensaje de depuración
+        console.log("Raw API response:", allTournaments);
+
+        if (!Array.isArray(allTournaments)) {
+            throw new Error("API response is not an array.");
+        }
+
+        const formattedTournaments = allTournaments.map((tournament: ITournament) => ({
             ...tournament,
             startDate: format(new Date(tournament.startDate), "dd/MM")
         }));
+
+        return formattedTournaments;
     } catch (error) {
         console.error("Error fetching tournaments.", error);
         return [];
@@ -39,5 +54,4 @@ export async function addTeamFetch(data: IAddTeam) {
     } catch (error) {
         console.error("Error adding team.", error);
     }
-    
 }

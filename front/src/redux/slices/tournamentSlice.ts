@@ -1,4 +1,3 @@
-// tournamentSlice.ts
 import { ITournamentState } from "@/interfaces/interfaceRedux";
 import { ITournament } from "@/interfaces/interfaceTournaments";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";

@@ -22,10 +22,6 @@ export async function generateMetadata({ params }: { params: { tournamentId: str
   };
 }
 
-export async function generateStaticParams() {
-  return tournamentIds.map(id => ({ tournamentId: id }));
-}
-
 const TournamentPage: React.FC<{ params: { tournamentId: string } }> = async ({ params }) => {
   const tournament = await getTournament(params.tournamentId);
 
