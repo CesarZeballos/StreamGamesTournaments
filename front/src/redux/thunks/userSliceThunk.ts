@@ -23,6 +23,7 @@ export const registerSlice = createAsyncThunk('user/postRegister', async (data: 
 
 export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILoginForm) => {
     const { email, password } = data
+
     try {
         const responseFirebase = await singInFirebaseWithEmailAndPassword(data)
         const response = await loginUser({
