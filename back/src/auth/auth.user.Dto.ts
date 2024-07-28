@@ -34,7 +34,7 @@ export class CreateUserDto {
 	})
 	@IsString()
 	@MinLength(8)
-	password: string;
+	tokenFirebase: string;
 
 	@ApiProperty({
 		description: 'Fecha de nacimiento del usuario',
@@ -70,11 +70,11 @@ export class SignInDto {
 	})
 	@IsString()
 	@IsNotEmpty()
-	password: string;
+	tokenFirebase: string;
 }
 
 /**
  * DTO para actualizar información del usuario.
  * Extiende el DTO de creación con campos opcionales.
  */
-export class UpdateUserDto extends PartialType(CreateUserDto) { }
+export class UpdateUserDto extends PartialType(CreateUserDto) {}

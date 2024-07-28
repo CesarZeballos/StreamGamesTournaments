@@ -13,10 +13,11 @@ export class AuthService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
-	) { }
+	) {}
 
 	async signUp(createUserDto: CreateUserDto) {
-		const { email, nickName, password, birthDate, teamId } = createUserDto;
+		const { email, nickName, tokenFirebase, birthDate, teamId } =
+			createUserDto;
 
 		const userExists = await this.prisma.user.findUnique({
 			where: {
@@ -28,7 +29,7 @@ export class AuthService {
 			throw new BadRequestException('User already exists');
 		}
 
-		const hashedPassword = await bcrypt.hash(password, 10);
+		//const hashedPassword = await bcrypt.hash(tokenFirebase, 10);
 
 		const parsedBirthDate = new Date(birthDate);
 
@@ -36,12 +37,12 @@ export class AuthService {
 			data: {
 				email,
 				nickName,
-				password: hashedPassword,
+				tokenFirebase,
 				birthDate: parsedBirthDate.toISOString(),
 				team: teamId
 					? {
-						connect: { id: teamId },
-					}
+							connect: { id: teamId },
+						}
 					: undefined,
 			},
 		});
@@ -55,7 +56,7 @@ export class AuthService {
 	}
 
 	async signIn(signInDto: SignInDto) {
-		const { email, password } = signInDto;
+		const { email, tokenFirebase } = signInDto;
 
 		const user = await this.prisma.user.findUnique({
 			where: {
@@ -67,7 +68,10 @@ export class AuthService {
 			throw new UnauthorizedException('Invalid credentials');
 		}
 
-		const passwordValid = await bcrypt.compare(password, user.password);
+		const passwordValid = await bcrypt.compare(
+			tokenFirebase,
+			user.tokenFirebase,
+		);
 		if (!passwordValid) {
 			throw new UnauthorizedException('Invalid credentials');
 		}
