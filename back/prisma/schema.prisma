@@ -1,10 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique @db.VarChar(80)
+  nickName      String      @unique
+  password      String
+  birthDate     DateTime
+  role          Role        @default(user)
+  urlSelfie     String?
+  createdAt     DateTime    @default(now())
+  teamId        String?
+  organizedTeam Team?       @relation("TeamOrganizer")
+  tournaments   Tournament?
+  team          Team?       @relation("TeamUsers", fields: [teamId], references: [id])
+}
+
+model UserDeleted {
+  id          String                @id @default(uuid())
+  email       String                @db.VarChar(80)
+  nickName    String
+  birthDate   DateTime
+  role        Role
+  urlSelfie   String?
+  createdAt   DateTime
+  createdEnd  DateTime
+  description AccountDeletionReason
+}
+
+model Tournament {
+  id          String     @id @default(uuid())
+  startDate   DateTime
+  createdAt   DateTime   @default(now())
+  categories  Categories
+  organizerId String     @unique
+  gameId      String     @unique
+  maxMember   Int
+  maxTeam     Int
+  urlAvatar   String
+  award       String[]
+  description String
+  teams       Team[]
+  game        Games      @relation(fields: [gameId], references: [id])
+  organizer   User       @relation(fields: [organizerId], references: [id])
+}
+
+model Team {
+  id           String      @id @default(uuid())
+  name         String      @unique @db.VarChar(25)
+  createdAt    DateTime    @default(now())
+  urlAvatar    String
+  organizerId  String      @unique
+  tournamentId String?
+  organizer    User        @relation("TeamOrganizer", fields: [organizerId], references: [id])
+  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+  users        User[]      @relation("TeamUsers")
+}
+
+model Games {
+  id         String      @id @default(uuid())
+  name       String      @unique @db.VarChar(80)
+  urlImage   String
+  tournament Tournament?
 }
 
 enum Role {
@@ -25,66 +88,4 @@ enum AccountDeletionReason {
   USER_EXPERIENCE
   TECHNICAL_ISSUES
   OTHERS
-}
-
-model User {
-  id            String      @id @default(uuid())
-  email         String      @unique @db.VarChar(80)
-  nickName      String      @unique
-  password      String
-  birthDate     DateTime
-  role          Role        @default(user)
-  urlSelfie     String?
-  createdAt     DateTime    @default(now())
-  tournaments   Tournament? // uno a uno
-  team          Team?       @relation("TeamUsers", fields: [teamId], references: [id]) // muchos a uno
-  teamId        String?
-  organizedTeam Team?       @relation("TeamOrganizer") // uno a uno con el equipo organizado
-}
-
-model UserDeleted {
-  id          String                @id @default(uuid())
-  email       String                @db.VarChar(80)
-  nickName    String
-  birthDate   DateTime
-  role        Role
-  urlSelfie   String?
-  createdAt   DateTime
-  createdEnd  DateTime
-  description AccountDeletionReason
-}
-
-model Tournament {
-  id           String     @id @default(uuid())
-  startDate    DateTime
-  createdAt    DateTime   @default(now())
-  categories   Categories
-  award        String[]
-  urlAvatar    String
-  descriptioin String     @db.Text
-  maxMember    Int
-  organizer    User       @relation(fields: [organizerId], references: [id]) // uno a uno
-  organizerId  String     @unique
-  game         Games      @relation(fields: [gameId], references: [id]) // uno a uno
-  gameId       String     @unique
-  teams        Team[] // uno a muchos
-}
-
-model Team {
-  id           String     @id @default(uuid())
-  name         String     @unique @db.VarChar(25)
-  createdAt    DateTime   @default(now())
-  urlAvatar    String
-  organizer    User       @relation("TeamOrganizer", fields: [organizerId], references: [id])
-  organizerId  String     @unique
-  tournament   Tournament @relation(fields: [tournamentId], references: [id]) // muchos a uno
-  tournamentId String
-  users        User[]     @relation("TeamUsers") // uno a muchos
-}
-
-model Games {
-  id         String      @id @default(uuid())
-  name       String      @unique @db.VarChar(80)
-  urlImage   String      @db.Text
-  tournament Tournament?
 }
