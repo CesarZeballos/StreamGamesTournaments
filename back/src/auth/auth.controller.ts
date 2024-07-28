@@ -11,12 +11,13 @@ export class AuthController {
 	@ApiOperation({ summary: 'Sign up a new user' })
 	@Post('signup')
 	async signUp(@Body() createUserDto: CreateUserDto) {
-		return this.authService.signUp(createUserDto);
+		return await this.authService.signUp(createUserDto);
 	}
 
 	@ApiOperation({ summary: 'Sign in an existing user' })
 	@Post('signin')
 	async signIn(@Body() signInDto: SignInDto) {
-		return this.authService.signIn(signInDto);
+		console.log("response en el controller", await this.authService.signIn(signInDto));
+		return await this.authService.signIn(signInDto);
 	}
 }

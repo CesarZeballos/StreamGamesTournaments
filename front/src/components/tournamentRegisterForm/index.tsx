@@ -1,6 +1,6 @@
 'use client'
 import { StaticImageData } from "next/image";
-import { ITournament, ITournamentRegister } from "@/interfaces/interfaceTournaments";
+import { ITournament, IAddTeam } from "@/interfaces/interfaceTournaments";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
@@ -53,16 +53,16 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const [userData, setUserData] = useState<IUser>({
         id: "",
-        nickname: "",
+        nickName: "",
         email: "",
-        birthdate: "",
+        birthDate: "",
         role: "",
         teams: [],
     });
 
     const [team, setTeam] = useState("");
 
-    const [registerData, setRegisterData] = useState<ITournamentRegister>({
+    const [registerData, setRegisterData] = useState<IAddTeam>({
         tournamentId: tourId,
         teamId: "",
         payment: "full",
@@ -96,7 +96,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h1 className="heading1 text-white mt-9 mb-16">Register to tournament</h1>
+            <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
                         <h2 className="heading5 text-white">{tournamentData.name}</h2>
