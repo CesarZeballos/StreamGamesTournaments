@@ -1,6 +1,6 @@
 import { ITeam } from "@/interfaces/interfaceUser"
 
-export const TeamsDashboardView = ({teams} : {teams: ITeam[]}) => {
+export const TeamsDashboardView = ({teams} : {teams: ITeam[] | undefined}) => {
     console.log(teams)
     return (
         <div className="grid grid-cols-2">

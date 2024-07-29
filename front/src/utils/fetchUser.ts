@@ -85,5 +85,6 @@ export const fetchUserById = async (id: string) => {
         throw new Error(`Error fetching user: ${response.statusText}`);
     }
     const userData = await response.json();
+    console.log("userData", userData)
     return userData;
 }
