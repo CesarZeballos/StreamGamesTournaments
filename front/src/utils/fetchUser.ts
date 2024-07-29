@@ -3,6 +3,7 @@ import { ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfac
 export async function postUser(data:IRegisterForm) {
     // console.log("registerFetch", data)
     const dataFetch = JSON.stringify(data)
+    console.log("dataFetch", dataFetch)
     try {
         const response = await fetch("http://localhost:3001/auth/signup", {
             method: "POST",
