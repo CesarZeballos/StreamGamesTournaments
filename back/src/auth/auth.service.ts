@@ -2,6 +2,8 @@ import {
 	BadRequestException,
 	Injectable,
 	UnauthorizedException,
+	InternalServerErrorException, 
+	Logger
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
@@ -10,13 +12,15 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
+	private readonly logger = new Logger(AuthService.name)
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
-	) { }
+	) {}
 
 	async signUp(createUserDto: CreateUserDto) {
-		const { email, nickName, password, birthDate, teamId } = createUserDto;
+		const { email, nickName, tokenFirebase, birthDate, teamId } =
+			createUserDto;
 
 		const userExists = await this.prisma.user.findUnique({
 			where: {
@@ -28,7 +32,7 @@ export class AuthService {
 			throw new BadRequestException('User already exists');
 		}
 
-		const hashedPassword = await bcrypt.hash(password, 10);
+		//const hashedPassword = await bcrypt.hash(tokenFirebase, 10);
 
 		const parsedBirthDate = new Date(birthDate);
 
@@ -36,15 +40,17 @@ export class AuthService {
 			data: {
 				email,
 				nickName,
-				password: hashedPassword,
+				tokenFirebase,
 				birthDate: parsedBirthDate.toISOString(),
 				team: teamId
 					? {
-						connect: { id: teamId },
-					}
+							connect: { id: teamId },
+						}
 					: undefined,
 			},
 		});
+
+		console.log('user', user);
 
 		return {
 			message: 'User created successfully',
@@ -53,30 +59,36 @@ export class AuthService {
 	}
 
 	async signIn(signInDto: SignInDto) {
-		const { email, password } = signInDto;
-
-		const user = await this.prisma.user.findUnique({
-			where: {
-				email,
-			},
-		});
-
-		if (!user) {
+		const { email, tokenFirebase } = signInDto;
+	
+		try {
+		  this.logger.log(`Attempting to sign in user with email: ${email}`);
+		  
+		  const user = await this.prisma.user.findUnique({
+			where: { email },
+		  });
+	
+		  if (!user) {
+			this.logger.warn(`User not found with email: ${email}`);
 			throw new UnauthorizedException('Invalid credentials');
-		}
-
-		const passwordValid = await bcrypt.compare(password, user.password);
-		if (!passwordValid) {
-			throw new UnauthorizedException('Invalid credentials');
-		}
-
-		const payload = { userId: user.id, email: user.email };
-		const token = this.jwtService.sign(payload);
-
-		return {
+		  }
+	
+		  const payload = { userId: user.id, email: user.email };
+		  const token = await this.jwtService.sign(payload);
+	
+		  this.logger.log(`ser signed in successfully with email: ${email}`);
+	
+		  return {
 			message: 'User logged in successfully',
-			user: user,
+			user,
 			token,
-		};
+		  };
+		} catch (error) {
+		  if (error instanceof UnauthorizedException) {
+			throw error;
+		  }
+		  this.logger.error(`Error during sign-in process for email: ${email}`, error.stack);
+		  throw new InternalServerErrorException('An error occurred during sign-in');
+	    }
+	  }
 	}
-}

@@ -1,18 +1,21 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FourColumsContainer } from "../fourColumsContainer"
 import { FormContainer } from "../formContainer"
 import { ILoginError, ILoginForm } from "@/interfaces/interfaceUser"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { validateLogin } from "@/utils/validateForms/validationLogin"
 import GoogleIcon from '@mui/icons-material/Google';
 import Link from "next/link"
 import { loginSlice } from "@/redux/thunks/userSliceThunk"
-import { AppDispatch } from "@/redux/store"
+import { AppDispatch, RootState } from "@/redux/store"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 
 export const LoginForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
 
     const [data, setData] = useState<ILoginForm>({
         email: "",
@@ -23,6 +26,14 @@ export const LoginForm: React.FC = () => {
         email: "",
         password: ""
     })
+
+    //control de ingreso a la page
+    const user = useSelector((state: RootState) => state.user.user);
+    useEffect(() => {
+        if (user) {
+            router.push("/")
+        }
+    }, [router, user])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -46,14 +57,20 @@ export const LoginForm: React.FC = () => {
         event.preventDefault()
         if (!errorLogin.email || !errorLogin.password) {
             dispatch(loginSlice(data))
+            setTimeout(() => {
+                router.push("/")
+            }, 1500);
         } else {
-            alert ("Email or password incorrect")
+            toast.error('Email or password incorrect', {
+                position: 'top-right',
+                duration: 1500,
+              })
         }
     }
     
     return (
         <form onSubmit={handleSubmit}>
-            <h1 className="heading2 text-white mt-9 mb-16">Login</h1>
+            <h1 className="heading2 text-white mb-16">Login</h1>
             <FourColumsContainer imagen="login" URLimagen={"/login.jpg"}>
                     <FormContainer section={"Enter your data"}>
                         <div className="flex flex-col gap-2 w-fit">

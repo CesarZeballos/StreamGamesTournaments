@@ -69,7 +69,7 @@
 
 .buttonSecondary {
   @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap
-  hover:text-lightViolet
+  focus:text-lightViolet hover:text-lightViolet
 }
 
 .buttonSection {
@@ -90,7 +90,7 @@
 }
 
 .buttonCarousel {
-  @apply bg-blue-950 text-4xl p-2 rounded-3xl w-20 h-20 top-2/4 -translate-y-1/2 m-10 cursor-pointer;
+  @apply bg-blue-950 text-4xl p-2 rounded-3xl w-20 h-20 top-1/2 -translate-y-1/2 cursor-pointer;
 }
 
 .buttonPage {
@@ -113,7 +113,7 @@
 /* utils */
 
 .bodyContainer {
-  @apply px-16 mb-16;
+  @apply px-16;
 }
 
 body {
@@ -136,8 +136,26 @@ body {
   @apply text-softViolet text-5xl text-center m-8;
 }
 
-.icon {
-  @apply w-16 h-16 p-1 rounded-full;
+.item-container {
+  @apply flex justify-center items-center pr-8 pl-2 mt-4 rounded-full overflow-hidden hover:shadow-md hover:shadow-lightViolet;
+  
+}
+
+.item-image {
+  @apply w-20 h-20 rounded-3xl;
+  
+}
+
+.item-text {
+  @apply text-white text-lg font-Raleway ml-4;
+}
+
+.section-title {
+  @apply heading5 mt-4 text-lightViolet;
+}
+
+.m-icon {
+  @apply w-24 h-24 p-1 rounded-3xl;
 }
 
 .s-icon {
@@ -150,22 +168,6 @@ body {
 
 .textButton {
   @apply flex-1 text-center overflow-hidden pr-6 sm:text-xl;
-}
-
-.section {
-  @apply mb-2 pt-4;
-}
-
-.item {
-  @apply flex items-center mb-2 mt-4;
-}
-
-.item-text {
-  @apply text-white text-lg font-Raleway ml-4;
-}
-
-.section-text {
-  @apply text-white text-lg font-Raleway ml-4 mt-4;
 }
 
 @media (max-width: 992px) {

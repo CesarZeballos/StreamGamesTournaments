@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IBanner, ICardsState } from '@/interfaces/interfaceCards';
+import { ICardsState } from '@/interfaces/interfaceCards';
+import { ITournament } from '@/interfaces/interfaceTournaments';
 
 const initialState: ICardsState = {
   cards: [],
   currentPage: 1,
   cardsPerpage: 9,
-  filter: 'All Tournaments',  // Agregar este estado
+  filter: 'All Tournaments',
 };
 
 const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
-    setCards(state, action: PayloadAction<{ cards: IBanner[] }>) {
+    setCards(state, action: PayloadAction<{ cards: ITournament[] }>) {
       state.cards = action.payload.cards;
     },
     setCurrentPage(state, action: PayloadAction<number>) {
