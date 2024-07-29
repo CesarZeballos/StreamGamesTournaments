@@ -9,6 +9,7 @@ import { DataDashboardView } from "../dataDashboardView";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { SearchBarDashboard } from "../searchbarDashboard";
 import { ITeam } from "@/interfaces/interfaceUser";
+import { fetchUserById } from "@/utils/fetchUser";
 
 
 export const UserDashboard: React.FC = () => {
@@ -24,7 +25,10 @@ export const UserDashboard: React.FC = () => {
         if (!user) {
             router.push("/")
         } else {
-            // logica para cargar la seccion del dashboard
+            fetchUserById(user.id).then((data) => {
+                setTeams(data.teams)
+                setTournaments(data.tournaments)
+            })
         }
     }, [router, user])
     
