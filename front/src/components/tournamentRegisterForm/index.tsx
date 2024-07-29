@@ -14,11 +14,15 @@ import csgo from "../../app/assets/images/banners/csgo.jpg";
 import fortnite from "../../app/assets/images/banners/fortnite.jpg";
 import lol from "../../app/assets/images/banners/lol.png";
 import { fetchTournamentById } from "@/utils/fetchTournaments";
+import { setView } from "@/redux/slices/dashboardSlice";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type ImageSource = StaticImageData | string;
 
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
@@ -82,8 +86,22 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             payment: registerData.payment
         }
         console.log(tournamentRegisterData)
-        // dispatch(state.registerTournament(registerData))
-        console.log(registerData)
+        if(!team || !registerData.payment) {
+            toast.error(`Please select a team and select a payment method`, {
+                position: "top-right",
+                duration: 1500,
+            })
+        } else {
+            // dispatch(state.registerTournament(registerData))
+            dispatch(setView('tournaments'))
+            toast.success(`Tournament registered successfully`, {
+                position: "top-right",
+                duration: 1500,
+            })
+            setTimeout(() => {
+                router.push("/dashboard")
+            }, 1500)
+        }
     }
 
     return (
@@ -95,7 +113,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                         <p className="body text-white mt-4">the tournament will start on {stringDate}</p>
                     </FormContainer>
 
-                    {tournamentData.players !== 1 &&
+                    {tournamentData.membersNumber !== 1 &&
                         <FormContainer section="Select your team">
                             <p className="body text-white">Select your team</p>
                             <div className="flex flex-row gap-4 items-center">
@@ -120,7 +138,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                         </FormContainer> 
                     }
 
-                    {tournamentData.players !== 1 && 
+                    {tournamentData.membersNumber !== 1 && 
                         <FormContainer section="Payments">
                             <p className="body text-white">Select your payment method</p>
                             <RadioGroup
