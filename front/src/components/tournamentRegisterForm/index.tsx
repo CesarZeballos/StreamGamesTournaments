@@ -13,6 +13,7 @@ import Link from "next/link";
 import csgo from "../../app/assets/images/banners/csgo.jpg";
 import fortnite from "../../app/assets/images/banners/fortnite.jpg";
 import lol from "../../app/assets/images/banners/lol.png";
+import { fetchTournamentById } from "@/utils/fetchTournaments";
 
 type ImageSource = StaticImageData | string;
 
@@ -39,18 +40,21 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
-        name: "",
+        nameTournament: "",
         description: "",
         startDate: "",
         games: null,
         players: 0,
+        membersNumber: 0,
         categories: "",
-        price:"",
+        price: 0,
         award: 0,
         urlStream: "",
         organizerId: "",
         gameId: "",
     });
+
+    const stringDate = tournamentData.startDate.split('T')[0];
 
     const [userData, setUserData] = useState<IUser>({
         id: "",
@@ -70,11 +74,10 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     })
 
     useEffect(() => {
-        // const tournamentData = dispatch(state.getTournament(tourId))
-        // setTournamentData(tournamentData)
-        // const userData = dispatch(state.getUser())
-        // setUserData(userData)
-    }, [])
+        fetchTournamentById(tourId).then((data) => {
+            setTournamentData(data)
+        })
+    }, [ tourId ]);
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         setTeam(event.target.value)
@@ -91,6 +94,12 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        const tournamentRegisterData = {
+            tournamentId: tourId,
+            teamId: team,
+            payment: registerData.payment
+        }
+        console.log(tournamentRegisterData)
         // dispatch(state.registerTournament(registerData))
         console.log(registerData)
     }
@@ -100,8 +109,8 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
-                        <h2 className="heading5 text-white">{tournamentData.name}</h2>
-                        <h3 className="body text-white">{tournamentData.startDate}</h3>
+                        <h2 className="heading5 text-white">{tournamentData.nameTournament}</h2>
+                        <p className="body text-white mt-4">the tournament will start on {stringDate}</p>
                     </FormContainer>
 
                     {tournamentData.players !== 1 &&
@@ -143,13 +152,13 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                                     className="body text-white" 
                                     value="full" 
                                     control={<Radio className="body text-white"/>} 
-                                    label="Full Payment" 
+                                    label={`"Full Payment ($${tournamentData.price})"`} 
                                 />
                                 <FormControlLabel 
                                     className="body text-white" 
                                     value="Individual" 
                                     control={<Radio className="body text-white"/>} 
-                                    label="Individual Payment" 
+                                    label={`Individual Payment ($${tournamentData.price / tournamentData.membersNumber})`}
                                 />
                             </RadioGroup>
                         </FormContainer>
