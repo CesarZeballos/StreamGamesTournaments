@@ -28,9 +28,24 @@ export async function fetchTournaments(): Promise<ITournament[]> {
     }
 }
 
-export async function fetchTournamentById(id: string): Promise<ITournament | null> {
-    const tournaments = await fetchTournaments();
-    return tournaments.find(tournament => tournament.id === id) || null;
+export async function fetchTournamentById(id: string) {
+    try {
+        const response = await fetch(`http://localhost:3001/tournaments/${id}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error fetching tournament: ${response.statusText}`);
+        } else {
+            const tournament = await response.json();
+            console.log("Raw API response:", tournament);
+            return tournament;
+        }
+    } catch (error) {
+        console.error("Error fetching tournament.", error);
+    }
 }
 
 export async function addTeamFetch(data: IAddTeam) {
