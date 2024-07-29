@@ -18,7 +18,6 @@ export const DataDashboardView: React.FC = () => {
                     <p className="body text-white">Role: {user?.role}</p>
                     <p className="body text-white">Birthdate: {stringDate}</p>
                 </div>
-
             </div>
         </div>
     )
