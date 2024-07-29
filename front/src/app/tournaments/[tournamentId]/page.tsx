@@ -3,13 +3,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Awards_Dates } from '@/components/Awards_Dates/Awards_Dates';
 import { fetchTournamentById } from '@/utils/fetchTournaments';
-import { name, navigationIcons, gameIcons, games, categoryIcons, description } from '@/utils/tournamentsData';
+import { navigationIcons, gameIcons, categoryIcons, gameImages } from '@/utils/tournamentsData';
 
 interface TournamentPageProps {
   tournament: ITournament | null;
 }
-
-const tournamentIds = Object.keys(games);
 
 async function getTournament(tournamentId: string): Promise<ITournament | null> {
   return fetchTournamentById(tournamentId);
@@ -29,22 +27,20 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = async ({ 
     return <div>Tournament not found</div>;
   }
 
-  const backgroundImage = games[tournament.id];
-  const gameIcon = gameIcons[tournament.id];
+  const gameImage = gameImages[tournament.game.name];
+  const gameIcon = gameIcons[tournament.game.name];
   const categoryIcon = categoryIcons[tournament.categories];
-  const tournamentName = name[tournament.id] || "Unknown Tournament";
-  const tournamentDescription = description[tournament.id] || "No description available";
 
   return (
     <>
     <Image
-        src={backgroundImage}
-        alt={tournamentName}
+        src={gameImage}
+        alt={tournament.name}
         className="w-full max-h-500px"
       />
       <div className='bodyContainer mt-medium mb-medium grid grid-cols-2 gap-4'>
         <div className='flex flex-col'>
-          <h1 className='heading2 text-lightViolet'>Tournament {tournamentName}</h1>
+          <h1 className='heading2 text-lightViolet'>Tournament {tournament.name}</h1>
           <Link className="buttonPrimary m-4" href={`/tournaments/${tournament.id}/register`}>
             Register
           </Link>
@@ -53,7 +49,7 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = async ({ 
             <Image src={gameIcon} alt="Icon" className="m-icon" />
             <Image src={navigationIcons.vip} alt="Icon" className="m-icon" />
           </div>
-          <p className='description text-2xl mt-6'>{tournamentDescription}</p>
+          <p className='description text-2xl mt-6'>{tournament.description}</p>
           </div>
       <Awards_Dates tournament={tournament} />
       </div>

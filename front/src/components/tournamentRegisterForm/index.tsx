@@ -38,6 +38,18 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         urlStream: "",
         organizerId: "",
         gameId: "",
+        membersNumber: 0,
+        award: [""],
+        urlAvatar: "",
+        description: "",
+        maxMember: 0,
+        maxTeam: 0,
+        organizerId: "",
+        game: {
+            id: "",
+            name: "",
+            urlImage: "",
+        }
     });
 
     const stringDate = tournamentData.startDate.split('T')[0];
