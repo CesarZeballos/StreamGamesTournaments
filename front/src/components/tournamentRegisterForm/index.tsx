@@ -16,24 +16,6 @@ import lol from "../../app/assets/images/banners/lol.png";
 
 type ImageSource = StaticImageData | string;
 
-const name: { [key: string]: string } = {
-    "csgo-id": "Counter Strike",
-    "fortnite-id": "Fortnite",
-    "lol-id": "League of Legends",
-};
-
-const descriptions: { [key: string]: string } = {
-    "csgo-id": "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.",
-    "fortnite-id": "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!",
-    "lol-id": "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
-};
-
-const games: { [key: string]: ImageSource } = {
-    "csgo-urlStream": csgo,
-    "fortnite-urlStream": fortnite,
-    "lol-urlStream": lol,
-};
-
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
 
