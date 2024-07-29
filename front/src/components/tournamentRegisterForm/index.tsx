@@ -26,6 +26,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const user = useSelector((state: RootState) => state.user.user);
+    const tournaments = useSelector((state: RootState) => state.tournaments.tournaments);
 
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
@@ -75,16 +76,10 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         if (!user) {
             router.push("/login")
         } else {
-            console.log(fetchTournamentById(tourId))
-            fetchTournamentById(tourId).then((data) => {
-                setTournamentData(data)
-            })
-            fetchUserById(user?.id).then((data) => {
-                setUserData(data)
-                setTeams(data.team)
-            })
-        }
-    }, [ tourId, user?.id, router, user]);
+            const tournament = tournaments.find((tournament) => tournament.id === tourId);
+                setTournamentData(tournament!)
+            }
+    }, [user, tournaments, tourId, router]);
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         setTeam(event.target.value)
