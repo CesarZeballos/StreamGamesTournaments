@@ -57,6 +57,7 @@ const userSlice = createSlice({
         .addCase(loginSlice.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.statusRegister = 'idle'
+            console.log("payload", action.payload)
             state.user = action.payload.user
             state.token = action.payload.token
 

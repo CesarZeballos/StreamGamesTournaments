@@ -42,6 +42,11 @@ export interface ILoginForm {
     tokenFirebase?: string
 }
 
+export interface ILoginDataBase {
+    email: string,
+    tokenFirebase?: string
+}
+
 export interface ILoginError {
     email?: string
     password?: string

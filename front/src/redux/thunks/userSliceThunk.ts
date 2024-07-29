@@ -26,11 +26,12 @@ export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILogin
 
     try {
         const responseFirebase = await singInFirebaseWithEmailAndPassword(data)
+        if(!responseFirebase) return
         const response = await loginUser({
             email: email,
-            password: password,
             tokenFirebase: responseFirebase
         })
+
         return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in login")

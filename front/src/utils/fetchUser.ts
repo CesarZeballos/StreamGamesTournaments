@@ -1,4 +1,4 @@
-import { ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
+import { ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
 
 export async function postUser(data:IRegisterForm) {
     // console.log("registerFetch", data)
@@ -19,7 +19,7 @@ export async function postUser(data:IRegisterForm) {
     }
 }
 
-export async function loginUser(data: ILoginForm) {
+export async function loginUser(data: ILoginDataBase) {
     try {
         const response = await fetch("http://localhost:3001/auth/signin", {
             method: "POST",
