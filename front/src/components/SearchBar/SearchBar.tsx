@@ -21,7 +21,7 @@ const SearchBar: React.FC = () => {
         <p>All Tournaments</p>
       </button>
       <button className="buttonFilter" onClick={() => handleFilterClick("Counter Strike")}>
-        <Image src={csIcon} alt="CS: GO" className="s-icon" />
+        <Image src={csIcon} alt="Counter Strike" className="s-icon" />
         <p>CS: GO</p>
       </button>
       <button className="buttonFilter" onClick={() => handleFilterClick("Fortnite")}>
@@ -29,7 +29,7 @@ const SearchBar: React.FC = () => {
         <p>Fortnite</p>
       </button>
       <button className="buttonFilter" onClick={() => handleFilterClick("League of Legends")}>
-        <Image src={lolIcon} alt="LoL" className="s-icon" />
+        <Image src={lolIcon} alt="League of Legends" className="s-icon" />
         <p>League of Legends</p>
       </button>
     </div>

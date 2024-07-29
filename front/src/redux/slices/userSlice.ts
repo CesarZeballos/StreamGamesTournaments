@@ -1,36 +1,53 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
-import { IUser } from "@/interfaces/interfaceUser";
-import { loginUser } from "@/utils/fetchUser";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { loginSlice, registerSlice } from "../thunks/userSliceThunk";
-import { useRouter } from "next/navigation";
+import { forgotPasswordSlice, loginSlice, registerSlice } from "../thunks/userSliceThunk";
+import { toast } from "sonner";
 
 const initialState: IUserState = {
     user: null,
     status: 'idle',
-    error: null
+    error: null,
+    token: null,
+    statusRegister: 'idle'
 }
-
 
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {}, extraReducers: (builder) => {
+    reducers: {
+        setUser(state, action: PayloadAction<IUserState>) {
+            state.user = action.payload.user
+        },
+        logoutSlice(state) {
+            toast(`See you later ${state.user?.nickName}`, {
+                position: 'top-right',
+                duration: 1500,
+              })
+            state.user = null
+            state.status = 'idle'
+            state.error = null
+            state.token = null
+            state.statusRegister = 'idle'            
+        }
+    }, extraReducers: (builder) => {
         builder
         .addCase(registerSlice.pending, (state) => {
-            state.status = 'loading'
+            state.statusRegister = 'loading'
             state.error = null
         })
         .addCase(registerSlice.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            alert ("user created")
-            loginSlice({
-                email: action.payload.email, 
-                password: action.payload.password})
-        })
+            state.statusRegister = 'succeeded'
+            toast.success('user created', {
+                position: 'top-right',
+                duration: 1500,
+              })
+            })
         .addCase(registerSlice.rejected, (state, action) => {
-            state.status = 'failed'
-            alert ("user not created")
+            state.statusRegister = 'failed'
+            toast.error('user not created', {
+                position: 'top-right',
+                duration: 1500,
+              })
         })
         
         .addCase(loginSlice.pending, (state) => {
@@ -38,21 +55,48 @@ const userSlice = createSlice({
             state.error = null
         })
         .addCase(loginSlice.fulfilled, (state, action) => {
-            const router = useRouter();
-
             state.status = 'succeeded'
-            state.user = action.payload
-            
-            setTimeout(() => {
-                router.push("/")
-            }, 1500);
+            state.statusRegister = 'idle'
+            console.log("payload", action.payload)
+            state.user = action.payload.user
+            state.token = action.payload.token
+
+            toast.success(`welcome ${action.payload.user.nickName}`, {
+                position: 'top-right',
+                duration: 1500,
+              })
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
-            alert ("fail in login")
+            toast.error('fail in login', {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+          .addCase(forgotPasswordSlice.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+          })
+          .addCase(forgotPasswordSlice.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.statusRegister = 'idle'
+            state.user = action.payload.user
+            state.token = action.payload.token
+
+            toast.success(`shortly you will receive an email to recover your password`, {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+          .addCase(forgotPasswordSlice.rejected, (state, action) => {
+            state.status = 'failed'
+            toast.error('fail in password recovery', {
+                position: 'top-right',
+                duration: 1500,
+              })
           })
     }
 })
 
-export const {} = userSlice.actions;
+export const {setUser, logoutSlice} = userSlice.actions;
 export default userSlice.reducer;

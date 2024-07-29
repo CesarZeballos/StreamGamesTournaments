@@ -6,6 +6,7 @@ import {
 	IsDateString,
 	IsArray,
 	IsOptional,
+	IsUUID,
 } from 'class-validator';
 import { Categories } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
@@ -18,6 +19,10 @@ export class CreateTournamentDto {
 	@IsNotEmpty()
 	@IsDateString()
 	startDate: string;
+
+	@IsUUID()
+	@IsOptional()
+	id?: string;
 
 	@ApiProperty({
 		description: 'Category of the tournament',

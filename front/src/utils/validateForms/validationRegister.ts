@@ -12,8 +12,8 @@ export function validateRegister(values: IRegisterForm): IRegisterError {
     const today = new Date();
     const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
     
-    if (!values.nickname) {
-        errors.nickname = "Nickname is required.";
+    if (!values.nickName) {
+        errors.nickName = "Nickname is required.";
     }
     
     if (!values.email) {
@@ -28,10 +28,10 @@ export function validateRegister(values: IRegisterForm): IRegisterError {
         errors.password = "Password invalid.";
     }
 
-    if (!values.birthdate) {
-        errors.birthdate = "Birthdate is required.";
-    } else if (new Date(values.birthdate) > eighteenYearsAgo) {
-            errors.birthdate = 'You must be 18 or older to register.';
+    if (!values.birthDate) {
+        errors.birthDate = "Birthdate is required.";
+    } else if (new Date(values.birthDate) > eighteenYearsAgo) {
+            errors.birthDate = 'You must be 18 or older to register.';
     }
     return errors
 }

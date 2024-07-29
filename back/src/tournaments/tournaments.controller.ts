@@ -51,17 +51,23 @@ export class TournamentsController {
 	})
 	@ApiResponse({ status: 404, description: 'No tournaments found' })
 	async getAllTournaments(
-		@Query('page') page: string,
-		@Query('limit') limit: string,
+		@Query('page') page?: string,
+		@Query('limit') limit?: string,
 	) {
-		!page ? (page = '1') : page;
-		!limit ? (limit = '9') : limit;
-		if (page && limit) {
-			return this.tournamentsService.getAllTournaments(
-				Number(page),
-				Number(limit),
-			);
-		}
+		const pageNumber = page ? Number(page) : 1;
+		const limitNumber = limit ? Number(limit) : 9;
+
+		console.log(
+			'getAllTournaments called with page:',
+			pageNumber,
+			'limit:',
+			limitNumber,
+		);
+
+		return this.tournamentsService.getAllTournaments(
+			pageNumber,
+			limitNumber,
+		);
 	}
 
 	@Get(':id')
