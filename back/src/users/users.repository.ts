@@ -14,7 +14,7 @@ export class UsersRepository {
 
 	 async getAllUsers(): Promise<User[]> {
 	   try {
-	     const users = await this.prisma.user.findMany({include: {team: true,
+	     const users = await this.prisma.user.findMany({include: {teams: true,
 			tournaments: true,	
 			organizedTeam:true,}});
 	     if (users.length === 0) {
@@ -36,7 +36,7 @@ export class UsersRepository {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
 				include: {
-					team: true,
+					teams: true,
 					tournaments: true,	
 					organizedTeam:true,
 							

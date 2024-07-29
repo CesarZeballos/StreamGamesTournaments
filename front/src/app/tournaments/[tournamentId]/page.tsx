@@ -16,7 +16,7 @@ async function getTournament(tournamentId: string): Promise<ITournament | null> 
 export async function generateMetadata({ params }: { params: { tournamentId: string } }) {
   const tournament = await getTournament(params.tournamentId);
   return {
-    title: tournament ? tournament.name : 'Tournament Not Found',
+    title: tournament ? tournament.nameTournament : 'Tournament Not Found',
   };
 }
 
@@ -35,12 +35,12 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = async ({ 
     <>
     <Image
         src={gameImage}
-        alt={tournament.name}
+        alt={tournament.nameTournament}
         className="w-full max-h-500px"
       />
       <div className='bodyContainer mt-medium mb-medium grid grid-cols-2 gap-4'>
         <div className='flex flex-col'>
-          <h1 className='heading2 text-lightViolet'>Tournament {tournament.name}</h1>
+          <h1 className='heading2 text-lightViolet'>Tournament {tournament.nameTournament}</h1>
           <Link className="buttonPrimary m-4" href={`/tournaments/${tournament.id}/register`}>
             Register
           </Link>
