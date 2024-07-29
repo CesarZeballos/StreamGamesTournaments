@@ -6,6 +6,7 @@ import {
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateTournamentDto } from '../tournaments/createTournament.Dto';
 import { UpdateTournamentDto } from '../tournaments/updateTournament.Dto';
+import { Prisma, Tournament } from '@prisma/client'
 
 @Injectable()
 export class TournamentsService {
@@ -73,40 +74,49 @@ export class TournamentsService {
 		return tournament;
 	}
 
-	async createTournament(createTournamentDto: CreateTournamentDto) {
-		console.log('createTournament called with:', createTournamentDto);
+	async createTournament(createTournamentDto: CreateTournamentDto): Promise<Tournament | { message: string }> {
 		const { organizerId, gameId, teams, ...data } = createTournamentDto;
 
+		// Verificar que el organizador exista
 		const organizerExists = await this.prisma.user.findUnique({
 			where: { id: organizerId },
-		});
-		const gameExists = await this.prisma.games.findUnique({
-			where: { id: gameId },
 		});
 
 		if (!organizerExists) {
 			return { message: `Organizer with id ${organizerId} not found` };
 		}
 
+		// Verificar que el juego exista
+		const gameExists = await this.prisma.games.findUnique({
+			where: { id: gameId },
+		});
+
 		if (!gameExists) {
 			return { message: `Game with id ${gameId} not found` };
 		}
 
-		const awardsAsStrings = data.award.map((a) => a.toString());
-		const tournament = await this.prisma.tournament.create({
-			data: {
-				...data,
-				award: awardsAsStrings,
-				organizer: { connect: { id: organizerId } },
-				game: { connect: { id: gameId } },
-				teams: teams
-					? { connect: teams.map((teamId) => ({ id: teamId })) }
-					: undefined,
-			},
-		});
+		// Convertir premios a cadenas
+		const awardsAsStrings = data.award.map(a => a.toString());
 
-		return tournament;
+		try {
+			// Crear el torneo
+			const tournament = await this.prisma.tournament.create({
+				data: {
+					...data,
+					award: awardsAsStrings,
+					organizer: { connect: { id: organizerId } },
+					game: { connect: { id: gameId } },
+					teams: teams ? { connect: teams.map(teamId => ({ id: teamId })) } : undefined,
+				},
+			});
+
+			return tournament;
+		} catch (error) {
+			// Manejo de errores en la creación del torneo
+			return { message: `Error creating tournament: ${error.message}` };
+		}
 	}
+
 
 	async addTeamTournament(tournamentId: string, teamId: string) {
 		const tournament = await this.prisma.tournament.findUnique({
