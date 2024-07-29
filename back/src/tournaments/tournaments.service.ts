@@ -9,9 +9,9 @@ import { UpdateTournamentDto } from '../tournaments/updateTournament.Dto';
 
 @Injectable()
 export class TournamentsService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
-	async getAllTournaments(page: number, limit: number) {
+	/* async getAllTournaments(page: number, limit: number) {
 		const skip = (page - 1) * limit;
 
 		const tournaments = await this.prisma.tournament.findMany({
@@ -23,6 +23,31 @@ export class TournamentsService {
 				organizer: true,
 			},
 		});
+
+		if (tournaments.length === 0) {
+			return { message: 'No tournaments found' };
+		}
+
+		return tournaments;
+	}
+ */
+
+	async getAllTournaments(page: number, limit: number) {
+		const skip = (page - 1) * limit;
+
+		console.log(`Fetching tournaments with skip=${skip} and take=${limit}`);
+
+		const tournaments = await this.prisma.tournament.findMany({
+			take: limit,
+			skip: skip,
+			include: {
+				game: true,
+				teams: true,
+				organizer: true,
+			},
+		});
+
+		console.log('Tournaments found:', tournaments);
 
 		if (tournaments.length === 0) {
 			return { message: 'No tournaments found' };
@@ -49,6 +74,7 @@ export class TournamentsService {
 	}
 
 	async createTournament(createTournamentDto: CreateTournamentDto) {
+		console.log('createTournament called with:', createTournamentDto);
 		const { organizerId, gameId, teams, ...data } = createTournamentDto;
 
 		const organizerExists = await this.prisma.user.findUnique({
@@ -65,14 +91,17 @@ export class TournamentsService {
 		if (!gameExists) {
 			return { message: `Game with id ${gameId} not found` };
 		}
-		const awardsAsStrings = data.award?.map(a => a.toString());
+
+		const awardsAsStrings = data.award.map((a) => a.toString());
 		const tournament = await this.prisma.tournament.create({
 			data: {
 				...data,
-				award: awardsAsStrings, // Ensure award is a string array
+				award: awardsAsStrings,
 				organizer: { connect: { id: organizerId } },
 				game: { connect: { id: gameId } },
-				teams: teams ? { connect: teams.map(teamId => ({ id: teamId })) } : undefined,
+				teams: teams
+					? { connect: teams.map((teamId) => ({ id: teamId })) }
+					: undefined,
 			},
 		});
 
@@ -106,7 +135,10 @@ export class TournamentsService {
 		return updateTournament;
 	}
 
-	async updateATournament(id: string, updateTournamentDto: UpdateTournamentDto) {
+	async updateATournament(
+		id: string,
+		updateTournamentDto: UpdateTournamentDto,
+	) {
 		const { organizerId, gameId, teams, ...data } = updateTournamentDto;
 
 		const tournament = await this.prisma.tournament.findUnique({
@@ -122,7 +154,9 @@ export class TournamentsService {
 				where: { id: organizerId },
 			});
 			if (!organizerExists) {
-				return { message: `Organizer with id ${organizerId} not found` };
+				return {
+					message: `Organizer with id ${organizerId} not found`,
+				};
 			}
 		}
 
@@ -135,7 +169,7 @@ export class TournamentsService {
 			}
 		}
 
-		const awardsAsStrings = data.award?.map(a => a.toString());
+		const awardsAsStrings = data.award?.map((a) => a.toString());
 
 		const updateData: any = {
 			...data,
@@ -151,7 +185,9 @@ export class TournamentsService {
 		}
 
 		if (teams) {
-			updateData.teams = { connect: teams.map(teamId => ({ id: teamId })) };
+			updateData.teams = {
+				connect: teams.map((teamId) => ({ id: teamId })),
+			};
 		}
 
 		const updatedTournament = await this.prisma.tournament.update({
@@ -161,7 +197,6 @@ export class TournamentsService {
 
 		return updatedTournament;
 	}
-
 
 	async deleteTeam(tournamentId: string, teamId: string) {
 		if (!tournamentId || !teamId) {
