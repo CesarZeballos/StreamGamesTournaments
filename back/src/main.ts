@@ -5,20 +5,28 @@ import { LoggerGlobalMiddleware } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { preloadData } from '../preload/preload.db';
-import { PrismaService } from '../prisma/prisma.service'
+import { PrismaService } from '../prisma/prisma.service';
 import { TeamsService } from './teams/teams.service';
 import { TournamentsService } from './tournaments/tournaments.service';
 
 const prisma = new PrismaClient();
 
-async function PreloadData(prismaService: PrismaService, teamService: TeamsService, tournamentsService: TournamentsService) {
-	const preload = new preloadData(prismaService, teamService, tournamentsService);
+async function PreloadData(
+	prismaService: PrismaService,
+	teamService: TeamsService,
+	tournamentsService: TournamentsService,
+) {
+	const preload = new preloadData(
+		prismaService,
+		teamService,
+		tournamentsService,
+	);
 	await preload.clearTables();
 	await preload.addGames();
 	await preload.addUsers();
 	await preload.addTeams();
-	await preload.addTournaments()
-	await preload.addTeamForTournament()
+	await preload.addTournaments();
+	await preload.addTeamForTournament();
 }
 
 async function bootstrap() {
@@ -45,7 +53,7 @@ async function bootstrap() {
 
 		const prismaService = app.get(PrismaService);
 		const teamService = app.get(TeamsService);
-		const tournamentService = app.get(TournamentsService)
+		const tournamentService = app.get(TournamentsService);
 		await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 

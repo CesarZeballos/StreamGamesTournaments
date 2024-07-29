@@ -58,7 +58,9 @@ export const LoginForm: React.FC = () => {
         if (!errorLogin.email || !errorLogin.password) {
             dispatch(loginSlice(data))
             setTimeout(() => {
-                router.push("/")
+                if(user) {
+                    router.push("/")
+                } else return
             }, 1500);
         } else {
             toast.error('Email or password incorrect', {

@@ -6,11 +6,20 @@ import {
 	IsDateString,
 	IsArray,
 	IsOptional,
+	IsUUID,
 } from 'class-validator';
 import { Categories } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTournamentDto {
+	@ApiProperty({
+		description: 'Name of the tournament',
+		example: 'Ultimate Showdown',
+	})
+	@IsNotEmpty()
+	@IsString()
+	nameTournament: string;
+
 	@ApiProperty({
 		description: 'Start date of the tournament',
 		example: '2024-08-01T14:23:11.438Z',
@@ -19,10 +28,18 @@ export class CreateTournamentDto {
 	@IsDateString()
 	startDate: string;
 
+	@IsUUID()
+	@IsOptional()
+	id?: string;
+
 	@ApiProperty({
 		description: 'Category of the tournament',
 		example: 'CATEGORY1',
 	})
+	@IsOptional()
+	@IsNumber()
+	price?: number;
+
 	@IsNotEmpty()
 	@IsEnum(Categories)
 	categories: Categories;
@@ -31,6 +48,14 @@ export class CreateTournamentDto {
 		description: 'Award amount for the tournament',
 		example: [500, 300],
 	})
+	@IsNotEmpty()
+	@IsString()
+	game: string;
+
+	@IsNotEmpty()
+	@IsNumber()
+	membersNumber: number;
+
 	@IsNotEmpty()
 	@IsArray()
 	@IsString({ each: true }) // Cambiado a IsString para coincidir con el modelo Prisma
