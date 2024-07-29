@@ -15,7 +15,7 @@ import { gameIcons, categoryIcons, navigationIcons, gameImages } from "@/utils/t
         <div className="relative h-64 cursor-pointer rounded-3xl hover:shadow-lg hover:shadow-lightViolet">
           <Image
             src={gameImage}
-            alt={tournament.name}
+            alt={tournament.nameTournament}
             className="w-full h-52 rounded-3xl"
           />
           <div className="absolute bottom-1 left-0 right-0 p-4 bg-BGdark rounded-3xl h-fit">
