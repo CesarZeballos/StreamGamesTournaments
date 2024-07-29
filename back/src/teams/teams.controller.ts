@@ -46,10 +46,9 @@ export class TeamsController {
 		@Query('page') page: string,
 		@Query('limit') limit: string,
 	) {
-		!page ? (page = '1') : page;
-		!limit ? (limit = '9') : limit;
-		if (page && limit)
-			return this.teamsService.getAllTeams(Number(page), Number(limit));
+		const pageNumber = page ? parseInt(page, 10) : 1;
+		const limitNumber = limit ? parseInt(limit, 10) : 9;
+		return this.teamsService.getAllTeams(pageNumber, limitNumber);
 	}
 
 	@Get(':id')
@@ -67,13 +66,14 @@ export class TeamsController {
 	@ApiResponse({ status: 201, description: 'Equipo creado exitosamente.' })
 	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
 	async createTeam(
-		@Param('id', ParseUUIDPipe) id: string,
 		@Body() team: CreateTeamDto,
 	) {
-		return await this.teamsService.createTeam(id, team);
+		// Aquí asumo que `id` debe ser pasado en el cuerpo también, puedes modificar esto si `id` debe ser parte del DTO.
+		const { id, ...rest } = team;
+		return await this.teamsService.createTeam(id, rest);
 	}
 
-	@Put('id')
+	@Put(':id')
 	@ApiOperation({ summary: 'Actualizar un equipo' })
 	@ApiParam({ name: 'id', type: 'string', description: 'ID del equipo' })
 	@ApiBody({
@@ -120,14 +120,13 @@ export class TeamsController {
 		description: 'Equipo o miembro no encontrado.',
 	})
 	async deleteMember(
-		@Param('id', ParseUUIDPipe) id: string,
 		@Body() data: DeleteMemberDto,
 	) {
-		const { idMember, idTeam } = data;
-		return await this.teamsService.deleteMember(idTeam, id, idMember);
+		const { idMember, idTeam, idOrganizer } = data;
+		return await this.teamsService.deleteMember(idTeam, idOrganizer, idMember);
 	}
 
-	@Delete()
+	@Delete(':teamId/:organizerId')
 	@ApiOperation({ summary: 'Eliminar un equipo' })
 	@ApiParam({ name: 'teamId', type: 'string', description: 'ID del equipo' })
 	@ApiParam({

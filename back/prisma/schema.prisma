@@ -59,7 +59,7 @@ model Team {
   createdAt    DateTime     @default(now())
   urlAvatar    String
   organizerId  String       @unique
-  organizer    User         @relation("TeamOrganizer", fields: [organizerId], references: [id])
+  organizer    User?        @relation("TeamOrganizer", fields: [organizerId], references: [id])
   tournaments  Tournament[] @relation("TournamentTeams")
   users        User[]       @relation("TeamUsers")
   tournamentId String?

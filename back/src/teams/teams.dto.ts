@@ -1,5 +1,4 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { User } from "@prisma/client";
 import { IsArray, IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID, Length } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
@@ -47,7 +46,8 @@ export class CreateTeamDto {
     })
     @IsArray()
     @IsOptional()
-    user?: User[];
+    @IsUUID("4", { each: true })
+    user?: string[];
 }
 
 export class UpdateTeamDto extends PartialType(CreateTeamDto) { }
@@ -66,4 +66,11 @@ export class DeleteMemberDto {
     })
     @IsUUID()
     idTeam: string;
+
+    @ApiProperty({
+        description: 'El identificador único del miembro a ser eliminado',
+        example: '123e4567-e89b-12d3-a456-426614174000'
+    })
+    @IsUUID()
+    idOrganizer: string;
 }
