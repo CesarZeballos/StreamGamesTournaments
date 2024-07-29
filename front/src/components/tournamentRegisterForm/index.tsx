@@ -2,13 +2,13 @@
 import { StaticImageData } from "next/image";
 import { ITournament, IAddTeam } from "@/interfaces/interfaceTournaments";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
 import { FormContainer } from "../formContainer";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { IUser } from "@/interfaces/interfaceUser";
+import { ITeam, IUser } from "@/interfaces/interfaceUser";
 import Link from "next/link";
 import csgo from "../../app/assets/images/banners/csgo.jpg";
 import fortnite from "../../app/assets/images/banners/fortnite.jpg";
@@ -17,29 +17,26 @@ import { fetchTournamentById } from "@/utils/fetchTournaments";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { RootState } from "@/redux/store";
+import { fetchUserById } from "@/utils/fetchUser";
 
 type ImageSource = StaticImageData | string;
 
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
     const router = useRouter();
+    const user = useSelector((state: RootState) => state.user.user);
 
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
-        nameTournament: "",
-        description: "",
+        name: "",
         startDate: "",
-        games: null,
-        players: 0,
-        membersNumber: 0,
-        categories: "",
+        createdAt: "",
         price: 0,
-        award: 0,
-        urlStream: "",
-        organizerId: "",
+        categories: "",
         gameId: "",
         membersNumber: 0,
-        award: [""],
+        award: [],
         urlAvatar: "",
         description: "",
         maxMember: 0,
@@ -55,13 +52,16 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const stringDate = tournamentData.startDate.split('T')[0];
 
     const [userData, setUserData] = useState<IUser>({
-        id: "",
-        nickName: "",
-        email: "",
-        birthDate: "",
-        role: "",
-        teams: [],
+        id: user?.id || "",
+        nickName: user?.nickName || "",
+        email: user?.email || "",
+        birthDate: user?.birthDate || "",
+        role: user?.role || "",
+        teams: user?.teams || [],
     });
+
+    //negrada para que no se me rompa todo
+    const [teams, setTeams] = useState<ITeam[]>([]);
 
     const [team, setTeam] = useState("");
 
@@ -72,10 +72,18 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     })
 
     useEffect(() => {
-        fetchTournamentById(tourId).then((data) => {
-            setTournamentData(data)
-        })
-    }, [ tourId ]);
+        if (!user) {
+            router.push("/login")
+        } else {
+            fetchTournamentById(tourId).then((data) => {
+                setTournamentData(data)
+            })
+            fetchUserById(user?.id).then((data) => {
+                setUserData(data)
+                setTeams(data.team)
+            })
+        }
+    }, [ tourId, user?.id, router, user]);
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         setTeam(event.target.value)
@@ -121,7 +129,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
-                        <h2 className="heading5 text-white">{tournamentData.nameTournament}</h2>
+                        <h2 className="heading5 text-white">{tournamentData.name}</h2>
                         <p className="body text-white mt-4">the tournament will start on {stringDate}</p>
                     </FormContainer>
 
@@ -140,7 +148,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                                         <MenuItem value="">
                                             <em>None</em>
                                         </MenuItem>
-                                        {userData.teams.map((team) => (
+                                        {teams && teams.map((team) => (
                                             <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>
                                         ))}
                                     </Select>

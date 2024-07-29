@@ -25,6 +25,7 @@ export const UserDashboard: React.FC = () => {
         if (!user) {
             router.push("/")
         } else {
+            setTeams([])
             fetchUserById(user.id).then((data) => {
                 setTeams(data.teams)
                 setTournaments(data.tournaments)
