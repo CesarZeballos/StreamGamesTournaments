@@ -29,7 +29,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
-        name: "",
+        nameTournament: "",
         startDate: "",
         createdAt: "",
         price: 0,
@@ -75,6 +75,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         if (!user) {
             router.push("/login")
         } else {
+            console.log(fetchTournamentById(tourId))
             fetchTournamentById(tourId).then((data) => {
                 setTournamentData(data)
             })
@@ -129,7 +130,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
-                        <h2 className="heading5 text-white">{tournamentData.name}</h2>
+                        <h2 className="heading5 text-white">{tournamentData.nameTournament}</h2>
                         <p className="body text-white mt-4">the tournament will start on {stringDate}</p>
                     </FormContainer>
 
@@ -172,13 +173,13 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                                     className="body text-white" 
                                     value="full" 
                                     control={<Radio className="body text-white"/>} 
-                                    label={`"Full Payment ($${tournamentData.price})"`} 
+                                    label={`Full Payment`} 
                                 />
                                 <FormControlLabel 
                                     className="body text-white" 
                                     value="Individual" 
                                     control={<Radio className="body text-white"/>} 
-                                    label={`Individual Payment ($${tournamentData.price / tournamentData.membersNumber})`}
+                                    label={`Individual Payment`}
                                 />
                             </RadioGroup>
                         </FormContainer>
