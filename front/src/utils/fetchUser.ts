@@ -73,3 +73,17 @@ export async function passwordRecovery(data: string) {try {
     console.log("Error recovery password.", error)
 }
 }
+
+export const fetchUserById = async (id: string) => {
+    const response = await fetch(`http://localhost:3001/users/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    if (!response.ok) {
+        throw new Error(`Error fetching user: ${response.statusText}`);
+    }
+    const userData = await response.json();
+    return userData;
+}

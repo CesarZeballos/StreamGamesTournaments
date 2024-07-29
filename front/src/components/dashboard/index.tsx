@@ -1,13 +1,15 @@
 'use client'
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TeamsDashboardView } from "../teamsDashboardView";
 import { TournamentsDashboardView } from "../tournamentsDashboardView";
 import { DataDashboardView } from "../dataDashboardView";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { SearchBarDashboard } from "../searchbarDashboard";
+import { ITeam } from "@/interfaces/interfaceUser";
+import { fetchUserById } from "@/utils/fetchUser";
 
 
 export const UserDashboard: React.FC = () => {
@@ -15,12 +17,18 @@ export const UserDashboard: React.FC = () => {
     const router = useRouter();
     const user = useSelector((state: RootState) => state.user.user);
     const section = useSelector((state: RootState) => state.dashboard.view);
+
+    const [teams, setTeams] = useState<ITeam[]>([])
+    const [tournaments, setTournaments] = useState([])
     
     useEffect(() => {
         if (!user) {
             router.push("/")
         } else {
-            // logica para cargar la seccion del dashboard
+            fetchUserById(user.id).then((data) => {
+                setTeams(data.teams)
+                setTournaments(data.tournaments)
+            })
         }
     }, [router, user])
     
@@ -32,8 +40,8 @@ export const UserDashboard: React.FC = () => {
                 <SearchBarDashboard />
                 <div className="col-span-2 mx-9">
                     {section === 'data' && <DataDashboardView/>}
-                    {section === 'teams' && <TeamsDashboardView/>}
-                    {section === 'tournaments' && <TournamentsDashboardView/>}
+                    {section === 'teams' && <TeamsDashboardView teams={teams}/>}
+                    {section === 'tournaments' && <TournamentsDashboardView tournaments={tournaments}/>}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
                     {/* <img className="w-full h-full object-cover" src="/images/teams/1.png" alt="team" /> */}
