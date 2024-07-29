@@ -33,6 +33,7 @@ export const UserDashboard: React.FC = () => {
             // })
         }
     }, [router, user, dispatch])
+
     
     
     return (
@@ -43,10 +44,10 @@ export const UserDashboard: React.FC = () => {
                 <div className="col-span-2 mx-9">
                     {section === 'data' && <DataDashboardView/>}
                     {section === 'teams' && <TeamsDashboardView teams={user.user?.teams}/>}
-                    {/* {section === 'tournaments' && <TournamentsDashboardView tournaments={user.user?}/>} */}
+                    {section === 'tournaments' && <TournamentsDashboardView tournaments={[]}/>}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                    {/* <img className="w-full h-full object-cover" src="/images/teams/1.png" alt="team" /> */}
+                    <img className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
             </div>
             </div>
         </div>
