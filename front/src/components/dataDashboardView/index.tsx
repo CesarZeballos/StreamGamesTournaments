@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 
 export const DataDashboardView: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
+
+    const stringDate = user?.birthDate.split('T')[0];
     
     return (
         <div className="grid grid-cols-2">
@@ -14,7 +16,7 @@ export const DataDashboardView: React.FC = () => {
                     <p className="body text-white">Nickname: {user?.nickName}</p>
                     <p className="body text-white">Email: {user?.email}</p>
                     <p className="body text-white">Role: {user?.role}</p>
-                    <p className="body text-white">Birthdate: {user?.birthDate}</p>
+                    <p className="body text-white">Birthdate: {stringDate}</p>
                 </div>
 
             </div>
