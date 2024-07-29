@@ -13,44 +13,46 @@ import Link from "next/link";
 import csgo from "../../app/assets/images/banners/csgo.jpg";
 import fortnite from "../../app/assets/images/banners/fortnite.jpg";
 import lol from "../../app/assets/images/banners/lol.png";
+import { fetchTournamentById } from "@/utils/fetchTournaments";
+import { setView } from "@/redux/slices/dashboardSlice";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type ImageSource = StaticImageData | string;
 
-const name: { [key: string]: string } = {
-    "csgo-id": "Counter Strike",
-    "fortnite-id": "Fortnite",
-    "lol-id": "League of Legends",
-};
-
-const descriptions: { [key: string]: string } = {
-    "csgo-id": "Watch a Counter Strike: Global Offensive tournament live! Enjoy the gunfights, strategies, and passion for team play of the players who show up to provide us with this entertainment.",
-    "fortnite-id": "Watch a Fortnite tournament live! What weapons will each team get? Who will win? Who will be quick with their fingers? We invite you to watch the epic battles of Fortnite, and don't forget the dance!",
-    "lol-id": "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
-};
-
-const games: { [key: string]: ImageSource } = {
-    "csgo-urlStream": csgo,
-    "fortnite-urlStream": fortnite,
-    "lol-urlStream": lol,
-};
-
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
-        name: "",
+        nameTournament: "",
         description: "",
         startDate: "",
         games: null,
         players: 0,
+        membersNumber: 0,
         categories: "",
-        price:"",
+        price: 0,
         award: 0,
         urlStream: "",
         organizerId: "",
         gameId: "",
+        membersNumber: 0,
+        award: [""],
+        urlAvatar: "",
+        description: "",
+        maxMember: 0,
+        maxTeam: 0,
+        organizerId: "",
+        game: {
+            id: "",
+            name: "",
+            urlImage: "",
+        }
     });
+
+    const stringDate = tournamentData.startDate.split('T')[0];
 
     const [userData, setUserData] = useState<IUser>({
         id: "",
@@ -70,11 +72,10 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     })
 
     useEffect(() => {
-        // const tournamentData = dispatch(state.getTournament(tourId))
-        // setTournamentData(tournamentData)
-        // const userData = dispatch(state.getUser())
-        // setUserData(userData)
-    }, [])
+        fetchTournamentById(tourId).then((data) => {
+            setTournamentData(data)
+        })
+    }, [ tourId ]);
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         setTeam(event.target.value)
@@ -91,8 +92,28 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        // dispatch(state.registerTournament(registerData))
-        console.log(registerData)
+        const tournamentRegisterData = {
+            tournamentId: tourId,
+            teamId: team,
+            payment: registerData.payment
+        }
+        console.log(tournamentRegisterData)
+        if(!team || !registerData.payment) {
+            toast.error(`Please select a team and select a payment method`, {
+                position: "top-right",
+                duration: 1500,
+            })
+        } else {
+            // dispatch(state.registerTournament(registerData))
+            dispatch(setView('tournaments'))
+            toast.success(`Tournament registered successfully`, {
+                position: "top-right",
+                duration: 1500,
+            })
+            setTimeout(() => {
+                router.push("/dashboard")
+            }, 1500)
+        }
     }
 
     return (
@@ -100,11 +121,11 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
-                        <h2 className="heading5 text-white">{tournamentData.name}</h2>
-                        <h3 className="body text-white">{tournamentData.startDate}</h3>
+                        <h2 className="heading5 text-white">{tournamentData.nameTournament}</h2>
+                        <p className="body text-white mt-4">the tournament will start on {stringDate}</p>
                     </FormContainer>
 
-                    {tournamentData.players !== 1 &&
+                    {tournamentData.membersNumber !== 1 &&
                         <FormContainer section="Select your team">
                             <p className="body text-white">Select your team</p>
                             <div className="flex flex-row gap-4 items-center">
@@ -129,7 +150,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                         </FormContainer> 
                     }
 
-                    {tournamentData.players !== 1 && 
+                    {tournamentData.membersNumber !== 1 && 
                         <FormContainer section="Payments">
                             <p className="body text-white">Select your payment method</p>
                             <RadioGroup
@@ -143,13 +164,13 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                                     className="body text-white" 
                                     value="full" 
                                     control={<Radio className="body text-white"/>} 
-                                    label="Full Payment" 
+                                    label={`"Full Payment ($${tournamentData.price})"`} 
                                 />
                                 <FormControlLabel 
                                     className="body text-white" 
                                     value="Individual" 
                                     control={<Radio className="body text-white"/>} 
-                                    label="Individual Payment" 
+                                    label={`Individual Payment ($${tournamentData.price / tournamentData.membersNumber})`}
                                 />
                             </RadioGroup>
                         </FormContainer>

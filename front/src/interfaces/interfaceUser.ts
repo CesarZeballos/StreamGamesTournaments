@@ -13,6 +13,11 @@ export interface ITeam {
     members: ITeamMember[]
 }
 
+export interface ITournamentsregistered {
+    id: string
+    nameTournament: string
+}
+
 export interface ITeamMember {
     id: string
     nickName: string
