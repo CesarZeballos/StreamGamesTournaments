@@ -2,64 +2,192 @@
 @tailwind components;
 @tailwind utilities;
 
-/* text styles */
-
-.heanding1 {
-  @apply font-Raleway font-black text-5xl
+html, body {
+  overflow: auto; /* Asegúrate de no tener overflow: hidden aquí */
 }
 
-.heanding2 {
+/* text styles */
+
+.heading1 {
+  @apply font-Raleway font-black text-5xl;
+}
+
+.heading2 {
+  @apply font-Raleway font-black text-4xl;
+}
+
+.heading3 {
+  @apply font-Raleway font-black text-3xl;
+}
+
+.heading4 {
+  @apply font-Raleway font-black text-2xl;
+}
+
+.heading5 {
+  @apply font-Raleway font-black text-base;
+}
+
+.heading2 {
   @apply font-Raleway font-black text-4xl
 }
 
-.heanding3 {
+.heading3 {
   @apply font-Raleway font-black text-3xl
 }
 
-.heanding4 {
+.heading4 {
   @apply font-Raleway font-black text-2xl
 }
 
-.heanding5 {
+.heading5 {
   @apply font-Raleway font-black text-base
 }
 
 .body {
-  @apply font-Roboto font-normal text-base
+  @apply font-Roboto font-normal text-base;
+}
+
+.errorForm {
+  @apply font-Roboto font-thin text-xs text-lightViolet;
+}
+
+.errorForm {
+  @apply font-Roboto font-thin text-xs text-lightViolet
 }
 
 .numberCard {
-  @apply font-Roboto font-black text-2xl
+  @apply font-Roboto font-black text-2xl;
 }
 
-.numberCard {
+.numberInfo {
   @apply font-Roboto font-black text-4xl
 }
 
 /* buttons */
 
 .buttonPrimary {
-  @apply bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-md shadow-lightViolet
+  @apply flex items-center bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit h-fit whitespace-nowrap
   hover:bg-lightViolet
 }
 
 .buttonSecondary {
-  @apply font-Raleway font-bold text-base text-white px-9 py-2
-  hover:text-lightViolet
+  @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap
+  focus:text-lightViolet hover:text-lightViolet
 }
 
 .buttonSection {
-  @apply font-Raleway font-bold text-3xl text-white pl-6 pr-11 py-6 rounded-full shadow-md shadow-lightViolet flex flex-row gap-6
-  hover:bg-lightViolet
-  hover:text-BGdark
+  @apply flex flex-row items-center font-Raleway font-bold text-3xl text-white pl-6 py-4 rounded-full w-full border-2 border-lightViolet hover:shadow-md hover:shadow-lightViolet
 }
 
 .buttonFilter {
-  @apply font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full shadow-md shadow-lightViolet flex flex-row gap-4
-  hover:bg-lightViolet
-  hover:text-BGdark
+  @apply flex flex-row items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full gap-4
+}
+
+.linkButton {
+  @apply font-Roboto font-light text-xs text-white
+  hover:text-lightViolet
 }
 
 .infoTorunaments {
-  @apply font-Raleway font-black text-2xl text-white px-4 py-2 flex flex-row gap-6
+  @apply font-Raleway font-black text-2xl text-white px-4 py-2 flex flex-row gap-6;
 }
+
+.buttonCarousel {
+  @apply bg-blue-950 text-4xl p-2 rounded-3xl w-20 h-20 top-1/2 -translate-y-1/2 cursor-pointer;
+}
+
+.buttonPage {
+  @apply p-4 mb-8 rounded-md bg-lightViolet
+}
+
+.buttonFilter:hover {
+  @apply hover:shadow-md hover:shadow-lightViolet
+}
+
+.buttonCarousel:hover, .buttonPage:hover {
+  transition: 0.5s;
+  background-color: #0d0835;
+  box-shadow: inset 0px 0px 25px #1479EA,
+              0 1px 2px 0 rgba(0, 0, 0, 0.05),
+              0 3px 5px 0 #E35AFF;
+  color: white;
+}
+
+/* utils */
+
+.bodyContainer {
+  @apply px-16;
+}
+
+body {
+  @apply bg-gradient-to-b from-BGlight to-BGdark;
+}
+
+.back-image {
+  @apply w-3/4 h-1/3 z-10 rounded-3xl
+}
+
+.input {
+  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
+.loading {
+  @apply text-softViolet text-5xl text-center m-8;
+}
+
+.item-container {
+  @apply flex justify-center items-center pr-8 pl-2 mt-4 rounded-full overflow-hidden hover:shadow-md hover:shadow-lightViolet;
+  
+}
+
+.item-image {
+  @apply w-20 h-20 rounded-3xl;
+  
+}
+
+.item-text {
+  @apply text-white text-lg font-Raleway ml-4;
+}
+
+.section-title {
+  @apply heading5 mt-4 text-lightViolet;
+}
+
+.m-icon {
+  @apply w-24 h-24 p-1 rounded-3xl;
+}
+
+.s-icon {
+  @apply w-10 h-10 p-1 rounded-full;
+}
+
+.description {
+  @apply font-Roboto text-left text-white;
+}
+
+.textButton {
+  @apply flex-1 text-center overflow-hidden pr-6 sm:text-xl;
+}
+
+@media (max-width: 992px) {
+  .father-container {
+    transform: scale(0);
+  }
+}
+
+@media (max-width: 1200px) {
+  .description, .icon, .heading3 {
+    transform: scale(1);
+    transform-origin: top;
+    overflow: hidden;
+  }
+}
+
+
+
+
