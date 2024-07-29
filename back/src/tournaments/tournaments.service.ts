@@ -83,7 +83,9 @@ export class TournamentsService {
 					award: awardsAsStrings,
 					organizer: { connect: { id: organizerId } },
 					game: { connect: { id: gameId } },
-					teams: teams ? { connect: teams.map(teamId => ({ id: teamId })) } : undefined,
+					teams: teams
+						? { connect: teams.map((teamId) => ({ id: teamId })) }
+						: undefined,
 				},
 			});
 	

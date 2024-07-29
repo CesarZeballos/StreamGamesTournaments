@@ -1,8 +1,8 @@
-import { Categories } from "@prisma/client";
+import { Categories } from '@prisma/client';
 
 export const tournaments = [
 	{
-		id: 'd1f5d4e7-9b64-4d39-aebd-f76980d72f3e',
+		nameTournament: 'Counter-Strike Tournament August 2024',
 		startDate: new Date('2024-08-01T14:23:11.438Z'),
 		createdAt: new Date('2023-01-05T08:21:45.438Z'),
 		nameTournament: "tournament1",
@@ -14,12 +14,10 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game1-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'a2b3c4d5-6e7f-8g9h-0i1j-2k3l4m5n6o7p',
+		nameTournament: 'Fortnite Tournament September 2024',
 		startDate: new Date('2024-09-11T10:15:32.438Z'),
 		createdAt: new Date('2023-02-14T12:34:56.438Z'),
 		nameTournament: "tournament2",
@@ -31,12 +29,10 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game2-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'b3c4d5e6-7f8g-9h0i-1j2k-3l4m5n6o7p8q',
+		nameTournament: 'League of Legends Tournament October 2024',
 		startDate: new Date('2024-10-21T18:27:43.438Z'),
 		createdAt: new Date('2023-03-23T15:45:07.438Z'),
 		nameTournament: "tournament3",
@@ -44,16 +40,12 @@ export const tournaments = [
 		award: ["$500", "$1000", "$1500"],
 		maxMember: 5,
 		maxTeam: 4,
-		description: "Watch a League of Legends tournament live! Let's see the moment when 10 players are spewing steam from their heads with the aim of beating the enemy team and getting the tournament award!",
-		urlAvatar: 'https://example.com/stream3',
 		organizerId: 'user2-uuid',
 		gameId: 'game3-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'c4d5e6f7-8g9h-0i1j-2k3l-4m5n6o7p8q9r',
+		nameTournament: 'Counter-Strike Tournament November 2024',
 		startDate: new Date('2024-11-05T11:23:54.438Z'),
 		createdAt: new Date('2023-04-12T16:56:18.438Z'),
 		nameTournament: "tournament4",
@@ -65,12 +57,10 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game1-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'd5e6f7g8-9h0i-1j2k-3l4m-5n6o7p8q9r0s',
+		nameTournament: 'Fortnite Tournament December 2024',
 		startDate: new Date('2024-12-15T09:34:05.438Z'),
 		createdAt: new Date('2023-05-07T10:07:29.438Z'),
 		nameTournament: "tournament5",
@@ -82,12 +72,10 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game2-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'e6f7g8h9-0i1j-2k3l-4m5n-6o7p8q9r0s1t',
+		nameTournament: 'League of Legends Tournament July 2024',
 		startDate: new Date('2024-07-25T16:45:16.438Z'),
 		createdAt: new Date('2023-06-18T11:18:40.438Z'),
 		nameTournament: "tournament6",
@@ -99,12 +87,10 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game3-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'f7g8h9i0-1j2k-3l4m-5n6o-7p8q9r0s1t2u',
+		nameTournament: 'League of Legends Tournament August 2024',
 		startDate: new Date('2024-08-05T14:56:27.438Z'),
 		createdAt: new Date('2023-07-01T12:29:51.438Z'),
 		nameTournament: "tournament7",
@@ -116,12 +102,10 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game1-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'g8h9i0j1-2k3l-4m5n-6o7p-8q9r0s1t2u3v',
+		nameTournament: 'Counter-Strike Tournament September 2024',
 		startDate: new Date('2024-09-15T17:07:38.438Z'),
 		createdAt: new Date('2023-08-22T13:40:02.438Z'),
 		nameTournament: "tournament8",
@@ -133,12 +117,10 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game2-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
-		id: 'h9i0j1k2-3l4m-5n6o-7p8q-9r0s1t2u3v4w',
+		nameTournament: 'Fortnite Tournament October 2024',
 		startDate: new Date('2024-10-25T19:18:49.438Z'),
 		createdAt: new Date('2023-09-13T14:51:13.438Z'),
 		nameTournament: "tournament9",
@@ -150,9 +132,7 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game3-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 	{
 		id: 'i0j1k2l3-4m5n-6o7p-8q9r-0s1t2u3v4w5x',
@@ -167,8 +147,6 @@ export const tournaments = [
 		maxTeam: 4,
 		organizerId: 'user2-uuid',
 		gameId: 'game1-uuid',
-		teams: [
-			'team1-uuid,team2-uuid,team4-uuid,team3-uuid'
-		],
+		teams: ['team1-uuid,team2-uuid,team4-uuid,team3-uuid'],
 	},
 ];

@@ -47,7 +47,7 @@ export class preloadData {
 					nickName: user.nickName,
 					tokenFirebase: user.tokenFirebase,
 					birthDate: new Date(user.birthDate),
-					role: user.role as any,
+					role: user.role,
 					urlSelfie: user.urlSelfie,
 					createdAt: new Date(user.createdAt),
 				},
