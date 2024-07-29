@@ -8,18 +8,18 @@ datasource db {
 }
 
 model User {
-  id            String      @id @default(uuid())
-  email         String      @unique @db.VarChar(80)
-  nickName      String      @unique
+  id            String       @id @default(uuid())
+  email         String       @unique @db.VarChar(80)
+  nickName      String       @unique
  tokenFirebase  String
   birthDate     DateTime
-  role          Role        @default(user)
+  role          Role         @default(user)
   urlSelfie     String?
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime     @default(now())
   teamId        String?
-  organizedTeam Team?       @relation("TeamOrganizer")
-  tournaments   Tournament?
-  team          Team?       @relation("TeamUsers", fields: [teamId], references: [id])
+  organizedTeam Team?        @relation("TeamOrganizer")
+  tournaments   Tournament[]
+  team          Team?        @relation("TeamUsers", fields: [teamId], references: [id])
 }
 
 model UserDeleted {
@@ -39,8 +39,8 @@ model Tournament {
   startDate   DateTime
   createdAt   DateTime   @default(now())
   categories  Categories
-  organizerId String     @unique
-  gameId      String     @unique
+  organizerId String
+  gameId      String
   maxMember   Int
   maxTeam     Int
   urlAvatar   String
@@ -64,10 +64,10 @@ model Team {
 }
 
 model Games {
-  id         String      @id @default(uuid())
-  name       String      @unique @db.VarChar(80)
-  urlImage   String
-  tournament Tournament?
+  id          String       @id @default(uuid())
+  name        String       @unique @db.VarChar(80)
+  urlImage    String
+  tournaments Tournament[] // Relación uno a muchos
 }
 
 enum Role {
