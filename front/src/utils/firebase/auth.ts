@@ -1,9 +1,10 @@
-import { IFirebaseSingProps } from "@/interfaces/interfaceFirebase";
+// import { IFirebaseSingProps } from "@/interfaces/interfaceFirebase";
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "sonner";
 import { auth } from "../firebase/firebaseConfig";
+import { ILoginForm } from "@/interfaces/interfaceUser";
 
-export const singUpFirebaseWithEmailAndPassword = async ({email, password}: IFirebaseSingProps) => {
+export const singUpFirebaseWithEmailAndPassword = async ({email, password}: ILoginForm) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user;
@@ -21,7 +22,7 @@ export const singUpFirebaseWithEmailAndPassword = async ({email, password}: IFir
         })}
 }
 
-export const singInFirebaseWithEmailAndPassword = async ({ email, password }: IFirebaseSingProps) => {
+export const singInFirebaseWithEmailAndPassword = async ({ email, password }: ILoginForm) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
     const user = userCredential.user;
