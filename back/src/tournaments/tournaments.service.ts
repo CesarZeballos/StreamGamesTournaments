@@ -6,7 +6,7 @@ import {
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateTournamentDto } from '../tournaments/createTournament.Dto';
 import { UpdateTournamentDto } from '../tournaments/updateTournament.Dto';
-import { Prisma, Tournament } from '@prisma/client'
+import { Prisma, Tournament } from '@prisma/client';
 
 @Injectable()
 export class TournamentsService {
@@ -74,7 +74,9 @@ export class TournamentsService {
 		return tournament;
 	}
 
-	async createTournament(createTournamentDto: CreateTournamentDto): Promise<Tournament | { message: string }> {
+	async createTournament(
+		createTournamentDto: CreateTournamentDto,
+	): Promise<Tournament | { message: string }> {
 		const { organizerId, gameId, teams, ...data } = createTournamentDto;
 
 		// Verificar que el organizador exista
@@ -96,7 +98,7 @@ export class TournamentsService {
 		}
 
 		// Convertir premios a cadenas
-		const awardsAsStrings = data.award.map(a => a.toString());
+		const awardsAsStrings = data.award.map((a) => a.toString());
 
 		try {
 			// Crear el torneo
@@ -106,7 +108,9 @@ export class TournamentsService {
 					award: awardsAsStrings,
 					organizer: { connect: { id: organizerId } },
 					game: { connect: { id: gameId } },
-					teams: teams ? { connect: teams.map(teamId => ({ id: teamId })) } : undefined,
+					teams: teams
+						? { connect: teams.map((teamId) => ({ id: teamId })) }
+						: undefined,
 				},
 			});
 
@@ -116,7 +120,6 @@ export class TournamentsService {
 			return { message: `Error creating tournament: ${error.message}` };
 		}
 	}
-
 
 	async addTeamTournament(tournamentId: string, teamId: string) {
 		const tournament = await this.prisma.tournament.findUnique({
