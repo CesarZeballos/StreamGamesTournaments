@@ -4,11 +4,22 @@ import {
 	IsEnum,
 	IsNumber,
 	IsDateString,
+	IsArray,
+	IsOptional,
+	IsUUID,
 } from 'class-validator';
 import { Categories } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTournamentDto {
+	@ApiProperty({
+		description: 'Name of the tournament',
+		example: 'Ultimate Showdown',
+	})
+	@IsNotEmpty()
+	@IsString()
+	nameTournament: string;
+
 	@ApiProperty({
 		description: 'Start date of the tournament',
 		example: '2024-08-01T14:23:11.438Z',
@@ -17,29 +28,58 @@ export class CreateTournamentDto {
 	@IsDateString()
 	startDate: string;
 
+	@IsUUID()
+	@IsOptional()
+	id?: string;
+
 	@ApiProperty({
 		description: 'Category of the tournament',
-		example: 'CATEGORY1',
+		example: 'beginner',
 	})
 	@IsNotEmpty()
 	@IsEnum(Categories)
-	categories: Categories;
+	category: Categories;
 
 	@ApiProperty({
-		description: 'Award amount for the tournament',
-		example: 500,
+		description: 'Number of members in the tournament',
+		example: 16,
 	})
 	@IsNotEmpty()
 	@IsNumber()
-	award: number;
+	membersNumber: number;
 
 	@ApiProperty({
-		description: 'URL for the tournament stream',
-		example: 'https://example.com/stream1',
+		description: 'Maximum number of teams allowed in the tournament',
+		example: 16,
+	})
+	@IsNotEmpty()
+	@IsNumber()
+	maxTeam: number;
+
+	@ApiProperty({
+		description: 'URL for the tournament avatar',
+		example: 'https://example.com/avatar1.jpg',
 	})
 	@IsNotEmpty()
 	@IsString()
-	urlStream: string;
+	urlAvatar: string;
+
+	@ApiProperty({
+		description: 'Awards for the tournament',
+		example: ['Trophy', 'Medal'],
+	})
+	@IsNotEmpty()
+	@IsArray()
+	@IsString({ each: true })
+	award: string[];
+
+	@ApiProperty({
+		description: 'Description of the tournament',
+		example: 'A thrilling tournament with exciting matches!',
+	})
+	@IsNotEmpty()
+	@IsString()
+	description: string;
 
 	@ApiProperty({
 		description: 'ID of the organizer',
@@ -56,4 +96,14 @@ export class CreateTournamentDto {
 	@IsNotEmpty()
 	@IsString()
 	gameId: string;
+
+	@ApiProperty({
+		description: 'IDs of the teams participating in the tournament',
+		example: ['team1-uuid', 'team2-uuid'],
+		required: false,
+	})
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	teams?: string[];
 }

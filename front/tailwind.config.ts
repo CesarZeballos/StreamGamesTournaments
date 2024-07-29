@@ -18,19 +18,23 @@ const config: Config = {
         greenAlert: "#2AEB1D"
       },
 
+      fontFamily: {
+        Raleway: ["Raleway", "sans-serif"],
+        Roboto: ["Roboto", "sans-serif"]
+      },
+      
       maxHeight: {
         '500px': '500px',
       },
 
-      fontFamily: {
-        Raleway: ["Raleway", "sans-serif"],
-        Roboto: ["Roboto", "sans-serif"]
+      textShadow: {
+        sm: "0 1px 2px rgba(0, 0, 0, 0.05)",
       },
 
       spacing: {
         'small': '1rem',
         'medium': '3.5rem',
-        'large': '7.5rem'
+        'large': '7.5rem',
       },
     },
   },

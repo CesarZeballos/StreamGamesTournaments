@@ -1,65 +1,39 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, Teams } from '@prisma/client';
+import { Prisma, Team } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateTeamDto, UpdateTeamDto } from './teams.dto';
-import { teamsData } from 'src/helpers/teams.helpers';
 
-export interface TeamWithUser extends Prisma.TeamsGetPayload<true> {
-    user?: { id: string }[];
-}
+
 @Injectable()
 export class TeamsService {
     constructor(private readonly prisma: PrismaService) { }
 
-    // async getAllTeams(page: number, limit: number): Promise<Teams[]> {
-    //   const skip = (page - 1) * limit
-    // const teams = await this.prisma.teams.findMany({
-    //   take: limit,
-    // skip
-    //});
+    async getAllTeams(page: number, limit: number): Promise<Team[]> {
+        const skip = (page - 1) * limit
+        const teams = await this.prisma.team.findMany({
+            take: limit,
+            skip,
+            include: {
+                tournaments: true,
+                users: true
+            }
+        });
 
-    // return  teams 
-
-
-    async getAllTeams(page: number, limit: number): Promise<TeamWithUser[]> {
-        const skip = (page - 1) * limit;
-
-        // Obtener equipos reales desde Prisma
-        const teamsFromPrisma = await this.prisma.teams.findMany();
-
-        // Datos ficticios completos transformados para que coincidan con la estructura
-        const dataHelperes: TeamWithUser[] = teamsData.map(team => ({
-            id: team.id,
-            name: team.name,
-            createdAt: new Date(), // Aquí usa una fecha real si es necesario
-            urlAvatar: team.urlAvatar,
-            organizerId: team.organizerId,
-            tournamentId: team.tournamentId,
-            user: team.user
-        }));
-
-        // Combina los datos reales y ficticios
-        const combinedData: TeamWithUser[] = [...teamsFromPrisma, ...dataHelperes];
-
-        // Aplicar paginación a la combinación de datos
-        const paginatedData = combinedData.slice(skip, skip + limit);
-
-        // Retornar solo los datos paginados
-        return paginatedData;
+        return teams
     }
 
-    async getTeamById(id: string): Promise<Teams> {
-        const team = await this.prisma.teams.findUnique({ where: { id } })
+    async getTeamById(id: string): Promise<Team> {
+        const team = await this.prisma.team.findUnique({ where: { id } })
         if (!team) throw new NotFoundException(`Team id ${id} do not exists`)
 
         return team
     }
 
-    async createTeam(id: string, team: CreateTeamDto): Promise<Teams> {
+    async createTeam(id: string, team: CreateTeamDto): Promise<Team> {
 
-        const userTeam = await this.prisma.teams.findFirst({
+        const userTeam = await this.prisma.team.findFirst({
             where: {
-                user: {
+                users: {
                     some: { id }
                 }
             }
@@ -67,25 +41,25 @@ export class TeamsService {
 
         if (userTeam) throw new ConflictException('¡The user is already a member of a team!');
 
-        const teamName = await this.prisma.teams.findUnique({
+        const teamName = await this.prisma.team.findUnique({
             where: { name: team.name }
         });
 
         if (teamName) throw new ConflictException('¡The name already exists in a team!');
 
-        const teamData: Prisma.TeamsCreateInput = {
+        const teamData: Prisma.TeamCreateInput = {
             ...team,
             organizer: { connect: { id } },
-            tournament: team.tournamentId ? { connect: { id: team.tournamentId } } : undefined,
-            user: { connect: { id } },
+            tournaments: team.tournamentId ? { connect: { id: team.tournamentId } } : undefined,
+            users: { connect: { id } },
             createdAt: new Date()
         };
 
-        return await this.prisma.teams.create({ data: teamData });
+        return await this.prisma.team.create({ data: teamData });
     }
 
-    async updateTeam(id: string, updateTeam: UpdateTeamDto): Promise<Teams> {
-        const team = await this.prisma.teams.findUnique({ where: { id } })
+    async updateTeam(id: string, updateTeam: UpdateTeamDto): Promise<Team> {
+        const team = await this.prisma.team.findUnique({ where: { id } })
 
         if (!team) throw new NotFoundException('¡Team not exists!')
 
@@ -98,19 +72,19 @@ export class TeamsService {
                     throw new NotFoundException(`¡User with ID ${newUser.id} does not exist!`)
                 }
 
-                const teamMembers = await this.prisma.teams.findUnique({
+                const teamMembers = await this.prisma.team.findUnique({
                     where: { id: updateTeam.id },
-                    select: { user: true }
+                    select: { users: true }
                 });
 
-                if (teamMembers && teamMembers.user.length >= 5) {
+                if (teamMembers && teamMembers.users.length >= 5) {
                     throw new ConflictException(`The team already has 5 members. Cannot add more users.`);
                 }
 
-                const userInTeam = await this.prisma.teams.findFirst({
+                const userInTeam = await this.prisma.team.findFirst({
                     where: {
                         id,
-                        user: {
+                        users: {
                             some: {
                                 id: newUser.id,
                             }
@@ -125,40 +99,40 @@ export class TeamsService {
         }
 
 
-        const updateData: Prisma.TeamsUpdateInput = {
+        const updateData: Prisma.TeamUpdateInput = {
             ...updateTeam,
-            tournament: updateTeam.tournamentId ? { connect: { id: updateTeam.tournamentId } } : undefined,
-            user: updateTeam.user ? { connect: updateTeam.user.map(user => ({ id: user.id })) } : undefined,
+            tournaments: updateTeam.tournamentId ? { connect: { id: updateTeam.tournamentId } } : undefined,
+            users: updateTeam.user ? { connect: updateTeam.user.map(user => ({ id: user.id })) } : undefined,
         };
 
-        return await this.prisma.teams.update({ where: { id }, data: updateData })
+        return await this.prisma.team.update({ where: { id }, data: updateData })
     }
 
-    async deleteMember(idTeam: string, idOrganizer: string, idMember: string): Promise<Teams> {
-        const team = await this.prisma.teams.findUnique({ where: { id: idTeam } })
+    async deleteMember(idTeam: string, idOrganizer: string, idMember: string): Promise<Team> {
+        const team = await this.prisma.team.findUnique({ where: { id: idTeam } })
         if (!team) throw new NotFoundException('¡Id team do not exists!')
 
-        const organizer = await this.prisma.teams.findUnique({ where: { organizerId: idOrganizer } })
+        const organizer = await this.prisma.team.findUnique({ where: { organizerId: idOrganizer } })
 
         if (!organizer) throw new NotFoundException('¡Id organizer do not exists!')
 
-        const member = await this.prisma.teams.findUnique({ where: { id: idTeam, user: { some: { id: idMember } } } })
+        const member = await this.prisma.team.findUnique({ where: { id: idTeam, users: { some: { id: idMember } } } })
 
         if (!member) throw new NotFoundException('¡Id member do no exists!')
 
-        return await this.prisma.teams.update({ where: { id: idTeam }, data: { user: { disconnect: { id: idMember } } } })
+        return await this.prisma.team.update({ where: { id: idTeam }, data: { users: { disconnect: { id: idMember } } } })
 
     }
 
-    async deleteTeam(idOrganizer: string, idTeam: string): Promise<Teams> {
-        const team = await this.prisma.teams.findUnique({ where: { id: idTeam } })
+    async deleteTeam(idOrganizer: string, idTeam: string): Promise<Team> {
+        const team = await this.prisma.team.findUnique({ where: { id: idTeam } })
         if (!team) throw new NotFoundException('¡Team do not exists!')
 
-        const organizer = await this.prisma.teams.findUnique({ where: { id: idOrganizer } })
+        const organizer = await this.prisma.team.findUnique({ where: { id: idOrganizer } })
 
         if (!organizer) throw new NotFoundException('¡Organizer do not exists!')
 
-        return await this.prisma.teams.delete({ where: { id: idTeam } })
+        return await this.prisma.team.delete({ where: { id: idTeam } })
     }
 
 }

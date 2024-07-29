@@ -1,8 +1,8 @@
 export interface IUser {
     id: string
-    nickname: string
+    nickName: string
     email: string
-    birthdate: string
+    birthDate: string
     role: string
     teams: ITeam[]
 }
@@ -13,31 +13,43 @@ export interface ITeam {
     members: ITeamMember[]
 }
 
+export interface ITournamentsregistered {
+    id: string
+    nameTournament: string
+}
+
 export interface ITeamMember {
     id: string
-    nickname: string
+    nickName: string
 }
 
 
 //register
 export interface IRegisterForm {
-    nickname: string;
+    nickName: string;
     email: string;
     password: string;
-    birthdate: string;
+    birthDate: string;
+    tokenFirebase?: string
 }
 
 export interface IRegisterError {
-    nickname?: string;
+    nickName?: string;
     email?: string;
     password?: string;
-    birthdate?: string;
+    birthDate?: string;
 }
 
 //login
 export interface ILoginForm {
     email: string
     password: string
+    tokenFirebase?: string
+}
+
+export interface ILoginDataBase {
+    email: string,
+    tokenFirebase?: string
 }
 
 export interface ILoginError {

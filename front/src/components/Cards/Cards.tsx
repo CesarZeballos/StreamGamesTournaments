@@ -1,71 +1,103 @@
-"use client";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { IBanner } from "@/interfaces/interfaceCards";
-import { banners, Tournaments } from "../Tournaments/Tournaments";
+import { ITournament } from "@/interfaces/interfaceTournaments";
+import { Tournaments } from "../Tournaments/Tournaments";
 import { useMemo, useEffect } from "react";
 import { setCards, setCurrentPage } from "@/redux/slices/cardsSlice";
+import { setTournaments } from "@/redux/slices/tournamentSlice";
+import { fetchTournaments } from "@/utils/fetchTournaments";
+import { format, parse, isThisMonth, isFuture, startOfMonth, endOfMonth } from 'date-fns';
 
 const Cards: React.FC = () => {
-  const cardsState = useSelector((state: RootState) => state.cards);
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
-    if (cardsState.cards.length === 0) {
-      const duplicates = Array.from({ length: 27 }, (_, index) => banners[index % banners.length]);
-      const randomizedCards = duplicates.sort(() => Math.random() - 0.5);
-      console.log("Randomized Cards:", randomizedCards);
-      dispatch(setCards({ cards: randomizedCards }));
-    }
-  }, [dispatch, cardsState.cards.length]);
+    const { cards, filter, currentPage, cardsPerpage } = useSelector((state: RootState) => state.cards);
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("Updated Redux State:", cardsState.cards);
-  }, [cardsState.cards]);
+    useEffect(() => {
+        const loadTournaments = async () => {
+            if (cards.length === 0) {
+                try {
+                    const tournaments = await fetchTournaments();
+                    dispatch(setTournaments(tournaments));
+                    dispatch(setCards({ cards: tournaments }));
+                } catch (error) {
+                    console.error("Error loading tournaments", error);
+                }
+            }
+        };
 
-  const totalPages = useMemo(() => {
-    if (cardsState.cards.length === 0) return 0;
-    return Math.min(Math.ceil(cardsState.cards.length / (cardsState.cardsPerpage || 1)), 3);
-  }, [cardsState.cards, cardsState.cardsPerpage]);
+        loadTournaments();
+    }, [dispatch, cards.length]);
 
-  const cardsPaginated: IBanner[] = useMemo(() => {
-    const indexStart = Math.max((cardsState.currentPage - 1) * (cardsState.cardsPerpage || 1), 0);
-    const indexEnd = Math.min(indexStart + (cardsState.cardsPerpage || 1), cardsState.cards.length);
-    return cardsState.cards.slice(indexStart, indexEnd);
-  }, [cardsState.cards, cardsState.currentPage, cardsState.cardsPerpage]);
+    const filteredCards = useMemo(() => {
+        if (filter === "All Tournaments") {
+            return cards;
+        }
 
-  console.log("Total Pages:", totalPages);
-  console.log("Cards on Current Page:", cardsPaginated);
+        const now = new Date();
+        const startOfCurrentMonth = startOfMonth(now);
+        const endOfCurrentMonth = endOfMonth(now);
 
-  const handleChangePage = (page: number) => {
-    console.log(`Change to Page: ${page}`);
-    dispatch(setCurrentPage(page));
-  };
+        return cards.filter(card => {
+            const cardDate = parse(card.startDate, "dd/MM", new Date());
 
-  return (
-    <div>
-      {cardsState.cards.length > 0 && (
-        <>
-          <div className="grid grid-cols-3 gap-4 w-full ml-small mt-8">
-            {cardsPaginated.map((banner: IBanner, index: number) => (
-              <Tournaments key={`${banner.id}-${index}`} banner={banner}/>
-            ))}
-          </div>
-          <div className="flex justify-center mt-4">
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => handleChangePage(page)}
-                className="buttonPage mx-4"
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
+            const categoryMatches = card.categories === filter;
+            const nameMatches = card.game.name === filter;
+            // const priceCategory = price[card.id]?.price;
+            // const priceMatches = priceCategory === filter;
+      
+            if (filter === "All Tournaments") {
+              return true; // Muestra todos los torneos
+            }
+            if (filter === "THIS_MONTH") {
+              return isThisMonth(cardDate);
+            }
+            if (filter === "NEXT_MONTHS") {
+              return isFuture(cardDate) && cardDate > endOfCurrentMonth;
+            }
+      
+            return categoryMatches || nameMatches;
+          });
+        }, [cards, filter]);
+
+    const totalPages = useMemo(() => {
+        if (filteredCards.length === 0) return 0;
+        return Math.min(Math.ceil(filteredCards.length / cardsPerpage), 3);
+    }, [filteredCards, cardsPerpage]);
+
+    const cardsPaginated: ITournament[] = useMemo(() => {
+        const indexStart = (currentPage - 1) * cardsPerpage;
+        const indexEnd = indexStart + cardsPerpage;
+        return filteredCards.slice(indexStart, indexEnd);
+    }, [filteredCards, currentPage, cardsPerpage]);
+
+    const handleChangePage = (page: number) => {
+        dispatch(setCurrentPage(page));
+    };
+
+    return (
+        <div>
+            {cards.length > 0 && (
+                <>
+                    <div className="grid grid-cols-3 gap-x-6 gap-y-6 w-full ml-small mt-8">
+                        {cardsPaginated.map((tournament: ITournament) => (
+                            <Tournaments key={tournament.id} tournament={tournament} />
+                        ))}
+                    </div>
+                    <div className="flex justify-center mt-4">
+                        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+                            <button
+                                key={page}
+                                onClick={() => handleChangePage(page)}
+                                className={`buttonPage mx-4 ${currentPage === page ? 'active' : ''}`}
+                            >
+                                {page}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
 };
 
 export default Cards;

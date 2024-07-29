@@ -34,14 +34,14 @@ export class CreateUserDto {
 	})
 	@IsString()
 	@MinLength(8)
-	password: string;
+	tokenFirebase: string;
 
 	@ApiProperty({
 		description: 'Fecha de nacimiento del usuario',
 		example: '2000-01-01T00:00:00.000Z',
 	})
-	@IsDateString()
-	birthDate: Date;
+	@IsString()
+	birthDate: string;
 
 	@ApiProperty({
 		description: 'ID del equipo asociado al usuario (opcional)',
@@ -70,7 +70,7 @@ export class SignInDto {
 	})
 	@IsString()
 	@IsNotEmpty()
-	password: string;
+	tokenFirebase: string;
 }
 
 /**

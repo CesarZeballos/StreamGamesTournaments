@@ -1,19 +1,68 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { LoggerGlobalMiddleware } from './middlewares/logger.middleware';
+import { ValidationPipe } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+import { preloadData } from '../preload/preload.db';
+import { PrismaService } from '../prisma/prisma.service';
+import { TeamsService } from './teams/teams.service';
+import { TournamentsService } from './tournaments/tournaments.service';
+
+const prisma = new PrismaClient();
+
+async function PreloadData(
+	prismaService: PrismaService,
+	teamService: TeamsService,
+	tournamentsService: TournamentsService,
+) {
+	const preload = new preloadData(
+		prismaService,
+		teamService,
+		tournamentsService,
+	);
+	await preload.clearTables();
+	await preload.addGames();
+	await preload.addUsers();
+	await preload.addTeams();
+	await preload.addTournaments();
+	await preload.addTeamForTournament();
+}
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+	try {
+		app.enableCors({
+			origin: 'http://localhost:3000',
+			methods: 'GET,POST,PUT,DELETE',
+			allowedHeaders: 'Content-Type,Authorization',
+		});
 
-	const options = new DocumentBuilder()
-		.setTitle('NestJs Api')
-		.setDescription('Stream Games Tournaments Api')
-		.setVersion('1.0.0')
-		.addBearerAuth()
-		.build();
+		const options = new DocumentBuilder()
+			.setTitle('NestJs Api')
+			.setDescription('Stream Games Tournaments Api')
+			.setVersion('1.0.0')
+			.addBearerAuth()
+			.build();
 
-	const document = SwaggerModule.createDocument(app, options);
-	SwaggerModule.setup('api', app, document);
-	await app.listen(3001);
+		const document = SwaggerModule.createDocument(app, options);
+		SwaggerModule.setup('api', app, document);
+
+		app.use(LoggerGlobalMiddleware);
+		app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+		const prismaService = app.get(PrismaService);
+		const teamService = app.get(TeamsService);
+		const tournamentService = app.get(TournamentsService);
+		await PreloadData(prismaService, teamService, tournamentService);
+		console.log('Data preloaded successfully');
+
+		await app.listen(3001);
+	} catch (error) {
+		console.error('Error preloading data:', error);
+	} finally {
+		await prisma.$disconnect();
+	}
 }
+
 bootstrap();

@@ -18,6 +18,7 @@
 		"forceConsistentCasingInFileNames": false, // Deshabilitar la verificación de consistencia en los nombres de archivo
 		"noFallthroughCasesInSwitch": false, // Deshabilitar errores por casos de switch sin break
 		"resolveJsonModule": true, // Permitir la importación de módulos JSON
+		"types": ["multer"],
 		"plugins": [
 			{
 				"name": "@nestjs/swagger", // Plugin de Swagger para NestJS

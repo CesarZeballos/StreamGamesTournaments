@@ -6,15 +6,14 @@ import {
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateTournamentDto } from '../tournaments/createTournament.Dto';
 import { UpdateTournamentDto } from '../tournaments/updateTournament.Dto';
-import { tournaments } from 'src/helpers/tournaments.helper';
 
 @Injectable()
 export class TournamentsService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	/* async getAllTournaments(page: number, limit: number) {
+	async getAllTournaments(page: number, limit: number) {
 		const skip = (page - 1) * limit;
-
+	
 		const tournaments = await this.prisma.tournament.findMany({
 			take: limit,
 			skip: skip,
@@ -24,29 +23,17 @@ export class TournamentsService {
 				organizer: true,
 			},
 		});
-
+	
 		if (tournaments.length === 0) {
 			return { message: 'No tournaments found' };
 		}
-
+	
 		return tournaments;
-	} */
+	}
+	
+ 
 
-		//CON HELPER
-
-
-		async  getAllTournaments(page: number, limit: number) {
-			const skip = (page - 1) * limit;
-		
-			const paginatedTournaments = tournaments.slice(skip, skip + limit);
-		
-			if (paginatedTournaments.length === 0) {
-				return { message: 'No tournaments found' };
-			}
-		
-			return paginatedTournaments;
-		}
-
+	
 
 	async getTournamentById(id: string) {
 		const tournament = await this.prisma.tournament.findUnique({
@@ -66,65 +53,97 @@ export class TournamentsService {
 	}
 
 	async createTournament(createTournamentDto: CreateTournamentDto) {
-		const { organizerId, gameId, ...data } = createTournamentDto;
-
+		const { organizerId, gameId, teams, ...data } = createTournamentDto;
+	
+		// Verificar que el organizador exista
 		const organizerExists = await this.prisma.user.findUnique({
 			where: { id: organizerId },
 		});
-		const gameExists = await this.prisma.games.findUnique({
-			where: { id: gameId },
-		});
-
+	
 		if (!organizerExists) {
 			return { message: `Organizer with id ${organizerId} not found` };
 		}
-
+	
+		// Verificar que el juego exista
+		const gameExists = await this.prisma.games.findUnique({
+			where: { id: gameId },
+		});
+	
 		if (!gameExists) {
 			return { message: `Game with id ${gameId} not found` };
 		}
-
-		const tournament = await this.prisma.tournament.create({
-			data: {
-				...data,
-				organizer: { connect: { id: organizerId } },
-				game: { connect: { id: gameId } },
-			},
-		});
-
-		return tournament;
+	
+		const awardsAsStrings = data.award.map(a => a.toString());
+	
+		try {
+			// Crear el torneo
+			const tournament = await this.prisma.tournament.create({
+				data: {
+					...data,
+					award: awardsAsStrings,
+					organizer: { connect: { id: organizerId } },
+					game: { connect: { id: gameId } },
+					teams: teams
+						? { connect: teams.map((teamId) => ({ id: teamId })) }
+						: undefined,
+				},
+			});
+	
+			return tournament;
+		} catch (error) {
+			// Manejo de errores en la creación del torneo
+			return { message: `Error creating tournament: ${error.message}` };
+		}
 	}
+	
+
 
 	async addTeamTournament(tournamentId: string, teamId: string) {
 		const tournament = await this.prisma.tournament.findUnique({
 			where: { id: tournamentId },
+			include: { teams: true },
 		});
-		const team = await this.prisma.teams.findUnique({
+	
+		const team = await this.prisma.team.findUnique({
 			where: { id: teamId },
 		});
-
+	
 		if (!tournament) {
 			return { message: `Tournament with id ${tournamentId} not found` };
 		}
 		if (!team) {
 			return { message: `Team with id ${teamId} not found` };
 		}
-
-		const updateTournament = await this.prisma.tournament.update({
+	
+		const isTeamAlreadyInTournament = tournament.teams.some(t => t.id === teamId);
+		if (isTeamAlreadyInTournament) {
+			return { message: `Team with id ${teamId} is already in the tournament` };
+		}
+	
+		const updatedTournament = await this.prisma.tournament.update({
 			where: { id: tournamentId },
 			data: {
-				teams: { connect: { id: teamId } },
+				teams: {
+					connect: { id: teamId },
+				},
 			},
 			include: {
 				teams: true,
 			},
 		});
-		return updateTournament;
+	
+		return updatedTournament;
 	}
+	
+	
+	
 
 	async updateATournament(
 		id: string,
 		updateTournamentDto: UpdateTournamentDto,
 	) {
+		const { organizerId, gameId, teams, ...data } = updateTournamentDto;
+
 		const tournament = await this.prisma.tournament.findUnique({
 			where: { id },
 		});
@@ -133,12 +152,53 @@ export class TournamentsService {
 			return { message: `Tournament with id ${id} not found` };
 		}
 
-		const updateTournament = await this.prisma.tournament.update({
+		if (organizerId) {
+			const organizerExists = await this.prisma.user.findUnique({
+				where: { id: organizerId },
+			});
+			if (!organizerExists) {
+				return {
+					message: `Organizer with id ${organizerId} not found`,
+				};
+			}
+		}
+
+		if (gameId) {
+			const gameExists = await this.prisma.games.findUnique({
+				where: { id: gameId },
+			});
+			if (!gameExists) {
+				return { message: `Game with id ${gameId} not found` };
+			}
+		}
+
+		const awardsAsStrings = data.award?.map((a) => a.toString());
+
+		const updateData: any = {
+			...data,
+			award: awardsAsStrings, // Ensure award is a string array
+		};
+
+		if (organizerId) {
+			updateData.organizer = { connect: { id: organizerId } };
+		}
+
+		if (gameId) {
+			updateData.game = { connect: { id: gameId } };
+		}
+
+		if (teams) {
+			updateData.teams = {
+				connect: teams.map((teamId) => ({ id: teamId })),
+			};
+		}
+
+		const updatedTournament = await this.prisma.tournament.update({
 			where: { id },
-			data: { ...updateTournamentDto },
+			data: updateData,
 		});
 
-		return updateTournament;
+		return updatedTournament;
 	}
 
 	async deleteTeam(tournamentId: string, teamId: string) {
@@ -167,7 +227,7 @@ export class TournamentsService {
 			);
 		}
 
-		await this.prisma.teams.delete({
+		await this.prisma.team.delete({
 			where: { id: teamId },
 		});
 
