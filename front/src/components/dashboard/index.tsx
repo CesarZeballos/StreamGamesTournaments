@@ -21,10 +21,10 @@ export const UserDashboard: React.FC = () => {
     
     useEffect(() => {
         if (!user) {
-            // router.push("/")
+            router.push("/")
         } else {
             const id = user.user?.id
-            dispatch(reloadUSerDataSlice(id))
+            // dispatch(reloadUSerDataSlice(id))
             // setTeams([])
             
             // fetchUserById(user.id).then((data) => {
