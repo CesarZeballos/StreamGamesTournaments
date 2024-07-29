@@ -14,7 +14,9 @@ export class UsersRepository {
 
 	 async getAllUsers(): Promise<User[]> {
 	   try {
-	     const users = await this.prisma.user.findMany();
+	     const users = await this.prisma.user.findMany({include: {team: true,
+			tournaments: true,	
+			organizedTeam:true,}});
 	     if (users.length === 0) {
 	       console.info('No users found');
 	     } else {
@@ -35,7 +37,9 @@ export class UsersRepository {
 				where: { id },
 				include: {
 					team: true,
-					tournaments: true,					
+					tournaments: true,	
+					organizedTeam:true,
+							
 				}
 				
 			});
