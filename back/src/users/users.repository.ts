@@ -33,6 +33,11 @@ export class UsersRepository {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
+				include: {
+					team: true,
+					tournaments: true,					
+				}
+				
 			});
 			if (user) {
 				console.info(`User with id ${id} found`);
