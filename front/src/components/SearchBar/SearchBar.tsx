@@ -20,9 +20,9 @@ const SearchBar: React.FC = () => {
         <Image src={allIcon} alt="All Tournaments" className="s-icon" />
         <p>All Tournaments</p>
       </button>
-      <button className="buttonFilter" onClick={() => handleFilterClick("Counter Strike")}>
+      <button className="buttonFilter" onClick={() => handleFilterClick("CounterStrike Go")}>
         <Image src={csIcon} alt="Counter Strike" className="s-icon" />
-        <p>CS: GO</p>
+        <p>Counter Strike</p>
       </button>
       <button className="buttonFilter" onClick={() => handleFilterClick("Fortnite")}>
         <Image src={ftIcon} alt="Fortnite" className="s-icon" />

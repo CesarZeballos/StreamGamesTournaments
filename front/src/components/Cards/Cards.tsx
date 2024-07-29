@@ -6,7 +6,6 @@ import { useMemo, useEffect } from "react";
 import { setCards, setCurrentPage } from "@/redux/slices/cardsSlice";
 import { setTournaments } from "@/redux/slices/tournamentSlice";
 import { fetchTournaments } from "@/utils/fetchTournaments";
-import { name, price } from "@/utils/tournamentsData";
 import { format, parse, isThisMonth, isFuture, startOfMonth, endOfMonth } from 'date-fns';
 
 const Cards: React.FC = () => {
@@ -39,24 +38,26 @@ const Cards: React.FC = () => {
         const endOfCurrentMonth = endOfMonth(now);
 
         return cards.filter(card => {
-            // Convert the "dd/MM" formatted date back to a Date object
             const cardDate = parse(card.startDate, "dd/MM", new Date());
 
             const categoryMatches = card.categories === filter;
-            const nameMatches = name[card.id] === filter;
-            const priceCategory = price[card.id]?.price;
-            const priceMatches = priceCategory === filter;
-
+            const nameMatches = card.game.name === filter;
+            // const priceCategory = price[card.id]?.price;
+            // const priceMatches = priceCategory === filter;
+      
+            if (filter === "All Tournaments") {
+              return true; // Muestra todos los torneos
+            }
             if (filter === "THIS_MONTH") {
-                return isThisMonth(cardDate);
+              return isThisMonth(cardDate);
             }
             if (filter === "NEXT_MONTHS") {
-                return isFuture(cardDate) && cardDate > endOfCurrentMonth;
+              return isFuture(cardDate) && cardDate > endOfCurrentMonth;
             }
-
-            return categoryMatches || nameMatches || priceMatches;
-        });
-    }, [cards, filter]);
+      
+            return categoryMatches || nameMatches;
+          });
+        }, [cards, filter]);
 
     const totalPages = useMemo(() => {
         if (filteredCards.length === 0) return 0;

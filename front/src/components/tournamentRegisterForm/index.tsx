@@ -10,9 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { IUser } from "@/interfaces/interfaceUser";
 import Link from "next/link";
-import csgo from "../../app/assets/images/banners/csgo.jpg";
-import fortnite from "../../app/assets/images/banners/fortnite.jpg";
-import lol from "../../app/assets/images/banners/lol.png";
+
 
 type ImageSource = StaticImageData | string;
 
@@ -22,16 +20,23 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
         name: "",
-        description: "",
         startDate: "",
-        games: null,
-        players: 0,
+        createdAt: "",
+        price: 0,
         categories: "",
-        price:"",
-        award: 0,
-        urlStream: "",
-        organizerId: "",
         gameId: "",
+        membersNumber: 0,
+        award: [""],
+        urlAvatar: "",
+        description: "",
+        maxMember: 0,
+        maxTeam: 0,
+        organizerId: "",
+        game: {
+            id: "",
+            name: "",
+            urlImage: "",
+        }
     });
 
     const [userData, setUserData] = useState<IUser>({
