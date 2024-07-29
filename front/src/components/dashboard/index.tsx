@@ -16,21 +16,21 @@ export const UserDashboard: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
     const section = useSelector((state: RootState) => state.dashboard.view);
     
-    //control de ingreso a la page
-    // useEffect(() => {
-    //     if (!user) {
-    //         router.push("/")
-    //     } else {
-    //         logica para cargar la seccion del dashboard
-    // }
-    // }, [router, user])
+    useEffect(() => {
+        if (!user) {
+            router.push("/")
+        } else {
+            // logica para cargar la seccion del dashboard
+        }
+    }, [router, user])
+    
     
     return (
         <div>
             <h1 className="heading2 text-white mb-16">Dashboard</h1>
             <div className="grid grid-cols-4 gap-x-6">
                 <SearchBarDashboard />
-                <div className="col-span-2">
+                <div className="col-span-2 mx-9">
                     {section === 'data' && <DataDashboardView/>}
                     {section === 'teams' && <TeamsDashboardView/>}
                     {section === 'tournaments' && <TournamentsDashboardView/>}
