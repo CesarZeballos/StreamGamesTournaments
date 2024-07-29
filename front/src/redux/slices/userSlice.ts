@@ -58,8 +58,10 @@ const userSlice = createSlice({
             state.status = 'succeeded'
             state.statusRegister = 'idle'
             console.log("payload", action.payload)
-            state.user = action.payload.user
-            state.token = action.payload.token
+            if (action.payload) {
+                state.user = action.payload.user
+                state.token = action.payload.token
+            } else return
 
             toast.success(`welcome ${action.payload.user.nickName}`, {
                 position: 'top-right',
