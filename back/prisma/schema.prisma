@@ -17,9 +17,9 @@ model User {
   urlSelfie     String?
   createdAt     DateTime     @default(now())
   teamId        String?
-  organizedTeam Team?        @relation("TeamOrganizer")
+  organizedTeam Team[]       @relation("TeamOrganizer")
   tournaments   Tournament[]
-  team          Team?        @relation("TeamUsers", fields: [teamId], references: [id])
+  team          Team[]       @relation("TeamUsers")
 }
 
 model UserDeleted {
