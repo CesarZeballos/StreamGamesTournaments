@@ -11,7 +11,7 @@ model User {
   id            String       @id @default(uuid())
   email         String       @unique @db.VarChar(80)
   nickName      String       @unique
- tokenFirebase  String
+  tokenFirebase String
   birthDate     DateTime
   role          Role         @default(user)
   urlSelfie     String?
@@ -35,35 +35,34 @@ model UserDeleted {
 }
 
 model Tournament {
-  id             String      @id @default(uuid())
-  nameTournament String      // Nombre del torneo
-  startDate      DateTime    // Fecha de inicio del torneo
-  createdAt      DateTime    @default(now()) // Fecha de creación
-  price          Int?        // Precio del torneo (opcional)
-  categories     Categories  // Categoría del torneo (Enum)
-  gameId         String      // ID del juego
-  membersNumber  Int         // Número de miembros
-  award          String[]    // Premios del torneo
-  urlAvatar      String      // URL del avatar del torneo
-  description    String      // Descripción del torneo
-  maxMember      Int         // Número máximo de miembros
-  maxTeam        Int         // Número máximo de equipos
-  organizerId    String      // ID del organizador
-  teams          Team[]      // Equipos participando (opcional)
-  game           Games       @relation(fields: [gameId], references: [id])
-  organizer      User        @relation(fields: [organizerId], references: [id])
+  id             String     @id @default(uuid())
+  nameTournament String
+  startDate      DateTime
+  createdAt      DateTime   @default(now())
+  category       Categories
+  organizerId    String
+  gameId         String
+  membersNumber  Int
+  maxTeam        Int
+  urlAvatar      String
+  award          String[]
+  description    String
+  teams          Team[]     @relation("TournamentTeams")
+  game           Games      @relation(fields: [gameId], references: [id])
+  organizer      User       @relation(fields: [organizerId], references: [id])
+  teamId         String?
 }
 
 model Team {
-  id           String      @id @default(uuid())
-  name         String      @unique @db.VarChar(25)
-  createdAt    DateTime    @default(now())
+  id           String       @id @default(uuid())
+  name         String       @unique @db.VarChar(25)
+  createdAt    DateTime     @default(now())
   urlAvatar    String
-  organizerId  String      @unique
+  organizerId  String       @unique
+  organizer    User         @relation("TeamOrganizer", fields: [organizerId], references: [id])
+  tournaments  Tournament[] @relation("TournamentTeams")
+  users        User[]       @relation("TeamUsers")
   tournamentId String?
-  organizer    User        @relation("TeamOrganizer", fields: [organizerId], references: [id])
-  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
-  users        User[]      @relation("TeamUsers")
 }
 
 model Games {

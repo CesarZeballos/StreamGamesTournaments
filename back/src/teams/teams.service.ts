@@ -14,7 +14,7 @@ export class TeamsService {
             take: limit,
             skip,
             include: {
-                tournament: true,
+                tournaments: true,
                 users: true
             }
         });
@@ -50,7 +50,7 @@ export class TeamsService {
         const teamData: Prisma.TeamCreateInput = {
             ...team,
             organizer: { connect: { id } },
-            tournament: team.tournamentId ? { connect: { id: team.tournamentId } } : undefined,
+            tournaments: team.tournamentId ? { connect: { id: team.tournamentId } } : undefined,
             users: { connect: { id } },
             createdAt: new Date()
         };
@@ -101,7 +101,7 @@ export class TeamsService {
 
         const updateData: Prisma.TeamUpdateInput = {
             ...updateTeam,
-            tournament: updateTeam.tournamentId ? { connect: { id: updateTeam.tournamentId } } : undefined,
+            tournaments: updateTeam.tournamentId ? { connect: { id: updateTeam.tournamentId } } : undefined,
             users: updateTeam.user ? { connect: updateTeam.user.map(user => ({ id: user.id })) } : undefined,
         };
 

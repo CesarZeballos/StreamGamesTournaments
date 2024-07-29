@@ -12,43 +12,32 @@ import { users as helperUsers } from 'src/helpers/users.helper';
 export class UsersRepository {
 	constructor(private readonly prisma: PrismaService) { }
 
-	// async getAllUsers(): Promise<User[]> {
-	//   try {
-	//     const users = await this.prisma.user.findMany();
-	//     if (users.length === 0) {
-	//       console.info('No users found');
-	//     } else {
-	//       console.info(`Found ${users.length} users`);
-	//     }
-	//     return users;
-	//   } catch (error) {
-	//     console.error('Failed to get all users:', error);
-	//     throw new Error('Failed to get users');
-	//   }
-	// }
+	 async getAllUsers(): Promise<User[]> {
+	   try {
+	     const users = await this.prisma.user.findMany();
+	     if (users.length === 0) {
+	       console.info('No users found');
+	     } else {
+	       console.info(`Found ${users.length} users`);
+	     }
+	     return users;
+	   } catch (error) {
+	     console.error('Failed to get all users:', error);
+	     throw new Error('Failed to get users');
+	   }
+	 }
 
-	async getAllUsers() {
-		try {
-			const users = await this.prisma.user.findMany();
-			if (users.length === 0) {
-				console.info(
-					'No users found in database, returning helper users',
-				);
-				return helperUsers;
-			} else {
-				console.info(`Found ${users.length} users in database`);
-			}
-			return users;
-		} catch (error) {
-			console.error('Failed to get all users:', error);
-			throw new InternalServerErrorException('Failed to get users');
-		}
-	}
+	
 
 	async getUserById(id: string): Promise<User | null> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
+				include: {
+					team: true,
+					tournaments: true,					
+				}
+				
 			});
 			if (user) {
 				console.info(`User with id ${id} found`);
