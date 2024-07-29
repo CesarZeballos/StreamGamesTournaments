@@ -120,12 +120,13 @@ export class preloadData {
 			const game = games[counterGame];
 	
 			const tournamentData: CreateTournamentDto = {
+				nameTournament: tournament.nameTournament,
 				startDate: tournament.startDate.toISOString(),
-				categories: tournament.categories,
+				category: tournament.categories,
 				award: tournament.award,
 				description: tournament.description,
 				urlAvatar: tournament.urlAvatar,
-				maxMember: tournament.maxMember,
+				membersNumber: tournament.maxMember,
 				maxTeam: tournament.maxTeam,
 				organizerId: userOrganizer.id,
 				gameId: game.id,
@@ -141,16 +142,11 @@ export class preloadData {
 
 	async addTeamForTournament() {
 		const teams: Team[] = await this.prisma.team.findMany();
-
-		const tournaments: Tournament[] =
-			await this.prisma.tournament.findMany();
-
+		const tournaments: Tournament[] = await this.prisma.tournament.findMany();
+	
 		for (const tournament of tournaments) {
 			for (const team of teams) {
-				await this.tournamentsService.addTeamTournament(
-					tournament.id,
-					team.id,
-				);
+				await this.tournamentsService.addTeamTournament(tournament.id, team.id);
 			}
 		}
 	}

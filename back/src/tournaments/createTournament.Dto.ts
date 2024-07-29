@@ -30,7 +30,7 @@ export class CreateTournamentDto {
 	})
 	@IsNotEmpty()
 	@IsEnum(Categories)
-	categories: Categories;
+	category: Categories;
 
 	@ApiProperty({
 		description: 'Award amount for the tournament',
@@ -63,7 +63,11 @@ export class CreateTournamentDto {
 	})
 	@IsNotEmpty()
 	@IsNumber()
-	maxMember: number;
+	membersNumber: number;
+
+	@IsNotEmpty()
+	@IsNumber()
+	nameTournament: string;
 
 	@ApiProperty({
 		description: 'Maximum number of teams allowed in the tournament',

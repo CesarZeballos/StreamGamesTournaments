@@ -35,32 +35,34 @@ model UserDeleted {
 }
 
 model Tournament {
-  id          String     @id @default(uuid())
-  startDate   DateTime
-  createdAt   DateTime   @default(now())
-  categories  Categories
-  organizerId String
-  gameId      String
-  maxMember   Int
-  maxTeam     Int
-  urlAvatar   String
-  award       String[]
-  description String
-  teams       Team[]
-  game        Games      @relation(fields: [gameId], references: [id])
-  organizer   User       @relation(fields: [organizerId], references: [id])
+  id             String     @id @default(uuid())
+  nameTournament String
+  startDate      DateTime
+  createdAt      DateTime   @default(now())
+  category       Categories
+  organizerId    String
+  gameId         String
+  membersNumber  Int
+  maxTeam        Int
+  urlAvatar      String
+  award          String[]
+  description    String
+  teams          Team[]     @relation("TournamentTeams")
+  game           Games      @relation(fields: [gameId], references: [id])
+  organizer      User       @relation(fields: [organizerId], references: [id])
+  teamId         String?
 }
 
 model Team {
-  id           String      @id @default(uuid())
-  name         String      @unique @db.VarChar(25)
-  createdAt    DateTime    @default(now())
+  id           String       @id @default(uuid())
+  name         String       @unique @db.VarChar(25)
+  createdAt    DateTime     @default(now())
   urlAvatar    String
-  organizerId  String      @unique
+  organizerId  String       @unique
+  organizer    User         @relation("TeamOrganizer", fields: [organizerId], references: [id])
+  tournaments  Tournament[] @relation("TournamentTeams")
+  users        User[]       @relation("TeamUsers")
   tournamentId String?
-  organizer    User        @relation("TeamOrganizer", fields: [organizerId], references: [id])
-  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
-  users        User[]      @relation("TeamUsers")
 }
 
 model Games {
