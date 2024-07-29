@@ -8,6 +8,8 @@ export const singUpFirebaseWithEmailAndPassword = async ({email, password}: IFir
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user;
         const tokenFirebase = await user.getIdToken()
+        console.log(tokenFirebase)
+
 
         return tokenFirebase
     } catch (error: any) {
@@ -24,7 +26,7 @@ export const singInFirebaseWithEmailAndPassword = async ({ email, password }: IF
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
     const user = userCredential.user;
     const tokenFirebase = await user.getIdToken()
-
+    
     return tokenFirebase
   } catch (error: any) {
     const errorCode = error.code;
