@@ -12,9 +12,10 @@ export const SearchBarDashboard: React.FC = () => {
     }
     
     return (
-        <div className="bg-BGdark rounded-3xl py-4">
+        <div className="bg-BGdark rounded-3xl p-4 mr-9 h-full">
             <button className="buttonSecondary" onClick={() => handleViewClick("data")}>Data</button>
             <button className="buttonSecondary" onClick={() => handleViewClick("teams")}>Teams</button>
+            <button className="buttonSecondary" onClick={() => handleViewClick("createTeam")}>Create Team</button>
             <button className="buttonSecondary" onClick={() => handleViewClick("tournaments")}>Tournaments</button>
         </div>
     )

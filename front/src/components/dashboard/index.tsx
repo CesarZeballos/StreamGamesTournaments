@@ -11,6 +11,7 @@ import { SearchBarDashboard } from "../searchbarDashboard";
 import { ITeam } from "@/interfaces/interfaceUser";
 import { fetchUserById } from "@/utils/fetchUser";
 import { reloadUSerDataSlice } from "@/redux/thunks/userSliceThunk";
+import { TeamCreateForm } from "../teamCreateForm";
 
 
 export const UserDashboard: React.FC = () => {
@@ -41,10 +42,11 @@ export const UserDashboard: React.FC = () => {
             <h1 className="heading2 text-white mb-16">Dashboard</h1>
             <div className="grid grid-cols-4 gap-x-6">
                 <SearchBarDashboard />
-                <div className="col-span-2 mx-9">
+                <div className="col-span-2 f-full">
                     {section === 'data' && <DataDashboardView/>}
                     {section === 'teams' && <TeamsDashboardView teams={user.user?.teams}/>}
                     {section === 'tournaments' && <TournamentsDashboardView tournaments={[]}/>}
+                    {section === 'createTeam' && <TeamCreateForm />}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
                     <img className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />

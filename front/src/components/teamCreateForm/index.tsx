@@ -6,18 +6,9 @@ import { useSelector } from "react-redux";
 
 
 export const TeamCreateForm = () => {
-    const router = useRouter();
-
-    const user = useSelector((state: RootState) => state.user.user);
-    useEffect(() => {
-        if (!user) {
-            router.push("/")
-        }
-    }, [router, user])
-    
     return (
         <div>
-            <h1 className="heading2 text-white">Team Create Form</h1>
+            <h1 className="heading4 text-white">{`Let's create your team`}</h1>
         </div>
     )
 }
