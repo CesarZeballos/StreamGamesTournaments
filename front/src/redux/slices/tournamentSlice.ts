@@ -5,6 +5,7 @@ import { getTournamentsSlice } from "../thunks/tournamentsSliceThunk";
 import { toast } from "sonner";
 
 const initialState: ITournamentState = {
+  status: "idle",
   tournaments: []
 };
 
@@ -19,15 +20,17 @@ const tournamentsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTournamentsSlice.pending, (state) => {
-        // Handle pending state if needed
+        state.status = "loading";
       })
       .addCase(getTournamentsSlice.rejected, (state, action) => {
+        state.status = "failed";
         toast.error('Error in getting tournaments', {
           position: 'top-right',
           duration: 1500,
         });
       })
       .addCase(getTournamentsSlice.fulfilled, (state, action: PayloadAction<ITournament[]>) => {
+        state.status = "succeeded";
         state.tournaments = action.payload;
       });
   }

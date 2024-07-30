@@ -73,6 +73,7 @@ export const LoginForm: React.FC = () => {
         }, 2000);
     }}, [loginStatus, router])
     
+    
     return (
         <form onSubmit={handleSubmit}>
             <h1 className="heading2 text-white mb-16">Login</h1>
