@@ -57,18 +57,21 @@ export const LoginForm: React.FC = () => {
         event.preventDefault()
         if (!errorLogin.email || !errorLogin.password) {
             dispatch(loginSlice(data))
-            setTimeout(() => {
-                if(user) {
-                    router.push("/")
-                } else return
-            }, 1500);
         } else {
             toast.error('Email or password incorrect', {
                 position: 'top-right',
                 duration: 1500,
-              })
+            })
         }
     }
+
+    const loginStatus = useSelector((state: RootState) => state.user.status)
+    useEffect(() => {
+        if (loginStatus === "succeeded") {
+        setTimeout(() => {
+            router.push("/")
+        }, 2000);
+    }}, [loginStatus, router])
     
     return (
         <form onSubmit={handleSubmit}>

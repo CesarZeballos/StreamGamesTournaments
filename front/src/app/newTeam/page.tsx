@@ -1,7 +1,7 @@
 import { TeamCreateForm } from "@/components/teamCreateForm"
 
 
-const Teams: React.FC = () => {
+const NewTeams: React.FC = () => {
 
     return (
         <div className="w-screen h-screen flex items-center justify-center">
@@ -10,4 +10,4 @@ const Teams: React.FC = () => {
     )
 }
 
-export default Teams
+export default NewTeams

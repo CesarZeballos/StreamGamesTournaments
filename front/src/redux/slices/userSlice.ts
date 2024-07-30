@@ -61,7 +61,6 @@ const userSlice = createSlice({
         .addCase(loginSlice.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.statusRegister = 'idle'
-            console.log("payload", action.payload)
             if (action.payload) {
                 state.user = action.payload.user
                 state.token = action.payload.token
@@ -74,7 +73,7 @@ const userSlice = createSlice({
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
-            toast.error('fail in login', {
+            toast.error('fail in login: user or password incorrect', {
                 position: 'top-right',
                 duration: 1500,
               })
