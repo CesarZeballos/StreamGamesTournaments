@@ -56,6 +56,10 @@ export const RegisterForm: React.FC = () => {
                 birthdate: new Date(data.birthDate).toISOString()
             }
             dispatch(registerSlice(registerData))
+            setTimeout(() => {
+                dispatch(loginSlice(registerData))
+                router.push("/")
+            }, 1500)
         } else {
             toast('error register', {
                 position: 'top-right',

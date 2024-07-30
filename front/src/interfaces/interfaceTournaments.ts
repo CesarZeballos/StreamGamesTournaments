@@ -2,7 +2,7 @@ import { StaticImageData } from "next/image";
 
 export interface ITournament {
     id: string;
-    name: string;
+    nameTournament: string;
     startDate: string;
     createdAt: string;
     price: number;

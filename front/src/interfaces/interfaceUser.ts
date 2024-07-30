@@ -5,12 +5,18 @@ export interface IUser {
     birthDate: string
     role: string
     teams: ITeam[]
+    tournaments: ITournamentsregistered[]
 }
 
 export interface ITeam {
     id: string
     name: string
     members: ITeamMember[]
+}
+
+export interface ITournamentsregistered {
+    id: string
+    nameTournament: string
 }
 
 export interface ITeamMember {
