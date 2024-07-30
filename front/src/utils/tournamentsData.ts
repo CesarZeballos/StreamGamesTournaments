@@ -10,9 +10,14 @@ import beginner from "../app/assets/images/icons/beginner-dark.png";
 import advanced from "../app/assets/images/icons/advanced-dark.png";
 import expert from "../app/assets/images/icons/expert-dark.png";
 import vip from "../app/assets/images/icons/premium.png";
+import award1 from "../../app/assets/images/icons/award1.png"
+import award2 from "../../app/assets/images/icons/award2.png"
+import award3 from "../../app/assets/images/icons/award3.png"
 import { StaticImageData } from "next/image";
 
 type ImageSource = StaticImageData | string;
+
+export const awardImages = [award1, award2, award3];
 
 export const gameIcons: { [key: string]: ImageSource } = {
     "CounterStrike Go": csIcon,

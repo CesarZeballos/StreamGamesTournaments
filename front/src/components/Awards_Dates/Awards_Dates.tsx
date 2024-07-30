@@ -1,10 +1,7 @@
 import Image from "next/image";
 import { ITournament } from "@/interfaces/interfaceTournaments";
-import award1 from "../../app/assets/images/icons/award1.png"
-import award2 from "../../app/assets/images/icons/award2.png"
-import award3 from "../../app/assets/images/icons/award3.png"
+import { awardImages } from "@/utils/tournamentsData";
 
-const awardImages = [award1, award2, award3];
 
 export const Awards_Dates: React.FC<{ tournament: ITournament }> = ({ tournament }) => {
     const awards = tournament.award.map((award, index) => {
