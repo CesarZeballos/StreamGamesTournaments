@@ -52,14 +52,18 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const stringDate = tournamentData.startDate.split('T')[0];
 
-    const [userData, setUserData] = useState<IUser>({
-        id: user?.id || "",
-        nickName: user?.nickName || "",
-        email: user?.email || "",
-        birthDate: user?.birthDate || "",
-        role: user?.role || "",
-        teams: user?.teams || [],
-    });
+    // Corrección sobre el estado del usuario para que sea utilizado correctamente; edu
+    const initialUserData: IUser = {
+        id: "",
+        nickName: "",
+        email: "",
+        birthDate: "",
+        role: "",
+        teams: [],
+        tournaments: []
+    };
+    
+    const [userData, setUserData] = useState<IUser>(initialUserData);
 
     //negrada para que no se me rompa todo
     const [teams, setTeams] = useState<ITeam[]>([]);

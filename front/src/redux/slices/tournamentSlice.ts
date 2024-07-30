@@ -4,8 +4,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getTournamentsSlice } from "../thunks/tournamentsSliceThunk";
 import { toast } from "sonner";
 
+// faltaba el status; edu
 const initialState: ITournamentState = {
-  tournaments: []
+  tournaments: [],
+  status: ""
 };
 
 const tournamentsSlice = createSlice({

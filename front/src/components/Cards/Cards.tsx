@@ -37,16 +37,15 @@ const Cards: React.FC = () => {
         const startOfCurrentMonth = startOfMonth(now);
         const endOfCurrentMonth = endOfMonth(now);
 
-        return cards.filter(card => {
+        return cards.filter((card: { startDate: string; categories: string; game: { name: string; }; }) => {
             const cardDate = parse(card.startDate, "dd/MM", new Date());
-
             const categoryMatches = card.categories === filter;
             const nameMatches = card.game.name === filter;
             // const priceCategory = price[card.id]?.price;
             // const priceMatches = priceCategory === filter;
       
             if (filter === "All Tournaments") {
-              return true; // Muestra todos los torneos
+              return true;
             }
             if (filter === "THIS_MONTH") {
               return isThisMonth(cardDate);
