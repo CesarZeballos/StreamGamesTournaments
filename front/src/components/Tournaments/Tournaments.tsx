@@ -7,7 +7,7 @@ import { gameIcons, categoryIcons, navigationIcons, gameImages } from "@/utils/t
   export const Tournaments: React.FC<{ tournament: ITournament }> = ({tournament}) => {
     const gameImage = gameImages[tournament.game.name];
     const gameIcon = gameIcons[tournament.game.name];
-    const categoryIcon = categoryIcons[tournament.categories];
+    const categoryIcon = categoryIcons[tournament.category];
 
 
     return (

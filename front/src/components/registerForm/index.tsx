@@ -66,7 +66,7 @@ export const RegisterForm: React.FC = () => {
                 duration: 1500,
             })
         }
-    }, [data, errorRegister, dispatch])
+    }, [errorRegister.nickName, errorRegister.email, errorRegister.password, errorRegister.birthDate, data, dispatch, router])
     
     return (
         <form onSubmit={handleSubmit}>

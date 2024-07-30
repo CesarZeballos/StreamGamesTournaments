@@ -34,7 +34,7 @@ const LiveBanner: React.FC = () => {
 
     const gameImage = gameImages[currentTournament.game.name];
     const gameIcon = gameIcons[currentTournament.game.name];
-    const categoryIcon = categoryIcons[currentTournament.categories];
+    const categoryIcon = categoryIcons[currentTournament.category];
 
     return (
         <Suspense fallback={<div className="loading">Loading banner...</div>}>
@@ -43,7 +43,7 @@ const LiveBanner: React.FC = () => {
             <div className="relative flex flex-row justify-center mr-large ml-large mb-medium rounded-xl">
                 <Image
                     src={gameImage}
-                    alt={currentTournament.categories}
+                    alt={currentTournament.category}
                     className="w-2/3 h-2/3 z-10 rounded-3xl"
                 />
                 <div className="absolute w-3/4 h-full flex justify-end z-20 bg-opacity-0">
