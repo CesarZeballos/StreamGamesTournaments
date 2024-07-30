@@ -1,21 +1,32 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+	"compilerOptions": {
+		"module": "commonjs", // Módulo común para Node.js
+		"declaration": true, // Generar archivos de declaración (.d.ts)
+		"removeComments": true, // Eliminar comentarios en los archivos compilados
+		"emitDecoratorMetadata": true, // Emitir metadatos para decoradores
+		"experimentalDecorators": true, // Habilitar decoradores experimentales
+		"allowSyntheticDefaultImports": true, // Permitir importaciones por defecto sintéticas
+		"target": "ES2021", // Especificar la versión de ECMAScript
+		"sourceMap": true, // Generar mapas de origen para depuración
+		"outDir": "./dist", // Directorio de salida para los archivos compilados
+		"baseUrl": "./", // Base URL para resolver módulos
+		"incremental": true, // Compilación incremental
+		"skipLibCheck": true, // Omitir verificación de tipos en archivos de declaración
+		"strictNullChecks": false, // Deshabilitar verificación estricta de nullabilidad
+		"noImplicitAny": false, // Deshabilitar errores por any implícito
+		"strictBindCallApply": false, // Deshabilitar verificación estricta de bind, call y apply
+		"forceConsistentCasingInFileNames": false, // Deshabilitar la verificación de consistencia en los nombres de archivo
+		"noFallthroughCasesInSwitch": false, // Deshabilitar errores por casos de switch sin break
+		"resolveJsonModule": true, // Permitir la importación de módulos JSON
+		"types": ["multer"],
+		"plugins": [
+			{
+				"name": "@nestjs/swagger", // Plugin de Swagger para NestJS
+				"options": {
+					"classValidatorShim": true, // Habilitar el shim de class-validator
+					"introspectComments": true // Habilitar introspección de comentarios
+				}
+			}
+		]
+	}
 }
