@@ -5,11 +5,12 @@ import { toast } from "sonner";
 import { addTeam } from "../thunks/tournamentsSliceThunk";
 
 const initialState: IUserState = {
-    user: null,
-    status: 'idle',
-    error: null,
-    token: null,
-    statusRegister: 'idle'
+  user: null,
+  status: 'idle',
+  statusRegister: 'idle',
+  error: null,
+  token: null,
+  statusForgotPassword: ""
 }
 
 const userSlice = createSlice({

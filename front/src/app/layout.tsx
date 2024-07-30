@@ -24,16 +24,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
+        <Providers>
           <NavBar />
             <main className="flex-grow">
               {children}
               <Toaster position="bottom-right"/>
             </main>
           <Footer />
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }
