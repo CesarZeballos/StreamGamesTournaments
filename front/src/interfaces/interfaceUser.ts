@@ -14,6 +14,16 @@ export interface ITeam {
     members: ITeamMember[]
 }
 
+export interface ITeamForm {
+    name: string
+    members: ITeamMember[]
+}
+
+export interface ITeamError {
+    name?: string
+    members?: string
+}
+
 export interface ITournamentsregistered {
     id: string
     nameTournament: string

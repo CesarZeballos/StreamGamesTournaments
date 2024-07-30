@@ -59,6 +59,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         birthDate: user?.birthDate || "",
         role: user?.role || "",
         teams: user?.teams || [],
+        tournaments: user?.tournaments || [],
     });
 
     //negrada para que no se me rompa todo
@@ -149,7 +150,11 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                                         ))}
                                     </Select>
                                 </FormControl>
-                                <Link href="/teams" className="buttonPrimary">Add new team</Link>
+                                <button className="buttonPrimary" onClick={() => dispatch(setView('createTeam'))}>
+                                    <Link href="/dashboard">
+                                        Create new team
+                                    </Link>
+                                </button>
                             </div>
                         </FormContainer> 
                     }
