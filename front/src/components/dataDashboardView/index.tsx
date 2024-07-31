@@ -11,8 +11,8 @@ export const DataDashboardView: React.FC = () => {
         <div className="grid grid-cols-2">
             <div className="flex flex-col">
                 <h1 className="heading4 text-white">Hi {user?.nickName}!</h1>
-                <div className="flex flex-col mt-4">
-                    <h2 className="heading5 text-white">Here you can see your data</h2>
+                <div className="flex flex-col mt-4 gap-2">
+                    <h2 className="heading5 text-white mb-2">Here you can see your data</h2>
                     <p className="body text-white">Nickname: {user?.nickName}</p>
                     <p className="body text-white">Email: {user?.email}</p>
                     <p className="body text-white">Role: {user?.role}</p>

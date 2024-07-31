@@ -2,7 +2,11 @@ import { ITournamentsregistered } from "@/interfaces/interfaceUser"
 import Link from "next/link"
 
 
-export const TournamentsDashboardView = ({tournaments} : {tournaments: ITournamentsregistered[]}) => {
+export const TournamentsDashboardView = () => {
+    //creado para que no llore!!
+    const tournaments: ITournamentsregistered[] = []
+    //
+
     return (
             <div className="flex flex-col w-max">
                 <h1 className="heading4 text-white">Your tournaments</h1>

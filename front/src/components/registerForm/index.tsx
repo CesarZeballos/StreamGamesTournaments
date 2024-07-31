@@ -66,7 +66,9 @@ export const RegisterForm: React.FC = () => {
     
     const registerStatus = useSelector((state: RootState) => state.user.statusRegister)
     useEffect(() => {
-        if (registerStatus === "succeeded") {
+        if (registerStatus === "failed") {
+            return
+        } else if (registerStatus === "succeeded") {
             setTimeout(() => {
                 dispatch(loginSlice({
                     email: data.email,

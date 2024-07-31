@@ -12,7 +12,7 @@ import { validateTeamName } from "@/utils/validateForms/validationAddTeam";
 import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
 
-export const TeamCreateForm = () => {
+export const AddFriend = () => {
     const [teamName, setTeamName] = useState<string>("")
     const [teamMembers, setTeamMembers] = useState<ITeamMember[]>([])
 
