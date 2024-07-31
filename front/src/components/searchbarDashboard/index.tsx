@@ -17,7 +17,7 @@ export const SearchBarDashboard: React.FC = () => {
             <button className="buttonSecondary" onClick={() => handleViewClick("notifications")}>Notifications</button>
             <button className="buttonSecondary" onClick={() => handleViewClick("friends")}>Friends</button>
             <button className="buttonSecondary" onClick={() => handleViewClick("addFriend")}>Add friend</button>
-            <button className="buttonSecondary" onClick={() => handleViewClick("tournaments")}>My tournaments</button>
+            <button className="buttonSecondary" onClick={() => handleViewClick("tournaments")}>Tournaments</button>
             {userRol === "organizer" || userRol === "admin" && <div>
                 <button className="buttonSecondary" onClick={() => handleViewClick("myTournaments")}>Organized tournaments</button>
                 <button className="buttonSecondary" onClick={() => handleViewClick("createTournament")}>Create Tournament</button>
