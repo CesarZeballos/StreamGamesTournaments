@@ -3,7 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service'; 
 import { CreateTournamentDto } from '../tournaments/createTournament.Dto';
 import { UpdateTournamentDto } from '../tournaments/updateTournament.Dto';
 

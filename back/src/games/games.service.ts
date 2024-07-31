@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service'; 
 import { CreateGameDto, UpdateGameDto } from './games.dto';
 import { Games } from '@prisma/client';
 
