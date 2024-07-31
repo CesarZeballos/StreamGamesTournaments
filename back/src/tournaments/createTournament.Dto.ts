@@ -56,6 +56,10 @@ export class CreateTournamentDto {
 	@IsNumber()
 	maxTeam: number;
 
+	@IsNotEmpty()
+	@IsNumber()
+	maxMember: number;
+
 	@ApiProperty({
 		description: 'URL for the tournament avatar',
 		example: 'https://example.com/avatar1.jpg',
