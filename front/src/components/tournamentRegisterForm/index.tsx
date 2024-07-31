@@ -5,120 +5,57 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
 import { FormContainer } from "../formContainer";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { ITeam, IUser } from "@/interfaces/interfaceUser";
-import Link from "next/link";
-import csgo from "../../app/assets/images/banners/csgo.jpg";
-import fortnite from "../../app/assets/images/banners/fortnite.jpg";
-import lol from "../../app/assets/images/banners/lol.png";
-import { fetchTournamentById } from "@/utils/fetchTournaments";
-import { setView } from "@/redux/slices/dashboardSlice";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { RootState } from "@/redux/store";
-import { fetchUserById } from "@/utils/fetchUser";
-
-type ImageSource = StaticImageData | string;
+import { toast } from "sonner";
 
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
     const router = useRouter();
+
+    // Seteo de la informacion
     const user = useSelector((state: RootState) => state.user.user);
     const tournaments = useSelector((state: RootState) => state.tournaments.tournaments);
-
-    const [tournamentData, setTournamentData] = useState<ITournament>({
-        id: "",
-        nameTournament: "",
-        startDate: "",
-        createdAt: "",
-        price: 0,
-        categories: "",
-        gameId: "",
-        membersNumber: 0,
-        award: [],
-        urlAvatar: "",
-        description: "",
-        maxMember: 0,
-        maxTeam: 0,
-        organizerId: "",
-        game: {
-            id: "",
-            name: "",
-            urlImage: "",
-        }
-    });
-
+    const turnament = tournaments.find((tournament) => tournament.id === tourId);
+    const [tournamentData, setTournamentData] = useState<ITournament>(turnament!);
     const stringDate = tournamentData.startDate.split('T')[0];
-
-    const [userData, setUserData] = useState<IUser>({
-        id: user?.id || "",
-        nickName: user?.nickName || "",
-        email: user?.email || "",
-        birthDate: user?.birthDate || "",
-        role: user?.role || "",
-        teams: user?.teams || [],
-        tournaments: user?.tournaments || [],
-    });
-
-    //negrada para que no se me rompa todo
-    const [teams, setTeams] = useState<ITeam[]>([]);
-
-    const [team, setTeam] = useState("");
-
-    const [registerData, setRegisterData] = useState<IAddTeam>({
-        tournamentId: tourId,
-        teamId: "",
-        payment: "full",
-    })
-
+    
+    //control de ingreso a la page
     useEffect(() => {
         if (!user) {
             router.push("/login")
-        } else {
-            const tournament = tournaments.find((tournament) => tournament.id === tourId);
-                setTournamentData(tournament!)
-            }
-    }, [user, tournaments, tourId, router]);
+        } 
+    }, [user, router]);
 
-    const handleChangeSelect = (event: SelectChangeEvent) => {
-        setTeam(event.target.value)
-        console.log(team)
-    }
+    const [addTeam, setAddTeam] = useState<IAddTeam>({
+        tournamentId: tourId,
+        teamName: "",
+        members: [],
+    });
+   
+    const [teamMembers, setTeamMembers] = useState([]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
-        setRegisterData({
-            ...registerData,
+        setAddTeam({
+            ...addTeam,
             [name]: value
         })
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const tournamentRegisterData = {
-            tournamentId: tourId,
-            teamId: team,
-            payment: registerData.payment
-        }
-        console.log(tournamentRegisterData)
-        if(!team || !registerData.payment) {
-            toast.error(`Please select a team and select a payment method`, {
-                position: "top-right",
+        if (teamMembers.length < tournamentData.maxMember) {
+            toast.error(`this tournaments require ${tournamentData.maxMember} team members. Need ${tournamentData.maxMember - teamMembers.length}`, {
+                position: 'top-right',
                 duration: 1500,
             })
-        } else {
-            // dispatch(state.registerTournament(registerData))
-            dispatch(setView('tournaments'))
-            toast.success(`Tournament registered successfully`, {
-                position: "top-right",
-                duration: 1500,
-            })
-            setTimeout(() => {
-                router.push("/dashboard")
-            }, 1500)
         }
+        setAddTeam({
+            ...addTeam, 
+            members: teamMembers}
+        )
+        console.log(addTeam)
     }
 
     return (
@@ -132,62 +69,100 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
                     {tournamentData.membersNumber !== 1 &&
                         <FormContainer section="Select your team">
-                            <p className="body text-white">Select your team</p>
-                            <div className="flex flex-row gap-4 items-center">
-                                <FormControl sx={{ m: 0, minWidth: 120 }} size="small" >
-                                    <Select
-                                    
-                                    value={team}
-                                    onChange={handleChangeSelect}
-                                    displayEmpty
-                                    className="input w-fit"
-                                    >
-                                        <MenuItem value="">
-                                            <em>None</em>
-                                        </MenuItem>
-                                        {teams && teams.map((team) => (
-                                            <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                <button className="buttonPrimary" onClick={() => dispatch(setView('createTeam'))}>
-                                    <Link href="/dashboard">
-                                        Create new team
-                                    </Link>
-                                </button>
-                            </div>
+                            <p className="body text-white">Select your team members</p>
+                            <h2 className="input">form selector</h2>
+                            <p className="errorForm">{`select ${tournamentData.maxMember - 1} friends`}</p>
+
                         </FormContainer> 
                     }
-
-                    {tournamentData.membersNumber !== 1 && 
-                        <FormContainer section="Payments">
-                            <p className="body text-white">Select your payment method</p>
-                            <RadioGroup
-                                // aria-labelledby="demo-radio-buttons-group-label"
-                                name="payment"
-                                value={registerData.payment}
-                                onChange={handleChange}
-                                defaultValue="full"
-                            >
-                                <FormControlLabel 
-                                    className="body text-white" 
-                                    value="full" 
-                                    control={<Radio className="body text-white"/>} 
-                                    label={`Full Payment`} 
-                                />
-                                <FormControlLabel 
-                                    className="body text-white" 
-                                    value="Individual" 
-                                    control={<Radio className="body text-white"/>} 
-                                    label={`Individual Payment`}
-                                />
-                            </RadioGroup>
-                        </FormContainer>
-                    }
                     <FormContainer>
-                        <button type="submit" className="buttonPrimary">Register</button>
+                        <button type="submit" className="buttonPrimary">Register for the tournament</button>
                     </FormContainer>
             </FourColumsContainer>
         </form>
     );
 }
+
+
+//ejemploo para el form selector:
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
+
+// const names = [
+//   'Oliver Hansen',
+//   'Van Henry',
+//   'April Tucker',
+//   'Ralph Hubbard',
+//   'Omar Alexander',
+//   'Carlos Abbott',
+//   'Miriam Wagner',
+//   'Bradley Wilkerson',
+//   'Virginia Andrews',
+//   'Kelly Snyder',
+// ];
+
+// function getStyles(name: string, personName: readonly string[], theme: Theme) {
+//   return {
+//     fontWeight:
+//       personName.indexOf(name) === -1
+//         ? theme.typography.fontWeightRegular
+//         : theme.typography.fontWeightMedium,
+//   };
+// }
+
+// export default function MultipleSelectChip() {
+//   const theme = useTheme();
+//   const [personName, setPersonName] = React.useState<string[]>([]);
+
+//   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+//     const {
+//       target: { value },
+//     } = event;
+//     setPersonName(
+//       // On autofill we get a stringified value.
+//       typeof value === 'string' ? value.split(',') : value,
+//     );
+//   };
+
+//   return (
+//     <div>
+//       <FormControl sx={{ m: 1, width: 300 }}>
+//         <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+//         <Select
+//           labelId="demo-multiple-chip-label"
+//           id="demo-multiple-chip"
+//           multiple
+//           value={personName}
+//           onChange={handleChange}
+//           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+//           renderValue={(selected) => (
+//             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+//               {selected.map((value) => (
+//                 <Chip key={value} label={value} />
+//               ))}
+//             </Box>
+//           )}
+//           MenuProps={MenuProps}
+//         >
+//           {names.map((name) => (
+//             <MenuItem
+//               key={name}
+//               value={name}
+//               style={getStyles(name, personName, theme)}
+//             >
+//               {name}
+//             </MenuItem>
+//           ))}
+//         </Select>
+//       </FormControl>
+//     </div>
+//   );
+// }
