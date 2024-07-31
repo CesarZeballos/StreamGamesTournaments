@@ -204,14 +204,14 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
                             <p className="body text-white">Members</p>
                             <FormControl sx={{ m: 1, width: 300 }}>
-                                <InputLabel id="members">Members</InputLabel>
+                                {/* <InputLabel id="members">Members</InputLabel> */}
                                 <Select
-                                labelId="members"
-                                id="members"
+                                // labelId="members"
+                                // id="members"
                                 multiple
                                 value={teamMembers}
                                 onChange={handleChangeMembers}
-                                input={<OutlinedInput id="multipleMembers" label="Members" />}
+                                input={<OutlinedInput className="input" id="multipleMembers" label="Members" />}
                                 renderValue={(selected) => (
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                     {selected.map((value) => (
