@@ -19,7 +19,7 @@ model User {
   teamId        String?
   organizedTeam Team[]       @relation("TeamOrganizer")
   tournaments   Tournament[]
-  teams          Team[]       @relation("TeamUsers")
+  team          Team[]       @relation("TeamUsers")
 }
 
 model UserDeleted {
@@ -43,6 +43,7 @@ model Tournament {
   organizerId    String
   gameId         String
   membersNumber  Int
+  maxMember      Int
   maxTeam        Int
   urlAvatar      String
   award          String[]
