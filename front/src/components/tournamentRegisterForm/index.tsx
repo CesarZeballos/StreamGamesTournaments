@@ -149,7 +149,6 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
           ...addTeam,
           members: completedTeam
         }));
-        console.log("addTeam", addTeam.members)
       };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,6 +179,10 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         }
         }
 
+    const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        router.push("/tournaments/" + tourId);
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
@@ -203,29 +206,34 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                             </div>
 
                             <p className="body text-white">Members</p>
-                            <FormControl sx={{ m: 1, width: 300 }}>
-                                {/* <InputLabel id="members">Members</InputLabel> */}
+                            <FormControl sx={{ m: 1, width: 320 }}>
                                 <Select
-                                // labelId="members"
-                                // id="members"
                                 multiple
+                                displayEmpty
                                 value={teamMembers}
                                 onChange={handleChangeMembers}
-                                input={<OutlinedInput className="input" id="multipleMembers" label="Members" />}
-                                renderValue={(selected) => (
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                className="inputMUI"
+                                input={<OutlinedInput 
+                                    id="multipleMembers" 
+                                    />}
+                                renderValue={(selected) => {
+                                    if (selected.length === 0) {
+                                    return <em className="body text-BGdark">Members</em>;
+                                    } else return (<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                     {selected.map((value) => (
-                                        <Chip key={value} label={value} />
+                                        <Chip 
+                                        className="chip" 
+                                        key={value} label={value} />
                                     ))}
-                                    </Box>
-                                )}
+                                    </Box>)
+                                }     
+                            }
                                 MenuProps={MenuProps}
                                 >
                                 {friends.map((friend) => (
                                     <MenuItem
                                     key={friend.id}
                                     value={friend.nickName}
-                                    //   style={getStyles(friend.nickName, teamMembers, theme)}
                                     >
                                     {friend.nickName}
                                     </MenuItem>
@@ -237,7 +245,10 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                         </FormContainer> 
                     }
                     <FormContainer>
-                        <button type="submit" className="buttonPrimary">Register for the tournament</button>
+                        <div className="flex flex-row gap-2">
+                            <button type="submit" className="buttonPrimary">Register team</button>
+                            <button className="buttonSecondary" onClick={goBack}>Cancel</button>
+                        </div>
                     </FormContainer>
             </FourColumsContainer>
         </form>

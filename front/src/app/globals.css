@@ -126,7 +126,15 @@ body {
 }
 
 .input {
-  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-80
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
+.inputMUI {
+  @apply bg-white rounded-md font-Roboto text-BGdark
   focus:border-solid
   focus:border-lightViolet
   focus:shadow-md
@@ -169,6 +177,10 @@ body {
 
 .textButton {
   @apply flex-1 text-center overflow-hidden pr-6 sm:text-xl;
+}
+
+.chip {
+  @apply bg-BGlight font-Raleway font-bold text-xs text-white pl-4 py-2 rounded-full
 }
 
 @media (max-width: 992px) {
