@@ -58,7 +58,9 @@ async function bootstrap() {
 		console.log('Data preloaded successfully');
 
 		const port = process.env.PORT || 3002;
-		await app.listen(port);
+		await app.listen(port, () => {
+			console.log(`App listening on port ${port}`);
+		});
 	} catch (error) {
 		console.error('Error preloading data:', error);
 	} finally {
