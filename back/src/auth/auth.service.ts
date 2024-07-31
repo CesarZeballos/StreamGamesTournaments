@@ -6,7 +6,7 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
+import { CreateUserDto, SignInDto } from './auth.user.Dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
