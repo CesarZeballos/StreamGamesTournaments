@@ -124,6 +124,35 @@ body {
   @apply bg-gradient-to-b from-BGlight to-BGdark;
 }
 
+table {
+  border-collapse: separate; /* Cambia a 'separate' para aplicar bordes redondeados */
+  border-spacing: 0; /* Asegúrate de que no haya espaciado entre celdas */
+  width: 100%;
+  border-radius: 1rem; /* Aplica el borde redondeado */
+}
+
+thead {
+  overflow: hidden; /* Asegúrate de que los bordes redondeados se muestren correctamente */
+}
+
+td {
+  border-radius: 0;
+  border: 3px solid #e100ff;
+  padding: 1rem;
+}
+
+th {
+  background-color: #f4f4f4;
+  border-radius: 0;
+  border: 3px solid #e100ff;
+  padding: 1rem;
+}
+
+th select {
+  width: 100%; /* Para que los selects ocupen todo el ancho de la celda */
+  padding: 4px;
+}
+
 .back-image {
   @apply w-3/4 h-1/3 z-10 rounded-3xl
 }

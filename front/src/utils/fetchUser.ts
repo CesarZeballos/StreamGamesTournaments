@@ -1,4 +1,4 @@
-import { ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
+import { ILoginDataBase, ILoginForm, IRegisterForm, IUserFilters } from "@/interfaces/interfaceUser";
 
 export async function postUser(data:IRegisterForm) {
     // console.log("registerFetch", data)
@@ -73,6 +73,17 @@ export async function passwordRecovery(data: string) {try {
 } catch (error) {
     console.log("Error recovery password.", error)
 }
+}
+
+export const fetchUsers = async () => {
+    const response = await fetch ("http://localhost:3001/users", {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    const data = await response.json();
+    return data;
 }
 
 export const fetchUserById = async (id: string) => {

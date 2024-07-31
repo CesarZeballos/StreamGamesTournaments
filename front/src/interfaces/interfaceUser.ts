@@ -1,11 +1,16 @@
 export interface IUser {
-    id: string
-    nickName: string
-    email: string
-    birthDate: string
-    role: string
-    teams: ITeam[]
-    tournaments: ITournamentsregistered[]
+    id: string;
+    email: string;
+    nickName: string;
+    birthDate: string;
+    role: string;
+    tournaments: ITournamentsregistered[];
+}
+
+export interface IUserFilters {
+    nickName: string;
+    inTournament: string;
+    role: string;
 }
 
 export interface ITeam {
