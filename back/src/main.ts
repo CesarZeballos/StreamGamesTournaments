@@ -11,7 +11,7 @@ import { TournamentsService } from './tournaments/tournaments.service';
 
 const prisma = new PrismaClient();
 
-/* async function PreloadData(
+async function PreloadData(
 	prismaService: PrismaService,
 	teamService: TeamsService,
 	tournamentsService: TournamentsService,
@@ -27,7 +27,7 @@ const prisma = new PrismaClient();
 	await preload.addTeams();
 	await preload.addTournaments();
 	await preload.addTeamForTournament();
-} */
+}
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -54,7 +54,7 @@ async function bootstrap() {
 		const prismaService = app.get(PrismaService);
 		const teamService = app.get(TeamsService);
 		const tournamentService = app.get(TournamentsService);
-		//await PreloadData(prismaService, teamService, tournamentService);
+		await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 
 		const port = process.env.PORT || 3001;
