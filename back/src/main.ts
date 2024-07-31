@@ -33,7 +33,7 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	try {
 		app.enableCors({
-			origin: 'http://localhost:3000',
+			origin: '*',
 			methods: 'GET,POST,PUT,DELETE',
 			allowedHeaders: 'Content-Type,Authorization',
 		});
@@ -57,7 +57,7 @@ async function bootstrap() {
 		//await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 
-		const port = process.env.PORT || 3002;
+		const port = process.env.PORT || 3001;
 		await app.listen(port, () => {
 			console.log(`App listening on port ${port}`);
 		});
