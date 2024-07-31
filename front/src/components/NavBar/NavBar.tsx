@@ -31,7 +31,7 @@ const NavBar: React.FC = () => {
             {user ? 
             <div className="flex gap-x-8">
                 <Link className="buttonSecondary flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickName}`}</Link>
-                <button className="buttonSecondary" onClick={logout}>Sign Out</button>
+                <button className="buttonSecondary" onClick={logout}>Sign Out</button> 
             </div>
             :
             <div className="flex gap-x-8">
