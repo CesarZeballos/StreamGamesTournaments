@@ -26,5 +26,6 @@ export interface ITournament {
 export interface IAddTeam {
     tournamentId: string
     teamName: string
+    organizarId: string
     members: IUser[]
 }

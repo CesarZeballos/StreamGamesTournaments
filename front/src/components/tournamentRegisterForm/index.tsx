@@ -120,9 +120,8 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const [addTeam, setAddTeam] = useState<IAddTeam>({
         tournamentId: tourId,
         teamName: "",
-        members: [
-            userData,
-        ],
+        organizarId: user!.id,
+        members: []
     });
 
     //control de ingreso a la page
