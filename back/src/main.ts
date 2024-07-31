@@ -57,7 +57,8 @@ async function bootstrap() {
 		await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 
-		await app.listen(3001);
+		const port = process.env.PORT || 3002;
+		await app.listen(port);
 	} catch (error) {
 		console.error('Error preloading data:', error);
 	} finally {
