@@ -3,10 +3,9 @@ import {
 	NotFoundException,
 	InternalServerErrorException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { User } from '@prisma/client';
-import { UpdateUserDto } from 'src/auth/auth.user.dto';
-import { users as helperUsers } from 'src/helpers/users.helper';
+import { UpdateUserDto } from '../auth/auth.user.Dto';
 
 @Injectable()
 export class UsersRepository {

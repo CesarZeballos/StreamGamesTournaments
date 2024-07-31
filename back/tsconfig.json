@@ -9,7 +9,7 @@
 		"target": "ES2021", // Especificar la versión de ECMAScript
 		"sourceMap": true, // Generar mapas de origen para depuración
 		"outDir": "./dist", // Directorio de salida para los archivos compilados
-		"baseUrl": "./", // Base URL para resolver módulos
+		"baseUrl": "./src", // Base URL para resolver módulos
 		"incremental": true, // Compilación incremental
 		"skipLibCheck": true, // Omitir verificación de tipos en archivos de declaración
 		"strictNullChecks": false, // Deshabilitar verificación estricta de nullabilidad
