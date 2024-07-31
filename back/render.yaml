@@ -1,7 +1,0 @@
-services:
-    - type: web
-      name: my-service
-      env: node
-      buildCommand: npm install
-      startCommand: npm run start:dev
-      port: 3001
