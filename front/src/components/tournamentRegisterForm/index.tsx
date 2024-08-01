@@ -9,8 +9,7 @@ import { useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import { toast } from "sonner";
 import { IUser } from "@/interfaces/interfaceUser";
-import MultipleSelectChip from "../multipleSelectFriends";
-import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
+import { Box, Chip, FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
