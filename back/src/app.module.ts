@@ -8,6 +8,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { GamesModule } from './games/games.module';
 import { UsersModule } from './users/users.module';
 import { TeamsModule } from './teams/teams.module';
+import { PayPalModule } from 'paypal/paypal.module';
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { TeamsModule } from './teams/teams.module';
 		PrismaModule,
 		FileUploadModule,
 		TeamsModule,
+		PayPalModule
 	],
 	controllers: [AppController],
 	providers: [AppService],
