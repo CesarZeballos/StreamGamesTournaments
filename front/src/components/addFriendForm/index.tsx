@@ -7,142 +7,131 @@ import { useSelector } from "react-redux";
 //icons
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ITeamError, ITeamForm, ITeamMember, IUser } from "@/interfaces/interfaceUser";
+import { ITeamError, ITeamForm, ITeamMember, IUser, IUserSelector } from "@/interfaces/interfaceUser";
 import { validateTeamName } from "@/utils/validateForms/validationAddTeam";
 import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
 
-export const AddFriend = () => {
-    const [teamName, setTeamName] = useState<string>("")
-    const [teamMembers, setTeamMembers] = useState<ITeamMember[]>([])
+const users: IUser[] = [
+    {
+        id: "1",
+        nickName: "cesar1",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
 
-    const [error, setError] = useState<string>("")
+    {
+        id: "2",
+        nickName: "cesar2",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
 
-    //configuracion del selector con input de autocompletado
-    const [membersInput, setMembersInput] = useState([
-        {
-            id: 1,
-            nickName: "juancarlo"
-        }, 
-        {
-            id: 2,
-            nickName: "juancarlo2"
-        },
-        {
-            id: 3,
-            nickName: "juancarlo3"
+    {
+        id: "3",
+        nickName: "cesar3",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    }, 
+
+    {
+        id: "4",
+        nickName: "cesar4",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "5",
+        nickName: "cesar5",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "6",
+        nickName: "cesar6",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+]
+
+export const AddFriend: React.FC = () => {
+    const [userSelector, setUserSelector] = useState<IUserSelector[]>([]);
+    const [friend, setFriend] = useState<IUser>({} as IUser);
+
+    useEffect(() => {
+        if(userSelector. length === 0) {
+            for (let i = 0; i < users.length; i++) {
+                userSelector.push({
+                    id: users[i].id,
+                    label: users[i].nickName,
+                    email: users[i].email,
+                    birthDate: users[i].birthDate,
+                    role: users[i].role,
+                    teams: users[i].teams,
+                    tournaments: users[i].tournaments
+                })
+            }
         }
-    ])
-    const [value, setValue] = useState<string | null>(null)
-    const [inputValue, setInputValue] = useState('');
+    }, [])
 
-    const selectedValues = membersInput.map((option) => option.nickName)
-    const handleChangeMember = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target
-        // setTeamMembers({
-        //     ...data,
-        //     members: data.members.map((member) => {
-        //         if(member.id === value) {
-        //             return {
-        //                 ...member,
-        //                 nickName: name
-        //             }
-        //         } else {
-        //             return member
-        //         }
-        //     })
-        // })
-    }
+    const handleChange = (event: any, value: IUserSelector | null) => {
+        if (value) {
+            setFriend({
+                id: value.id,
+                nickName: value.label,
+                email: value.email,
+                birthDate: value.birthDate,
+                role: value.role,
+                teams: value.teams,
+                tournaments: value.tournaments
+            }
+            )
+        }}
 
-    const addMember = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault()
-        // setTeamMembers({
-        //     ...data,
-        //     members: [...data.members, {id: data.members.length + 1, nickName: ''}]
-        // })
-    }
-
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target
-        setTeamName(value)
-        const errors = validateTeamName(value);
-        setError(errors)
-    }
-
-    const deleteMember = (index: number) => (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault()
-        // setTeamMembers({
-        //     ...data,
-        //     members: data.members.filter((member, i) => i !== index)
-        // })
-    }
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        if(!error) {
-            console.log("data", teamName, teamMembers)
+        const handlesubmit = (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            console.log(friend)
         }
-    }
+
+
 
     return (
-        <div>
-            <h1 className="heading4 text-white">{`Let's create your team`}</h1>
-            <form className="flex flex-col my-4 gap-4" onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-1">
-                    <h2 className="body text-white">Team Name</h2>
-                    <input type="text"
-                    name="name"
-                    value={teamName}
-                    onChange={handleChange}
-                    className="input w-fit"
-                    required/>
-                    {error ? (<p className="errorForm">{error}</p>) : (<p className="errorForm"><br/></p>)}
-                </div>
-                <div className="flex flex-col gap-1">
-                    <h2 className="body text-white">Team members</h2>
-                    
-                    <div className="flex flex-col">
-                        {teamMembers.map((member, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2">
-                                <p className="body">{member.nickName}</p>
-                                <button className="buttonSecondary" onClick={deleteMember(index)}>
-                                    <DeleteIcon />
-                                </button>
-                            </div>
-                        ))}
-                        {teamMembers.length >= 5 ? (
-                            <p className="body text-white">Max 5 members</p>
-                        ) : (
-                            <div className="flex flex-row gap-2">
-                                <Autocomplete
-                                    className="input w-fit"
-                                    value={value}
-                                    onChange={(event: any, newValue: string | null) => {
-                                        setValue(newValue);
-                                        console.log(newValue)
-                                      }}
-                                    inputValue={inputValue}
-                                    onInputChange={(event, newInputValue) => {
-                                    setInputValue(newInputValue);
-                                    }}
-                                    id="users"
-                                    options={selectedValues}
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="select user" />}
-                                />
-
-                                <button className="buttonSecondary flex flex-row gap-4" onClick={addMember}>
-                                    <AddCircleIcon />Add member
-                                </button>
-                            </div> 
-                        )}
-                    </div>
-                </div>
-                <button type="submit" className="buttonPrimary">Create</button>
-            </form>
+        <form onSubmit={handlesubmit} className="flex flex-col gap-2">
+            <h1 className="heading4 text-white">Find your friend</h1>
             
-        </div>
+            <p className="body text-white mt-4">Search by nickname</p>
+            <Autocomplete
+            className="inputMUI"
+            disablePortal
+            id="SelectFriends"
+            options={userSelector}
+            onChange={handleChange}
+            sx={{ width: 320 }}
+            renderInput={(params) => <TextField {...params} />}
+            />
+            
+            <button type="submit" className="buttonPrimary mt-4">Add as a friend</button>
+        </form>
     )
 }
 

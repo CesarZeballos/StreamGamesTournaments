@@ -67,3 +67,15 @@ export interface ILoginError {
     email?: string
     password?: string
 }
+
+//addfriends
+
+export interface IUserSelector {
+    id: string
+    label: string
+    email: string
+    birthDate: string
+    role: string
+    teams: ITeam[]
+    tournaments: ITournamentsregistered[]
+}
