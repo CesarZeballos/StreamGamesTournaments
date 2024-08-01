@@ -44,7 +44,7 @@ export class AuthService {
 				nickName,
 				tokenFirebase,
 				birthDate: parsedBirthDate.toISOString(),
-				team: teamId
+				teams: teamId
 					? {
 							connect: { id: teamId },
 						}
