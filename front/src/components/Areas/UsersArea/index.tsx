@@ -1,11 +1,12 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import UsersList from './UsersList';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
 import { fetchUsers, banUser } from '@/utils/fetchUser';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
-import UserPolar from './UserPolar';
+import UsersPie from './UsersPie';
 
-const MainComponent: React.FC = () => {
+const UsersArea: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [filters, setFilters] = useState<IUserFilters>({ nickName: '', inTournament: '', role: '' });
   const [userToBan, setUserToBan] = useState<string | null>(null);
@@ -88,7 +89,7 @@ const MainComponent: React.FC = () => {
         onFilter={handleFilter}
         onDeactivateUser={handleBanUser}
       />
-      <UserPolar
+      <UsersPie
         activeUsers={activeUsers}
         inactiveUsers={inactiveUsers}
         usersInTournament={usersInTournament}
@@ -104,4 +105,4 @@ const MainComponent: React.FC = () => {
   );
 };
 
-export default MainComponent;
+export default UsersArea;

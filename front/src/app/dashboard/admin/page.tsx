@@ -1,11 +1,17 @@
-import UsersArea from "@/components/Areas/UserArea";
+import UsersArea from "@/components/Areas/UsersArea";
+import TournamentsArea from "@/components/Areas/TournamentsArea";
 
-const AdminDashboard: React.FC = () => {
-    return (
-        <div className="bodyContainer mb-16">
-            <UsersArea />
-        </div>
-    )
-}
+const AdminPage: React.FC = () => {
+  return (
+    <div className="bodyContainer mb-small">
+      <div>
+        <UsersArea />
+      </div>
+      <div>
+        <TournamentsArea />
+      </div>
+    </div>
+  );
+};
 
-export default AdminDashboard;
+export default AdminPage;

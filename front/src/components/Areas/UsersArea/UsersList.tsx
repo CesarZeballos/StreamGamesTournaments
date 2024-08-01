@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import UserFilters from './UserFilters';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
@@ -11,7 +12,7 @@ interface UsersListProps {
 
 const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeactivateUser }) => {
   return (
-    <table className='rounded-lg mb-small overflow-hidden text-center bg-lightViolet text-BGdark'>
+    <table className='rounded-lg mb-small overflow-hidden text-center bg-white text-BGdark'>
       <thead className='bg-cyan-300'>
         <UserFilters onFilter={onFilter} />
         <tr className='text-indigo-900'>

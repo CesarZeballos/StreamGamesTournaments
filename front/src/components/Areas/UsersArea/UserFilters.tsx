@@ -23,7 +23,7 @@ const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
   };
 
   return (
-    <tr className='text-indigo-900'>
+    <tr className='bg-indigo-200 text-indigo-900'>
       <td>
         <select name="nickName" value={filters.nickName} className='input' onChange={handleFilterChange}>
           <option value="">Sort by Nickname</option>

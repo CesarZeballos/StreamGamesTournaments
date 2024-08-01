@@ -2,7 +2,6 @@ import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { forgotPasswordSlice, loginSlice, registerSlice, reloadUSerDataSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
-import { addTeam } from "../thunks/tournamentsSliceThunk";
 
 const initialState: IUserState = {
   user: null,
@@ -121,28 +120,28 @@ const userSlice = createSlice({
           })
 
           // ADD TEAM TO TOURNAMENTS
-          .addCase(addTeam.pending, (state) => {
-            state.status = 'loading'
-            state.error = null
-          })
-          .addCase(addTeam.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            state.statusRegister = 'idle'
-            // state.user = action.payload.user
-            // state.token = action.payload.token
+          // .addCase(addTeam.pending, (state) => {
+          //   state.status = 'loading'
+          //   state.error = null
+          // })
+          // .addCase(addTeam.fulfilled, (state, action) => {
+          //   state.status = 'succeeded'
+          //   state.statusRegister = 'idle'
+          //   // state.user = action.payload.user
+          //   // state.token = action.payload.token
 
-            toast.success(`Your team added to the tournament`, {
-                position: 'top-right',
-                duration: 1500,
-              })
-          })
-          .addCase(addTeam.rejected, (state, action) => {
-            state.status = 'failed'
-            toast.error('fail in adding team', {
-                position: 'top-right',
-                duration: 1500,
-              })
-          })
+          //   toast.success(`Your team added to the tournament`, {
+          //       position: 'top-right',
+          //       duration: 1500,
+          //     })
+          // })
+          // .addCase(addTeam.rejected, (state, action) => {
+          //   state.status = 'failed'
+          //   toast.error('fail in adding team', {
+          //       position: 'top-right',
+          //       duration: 1500,
+          //     })
+          // })
     }
 })
 

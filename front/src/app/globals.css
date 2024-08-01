@@ -137,14 +137,14 @@ thead {
 
 td {
   border-radius: 0;
-  border: 3px solid #e100ff;
+  border: 1px solid #e100ff;
   padding: 1rem;
 }
 
 th {
   background-color: #f4f4f4;
   border-radius: 0;
-  border: 3px solid #e100ff;
+  border: 1px solid #e100ff;
   padding: 1rem;
 }
 
