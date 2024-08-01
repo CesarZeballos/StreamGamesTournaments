@@ -1,12 +1,11 @@
-import { Games, PrismaClient, Team, Tournament, User } from "@prisma/client";
-import { gamesData } from "src/helpers/games.helpers";
-import { teams } from "src/helpers/teams.helpers";
-import { tournaments } from "src/helpers/tournaments.helper";
-import { users } from "src/helpers/users.helper";
-import { TeamsService } from "src/teams/teams.service";
-import { CreateTournamentDto } from "src/tournaments/createTournament.Dto";
-import { TournamentsService } from "src/tournaments/tournaments.service";
-import { UsersService } from "src/users/users.service";
+import { Games, PrismaClient, Team, Tournament, User } from '@prisma/client';
+import { gamesData } from 'helpers/games.helpers';
+import { teams } from 'helpers/teams.helpers';
+import { tournaments } from 'helpers/tournaments.helper';
+import { users } from 'helpers/users.helper';
+import { TeamsService } from 'teams/teams.service';
+import { CreateTournamentDto } from 'tournaments/createTournament.Dto';
+import { TournamentsService } from 'tournaments/tournaments.service';
 
 export class preloadData {
 	constructor(
@@ -100,34 +99,36 @@ export class preloadData {
 				role: 'organizer',
 			},
 		});
-	
+
 		if (!userOrganizer) {
 			throw new Error('No organizer found');
 		}
-	
+
 		const games = await this.prisma.games.findMany();
-	
+
 		if (games.length === 0) {
 			throw new Error('No games found');
 		}
-	
+
 		for (const tournament of tournaments) {
 			let gameName = '';
-	
+
 			if (tournament.nameTournament.includes('Counter-Strike')) {
 				gameName = 'CounterStrike Go';
 			} else if (tournament.nameTournament.includes('Fortnite')) {
 				gameName = 'Fortnite';
-			} else if (tournament.nameTournament.includes('League of Legends')) {
+			} else if (
+				tournament.nameTournament.includes('League of Legends')
+			) {
 				gameName = 'League of Legends';
 			}
-	
-			const game = games.find(g => g.name === gameName);
-	
+
+			const game = games.find((g) => g.name === gameName);
+
 			if (!game) {
 				throw new Error(`Game ${gameName} not found`);
 			}
-	
+
 			const tournamentData: CreateTournamentDto = {
 				nameTournament: tournament.nameTournament,
 				startDate: tournament.startDate.toISOString(),
@@ -139,20 +140,24 @@ export class preloadData {
 				maxTeam: tournament.maxTeam,
 				organizerId: userOrganizer.id,
 				gameId: game.id,
+				maxMember: tournament.maxMember,
 			};
-	
+
 			await this.tournamentsService.createTournament(tournamentData);
 		}
 	}
-	
 
 	async addTeamForTournament() {
 		const teams: Team[] = await this.prisma.team.findMany();
-		const tournaments: Tournament[] = await this.prisma.tournament.findMany();
-	
+		const tournaments: Tournament[] =
+			await this.prisma.tournament.findMany();
+
 		for (const tournament of tournaments) {
 			for (const team of teams) {
-				await this.tournamentsService.addTeamTournament(tournament.id, team.id);
+				await this.tournamentsService.addTeamTournament(
+					tournament.id,
+					team.id,
+				);
 			}
 		}
 	}

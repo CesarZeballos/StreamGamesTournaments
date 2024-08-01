@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
-import { UpdateTeamDto } from 'src/teams/teams.dto';
+import { UpdateTeamDto } from 'teams/teams.dto'; 
 
 @ApiTags('games')
 @Controller('games')
