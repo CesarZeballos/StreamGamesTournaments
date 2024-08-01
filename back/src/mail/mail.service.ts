@@ -20,7 +20,7 @@ export class MailService {
 	async sendMail(mailOptions: nodemailer.SendMailOptions): Promise<void> {
 		try {
 		  await this.transporter.sendMail(mailOptions);
-		  console.log('Correo enviado con éxito');
+		  //console.log('Correo enviado con éxito');
 		} catch (error) {
 		  console.error('Error al enviar el correo:', error);
 		}
