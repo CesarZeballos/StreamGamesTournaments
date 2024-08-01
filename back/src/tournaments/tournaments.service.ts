@@ -3,13 +3,18 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateTournamentDto } from '../tournaments/createTournament.Dto';
 import { UpdateTournamentDto } from '../tournaments/updateTournament.Dto';
+import { MailService } from 'mail/mail.service';
+import { MailTemplates } from 'mail/mail-templates';
 
 @Injectable()
 export class TournamentsService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly mailService: MailService,
+	) {}
 
 	async getAllTournaments(page: number, limit: number) {
 		const skip = (page - 1) * limit;
@@ -75,16 +80,25 @@ export class TournamentsService {
 			// Crear el torneo
 			const tournament = await this.prisma.tournament.create({
 				data: {
-				  ...data,
-				  award: data.award,
-				  organizer: { connect: { id: organizerId } },
-				  game: { connect: { id: gameId } },
-				  teams: teams
-					? { connect: teams.map((teamId) => ({ id: teamId })) }
-					: undefined,
-				 category: data.category 
+					...data,
+					award: awardsAsStrings,
+					organizer: { connect: { id: organizerId } },
+					game: { connect: { id: gameId } },
+					teams: teams
+						? { connect: teams.map((teamId) => ({ id: teamId })) }
+						: undefined,
 				},
-			  });
+			});
+
+			// Obtener el contenido del correo de confirmación de las plantillas
+			const mailContent = MailTemplates.tournamentCreated(
+				organizerExists.email,
+				organizerExists.nickName,
+				tournament.nameTournament,
+			);
+
+			// Enviar el correo de confirmación
+			await this.mailService.sendMail(mailContent);
 
 			return tournament;
 		} catch (error) {

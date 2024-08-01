@@ -3,10 +3,9 @@ import {
 	NotFoundException,
 	InternalServerErrorException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { User } from '@prisma/client';
-import { UpdateUserDto } from 'src/auth/auth.user.dto';
-import { users as helperUsers } from 'src/helpers/users.helper';
+import { UpdateUserDto } from '../auth/auth.user.Dto';
 
 @Injectable()
 export class UsersRepository {
@@ -15,7 +14,11 @@ export class UsersRepository {
 	async getAllUsers(): Promise<User[]> {
 		try {
 			const users = await this.prisma.user.findMany({
-				include: { team: true, tournaments: true, organizedTeam: true },
+				include: {
+					teams: true,
+					tournaments: true,
+					organizedTeam: true,
+				},
 			});
 			if (users.length === 0) {
 				console.info('No users found');
@@ -34,7 +37,7 @@ export class UsersRepository {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
 				include: {
-					team: true,
+					teams: true,
 					tournaments: true,
 					organizedTeam: true,
 				},

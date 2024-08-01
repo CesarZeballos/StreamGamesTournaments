@@ -6,9 +6,10 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
-import * as bcrypt from 'bcrypt';
+import { CreateUserDto, SignInDto } from './auth.user.Dto';
 import { JwtService } from '@nestjs/jwt';
+import { MailService } from 'mail/mail.service';
+import { MailTemplates } from 'mail/mail-templates';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
+		private readonly mailService: MailService,
 	) {}
 
 	async signUp(createUserDto: CreateUserDto) {
@@ -42,7 +44,7 @@ export class AuthService {
 				nickName,
 				tokenFirebase,
 				birthDate: parsedBirthDate.toISOString(),
-				team: teamId
+				teams: teamId
 					? {
 							connect: { id: teamId },
 						}
@@ -51,6 +53,12 @@ export class AuthService {
 		});
 
 		console.log('user', user);
+
+		// Obtener el contenido del correo de bienvenida de las plantillas
+		const mailContent = MailTemplates.welcomeEmail(email, nickName);
+
+		// Enviar el correo de bienvenida
+		await this.mailService.sendMail(mailContent);
 
 		return {
 			message: 'User created successfully',
