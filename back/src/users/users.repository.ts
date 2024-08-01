@@ -15,7 +15,7 @@ export class UsersRepository {
 		try {
 			const users = await this.prisma.user.findMany({
 				include: {
-					teams: true,
+					team: true,
 					tournaments: true,
 					organizedTeam: true,
 				},
@@ -37,7 +37,7 @@ export class UsersRepository {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
 				include: {
-					teams: true,
+					team: true,
 					tournaments: true,
 					organizedTeam: true,
 				},
