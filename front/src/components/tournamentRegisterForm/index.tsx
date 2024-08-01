@@ -58,7 +58,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         email: "",
         birthDate: "",
         role: "",
-        // teams: [],
+        isActive: 0,
         tournaments: []
     };
     

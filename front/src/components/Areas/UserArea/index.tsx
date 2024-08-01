@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from 'react';
 import UsersList from './UsersList';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
@@ -75,6 +74,11 @@ const MainComponent: React.FC = () => {
     setUserToBan(null);
   };
 
+  const activeUsers = users.filter(user => user.state).length;
+  const inactiveUsers = users.filter(user => !user.state).length;
+  const usersInTournament = users.filter(user => user.tournaments.length > 0).length;
+  const usersOutTournament = users.filter(user => user.tournaments.length === 0).length;
+
   return (
     <>
       <h1 className='heading3 text-center text-lightViolet mb-small'>Users Manage</h1>
@@ -84,7 +88,12 @@ const MainComponent: React.FC = () => {
         onFilter={handleFilter}
         onDeactivateUser={handleBanUser}
       />
-      <UserPolar />
+      <UserPolar
+        activeUsers={activeUsers}
+        inactiveUsers={inactiveUsers}
+        usersInTournament={usersInTournament}
+        usersOutTournament={usersOutTournament}
+      />
       <ConfirmModal
         show={showConfirmModal}
         message="Are you sure you want to ban this user?"

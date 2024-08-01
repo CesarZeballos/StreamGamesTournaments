@@ -1,5 +1,6 @@
 export interface IUser {
     id: string;
+    state: boolean;
     email: string;
     nickName: string;
     birthDate: string;

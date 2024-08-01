@@ -1,16 +1,12 @@
 'use client'
+import Image from "next/image";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TeamsDashboardView } from "../teamsDashboardView";
 import { TournamentsDashboardView } from "../tournamentsDashboardView";
 import { DataDashboardView } from "../dataDashboardView";
-import { setView } from "@/redux/slices/dashboardSlice";
 import { SearchBarDashboard } from "../searchbarDashboard";
-import { ITeam } from "@/interfaces/interfaceUser";
-import { fetchUserById } from "@/utils/fetchUser";
-import { reloadUSerDataSlice } from "@/redux/thunks/userSliceThunk";
 
 
 export const UserDashboard: React.FC = () => {
@@ -47,7 +43,7 @@ export const UserDashboard: React.FC = () => {
                     {section === 'tournaments' && <TournamentsDashboardView tournaments={[]}/>}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                    <img className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
+                    <Image src="/dashboard.jpg" alt="dashboard" className="w-full h-full object-cover"  />
             </div>
             </div>
         </div>
