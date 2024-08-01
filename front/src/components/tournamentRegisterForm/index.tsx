@@ -52,21 +52,19 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const stringDate = tournamentData.startDate.split('T')[0];
 
-    // Corrección sobre el estado del usuario para que sea utilizado correctamente; edu
     const initialUserData: IUser = {
         id: "",
         nickName: "",
         email: "",
         birthDate: "",
         role: "",
-        teams: [],
+        // teams: [],
         tournaments: []
     };
     
     const [userData, setUserData] = useState<IUser>(initialUserData);
 
-    //negrada para que no se me rompa todo
-    const [teams, setTeams] = useState<ITeam[]>([]);
+    // const [teams, setTeams] = useState<ITeam[]>([]);
 
     const [team, setTeam] = useState("");
 
@@ -148,12 +146,12 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                                         <MenuItem value="">
                                             <em>None</em>
                                         </MenuItem>
-                                        {teams && teams.map((team) => (
+                                        {/* {teams && teams.map((team) => (
                                             <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>
-                                        ))}
+                                        ))} */}
                                     </Select>
                                 </FormControl>
-                                <Link href="/teams" className="buttonPrimary">Add new team</Link>
+                                {/* <Link href="/teams" className="buttonPrimary">Add new team</Link> */}
                             </div>
                         </FormContainer> 
                     }

@@ -2,30 +2,29 @@
 import React, { useState, useEffect } from 'react';
 import UsersList from './UsersList';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
-import { fetchUsers } from '@/utils/fetchUser';
+import { fetchUsers, banUser } from '@/utils/fetchUser';
+import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 
 const MainComponent: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [filters, setFilters] = useState<IUserFilters>({ nickName: '', inTournament: '', role: '' });
+  const [userToBan, setUserToBan] = useState<string | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const allUsers = await fetchUsers();
-
-        // Filtrar usuarios según los filtros aplicados
         const filteredUsers = allUsers
           .filter((user: { role: string; }) => user.role !== 'admin')
           .filter((user: { role: string; tournaments: string | any[]; }) => {
             return (
               (filters.role === '' || user.role === filters.role) &&
-              (filters.inTournament === '' || 
-                (filters.inTournament === 'true' ? user.tournaments.length > 0 : 
-                filters.inTournament === 'false' ? user.tournaments.length === 0 : true))
+              (filters.inTournament === '' ||
+                (filters.inTournament === 'true' ? user.tournaments.length > 0 :
+                  filters.inTournament === 'false' ? user.tournaments.length === 0 : true))
             );
           });
-
-        // Ordenar usuarios según el filtro de nickName
         const sortedUsers = filteredUsers.sort((a: { nickName: string; }, b: { nickName: string; }) => {
           if (filters.nickName === 'asc') {
             return a.nickName.localeCompare(b.nickName);
@@ -49,8 +48,30 @@ const MainComponent: React.FC = () => {
     setFilters(newFilters);
   };
 
-  const handleDeactivateUser = (id: string) => {
-    console.log("Deactivating user with id:", id);
+  const handleBanUser = (id: string) => {
+    setUserToBan(id);
+    setShowConfirmModal(true);
+  };
+
+  const confirmBanUser = async () => {
+    if (userToBan) {
+      try {
+        await banUser(userToBan);
+        alert("User Banned Successfully");
+        setUsers(users.filter(user => user.id !== userToBan));
+      } catch (error) {
+        alert("Failed to ban user");
+        console.error("Error banning user:", error);
+      } finally {
+        setShowConfirmModal(false);
+        setUserToBan(null);
+      }
+    }
+  };
+
+  const cancelBanUser = () => {
+    setShowConfirmModal(false);
+    setUserToBan(null);
   };
 
   return (
@@ -60,7 +81,13 @@ const MainComponent: React.FC = () => {
         users={users}
         filters={filters}
         onFilter={handleFilter}
-        onDeactivateUser={handleDeactivateUser}
+        onDeactivateUser={handleBanUser}
+      />
+      <ConfirmModal
+        show={showConfirmModal}
+        message="Are you sure you want to ban this user?"
+        onConfirm={confirmBanUser}
+        onCancel={cancelBanUser}
       />
     </>
   );

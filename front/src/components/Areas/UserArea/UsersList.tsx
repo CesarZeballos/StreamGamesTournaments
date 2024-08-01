@@ -18,7 +18,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeact
           <th>NickName</th>
           <th>Role</th>
           <th>Tournament</th>
-          <th>Dar de Baja</th>
+          <th>Ban User</th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +28,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeact
             <td>{user.role}</td>
             <td>{user.tournaments.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>
             <td>
-              <button onClick={() => onDeactivateUser(user.id)}>Dar de Baja</button>
+              <button onClick={() => onDeactivateUser(user.id)}>Ban User</button>
             </td>
           </tr>
         ))}

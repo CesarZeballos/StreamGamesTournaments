@@ -100,3 +100,18 @@ export const fetchUserById = async (id: string) => {
     console.log("userData", userData)
     return userData;
 }
+
+export const banUser = async (id: string) => {
+    const response = await fetch(`http://localhost:3001/users/delete?id=${id}`, {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    });
+    
+    if (!response.ok) {
+    throw new Error('Failed to disable user');
+    }
+    
+    return response.json();
+};

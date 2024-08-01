@@ -11,8 +11,6 @@ const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-
-    // Convert the value to string for `inTournament`
     const filterValue: string = name === 'inTournament' ? value : value;
 
     const updatedFilters = {
