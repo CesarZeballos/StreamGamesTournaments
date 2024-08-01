@@ -102,6 +102,12 @@ html, body {
   @apply hover:shadow-md hover:shadow-lightViolet
 }
 
+.iconButton {
+  @apply p-1 text-white rounded-full
+  hover:text-BGdark
+  hover:bg-lightViolet
+}
+
 .buttonCarousel:hover, .buttonPage:hover {
   transition: 0.5s;
   background-color: #0d0835;
@@ -183,6 +189,13 @@ body {
   @apply bg-BGlight font-Raleway font-bold text-xs text-white pl-4 py-2 rounded-full
 }
 
+.tableHeader {
+  @apply border-solid border-2 border-lightViolet font-Raleway font-medium text-base text-white flex rounded-full w-full px-6 py-1 my-4
+}
+
+.tableBody {
+  @apply font-Roboto text-base text-white
+}
 @media (max-width: 992px) {
   .father-container {
     transform: scale(0);
