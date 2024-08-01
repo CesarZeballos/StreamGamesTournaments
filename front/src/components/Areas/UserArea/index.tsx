@@ -4,6 +4,7 @@ import UsersList from './UsersList';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
 import { fetchUsers, banUser } from '@/utils/fetchUser';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
+import UserPolar from './UserPolar';
 
 const MainComponent: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -83,6 +84,7 @@ const MainComponent: React.FC = () => {
         onFilter={handleFilter}
         onDeactivateUser={handleBanUser}
       />
+      <UserPolar />
       <ConfirmModal
         show={showConfirmModal}
         message="Are you sure you want to ban this user?"

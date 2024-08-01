@@ -153,6 +153,11 @@ th select {
   padding: 4px;
 }
 
+.chart-container {
+  overflow: hidden; /* Evita el desbordamiento visible */
+  position: relative; /* Asegura que el gráfico se ajuste al contenedor */
+}
+
 .back-image {
   @apply w-3/4 h-1/3 z-10 rounded-3xl
 }

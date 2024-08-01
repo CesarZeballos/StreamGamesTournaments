@@ -15,7 +15,7 @@ const config: Config = {
         BGdark: "#301048",
         BGlight: "#49176B",
         white: "#ffffff",
-        greenAlert: "#2AEB1D"
+        greenAlert: "#2AEB1D",
       },
 
       fontFamily: {
