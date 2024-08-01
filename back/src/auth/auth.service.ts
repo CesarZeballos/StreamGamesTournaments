@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
-import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class AuthService {
 	) {}
 
 	async signUp(createUserDto: CreateUserDto) {
-		const { email, nickName, tokenFirebase, birthDate, teamId } =
+		const { email, nickname, tokenFirebase, birthdate } =
 			createUserDto;
 
 		const userExists = await this.prisma.user.findUnique({
@@ -28,29 +27,20 @@ export class AuthService {
 			},
 		});
 
-		if (userExists) {
+		if (userExists && userExists.state === true) {
 			throw new BadRequestException('User already exists');
 		}
 
-		//const hashedPassword = await bcrypt.hash(tokenFirebase, 10);
-
-		const parsedBirthDate = new Date(birthDate);
+		const parsedBirthDate = new Date(birthdate);
 
 		const user = await this.prisma.user.create({
 			data: {
 				email,
-				nickName,
+				nickname,
 				tokenFirebase,
-				birthDate: parsedBirthDate.toISOString(),
-				team: teamId
-					? {
-							connect: { id: teamId },
-						}
-					: undefined,
+				birthdate: parsedBirthDate.toISOString(),
 			},
 		});
-
-		console.log('user', user);
 
 		return {
 			message: 'User created successfully',
@@ -77,7 +67,7 @@ export class AuthService {
 		  const token = await this.jwtService.sign(payload);
 	
 		  this.logger.log(`ser signed in successfully with email: ${email}`);
-	
+
 		  return {
 			message: 'User logged in successfully',
 			user,

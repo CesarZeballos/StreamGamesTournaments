@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
-import { Games } from '@prisma/client';
+import { Game } from '@prisma/client';
 
 
 export interface GameWithTournamentId {
@@ -16,26 +16,27 @@ export class GamesService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async getAllGames(page: number, limit: number): Promise<Games[]> {
+  async getAllGames(page: number, limit: number): Promise<Game[]> {
     const skip = (page - 1) * limit
-    const games = await this.prisma.games.findMany({
+    const games = await this.prisma.game.findMany({
       take: limit,
-      skip
+      skip,
+      include:{tournaments:true}
     });
 
     return games
   }
 
-  async getGameById(id: string): Promise<Games | null> {
-    return await this.prisma.games.findUnique({ where: { id } })
+  async getGameById(id: string): Promise<Game | null> {
+    return await this.prisma.game.findUnique({ where: { id }, include: {tournaments: true} })
   }
 
   async postNewGame(name: string, urlImage: string): Promise<CreateGameDto> {
-    const gameNAme = await this.prisma.games.findUnique({ where: { name: name } })
+    const gameNAme = await this.prisma.game.findUnique({ where: { name: name } })
 
-    if (gameNAme) throw new ConflictException('¡Game already exists!')
+    if (gameNAme) throw new ConflictException(`¡Game with name: ${name} exists!`)
 
-    const newGame = await this.prisma.games.create({
+    const newGame = await this.prisma.game.create({
       data: {
         name: name,
         urlImage: urlImage
@@ -46,11 +47,11 @@ export class GamesService {
   }
 
   async updateGame(id: string, updateData: UpdateGameDto): Promise<UpdateGameDto> {
-    const game = await this.prisma.games.findUnique({ where: { id: id } })
+    const game = await this.prisma.game.findUnique({ where: { id: id } })
 
-    if (!game) throw new NotFoundException('¡Game not exists!')
+    if (!game) throw new NotFoundException(`¡Game with id: ${id} not exists!`)
 
-    const updateGame = await this.prisma.games.update({
+    const updateGame = await this.prisma.game.update({
       where: { id },
       data: updateData
     })
@@ -58,12 +59,12 @@ export class GamesService {
     return updateGame
   }
 
-  async deleteGame(id: string): Promise<Games> {
-    const game = await this.prisma.games.findUnique({ where: { id } })
+  async deleteGame(id: string): Promise<Game> {
+    const game = await this.prisma.game.findUnique({ where: { id } })
+    if(game.state === false) throw new ConflictException(`¡Game with id: ${id} not exists!`)
+    if (!game) throw new NotFoundException(`¡Game with id: ${id} not exists!`)
 
-    if (!game) throw new NotFoundException('¡Game not exists!')
-
-    return await this.prisma.games.delete({ where: { id } })
+    return await this.prisma.game.update({where: {id}, data: {state:false}})
   }
 }
 

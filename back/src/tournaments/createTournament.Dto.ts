@@ -1,109 +1,95 @@
 import {
 	IsString,
 	IsNotEmpty,
-	IsEnum,
-	IsNumber,
-	IsDateString,
 	IsArray,
 	IsOptional,
 	IsUUID,
-} from 'class-validator';
-import { Categories } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
+	IsBoolean,
+  } from 'class-validator';
+  import { Categories} from '@prisma/client';
+  import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+  
+  export class CreateTournamentDto {
+	  @ApiProperty({ description: 'Tournament name' })
+	  @IsNotEmpty()
+	  nameTournament: string;
+	  
+	  @ApiProperty({ description: 'Start date',example: '2000-01-01T00:00:00.000Z', })
+	  @IsNotEmpty()
+	  startDate: string;	  
+	  
+	  @ApiProperty({ description: 'Category', example: "bennigner" })
+	  @IsNotEmpty()
+	  category: Categories;
 
-export class CreateTournamentDto {
-	@ApiProperty({
-		description: 'Name of the tournament',
-		example: 'Ultimate Showdown',
+	  @ApiProperty({
+		  description: 'ID of the organizer',
+		  example: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
+		})
+		@IsNotEmpty()
+		@IsUUID()
+		organizerId: string;
+		
+		@ApiProperty({
+			description: 'ID of the game',
+			example: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
 	})
 	@IsNotEmpty()
-	@IsString()
-	nameTournament: string;
-
-	@ApiProperty({
-		description: 'Start date of the tournament',
-		example: '2024-08-01T14:23:11.438Z',
-	})
-	@IsNotEmpty()
-	@IsDateString()
-	startDate: string;
-
 	@IsUUID()
-	@IsOptional()
-	id?: string;
-
-	@ApiProperty({
-		description: 'Category of the tournament',
-		example: 'beginner',
-	})
+	gameId: string;
+  
+	@ApiProperty({ description: 'Number of members', example: 5 })
 	@IsNotEmpty()
-	@IsEnum(Categories)
-	category: Categories;
-
-	@ApiProperty({
-		description: 'Number of members in the tournament',
-		example: 16,
-	})
-	@IsNotEmpty()
-	@IsNumber()
 	membersNumber: number;
 
-	@ApiProperty({
-		description: 'Maximum number of teams allowed in the tournament',
-		example: 16,
-	})
+	@ApiProperty({ description: 'Max teams', example: 5 })
 	@IsNotEmpty()
-	@IsNumber()
-	maxTeam: number;
+	maxTeams: number;
 
-	@ApiProperty({
-		description: 'URL for the tournament avatar',
-		example: 'https://example.com/avatar1.jpg',
-	})
+	@ApiProperty({ description: 'Price (Es un numero y no un string)', example: 500 })
 	@IsNotEmpty()
-	@IsString()
+	price: number;
+
+	@ApiProperty({ description: 'Avatar URL' , example: 'https://CesarGato.com'})
+	@IsNotEmpty()
 	urlAvatar: string;
 
-	@ApiProperty({
-		description: 'Awards for the tournament',
-		example: ['Trophy', 'Medal'],
-	})
+	@ApiProperty({ description: 'Awards' , example: ['$500', '$501', '$502']})
 	@IsNotEmpty()
-	@IsArray()
-	@IsString({ each: true })
-	award: string[];
-
-	@ApiProperty({
-		description: 'Description of the tournament',
-		example: 'A thrilling tournament with exciting matches!',
-	})
+	awards: string[];   
+  
+  
+	@ApiProperty({ description: 'Description' })
 	@IsNotEmpty()
-	@IsString()
 	description: string;
-
-	@ApiProperty({
-		description: 'ID of the organizer',
-		example: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
-	})
+  
+	@ApiProperty({ description: 'State' })
 	@IsNotEmpty()
-	@IsString()
-	organizerId: string;
+	state: boolean;
 
-	@ApiProperty({
-		description: 'ID of the game',
-		example: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
-	})
-	@IsNotEmpty()
-	@IsString()
-	gameId: string;
+	@ApiProperty({description: 'Aca tenes que poner el array de id', example: ['uuid1','uuid2','uuid3']})
+	@IsOptional()
+	players: string[]
 
-	@ApiProperty({
-		description: 'IDs of the teams participating in the tournament',
-		example: ['team1-uuid', 'team2-uuid'],
-		required: false,
+	@ApiPropertyOptional({
+	  description: 'IDs of the teams participating in the tournament',
+	  example: ['team1-uuid', 'team2-uuid'],
 	})
 	@IsOptional()
 	@IsArray()
 	@IsString({ each: true })
 	teams?: string[];
-}
+
+  }
+  
+  export class UpdateTournamentDto extends PartialType(CreateTournamentDto) {
+  
+	
+	@ApiPropertyOptional({
+	  description: 'State of the tournament',
+	  example: true,
+	})
+	@IsOptional()
+	@IsBoolean()
+	state?: boolean;
+  }

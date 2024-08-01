@@ -2,79 +2,84 @@ import {
 	IsString,
 	IsEmail,
 	IsNotEmpty,
-	MinLength,
 	IsDateString,
 	IsOptional,
+	IsBoolean,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PartialType } from '@nestjs/mapped-types';
+import { Role } from '@prisma/client';
 
-/**
- * DTO para crear un nuevo usuario.
- */
-export class CreateUserDto {
+
+export class SignInDto {
 	@ApiProperty({
-		description: 'Dirección de correo electrónico del usuario',
-		example: 'user@example.com',
+	  description: 'Dirección de correo electrónico del usuario',
+	  example: 'user@example.com',
 	})
+	@IsNotEmpty()
 	@IsEmail()
 	email: string;
-
+  
 	@ApiProperty({
-		description: 'Apodo del usuario',
-		example: 'JohnDoe',
+	  description: 'Token de Firebase del usuario',
+	  example: 'someFirebaseToken',
 	})
 	@IsString()
 	@IsNotEmpty()
-	nickName: string;
-
-	@ApiProperty({
-		description: 'Contraseña del usuario (mínimo 8 caracteres)',
-		example: 'password123',
-	})
-	@IsString()
-	@MinLength(8)
 	tokenFirebase: string;
+  }
 
+  export class CreateUserDto extends SignInDto {
 	@ApiProperty({
-		description: 'Fecha de nacimiento del usuario',
-		example: '2000-01-01T00:00:00.000Z',
+	  description: 'Apodo del usuario',
+	  example: 'JohnDoe',
 	})
 	@IsString()
-	birthDate: string;
-
+	@IsNotEmpty()
+	nickname: string;
+  
 	@ApiProperty({
-		description: 'ID del equipo asociado al usuario (opcional)',
-		example: 'teamId123',
-		required: false,
+	  description: 'Fecha de nacimiento del usuario',
+	  example: '2000-01-01T00:00:00.000Z',
+	})
+	@IsNotEmpty()
+	@IsDateString()
+	birthdate: string;
+  }
+
+  export class UpdateUserDto extends PartialType(CreateUserDto) {
+
+	@ApiPropertyOptional({
+	  description: 'URL del stream del usuario',
+	  example: 'http://example.com/stream',
 	})
 	@IsOptional()
 	@IsString()
-	teamId?: string;
-}
+	urlStream?: string;
 
-/**
- * DTO para iniciar sesión como usuario existente.
- */
-export class SignInDto {
-	@ApiProperty({
-		description: 'Dirección de correo electrónico del usuario',
-		example: 'user@example.com',
-	})
-	@IsEmail()
-	email: string;
+	@ApiPropertyOptional({
+		description: 'URL profile del usuario',
+		example: 'http://example.com/stream',
+	  })
+	  @IsOptional()
+	  @IsString()
+	  urlProfile?: string;
+	
+	  @ApiPropertyOptional({
+		description: 'Estado del usuario',
+		example: true,
+	  })
+	  @IsOptional()
+	  @IsBoolean()
+	  state?: boolean;
+	}
 
-	@ApiProperty({
-		description: 'Contraseña del usuario',
-		example: 'password123',
-	})
-	@IsString()
-	@IsNotEmpty()
-	tokenFirebase: string;
-}
-
-/**
- * DTO para actualizar información del usuario.
- * Extiende el DTO de creación con campos opcionales.
- */
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+	export class UserDtoForAdmin extends PartialType(UpdateUserDto){
+		@ApiPropertyOptional({
+			description: 'Role del usuario',
+			example: 'user',
+		  })
+		  @IsOptional()
+		  @IsString()
+		  role?: Role;
+		}

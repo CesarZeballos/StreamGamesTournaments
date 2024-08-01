@@ -1,6 +1,7 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { IsArray, IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID, Length } from "class-validator";
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID, Length } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/mapped-types';
+import { User } from '@prisma/client';
 
 export class CreateTeamDto {
     @ApiProperty({
@@ -9,8 +10,7 @@ export class CreateTeamDto {
         required: false
     })
     @IsUUID()
-    @IsOptional()
-    id?: string;
+    id: string;
 
     @ApiProperty({
         description: 'El nombre del equipo',
@@ -24,20 +24,21 @@ export class CreateTeamDto {
     name: string;
 
     @ApiProperty({
-        description: 'La URL de la imagen del avatar del equipo',
-        example: 'https://example.com/avatar.jpg'
-    })
-    @IsUrl()
-    @IsNotEmpty()
-    urlAvatar: string;
-
-    @ApiPropertyOptional({
-        description: 'El identificador único del torneo',
+        description: 'El identificador del organizador del equipo',
         example: '123e4567-e89b-12d3-a456-426614174000'
     })
     @IsUUID()
+    @IsNotEmpty()
+    organizerId: string;
+
+    @ApiProperty({
+        description: 'La URL de la imagen del avatar del equipo',
+        example: 'https://example.com/avatar.jpg',
+        required: false
+    })
+    @IsUrl()
     @IsOptional()
-    tournamentId?: string;
+    urlAvatar?: string;
 
     @ApiPropertyOptional({
         description: 'Lista de IDs de usuarios asociados con el equipo',
@@ -46,8 +47,7 @@ export class CreateTeamDto {
     })
     @IsArray()
     @IsOptional()
-    @IsUUID("4", { each: true })
-    user?: string[];
+    userIds?: string[];
 }
 
 export class UpdateTeamDto extends PartialType(CreateTeamDto) { }
@@ -66,11 +66,4 @@ export class DeleteMemberDto {
     })
     @IsUUID()
     idTeam: string;
-
-    @ApiProperty({
-        description: 'El identificador único del miembro a ser eliminado',
-        example: '123e4567-e89b-12d3-a456-426614174000'
-    })
-    @IsUUID()
-    idOrganizer: string;
 }

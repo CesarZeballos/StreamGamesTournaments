@@ -6,7 +6,6 @@ import { users } from "src/helpers/users.helper";
 import { TeamsService } from "src/teams/teams.service";
 import { CreateTournamentDto } from "src/tournaments/createTournament.Dto";
 import { TournamentsService } from "src/tournaments/tournaments.service";
-import { UsersService } from "src/users/users.service";
 
 export class preloadData {
 	constructor(

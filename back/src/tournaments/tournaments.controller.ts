@@ -19,8 +19,7 @@ import {
 	ApiOperation,
 } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
-import { CreateTournamentDto } from './createTournament.Dto';
-import { UpdateTournamentDto } from './updateTournament.Dto';
+import { CreateTournamentDto, UpdateTournamentDto } from './createTournament.dto';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
@@ -57,13 +56,6 @@ export class TournamentsController {
 		const pageNumber = page ? Number(page) : 1;
 		const limitNumber = limit ? Number(limit) : 9;
 
-		console.log(
-			'getAllTournaments called with page:',
-			pageNumber,
-			'limit:',
-			limitNumber,
-		);
-
 		return this.tournamentsService.getAllTournaments(
 			pageNumber,
 			limitNumber,
@@ -97,12 +89,15 @@ export class TournamentsController {
 		examples: {
 			default: {
 				value: {
+					nameTournament: 'Ultimate Showdown',
 					startDate: '2024-08-01T14:23:11.438Z',
-					categories: 'CATEGORY1',
-					award: 500,
-					urlStream: 'https://example.com/stream1',
+					category: 'beginner',
+					membersNumber: 16,
+					maxTeams: 16,
+					urlAvatar: 'https://example.com/avatar1.jpg',
+					awards: ['Trophy', 'Medal'],
+					description: 'A thrilling tournament with exciting matches!',
 					organizerId: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
-					gameId: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
 				},
 				description: 'Sample tournament data',
 			},
@@ -154,12 +149,18 @@ export class TournamentsController {
 		examples: {
 			default: {
 				value: {
+					nameTournament: 'Ultimate Showdown',
 					startDate: '2024-08-01T14:23:11.438Z',
-					categories: 'CATEGORY1',
-					award: 500,
-					urlStream: 'https://example.com/stream1',
+					category: 'beginner',
+					membersNumber: 16,
+					maxTeams: 16,
+					urlAvatar: 'https://example.com/avatar1.jpg',
+					awards: ['Trophy', 'Medal'],
+					description: 'A thrilling tournament with exciting matches!',
 					organizerId: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
 					gameId: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
+					teams: ['team1-uuid', 'team2-uuid'],
+					state: true,
 				},
 				description: 'Sample data for updating a tournament',
 			},
@@ -168,7 +169,7 @@ export class TournamentsController {
 	@ApiResponse({
 		status: 200,
 		description: 'Tournament updated successfully',
-		type: CreateTournamentDto,
+		type: UpdateTournamentDto,
 	})
 	@ApiResponse({ status: 404, description: 'Tournament not found' })
 	async updateATournament(
@@ -222,11 +223,7 @@ export class TournamentsController {
 		description: 'Tournament deleted successfully',
 	})
 	@ApiResponse({ status: 404, description: 'Tournament not found' })
-	async deleteTournament(@Param('id') id: string) {
-		if (!id) {
-			throw new BadRequestException('Tournament ID must be provided');
-		}
-
+	async deleteTournament(@Param('id', new ParseUUIDPipe()) id: string) {
 		return this.tournamentsService.deleteTournament(id);
 	}
 }
