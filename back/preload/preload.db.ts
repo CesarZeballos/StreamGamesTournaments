@@ -1,12 +1,11 @@
 import { Games, PrismaClient, Team, Tournament, User } from '@prisma/client';
-import { gamesData } from 'src/helpers/games.helpers';
-import { teams } from 'src/helpers/teams.helpers';
-import { tournaments } from 'src/helpers/tournaments.helper';
-import { users } from 'src/helpers/users.helper';
-import { TeamsService } from 'src/teams/teams.service';
-import { CreateTournamentDto } from 'src/tournaments/createTournament.Dto';
-import { TournamentsService } from 'src/tournaments/tournaments.service';
-import { UpdateTournamentDto } from 'src/tournaments/updateTournament.Dto';
+import { gamesData } from 'helpers/games.helpers';
+import { teams } from 'helpers/teams.helpers';
+import { tournaments } from 'helpers/tournaments.helper';
+import { users } from 'helpers/users.helper';
+import { TeamsService } from 'teams/teams.service';
+import { CreateTournamentDto } from 'tournaments/createTournament.Dto';
+import { TournamentsService } from 'tournaments/tournaments.service';
 
 export class preloadData {
 	constructor(
@@ -111,52 +110,45 @@ export class preloadData {
 			throw new Error('No games found');
 		}
 
-		let counterGame: number = 0;
-
 		for (const tournament of tournaments) {
-			if (counterGame >= games.length) {
-				counterGame = 0; // Reinicia el contador si supera el número de juegos disponibles
+			let gameName = '';
+
+			if (tournament.nameTournament.includes('Counter-Strike')) {
+				gameName = 'CounterStrike Go';
+			} else if (tournament.nameTournament.includes('Fortnite')) {
+				gameName = 'Fortnite';
+			} else if (
+				tournament.nameTournament.includes('League of Legends')
+			) {
+				gameName = 'League of Legends';
+			}
+
+			const game = games.find((g) => g.name === gameName);
+
+			if (!game) {
+				throw new Error(`Game ${gameName} not found`);
 			}
 
 			const tournamentData: CreateTournamentDto = {
 				nameTournament: tournament.nameTournament,
-				game: tournament.game,
-				price: tournament.price,
-				membersNumber: tournament.membersNumber,
 				startDate: tournament.startDate.toISOString(),
-				categories: tournament.category,
-				award: tournament.awards,
+				category: tournament.categories,
+				award: tournament.award,
 				description: tournament.description,
 				urlAvatar: tournament.urlAvatar,
-				maxMember: tournament.maxMember,
+				membersNumber: tournament.maxMember,
 				maxTeam: tournament.maxTeam,
 				organizerId: userOrganizer.id,
-				gameId: games[counterGame].id, // Obtener el ID del juego
+				gameId: game.id,
+				maxMember: tournament.maxMember,
 			};
 
-			try {
-				const createdTournament =
-					await this.tournamentsService.createTournament(
-						tournamentData,
-					);
-				if ('id' in createdTournament) {
-					console.log(`Tournament created: ${createdTournament.id}`);
-				} else {
-					console.error(
-						`Failed to create tournament: ${JSON.stringify(createdTournament)}`,
-					);
-				}
-				counterGame++;
-			} catch (error) {
-				console.error(`Failed to create tournament: ${error.message}`);
-			}
+			await this.tournamentsService.createTournament(tournamentData);
 		}
-		console.log('Data preloaded successfully');
 	}
 
 	async addTeamForTournament() {
 		const teams: Team[] = await this.prisma.team.findMany();
-
 		const tournaments: Tournament[] =
 			await this.prisma.tournament.findMany();
 

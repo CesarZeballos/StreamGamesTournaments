@@ -3,15 +3,11 @@ import {
 	IsEmail,
 	IsNotEmpty,
 	MinLength,
-	IsDateString,
 	IsOptional,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PartialType } from '@nestjs/mapped-types';
 
-/**
- * DTO para crear un nuevo usuario.
- */
 export class CreateUserDto {
 	@ApiProperty({
 		description: 'Dirección de correo electrónico del usuario',
@@ -53,9 +49,6 @@ export class CreateUserDto {
 	teamId?: string;
 }
 
-/**
- * DTO para iniciar sesión como usuario existente.
- */
 export class SignInDto {
 	@ApiProperty({
 		description: 'Dirección de correo electrónico del usuario',
@@ -73,8 +66,4 @@ export class SignInDto {
 	tokenFirebase: string;
 }
 
-/**
- * DTO para actualizar información del usuario.
- * Extiende el DTO de creación con campos opcionales.
- */
 export class UpdateUserDto extends PartialType(CreateUserDto) {}

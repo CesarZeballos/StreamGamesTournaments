@@ -16,15 +16,15 @@ const SideBar: React.FC = () => {
       <h1 className="heading4 text-white">Filters</h1>
       <div>
         <h1 className="section-title">Competition Difficulty</h1>
-        <button className="item-container" onClick={() => handleFilterClick("CATEGORY1")}>
+        <button className="item-container" onClick={() => handleFilterClick("beginner")}>
           <Image src={beginner} alt="Beginner" className="item-image" />
           <p className="item-text">Beginner</p>
         </button>
-        <button className="item-container" onClick={() => handleFilterClick("CATEGORY2")}>
+        <button className="item-container" onClick={() => handleFilterClick("advanced")}>
           <Image src={advanced} alt="Advanced" className="item-image" />
           <p className="item-text">Advanced</p>
         </button>
-        <button className="item-container" onClick={() => handleFilterClick("CATEGORY3")}>
+        <button className="item-container" onClick={() => handleFilterClick("expert")}>
           <Image src={expert} alt="Expert" className="item-image" />
           <p className="item-text">Expert</p>
         </button>

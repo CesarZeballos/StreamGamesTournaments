@@ -3,6 +3,7 @@ import { ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfac
 export async function postUser(data:IRegisterForm) {
     // console.log("registerFetch", data)
     const dataFetch = JSON.stringify(data)
+    console.log("dataFetch", dataFetch)
     try {
         const response = await fetch("http://localhost:3001/auth/signup", {
             method: "POST",
@@ -72,4 +73,19 @@ export async function passwordRecovery(data: string) {try {
 } catch (error) {
     console.log("Error recovery password.", error)
 }
+}
+
+export const fetchUserById = async (id: string) => {
+    const response = await fetch(`http://localhost:3001/users/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    if (!response.ok) {
+        throw new Error(`Error fetching user: ${response.statusText}`);
+    }
+    const userData = await response.json();
+    console.log("userData", userData)
+    return userData;
 }

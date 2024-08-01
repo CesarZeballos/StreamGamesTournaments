@@ -8,7 +8,7 @@ import {
 	ApiBody,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from 'src/auth/auth.user.dto';
+import { UpdateUserDto } from 'auth/auth.user.Dto';
 
 @ApiTags('Users')
 @Controller('users')

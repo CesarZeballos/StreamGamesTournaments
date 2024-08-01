@@ -2,15 +2,17 @@ import { IUser } from "./interfaceUser";
 import { ITournament } from "@/interfaces/interfaceTournaments";
 
 export interface ITournamentState {
+  status: string;
   tournaments: ITournament[];
 }
 
 export interface IUserState {
-    user: IUser | null;
-    status: string;
-    error: string | null;
-    token: string | null;
-    statusRegister: string;
+  user: IUser | null;
+  status: string;
+  statusRegister: string;
+  statusForgotPassword: string;
+  error: string | null;
+  token: string | null;
 }
 
 export interface IRegisterFormSlice {

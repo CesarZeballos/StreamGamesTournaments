@@ -3,45 +3,28 @@ import {
 	NotFoundException,
 	InternalServerErrorException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { User } from '@prisma/client';
-import { UpdateUserDto } from 'src/auth/auth.user.dto';
-import { users as helperUsers } from 'src/helpers/users.helper';
+import { UpdateUserDto } from '../auth/auth.user.Dto';
 
 @Injectable()
 export class UsersRepository {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
-	// async getAllUsers(): Promise<User[]> {
-	//   try {
-	//     const users = await this.prisma.user.findMany();
-	//     if (users.length === 0) {
-	//       console.info('No users found');
-	//     } else {
-	//       console.info(`Found ${users.length} users`);
-	//     }
-	//     return users;
-	//   } catch (error) {
-	//     console.error('Failed to get all users:', error);
-	//     throw new Error('Failed to get users');
-	//   }
-	// }
-
-	async getAllUsers() {
+	async getAllUsers(): Promise<User[]> {
 		try {
-			const users = await this.prisma.user.findMany();
+			const users = await this.prisma.user.findMany({
+				include: { team: true, tournaments: true, organizedTeam: true },
+			});
 			if (users.length === 0) {
-				console.info(
-					'No users found in database, returning helper users',
-				);
-				return helperUsers;
+				console.info('No users found');
 			} else {
-				console.info(`Found ${users.length} users in database`);
+				console.info(`Found ${users.length} users`);
 			}
 			return users;
 		} catch (error) {
 			console.error('Failed to get all users:', error);
-			throw new InternalServerErrorException('Failed to get users');
+			throw new Error('Failed to get users');
 		}
 	}
 
@@ -49,6 +32,11 @@ export class UsersRepository {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
+				include: {
+					team: true,
+					tournaments: true,
+					organizedTeam: true,
+				},
 			});
 			if (user) {
 				console.info(`User with id ${id} found`);
@@ -106,7 +94,7 @@ export class UsersRepository {
 	async disableUser(id: string): Promise<User> {
 		try {
 			const updatedUser = await this.prisma.user.delete({
-				where: { id }
+				where: { id },
 			});
 			console.info(`User with id ${id} disabled successfully`);
 			return updatedUser;

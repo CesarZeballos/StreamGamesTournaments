@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  overflow: auto; /* Asegúrate de no tener overflow: hidden aquí */
+}
+
 /* text styles */
 
 .heading1 {

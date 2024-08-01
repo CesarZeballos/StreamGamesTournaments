@@ -1,6 +1,6 @@
 import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
 import { ILoginForm } from "@/interfaces/interfaceUser"
-import { loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
+import { fetchUserById, loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
 import { singInFirebaseWithEmailAndPassword, singUpFirebaseWithEmailAndPassword } from "@/utils/firebase/auth"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
@@ -44,5 +44,15 @@ export const forgotPasswordSlice = createAsyncThunk('user/postForgotPassword', a
         return response
     } catch (error: any) {
         throw Error(error.response.data.message || "Error in password recovery")
+    }
+})
+
+export const reloadUSerDataSlice = createAsyncThunk('user/reloadUserData', async (id: string | undefined) => {
+    try {
+        if(!id) return
+        const response = await fetchUserById(id)
+        return response
+    } catch (error: any) {
+        throw Error(error.response.data.message || "Error in login")
     }
 })

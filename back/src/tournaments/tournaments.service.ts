@@ -3,41 +3,22 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateTournamentDto } from '../tournaments/createTournament.Dto';
 import { UpdateTournamentDto } from '../tournaments/updateTournament.Dto';
-import { Prisma, Tournament } from '@prisma/client';
+import { MailService } from 'mail/mail.service';
+import { MailTemplates } from 'mail/mail-templates';
 
 @Injectable()
 export class TournamentsService {
-	constructor(private readonly prisma: PrismaService) {}
-
-	/* async getAllTournaments(page: number, limit: number) {
-		const skip = (page - 1) * limit;
-
-		const tournaments = await this.prisma.tournament.findMany({
-			take: limit,
-			skip: skip,
-			include: {
-				game: true,
-				teams: true,
-				organizer: true,
-			},
-		});
-
-		if (tournaments.length === 0) {
-			return { message: 'No tournaments found' };
-		}
-
-		return tournaments;
-	}
- */
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly mailService: MailService,
+	) {}
 
 	async getAllTournaments(page: number, limit: number) {
 		const skip = (page - 1) * limit;
 
-		console.log(`Fetching tournaments with skip=${skip} and take=${limit}`);
-
 		const tournaments = await this.prisma.tournament.findMany({
 			take: limit,
 			skip: skip,
@@ -47,8 +28,6 @@ export class TournamentsService {
 				organizer: true,
 			},
 		});
-
-		console.log('Tournaments found:', tournaments);
 
 		if (tournaments.length === 0) {
 			return { message: 'No tournaments found' };
@@ -74,9 +53,7 @@ export class TournamentsService {
 		return tournament;
 	}
 
-	async createTournament(
-		createTournamentDto: CreateTournamentDto,
-	): Promise<Tournament | { message: string }> {
+	async createTournament(createTournamentDto: CreateTournamentDto) {
 		const { organizerId, gameId, teams, ...data } = createTournamentDto;
 
 		// Verificar que el organizador exista
@@ -97,7 +74,6 @@ export class TournamentsService {
 			return { message: `Game with id ${gameId} not found` };
 		}
 
-		// Convertir premios a cadenas
 		const awardsAsStrings = data.award.map((a) => a.toString());
 
 		try {
@@ -114,6 +90,16 @@ export class TournamentsService {
 				},
 			});
 
+			// Obtener el contenido del correo de confirmación de las plantillas
+			const mailContent = MailTemplates.tournamentCreated(
+				organizerExists.email,
+				organizerExists.nickName,
+				tournament.nameTournament,
+			);
+
+			// Enviar el correo de confirmación
+			await this.mailService.sendMail(mailContent);
+
 			return tournament;
 		} catch (error) {
 			// Manejo de errores en la creación del torneo
@@ -124,7 +110,9 @@ export class TournamentsService {
 	async addTeamTournament(tournamentId: string, teamId: string) {
 		const tournament = await this.prisma.tournament.findUnique({
 			where: { id: tournamentId },
+			include: { teams: true },
 		});
+
 		const team = await this.prisma.team.findUnique({
 			where: { id: teamId },
 		});
@@ -136,16 +124,28 @@ export class TournamentsService {
 			return { message: `Team with id ${teamId} not found` };
 		}
 
-		const updateTournament = await this.prisma.tournament.update({
+		const isTeamAlreadyInTournament = tournament.teams.some(
+			(t) => t.id === teamId,
+		);
+		if (isTeamAlreadyInTournament) {
+			return {
+				message: `Team with id ${teamId} is already in the tournament`,
+			};
+		}
+
+		const updatedTournament = await this.prisma.tournament.update({
 			where: { id: tournamentId },
 			data: {
-				teams: { connect: { id: teamId } },
+				teams: {
+					connect: { id: teamId },
+				},
 			},
 			include: {
 				teams: true,
 			},
 		});
-		return updateTournament;
+
+		return updatedTournament;
 	}
 
 	async updateATournament(

@@ -34,32 +34,31 @@ export class CreateTournamentDto {
 
 	@ApiProperty({
 		description: 'Category of the tournament',
-		example: 'CATEGORY1',
+		example: 'beginner',
 	})
-	@IsOptional()
-	@IsNumber()
-	price?: number;
-
 	@IsNotEmpty()
 	@IsEnum(Categories)
-	categories: Categories;
+	category: Categories;
 
 	@ApiProperty({
-		description: 'Award amount for the tournament',
-		example: [500, 300],
+		description: 'Number of members in the tournament',
+		example: 16,
 	})
-	@IsNotEmpty()
-	@IsString()
-	game: string;
-
 	@IsNotEmpty()
 	@IsNumber()
 	membersNumber: number;
 
+	@ApiProperty({
+		description: 'Maximum number of teams allowed in the tournament',
+		example: 16,
+	})
 	@IsNotEmpty()
-	@IsArray()
-	@IsString({ each: true }) // Cambiado a IsString para coincidir con el modelo Prisma
-	award: string[];
+	@IsNumber()
+	maxTeam: number;
+
+	@IsNotEmpty()
+	@IsNumber()
+	maxMember: number;
 
 	@ApiProperty({
 		description: 'URL for the tournament avatar',
@@ -70,28 +69,21 @@ export class CreateTournamentDto {
 	urlAvatar: string;
 
 	@ApiProperty({
+		description: 'Awards for the tournament',
+		example: ['Trophy', 'Medal'],
+	})
+	@IsNotEmpty()
+	@IsArray()
+	@IsString({ each: true })
+	award: string[];
+
+	@ApiProperty({
 		description: 'Description of the tournament',
 		example: 'A thrilling tournament with exciting matches!',
 	})
 	@IsNotEmpty()
 	@IsString()
 	description: string;
-
-	@ApiProperty({
-		description: 'Maximum number of members allowed in the tournament',
-		example: 10,
-	})
-	@IsNotEmpty()
-	@IsNumber()
-	maxMember: number;
-
-	@ApiProperty({
-		description: 'Maximum number of teams allowed in the tournament',
-		example: 16,
-	})
-	@IsNotEmpty()
-	@IsNumber()
-	maxTeam: number;
 
 	@ApiProperty({
 		description: 'ID of the organizer',

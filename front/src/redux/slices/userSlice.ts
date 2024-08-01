@@ -1,14 +1,16 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { forgotPasswordSlice, loginSlice, registerSlice } from "../thunks/userSliceThunk";
+import { forgotPasswordSlice, loginSlice, registerSlice, reloadUSerDataSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
+import { addTeam } from "../thunks/tournamentsSliceThunk";
 
 const initialState: IUserState = {
-    user: null,
-    status: 'idle',
-    error: null,
-    token: null,
-    statusRegister: 'idle'
+  user: null,
+  status: 'idle',
+  statusRegister: 'idle',
+  error: null,
+  token: null,
+  statusForgotPassword: ""
 }
 
 const userSlice = createSlice({
@@ -31,6 +33,7 @@ const userSlice = createSlice({
         }
     }, extraReducers: (builder) => {
         builder
+        // REGISTER
         .addCase(registerSlice.pending, (state) => {
             state.statusRegister = 'loading'
             state.error = null
@@ -50,6 +53,7 @@ const userSlice = createSlice({
               })
         })
         
+        // LOGIN
         .addCase(loginSlice.pending, (state) => {
             state.status = 'loading'
             state.error = null
@@ -58,8 +62,10 @@ const userSlice = createSlice({
             state.status = 'succeeded'
             state.statusRegister = 'idle'
             console.log("payload", action.payload)
-            state.user = action.payload.user
-            state.token = action.payload.token
+            if (action.payload) {
+                state.user = action.payload.user
+                state.token = action.payload.token
+            } else return
 
             toast.success(`welcome ${action.payload.user.nickName}`, {
                 position: 'top-right',
@@ -73,6 +79,24 @@ const userSlice = createSlice({
                 duration: 1500,
               })
           })
+
+          // RELOAD USER DATA
+          .addCase(reloadUSerDataSlice.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+          })
+          .addCase(reloadUSerDataSlice.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.statusRegister = 'idle'
+            // state.user = action.payload.user
+            // state.token = action.payload.token
+            console.log("payload", action.payload)
+          })
+          .addCase(reloadUSerDataSlice.rejected, (state, action) => {
+            state.status = 'failed'
+          })
+
+          // FORGOT PASSWORD
           .addCase(forgotPasswordSlice.pending, (state) => {
             state.status = 'loading'
             state.error = null
@@ -80,8 +104,8 @@ const userSlice = createSlice({
           .addCase(forgotPasswordSlice.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.statusRegister = 'idle'
-            state.user = action.payload.user
-            state.token = action.payload.token
+            // state.user = action.payload.user
+            // state.token = action.payload.token
 
             toast.success(`shortly you will receive an email to recover your password`, {
                 position: 'top-right',
@@ -91,6 +115,30 @@ const userSlice = createSlice({
           .addCase(forgotPasswordSlice.rejected, (state, action) => {
             state.status = 'failed'
             toast.error('fail in password recovery', {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+
+          // ADD TEAM TO TOURNAMENTS
+          .addCase(addTeam.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+          })
+          .addCase(addTeam.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.statusRegister = 'idle'
+            // state.user = action.payload.user
+            // state.token = action.payload.token
+
+            toast.success(`Your team added to the tournament`, {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+          .addCase(addTeam.rejected, (state, action) => {
+            state.status = 'failed'
+            toast.error('fail in adding team', {
                 position: 'top-right',
                 duration: 1500,
               })
