@@ -1,9 +1,9 @@
-import { UserDashboard } from "@/components/dashboard"
+import { RouterDashboard } from "@/components/routerDashboard"
 
 const Dashboard: React.FC = () => {
     return (
-        <div className="bodyContainer mb-16">
-            <UserDashboard />
+        <div className="bodyContainer mt-4">
+            <RouterDashboard />
         </div>
     )
 }

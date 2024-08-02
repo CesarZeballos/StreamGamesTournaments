@@ -7,6 +7,13 @@ import csIcon from "../../app/assets/images/icons/cs-W.png";
 import ftIcon from "../../app/assets/images/icons/fortnite-W.png";
 import lolIcon from "../../app/assets/images/icons/lol-W.png";
 
+//icons import
+import { MdGames } from "react-icons/md";
+import { SiLeagueoflegends } from "react-icons/si";
+import { SiCounterstrike } from "react-icons/si";
+import { TbBrandFortnite } from "react-icons/tb";
+
+
 const SearchBar: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -15,21 +22,21 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between p-2 gap-6 overflow-hidden">
+    <div className="flex flex-row justify-center p-2 gap-6">
       <button className="buttonFilter" onClick={() => handleFilterClick("All Tournaments")}>
-        <Image src={allIcon} alt="All Tournaments" className="s-icon" />
+        <MdGames />
         <p>All Tournaments</p>
       </button>
       <button className="buttonFilter" onClick={() => handleFilterClick("CounterStrike Go")}>
-        <Image src={csIcon} alt="Counter Strike" className="s-icon" />
+        <SiCounterstrike />
         <p>Counter Strike</p>
       </button>
       <button className="buttonFilter" onClick={() => handleFilterClick("Fortnite")}>
-        <Image src={ftIcon} alt="Fortnite" className="s-icon" />
+        <TbBrandFortnite />
         <p>Fortnite</p>
       </button>
       <button className="buttonFilter" onClick={() => handleFilterClick("League of Legends")}>
-        <Image src={lolIcon} alt="League of Legends" className="s-icon" />
+        <SiLeagueoflegends />
         <p>League of Legends</p>
       </button>
     </div>

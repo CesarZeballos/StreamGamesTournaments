@@ -1,11 +1,12 @@
 import { ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export async function postUser(data:IRegisterForm) {
-    // console.log("registerFetch", data)
     const dataFetch = JSON.stringify(data)
     console.log("dataFetch", dataFetch)
     try {
-        const response = await fetch("http://localhost:3001/auth/signup", {
+        const response = await fetch(`${apiUrl}/auth/signup`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ export async function postUser(data:IRegisterForm) {
 
 export async function loginUser(data: ILoginDataBase) {
     try {
-        const response = await fetch("http://localhost:3001/auth/signin", {
+        const response = await fetch(`${apiUrl}/auth/signin`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ export async function loginUser(data: ILoginDataBase) {
 }
 
 export async function passwordRecovery(data: string) {try {
-    const response = await fetch("http://localhost:3001/users/search", {
+    const response = await fetch(`${apiUrl}/users/search`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ export async function passwordRecovery(data: string) {try {
 }
 
 export const fetchUserById = async (id: string) => {
-    const response = await fetch(`http://localhost:3001/users/${id}`, {
+    const response = await fetch(`${apiUrl}/users/${id}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

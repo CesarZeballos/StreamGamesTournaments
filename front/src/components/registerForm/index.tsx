@@ -56,10 +56,6 @@ export const RegisterForm: React.FC = () => {
                 birthdate: new Date(data.birthDate).toISOString()
             }
             dispatch(registerSlice(registerData))
-            setTimeout(() => {
-                dispatch(loginSlice(registerData))
-                router.push("/")
-            }, 1500)
         } else {
             toast('error register', {
                 position: 'top-right',
@@ -68,11 +64,23 @@ export const RegisterForm: React.FC = () => {
         }
     }, [data, errorRegister, dispatch])
     
+    const registerStatus = useSelector((state: RootState) => state.user.statusRegister)
+    useEffect(() => {
+        if (registerStatus === "failed") {
+            return
+        } else if (registerStatus === "succeeded") {
+            setTimeout(() => {
+                dispatch(loginSlice({
+                    email: data.email,
+                    password: data.password}))
+                router.push("/")
+            }, 1500)
+    }}, [registerStatus, router, data, dispatch])
+
     return (
-        <form onSubmit={handleSubmit}>
-            <h1 className="heading2 text-white mb-16">Register</h1>
+        <form onSubmit={handleSubmit} className="mt-9">
             <FourColumsContainer imagen="register" URLimagen={"/register.jpg"}>
-                <FormContainer section={"Enter your data"}>
+                <FormContainer section={"Register"}>
                     <div className="flex flex-col gap-2 w-fit">
                         <label className="body text-white">Nickname</label>
                         <input type="text"

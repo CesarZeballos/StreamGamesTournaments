@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image";
+import { IUser } from "./interfaceUser";
 
 export interface ITournament {
     id: string;
@@ -6,7 +7,7 @@ export interface ITournament {
     startDate: string;
     createdAt: string;
     price: number;
-    categories: string;
+    category: string;
     gameId: string;
     membersNumber: number;
     award: string[];
@@ -24,6 +25,14 @@ export interface ITournament {
 
 export interface IAddTeam {
     tournamentId: string
-    teamId: string
-    payment: string
+    teamName: string
+    organizarId: string
+    members: IUser[]
+}
+
+export interface IMyTournaments {
+    id: string
+    nameTournament: string
+    startDate: string
+    status: string
 }
