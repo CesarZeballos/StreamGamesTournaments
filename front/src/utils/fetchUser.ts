@@ -1,4 +1,4 @@
-import { ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
+import { IAddFriendForm, ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -90,3 +90,22 @@ export const fetchUserById = async (id: string) => {
     console.log("userData", userData)
     return userData;
 }
+
+export const fetchAddUser = async (data: IAddFriendForm) => {
+    const {userId, friendId, token} = data
+    // no se de por donde le paso el userId
+    const response = await fetch(`${apiUrl}/users/addfriend`, {
+        method: "POST",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({friendId})
+    })
+
+    if (!response.ok) {
+        throw new Error(`Error adding friend: ${response.statusText}`);
+    }
+    const userData = await response.json();
+    return userData;
+} 

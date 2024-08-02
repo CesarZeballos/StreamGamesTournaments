@@ -7,6 +7,7 @@ const initialState: IUserState = {
   user: null,
   status: 'idle',
   statusRegister: 'idle',
+  statusAddFriend: 'idle',
   error: null,
   token: null,
   statusForgotPassword: ""
@@ -20,7 +21,7 @@ const userSlice = createSlice({
             state.user = action.payload.user
         },
         logoutSlice(state) {
-            toast(`See you later ${state.user?.nickName}`, {
+            toast(`See you later ${state.user?.nickname}`, {
                 position: 'top-right',
                 duration: 1500,
               })
@@ -113,6 +114,26 @@ const userSlice = createSlice({
           .addCase(forgotPasswordSlice.rejected, (state, action) => {
             state.status = 'failed'
             toast.error('fail in password recovery', {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+
+          // ADD FRIEND
+          .addCase(registerSlice.pending, (state) => {
+            state.statusAddFriend = 'loading'
+            state.error = null
+          })
+          .addCase(registerSlice.fulfilled, (state, action) => {
+            state.statusAddFriend = 'succeeded'
+            toast.success('friend request sent', {
+                position: 'top-right',
+                duration: 1500,
+              })
+            })
+          .addCase(registerSlice.rejected, (state, action) => {
+            state.statusAddFriend = 'failed'
+            toast.error('friend request not sent', {
                 position: 'top-right',
                 duration: 1500,
               })

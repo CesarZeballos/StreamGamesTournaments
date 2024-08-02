@@ -8,7 +8,6 @@ export interface IUser {
     urlSteam: string
     role: string
     state: boolean
-    teams: ITeam[]
     tournaments: ITournamentsregistered[]
     friends: []
     sentFriendRequests: []
@@ -26,6 +25,7 @@ export interface ITeam {
 export interface ITournamentsregistered {
     id: string
     nameTournament: string
+    startDate: string
 }
 
 // export interface ITeamMember {
@@ -73,6 +73,12 @@ export interface IUserSelector {
     id: string
     label: string
     email: string
-    birthDate: string
+    birthdate: string
     role: string
+}
+
+export interface IAddFriendForm {
+    userId: string
+    friendId: string
+    token: string
 }

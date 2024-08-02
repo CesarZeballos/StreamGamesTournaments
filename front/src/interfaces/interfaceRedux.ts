@@ -11,6 +11,7 @@ export interface IUserState {
   status: string;
   statusRegister: string;
   statusForgotPassword: string;
+  statusAddFriend: string
   error: string | null;
   token: string | null;
 }
