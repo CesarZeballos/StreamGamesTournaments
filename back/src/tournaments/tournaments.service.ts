@@ -3,11 +3,12 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
 } from '../tournaments/createTournament.Dto';
+import { MailService } from 'mail/mail.service';
 
 @Injectable()
 export class TournamentsService {

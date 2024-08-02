@@ -14,7 +14,14 @@ export class UsersRepository {
 	async getAllUsers(): Promise<User[]> {
 		try {
 			const users = await this.prisma.user.findMany({
-				include: { team: true, tournaments: true, organizedTeam: true },
+				include: {
+					teams: true,
+					tournaments: true,
+					organizedTournaments: true,
+					sentFriendRequests: true,
+					friends: true,
+					globalChat: true,
+				},
 			});
 			if (users.length === 0) {
 				console.info('No users found');
@@ -33,9 +40,12 @@ export class UsersRepository {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
 				include: {
-					team: true,
+					teams: true,
 					tournaments: true,
-					organizedTeam: true,
+					organizedTournaments: true,
+					sentFriendRequests: true,
+					friends: true,
+					globalChat: true,
 				},
 			});
 			if (user) {

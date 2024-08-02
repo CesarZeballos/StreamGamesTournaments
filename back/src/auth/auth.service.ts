@@ -8,8 +8,7 @@ import {
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { MailService } from 'mail/mail.service'; 
-import { MailTemplates } from 'mail/mail-templates'; 
+import { MailService } from 'mail/mail.service';
 
 @Injectable()
 export class AuthService {

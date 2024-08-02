@@ -17,8 +17,8 @@ export class CreateTeamDto {
 		required: false,
 	})
 	@IsUUID()
-	@IsOptional() // <--- Cambio agregado
-	id?: string; // <--- Cambio agregado
+	@IsOptional()
+	id?: string; // Opcional, pero considera si realmente necesitas esto
 
 	@ApiProperty({
 		description: 'El nombre del equipo',
@@ -34,17 +34,19 @@ export class CreateTeamDto {
 	@ApiProperty({
 		description: 'El identificador del organizador del equipo',
 		example: '123e4567-e89b-12d3-a456-426614174000',
+		required: false, // Opcional si tu lógica lo permite
 	})
 	@IsUUID()
-	@IsNotEmpty()
+	@IsOptional()
 	organizerId?: string;
 
 	@ApiProperty({
 		description: 'El identificador del torneo',
-		example: '123e4567-e89b-12d3-a456-426614174000', // <--- Corrección en la descripción
+		example: '123e4567-e89b-12d3-a456-426614174000',
+		required: false, // Opcional si tu lógica lo permite
 	})
 	@IsUUID()
-	@IsNotEmpty()
+	@IsOptional()
 	tournamentId?: string;
 
 	@ApiProperty({
@@ -66,7 +68,7 @@ export class CreateTeamDto {
 	})
 	@IsArray()
 	@IsOptional()
-	@IsUUID('4', { each: true }) // <--- Agregar validación para cada elemento del array
+	@IsUUID('4', { each: true }) // Valida cada elemento del array como UUID
 	userIds?: string[];
 }
 

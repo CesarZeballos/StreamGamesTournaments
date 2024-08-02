@@ -6,14 +6,14 @@ import {
 	Tournament,
 	User,
 } from '@prisma/client';
-import { gamesData } from 'src/helpers/games.helpers';
-import { teams } from 'src/helpers/teams.helpers';
-import { tournaments } from 'src/helpers/tournaments.helper';
-import { users } from 'src/helpers/users.helper';
-import { CreateTeamDto } from 'src/teams/createTeamDto';
-import { TeamsService } from 'src/teams/teams.services';
-import { CreateTournamentDto } from 'src/tournaments/createTournament.dto';
-import { TournamentsService } from 'src/tournaments/tournaments.service';
+import { gamesData } from 'helpers/games.helpers';
+import { teams } from 'helpers/teams.helpers';
+import { tournaments } from 'helpers/tournaments.helper';
+import { users } from 'helpers/users.helper';
+import { CreateTeamDto } from 'teams/createTeamDto';
+import { TeamsService } from 'teams/teams.services';
+import { CreateTournamentDto } from 'tournaments/createTournament.Dto';
+import { TournamentsService } from 'tournaments/tournaments.service';
 
 export class preloadData {
 	constructor(
@@ -171,7 +171,6 @@ export class preloadData {
 				maxTeams: tournament.maxTeams,
 				organizerId: userOrganizer.id,
 				gameId: game.id,
-				maxMember: tournament.maxMember,
 			};
 
 			await this.tournamentsService.createTournament(tournamentData);
