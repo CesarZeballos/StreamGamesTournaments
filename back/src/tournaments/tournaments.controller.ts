@@ -19,7 +19,10 @@ import {
 	ApiOperation,
 } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
-import { CreateTournamentDto, UpdateTournamentDto } from './createTournament.dto';
+import {
+	CreateTournamentDto,
+	UpdateTournamentDto,
+} from './createTournament.dto';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
@@ -96,7 +99,8 @@ export class TournamentsController {
 					maxTeams: 16,
 					urlAvatar: 'https://example.com/avatar1.jpg',
 					awards: ['Trophy', 'Medal'],
-					description: 'A thrilling tournament with exciting matches!',
+					description:
+						'A thrilling tournament with exciting matches!',
 					organizerId: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
 				},
 				description: 'Sample tournament data',
@@ -111,30 +115,6 @@ export class TournamentsController {
 	@ApiResponse({ status: 400, description: 'Bad request' })
 	async createTournament(@Body() createTournamentDto: CreateTournamentDto) {
 		return this.tournamentsService.createTournament(createTournamentDto);
-	}
-
-	@Put('team')
-	@ApiOperation({
-		summary: 'Add a team to a tournament',
-		description: 'Associate a team with a tournament.',
-	})
-	@ApiBody({
-		type: Object,
-		description: 'Tournament and team IDs',
-		examples: {
-			default: {
-				value: { teamId: 'team-id', tournamentId: 'tournament-id' },
-				description: 'Example body for updating tournament teams',
-			},
-		},
-	})
-	@ApiResponse({ status: 200, description: 'Team added to tournament' })
-	@ApiResponse({ status: 400, description: 'Bad request' })
-	async updateTournament(
-		@Body() body: { teamId: string; tournamentId: string },
-	) {
-		const { tournamentId, teamId } = body;
-		return this.tournamentsService.addTeamTournament(tournamentId, teamId);
 	}
 
 	@Put('update/:id')
@@ -156,7 +136,8 @@ export class TournamentsController {
 					maxTeams: 16,
 					urlAvatar: 'https://example.com/avatar1.jpg',
 					awards: ['Trophy', 'Medal'],
-					description: 'A thrilling tournament with exciting matches!',
+					description:
+						'A thrilling tournament with exciting matches!',
 					organizerId: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
 					gameId: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
 					teams: ['team1-uuid', 'team2-uuid'],
@@ -176,7 +157,7 @@ export class TournamentsController {
 		@Param('id', new ParseUUIDPipe()) id: string,
 		@Body() updateTournamentDto: UpdateTournamentDto,
 	) {
-		return this.tournamentsService.updateATournament(
+		return this.tournamentsService.updateTournament(
 			id,
 			updateTournamentDto,
 		);

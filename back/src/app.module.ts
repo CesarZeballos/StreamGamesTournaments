@@ -7,6 +7,7 @@ import { TournamentsModule } from './tournaments/tournaments.module';
 import { PrismaModule } from 'prisma/prisma.module';
 import { GamesModule } from './games/games.module';
 import { UsersModule } from './users/users.module';
+import { TeamsModule } from './teams/teams.module';
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from './users/users.module';
 		AuthModule,
 		PrismaModule,
 		FileUploadModule,
+		TeamsModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

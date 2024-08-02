@@ -4,7 +4,7 @@ import { TournamentsController } from './tournaments.controller';
 import { PrismaService } from 'prisma/prisma.service';
 
 @Module({
-  providers: [TournamentsService, PrismaService],
-  controllers: [TournamentsController],
+	providers: [TournamentsService, PrismaService],
+	controllers: [TournamentsController],
 })
 export class TournamentsModule {}

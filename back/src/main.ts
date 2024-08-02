@@ -6,7 +6,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { preloadData } from '../preload/preload.db';
 import { PrismaService } from '../prisma/prisma.service';
-import { TeamsService } from './teams/teams.service';
+import { TeamsService } from './teams/teams.services';
 import { TournamentsService } from './tournaments/tournaments.service';
 
 const prisma = new PrismaClient();
