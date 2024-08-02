@@ -3,14 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "../../app/assets/images/icons/logo2.png";
 import { RootState } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { logoutSlice } from "@/redux/slices/userSlice";
-import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 const NavBar: React.FC = () => {
-    const dispatch = useDispatch();
-    const router = useRouter();
     const user = useSelector((state: RootState) => state.user.user);
 
     return (
