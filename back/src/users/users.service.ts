@@ -4,7 +4,7 @@ import {
 	InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { User } from '@prisma/client';
+import { Tournament, User } from '@prisma/client';
 import { UpdateUserDto } from 'auth/auth.user.Dto';
 
 @Injectable()
@@ -37,33 +37,55 @@ export class UsersService {
 		}
 	}
 
-	async getUserById(id: string): Promise<User | null> {
+	async getUserById(
+		id: string,
+	): Promise<Partial<User> & { tournaments: Tournament[] }> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
 				include: {
-					teams: true,
-					tournaments: true,
-					organizedTournaments: true,
 					friends: true,
 					sentFriendRequests: true,
 					sentMessages: true,
 					receivedMessages: true,
 					globalChat: true,
+					tournaments: true,
+					organizedTournaments: true,
+					teams: {
+						include: {
+							team: {
+								include: {
+									tournament: true,
+								},
+							},
+						},
+					},
 				},
 			});
-			if (user) {
-				console.info(`User with id ${id} found`);
-			} else {
-				console.info(`No user found with id ${id}`);
+
+			if (!user) {
 				throw new NotFoundException(`No user found with id ${id}`);
 			}
-			return user;
-		} catch (error) {
-			console.error(`Failed to get user with id ${id}:`, error);
-			throw new InternalServerErrorException(
-				`Failed to get user with id ${id}`,
+
+			const singlePlayerTournaments = user.tournaments;
+			const teamsTournaments = user.teams.map(
+				(team) => team.team.tournament,
 			);
+
+			const userTournaments = [
+				...singlePlayerTournaments,
+				...teamsTournaments,
+			];
+
+			const { tokenFirebase, state, tournaments, teams, ...userNotData } =
+				user;
+
+			return {
+				...userNotData,
+				tournaments: userTournaments,
+			};
+		} catch (error) {
+			throw new NotFoundException(`No user found with id ${id}`);
 		}
 	}
 
