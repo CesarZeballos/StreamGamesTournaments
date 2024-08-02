@@ -5,42 +5,107 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
 import { FormContainer } from "../formContainer";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { ITeam, IUser } from "@/interfaces/interfaceUser";
-import Link from "next/link";
-import csgo from "../../app/assets/images/banners/csgo.jpg";
-import fortnite from "../../app/assets/images/banners/fortnite.jpg";
-import lol from "../../app/assets/images/banners/lol.png";
-import { fetchTournamentById } from "@/utils/fetchTournaments";
-import { setView } from "@/redux/slices/dashboardSlice";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { RootState } from "@/redux/store";
-import { fetchUserById } from "@/utils/fetchUser";
+import { toast } from "sonner";
+import { IUser } from "@/interfaces/interfaceUser";
+import { Box, Chip, FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
 
-type ImageSource = StaticImageData | string;
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
+const friends: IUser[] = [
+    {
+        id: "1",
+        nickName: "cesar1",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "2",
+        nickName: "cesar2",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "3",
+        nickName: "cesar3",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    }, 
+
+    {
+        id: "4",
+        nickName: "cesar4",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "5",
+        nickName: "cesar5",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "6",
+        nickName: "cesar6",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+]
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
     const router = useRouter();
-    const user = useSelector((state: RootState) => state.user.user);
-    const tournaments = useSelector((state: RootState) => state.tournaments.tournaments);
 
+    // Seteo de la informacion
+    const user = useSelector((state: RootState) => state.user.user);
+    const [userData, setUserData] = useState<IUser>(user!);
+    const tournaments = useSelector((state: RootState) => state.tournaments.tournaments);
+    const turnament = tournaments.find((tournament) => tournament.id === tourId);
+    const [teamMembers, setTeamMembers] = useState<string[]>([]);
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
-        nameTournament: "",
-        startDate: "",
+        nameTournament: "Prueba",
+        startDate: "2024-01-01",
         createdAt: "",
-        price: 0,
+        price: 500,
         categories: "",
         gameId: "",
         membersNumber: 0,
         award: [],
         urlAvatar: "",
         description: "",
-        maxMember: 0,
+        maxMember: 5,
         maxTeam: 0,
         organizerId: "",
         game: {
@@ -49,75 +114,71 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             urlImage: "",
         }
     });
-
     const stringDate = tournamentData.startDate.split('T')[0];
-
-    const [userData, setUserData] = useState<IUser>({
-        id: user?.id || "",
-        nickName: user?.nickName || "",
-        email: user?.email || "",
-        birthDate: user?.birthDate || "",
-        role: user?.role || "",
-        teams: user?.teams || [],
+    
+    const [addTeam, setAddTeam] = useState<IAddTeam>({
+        tournamentId: tourId,
+        teamName: "",
+        organizarId: user!.id,
+        members: []
     });
 
-    //negrada para que no se me rompa todo
-    const [teams, setTeams] = useState<ITeam[]>([]);
-
-    const [team, setTeam] = useState("");
-
-    const [registerData, setRegisterData] = useState<IAddTeam>({
-        tournamentId: tourId,
-        teamId: "",
-        payment: "full",
-    })
-
+    //control de ingreso a la page
     useEffect(() => {
-        if (!user) {
+        if (!user || user === null) {
             router.push("/login")
-        } else {
-            const tournament = tournaments.find((tournament) => tournament.id === tourId);
-                setTournamentData(tournament!)
-            }
-    }, [user, tournaments, tourId, router]);
+        } 
+    }, [user, router]);
 
-    const handleChangeSelect = (event: SelectChangeEvent) => {
-        setTeam(event.target.value)
-        console.log(team)
-    }
+    // selector de miembros
+    const handleChangeMembers = (event: SelectChangeEvent<typeof teamMembers>) => {
+        const { value } = event.target;
+        const selectedNicknames = typeof value === 'string' ? value.split(',') : value;
+    
+        // Encuentra los objetos completos basados en los nicknames seleccionados
+        const selectedMembers = friends.filter(friend => selectedNicknames.includes(friend.nickName));
+
+        const completedTeam = [...selectedMembers, userData]
+    
+        // Actualiza el estado de teamMembers y addTeam
+        setTeamMembers(selectedNicknames);
+
+        setAddTeam(addTeam => ({
+          ...addTeam,
+          members: completedTeam
+        }));
+      };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target
-        setRegisterData({
-            ...registerData,
+        const { name, value } = event.target;
+        setAddTeam({
+            ...addTeam,
             [name]: value
         })
     }
 
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const tournamentRegisterData = {
-            tournamentId: tourId,
-            teamId: team,
-            payment: registerData.payment
-        }
-        console.log(tournamentRegisterData)
-        if(!team || !registerData.payment) {
-            toast.error(`Please select a team and select a payment method`, {
-                position: "top-right",
+        const teamLength = addTeam.members.length
+        if (teamLength < tournamentData.maxMember) {
+            toast.error(`this tournaments require ${tournamentData.maxMember} team members. Need ${tournamentData.maxMember - teamLength} more`, {
+                position: 'top-right',
+                duration: 1500,
+            })
+        } else if (teamLength > tournamentData.maxMember) {
+            toast.error(`this tournaments require ${tournamentData.maxMember} team members. Need ${teamLength - tournamentData.maxMember} less`, {
+                position: 'top-right',
                 duration: 1500,
             })
         } else {
-            // dispatch(state.registerTournament(registerData))
-            dispatch(setView('tournaments'))
-            toast.success(`Tournament registered successfully`, {
-                position: "top-right",
-                duration: 1500,
-            })
-            setTimeout(() => {
-                router.push("/dashboard")
-            }, 1500)
+            console.log("addTeam", addTeam)
+            //enviar la data
         }
+        }
+
+    const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        router.push("/tournaments/" + tourId);
     }
 
     return (
@@ -125,62 +186,67 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
-                        <h2 className="heading5 text-white">{tournamentData.nameTournament}</h2>
-                        <p className="body text-white mt-4">the tournament will start on {stringDate}</p>
+                        <h2 className="heading4 text-white">{tournamentData.nameTournament}</h2>
+                        <p className="body text-white mt-4">Tournaments price ${tournamentData.price}</p>
+                        <p className="body text-white">the tournament will start on {stringDate}</p>
                     </FormContainer>
 
                     {tournamentData.membersNumber !== 1 &&
                         <FormContainer section="Select your team">
-                            <p className="body text-white">Select your team</p>
-                            <div className="flex flex-row gap-4 items-center">
-                                <FormControl sx={{ m: 0, minWidth: 120 }} size="small" >
-                                    <Select
-                                    
-                                    value={team}
-                                    onChange={handleChangeSelect}
-                                    displayEmpty
-                                    className="input w-fit"
-                                    >
-                                        <MenuItem value="">
-                                            <em>None</em>
-                                        </MenuItem>
-                                        {teams && teams.map((team) => (
-                                            <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                <Link href="/teams" className="buttonPrimary">Add new team</Link>
+                            <div className="flex flex-col gap-2">
+                                <label className="body text-white">team name</label>
+                                <input type="text"
+                                name="teamName"
+                                value={addTeam.teamName}
+                                onChange={handleChange}
+                                className="input"
+                                required />
                             </div>
+
+                            <p className="body text-white">Members</p>
+                            <FormControl sx={{ m: 1, width: 320 }}>
+                                <Select
+                                multiple
+                                displayEmpty
+                                value={teamMembers}
+                                onChange={handleChangeMembers}
+                                className="inputMUI"
+                                input={<OutlinedInput 
+                                    id="multipleMembers" 
+                                    />}
+                                renderValue={(selected) => {
+                                    if (selected.length === 0) {
+                                    return <em className="body text-BGdark">Members</em>;
+                                    } else return (<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                    {selected.map((value) => (
+                                        <Chip 
+                                        className="chip" 
+                                        key={value} label={value} />
+                                    ))}
+                                    </Box>)
+                                }     
+                            }
+                                MenuProps={MenuProps}
+                                >
+                                {friends.map((friend) => (
+                                    <MenuItem
+                                    key={friend.id}
+                                    value={friend.nickName}
+                                    >
+                                    {friend.nickName}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
+                            <p className="errorForm">{`select ${tournamentData.maxMember - 1} friends`}</p>
+
                         </FormContainer> 
                     }
-
-                    {tournamentData.membersNumber !== 1 && 
-                        <FormContainer section="Payments">
-                            <p className="body text-white">Select your payment method</p>
-                            <RadioGroup
-                                // aria-labelledby="demo-radio-buttons-group-label"
-                                name="payment"
-                                value={registerData.payment}
-                                onChange={handleChange}
-                                defaultValue="full"
-                            >
-                                <FormControlLabel 
-                                    className="body text-white" 
-                                    value="full" 
-                                    control={<Radio className="body text-white"/>} 
-                                    label={`Full Payment`} 
-                                />
-                                <FormControlLabel 
-                                    className="body text-white" 
-                                    value="Individual" 
-                                    control={<Radio className="body text-white"/>} 
-                                    label={`Individual Payment`}
-                                />
-                            </RadioGroup>
-                        </FormContainer>
-                    }
                     <FormContainer>
-                        <button type="submit" className="buttonPrimary">Register</button>
+                        <div className="flex flex-row gap-2">
+                            <button type="submit" className="buttonPrimary">Register team</button>
+                            <button className="buttonSecondary" onClick={goBack}>Cancel</button>
+                        </div>
                     </FormContainer>
             </FourColumsContainer>
         </form>

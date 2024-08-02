@@ -14,6 +14,16 @@ export interface ITeam {
     members: ITeamMember[]
 }
 
+export interface ITeamForm {
+    name: string
+    members: ITeamMember[]
+}
+
+export interface ITeamError {
+    name?: string
+    members?: string
+}
+
 export interface ITournamentsregistered {
     id: string
     nameTournament: string
@@ -56,4 +66,16 @@ export interface ILoginDataBase {
 export interface ILoginError {
     email?: string
     password?: string
+}
+
+//addfriends
+
+export interface IUserSelector {
+    id: string
+    label: string
+    email: string
+    birthDate: string
+    role: string
+    teams: ITeam[]
+    tournaments: ITournamentsregistered[]
 }
