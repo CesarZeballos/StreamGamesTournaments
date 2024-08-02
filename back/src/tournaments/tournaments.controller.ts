@@ -20,10 +20,10 @@ import {
 	ApiOperation,
 } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
-import { JwtAuthGuard } from 'auth/jwt-auth.guard';
+/* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
 import { Roles } from 'auth/roles.decorator';
-import { Role } from '@prisma/client';
+import { Role } from '@prisma/client'; */
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
@@ -86,9 +86,9 @@ export class TournamentsController {
 		return this.tournamentsService.getTournamentById(id);
 	}
 
-	@UseGuards(JwtAuthGuard, RolesGuard)
+	/* @UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer)
+	@Roles(Role.organizer) */
 	@Post('add')
 	@ApiOperation({
 		summary: 'Create a new tournament',
@@ -125,9 +125,9 @@ export class TournamentsController {
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 
-	@UseGuards(JwtAuthGuard, RolesGuard)
+	/* @UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer)
+	@Roles(Role.organizer) */
 	@Put('update/:id')
 	@ApiOperation({
 		summary: 'Update a tournament',
@@ -173,10 +173,10 @@ export class TournamentsController {
 			updateTournamentDto,
 		);
 	}
-
+	/* 
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer)
+	@Roles(Role.organizer) */
 	@Delete('delete/team')
 	@ApiOperation({
 		summary: 'Remove a team from a tournament',
@@ -207,9 +207,9 @@ export class TournamentsController {
 		return this.tournamentsService.deleteTeam(tournamentId, teamId);
 	}
 
-	@UseGuards(JwtAuthGuard)
+	/* @UseGuards(JwtAuthGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer)
+	@Roles(Role.organizer) */
 	@Delete('deleteTournament/:id')
 	@ApiOperation({
 		summary: 'Delete a tournament',
