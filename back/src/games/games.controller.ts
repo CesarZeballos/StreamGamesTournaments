@@ -7,6 +7,7 @@ import {
 	Post,
 	Put,
 	Query,
+	UseGuards,
 } from '@nestjs/common';
 import {
 	ApiTags,
@@ -18,12 +19,19 @@ import {
 } from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
+import { JwtAuthGuard } from 'auth/jwt-auth.guard';
+import { RolesGuard } from 'auth/roles.guard';
+import { Roles } from 'auth/roles.decorator';
+import { Role } from '@prisma/client';
 
 @ApiTags('games')
 @Controller('games')
 export class GamesController {
 	constructor(private readonly gamesService: GamesService) {}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer)
 	@Get()
 	@ApiOperation({ summary: 'Obtener todos los juegos' })
 	@ApiQuery({
@@ -54,6 +62,9 @@ export class GamesController {
 			);
 	}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer)
 	@Get(':id')
 	@ApiOperation({ summary: 'Obtener un juego por su ID' })
 	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
@@ -62,7 +73,8 @@ export class GamesController {
 	async getGameById(@Param('id', new ParseUUIDPipe()) id: string) {
 		return await this.gamesService.getGameById(id);
 	}
-
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
 	@Post()
 	@ApiOperation({ summary: 'Crear un nuevo juego' })
 	@ApiResponse({ status: 201, description: 'Juego creado exitosamente.' })
@@ -72,6 +84,8 @@ export class GamesController {
 		return await this.gamesService.postNewGame(name, urlImage);
 	}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
 	@Put(':id')
 	@ApiOperation({ summary: 'Actualizar un juego por su ID' })
 	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
@@ -103,6 +117,8 @@ export class GamesController {
 		return await this.gamesService.updateGame(id, game);
 	}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
 	@Put(':id')
 	@ApiOperation({ summary: 'Eliminar un juego por su ID' })
 	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
