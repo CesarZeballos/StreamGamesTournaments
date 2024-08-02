@@ -16,17 +16,17 @@ export const RegisterForm: React.FC = () => {
     const router = useRouter();
 
     const [data, setData] = useState<IRegisterForm>({
-        nickName: "",
+        nickname: "",
         email: "",
         password: "",
-        birthDate: ""
+        birthdate: ""
     })
 
     const [errorRegister, setErrorRegister] = useState<IRegisterError>({
-        nickName: "",
+        nickname: "",
         email: "",
         password: "",
-        birthDate: ""
+        birthdate: ""
     })
 
     // Control de ingreso a la página
@@ -50,10 +50,10 @@ export const RegisterForm: React.FC = () => {
 
     const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        if (!errorRegister.nickName && !errorRegister.email && !errorRegister.password && !errorRegister.birthDate) {
+        if (!errorRegister.nickname && !errorRegister.email && !errorRegister.password && !errorRegister.birthdate) {
             const registerData = {
                 ...data,
-                birthdate: new Date(data.birthDate).toISOString()
+                birthdate: new Date(data.birthdate).toISOString()
             }
             dispatch(registerSlice(registerData))
         } else {
@@ -85,12 +85,12 @@ export const RegisterForm: React.FC = () => {
                         <label className="body text-white">Nickname</label>
                         <input type="text"
                             name="nickName"
-                            value={data.nickName}
+                            value={data.nickname}
                             onChange={handleChange}
                             className="input"
                             required
                         />
-                        {errorRegister.nickName ? (<p className="errorForm">{errorRegister.nickName}</p>) : (<p className="errorForm"><br /></p>)}
+                        {errorRegister.nickname ? (<p className="errorForm">{errorRegister.nickname}</p>) : (<p className="errorForm"><br /></p>)}
                     </div>
 
                     <div className="flex flex-col gap-2 w-fit">
@@ -121,12 +121,12 @@ export const RegisterForm: React.FC = () => {
                         <label className="body text-white">Birthdate</label>
                         <input type="date"
                             name="birthDate"
-                            value={data.birthDate}
+                            value={data.birthdate}
                             onChange={handleChange}
                             className="input"
                             required
                         />
-                        {errorRegister.birthDate ? (<p className="errorForm">{errorRegister.birthDate}</p>) : (<p className="errorForm"><br /></p>)}
+                        {errorRegister.birthdate ? (<p className="errorForm">{errorRegister.birthdate}</p>) : (<p className="errorForm"><br /></p>)}
                     </div>
 
                     <button type="submit" className="buttonPrimary mt-4">Register</button>
