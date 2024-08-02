@@ -22,7 +22,7 @@ import { TournamentsService } from './tournaments.service';
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
-} from './createTournament.dto';
+} from './createTournament.Dto';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')

@@ -8,7 +8,7 @@ import {
 	IsNumber,
 	IsDateString,
 } from 'class-validator';
-import { Categories } from '@prisma/client'; // Asegúrate de que Categories esté exportado correctamente
+import { Categories } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 
 export class CreateTournamentDto {
