@@ -20,14 +20,14 @@ import {
 	ApiOperation,
 } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
-import {
-	CreateTournamentDto,
-	UpdateTournamentDto,
-} from './createTournament.dto';
 import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
 import { Roles } from 'auth/roles.decorator';
 import { Role } from '@prisma/client';
+import {
+	CreateTournamentDto,
+	UpdateTournamentDto,
+} from './createTournament.Dto';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
