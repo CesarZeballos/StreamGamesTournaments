@@ -20,7 +20,7 @@ import { MailModule } from 'mail/mail.module';
 		PrismaModule,
 		FileUploadModule,
 		TeamsModule,
-		PayPalModule
+		PayPalModule,
 		MailModule,
 	],
 	controllers: [AppController],

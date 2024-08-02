@@ -41,7 +41,6 @@ export class UsersRepository {
 				where: { id },
 				include: {
 					teams: true,
-					teams: true,
 					tournaments: true,
 					organizedTournaments: true,
 					sentFriendRequests: true,

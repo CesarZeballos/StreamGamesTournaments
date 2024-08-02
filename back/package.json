@@ -58,6 +58,7 @@
 		"@types/node": "^20.3.1",
 		"@types/passport-jwt": "^4.0.1",
 		"@types/passport-local": "^1.0.38",
+		"@types/paypal__checkout-server-sdk": "^1.0.8",
 		"@types/supertest": "^6.0.0",
 		"@typescript-eslint/eslint-plugin": "^7.17.0",
 		"@typescript-eslint/parser": "^7.17.0",
