@@ -16,7 +16,6 @@ import {
 	ApiQuery,
 	ApiParam,
 	ApiBody,
-	PartialType
 } from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
