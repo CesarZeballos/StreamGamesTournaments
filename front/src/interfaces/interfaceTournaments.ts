@@ -1,3 +1,7 @@
+import { StaticImageData } from "next/image";
+
+type ImageSource = StaticImageData | string;
+
 export interface ITournament {
     id: string;
     nameTournament: string;
@@ -10,7 +14,6 @@ export interface ITournament {
     award: string[];
     urlAvatar: string;
     description: string;
-    maxMember: number;
     maxTeam: number;
     organizerId: string;
     game: {
@@ -18,6 +21,18 @@ export interface ITournament {
         name: string;
         urlImage: string;
     };
+}
+
+export interface ITournamentPost {
+    startDate: string;
+    categories: string;
+    price: number;
+    award: string[];
+    urlStream: string | ImageSource;
+    membersNumber: number;
+    maxTeam: number;
+    organizerId: string;
+    gameId: string;
 }
 
 export interface IAddTeam {

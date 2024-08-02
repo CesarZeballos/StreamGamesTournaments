@@ -25,6 +25,12 @@ export const gameIcons: { [key: string]: ImageSource } = {
     "League of Legends": lolIcon,
 };
 
+export const categories: { [key: string]: string } = {
+    "beginner": "Beginner",
+    "advanced": "Advanced",
+    "expert": "Expert",
+};
+
 export const categoryIcons: { [key: string]: ImageSource } = {
     "beginner": beginner,
     "advanced": advanced,
@@ -35,6 +41,12 @@ export const gameImages: { [key: string]: ImageSource } = {
     "Fortnite": fortnite,
     "CounterStrike Go": counter,
     "League of Legends": lol,
+};
+
+export const gameName: { [key: string]: string } = {
+    "CounterStrike Go": "Counter Strike",
+    "Fortnite": "Fortnite",
+    "League of Legends": "League of Legends",
 };
 
 

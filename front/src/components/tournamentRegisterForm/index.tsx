@@ -1,6 +1,5 @@
 'use client'
 import { StaticImageData } from "next/image";
-import { ITournament, IAddTeam } from "@/interfaces/interfaceTournaments";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
@@ -8,19 +7,12 @@ import { FormContainer } from "../formContainer";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { ITeam, IUser } from "@/interfaces/interfaceUser";
-import Link from "next/link";
-import csgo from "../../app/assets/images/banners/csgo.jpg";
-import fortnite from "../../app/assets/images/banners/fortnite.jpg";
-import lol from "../../app/assets/images/banners/lol.png";
-import { fetchTournamentById } from "@/utils/fetchTournaments";
+import { IUser } from "@/interfaces/interfaceUser";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { RootState } from "@/redux/store";
-import { fetchUserById } from "@/utils/fetchUser";
-
-type ImageSource = StaticImageData | string;
+import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
 
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
@@ -40,7 +32,6 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         award: [],
         urlAvatar: "",
         description: "",
-        maxMember: 0,
         maxTeam: 0,
         organizerId: "",
         game: {
@@ -181,7 +172,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                             </RadioGroup>
                         </FormContainer>
                     }
-                    <FormContainer>
+                    <FormContainer section={""}>
                         <button type="submit" className="buttonPrimary">Register</button>
                     </FormContainer>
             </FourColumsContainer>

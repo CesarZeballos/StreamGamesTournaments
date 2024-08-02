@@ -1,4 +1,3 @@
-import { ITournament } from '@/interfaces/interfaceTournaments';
 import { navigationIcons, gameIcons, categoryIcons, gameImages } from '@/utils/tournamentsData';
 import { fetchTournamentById } from '@/utils/fetchTournaments';
 import { Awards_Dates } from '../Awards_Dates/Awards_Dates';
@@ -12,12 +11,10 @@ interface DetailsProps {
 const Details: React.FC<DetailsProps> = async ({ tournamentId }) => {
   const tournament = await fetchTournamentById(tournamentId);
 
-  // Validar si tournament y tournament.game están definidos
   if (!tournament || !tournament.game || !tournament.game.name) {
     return <div className="loading">Tournament or game information not found</div>;
   }
 
-  // Validar si los objetos gameImages, gameIcons y categoryIcons contienen las claves necesarias
   const gameImage = gameImages[tournament.game.name];
   const gameIcon = gameIcons[tournament.game.name];
   const categoryIcon = categoryIcons[tournament.category];

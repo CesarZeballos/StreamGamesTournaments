@@ -153,6 +153,10 @@ th select {
   padding: 4px;
 }
 
+.selector {
+  @apply mt-2 mb-2 block w-full border-2 border-softViolet rounded-md shadow-sm text-BGdark
+}
+
 .chart-container {
   overflow: hidden; /* Evita el desbordamiento visible */
   position: relative; /* Asegura que el gráfico se ajuste al contenedor */
@@ -163,11 +167,15 @@ th select {
 }
 
 .input {
-  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark
+  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark w-full h-12
   focus:border-solid
   focus:border-lightViolet
   focus:shadow-md
   focus:shadow-lightViolet
+}
+
+.label {
+  @apply block text-white font-Raleway text-base mt-4
 }
 
 .loading {

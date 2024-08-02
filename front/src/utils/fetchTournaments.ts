@@ -1,4 +1,4 @@
-import { ITournament } from "@/interfaces/interfaceTournaments";
+import { ITournamentPost, ITournament } from "@/interfaces/interfaceTournaments";
 import { format } from "date-fns";
 
 export async function fetchTournaments(): Promise<ITournament[]> {
@@ -36,4 +36,19 @@ export async function fetchTournamentsOriginal(): Promise<ITournament[]> {
     }
     const allTournaments = await response.json();
     return allTournaments;
+}
+
+export async function postTournament(data: ITournamentPost) {
+    const response = await fetch("http://localhost:3001/tournaments/add", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    if (!response.ok) {
+        throw new Error(`Error fetching tournaments: ${response.statusText}`);
+    }
+    const postedTournament = await response.json();
+    return postedTournament;
 }
