@@ -17,10 +17,10 @@ import {
 	ApiQuery,
 	ApiBody,
 } from '@nestjs/swagger';
-import { TeamsService } from './teams.service';
-import { CreateTeamDto, DeleteMemberDto, UpdateTeamDto } from './teams.dto';
+import { TeamsService } from './teams.services';
+import { CreateTeamDto, DeleteMemberDto, UpdateTeamDto } from './createTeamDto';
 
-@ApiTags('teams') // Etiqueta para agrupar en la documentación
+@ApiTags('teams')
 @Controller('teams')
 export class TeamsController {
 	constructor(private readonly teamsService: TeamsService) {}
@@ -66,11 +66,8 @@ export class TeamsController {
 	@ApiBody({ type: CreateTeamDto, description: 'Datos del nuevo equipo' })
 	@ApiResponse({ status: 201, description: 'Equipo creado exitosamente.' })
 	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
-	async createTeam(
-		@Param('id', ParseUUIDPipe) id: string,
-		@Body() team: CreateTeamDto,
-	) {
-		return await this.teamsService.createTeam(id, team);
+	async createTeam(@Body() team: CreateTeamDto) {
+		return await this.teamsService.createTeam(team);
 	}
 
 	@Put('id')

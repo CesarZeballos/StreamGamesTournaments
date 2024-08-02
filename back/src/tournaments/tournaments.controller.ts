@@ -9,6 +9,7 @@ import {
 	Delete,
 	BadRequestException,
 	Query,
+	UseGuards,
 } from '@nestjs/common';
 import {
 	ApiTags,
@@ -19,8 +20,14 @@ import {
 	ApiOperation,
 } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
-import { CreateTournamentDto } from './createTournament.Dto';
-import { UpdateTournamentDto } from './updateTournament.Dto';
+/* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
+import { RolesGuard } from 'auth/roles.guard';
+import { Roles } from 'auth/roles.decorator';
+import { Role } from '@prisma/client'; */
+import {
+	CreateTournamentDto,
+	UpdateTournamentDto,
+} from './createTournament.Dto';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
@@ -57,13 +64,6 @@ export class TournamentsController {
 		const pageNumber = page ? Number(page) : 1;
 		const limitNumber = limit ? Number(limit) : 9;
 
-		console.log(
-			'getAllTournaments called with page:',
-			pageNumber,
-			'limit:',
-			limitNumber,
-		);
-
 		return this.tournamentsService.getAllTournaments(
 			pageNumber,
 			limitNumber,
@@ -86,6 +86,9 @@ export class TournamentsController {
 		return this.tournamentsService.getTournamentById(id);
 	}
 
+	/* @UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer) */
 	@Post('add')
 	@ApiOperation({
 		summary: 'Create a new tournament',
@@ -97,12 +100,16 @@ export class TournamentsController {
 		examples: {
 			default: {
 				value: {
+					nameTournament: 'Ultimate Showdown',
 					startDate: '2024-08-01T14:23:11.438Z',
-					categories: 'CATEGORY1',
-					award: 500,
-					urlStream: 'https://example.com/stream1',
+					category: 'beginner',
+					membersNumber: 16,
+					maxTeams: 16,
+					urlAvatar: 'https://example.com/avatar1.jpg',
+					awards: ['Trophy', 'Medal'],
+					description:
+						'A thrilling tournament with exciting matches!',
 					organizerId: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
-					gameId: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
 				},
 				description: 'Sample tournament data',
 			},
@@ -118,30 +125,9 @@ export class TournamentsController {
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 
-	@Put('team')
-	@ApiOperation({
-		summary: 'Add a team to a tournament',
-		description: 'Associate a team with a tournament.',
-	})
-	@ApiBody({
-		type: Object,
-		description: 'Tournament and team IDs',
-		examples: {
-			default: {
-				value: { teamId: 'team-id', tournamentId: 'tournament-id' },
-				description: 'Example body for updating tournament teams',
-			},
-		},
-	})
-	@ApiResponse({ status: 200, description: 'Team added to tournament' })
-	@ApiResponse({ status: 400, description: 'Bad request' })
-	async updateTournament(
-		@Body() body: { teamId: string; tournamentId: string },
-	) {
-		const { tournamentId, teamId } = body;
-		return this.tournamentsService.addTeamTournament(tournamentId, teamId);
-	}
-
+	/* @UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer) */
 	@Put('update/:id')
 	@ApiOperation({
 		summary: 'Update a tournament',
@@ -154,12 +140,19 @@ export class TournamentsController {
 		examples: {
 			default: {
 				value: {
+					nameTournament: 'Ultimate Showdown',
 					startDate: '2024-08-01T14:23:11.438Z',
-					categories: 'CATEGORY1',
-					award: 500,
-					urlStream: 'https://example.com/stream1',
+					category: 'beginner',
+					membersNumber: 16,
+					maxTeams: 16,
+					urlAvatar: 'https://example.com/avatar1.jpg',
+					awards: ['Trophy', 'Medal'],
+					description:
+						'A thrilling tournament with exciting matches!',
 					organizerId: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
 					gameId: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
+					teams: ['team1-uuid', 'team2-uuid'],
+					state: true,
 				},
 				description: 'Sample data for updating a tournament',
 			},
@@ -168,19 +161,22 @@ export class TournamentsController {
 	@ApiResponse({
 		status: 200,
 		description: 'Tournament updated successfully',
-		type: CreateTournamentDto,
+		type: UpdateTournamentDto,
 	})
 	@ApiResponse({ status: 404, description: 'Tournament not found' })
 	async updateATournament(
 		@Param('id', new ParseUUIDPipe()) id: string,
 		@Body() updateTournamentDto: UpdateTournamentDto,
 	) {
-		return this.tournamentsService.updateATournament(
+		return this.tournamentsService.updateTournament(
 			id,
 			updateTournamentDto,
 		);
 	}
-
+	/* 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer) */
 	@Delete('delete/team')
 	@ApiOperation({
 		summary: 'Remove a team from a tournament',
@@ -211,6 +207,9 @@ export class TournamentsController {
 		return this.tournamentsService.deleteTeam(tournamentId, teamId);
 	}
 
+	/* @UseGuards(JwtAuthGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer) */
 	@Delete('deleteTournament/:id')
 	@ApiOperation({
 		summary: 'Delete a tournament',
@@ -222,11 +221,7 @@ export class TournamentsController {
 		description: 'Tournament deleted successfully',
 	})
 	@ApiResponse({ status: 404, description: 'Tournament not found' })
-	async deleteTournament(@Param('id') id: string) {
-		if (!id) {
-			throw new BadRequestException('Tournament ID must be provided');
-		}
-
+	async deleteTournament(@Param('id', new ParseUUIDPipe()) id: string) {
 		return this.tournamentsService.deleteTournament(id);
 	}
 }

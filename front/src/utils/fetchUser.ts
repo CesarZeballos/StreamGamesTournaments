@@ -1,11 +1,12 @@
-import { ILoginDataBase, ILoginForm, IRegisterForm, IUserFilters } from "@/interfaces/interfaceUser";
+import { IAddFriendForm, ILoginDataBase, IRegisterForm } from "@/interfaces/interfaceUser";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function postUser(data:IRegisterForm) {
-    // console.log("registerFetch", data)
     const dataFetch = JSON.stringify(data)
     console.log("dataFetch", dataFetch)
     try {
-        const response = await fetch("http://localhost:3001/auth/signup", {
+        const response = await fetch(`${apiUrl}/auth/signup`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ export async function postUser(data:IRegisterForm) {
 
 export async function loginUser(data: ILoginDataBase) {
     try {
-        const response = await fetch("http://localhost:3001/auth/signin", {
+        const response = await fetch(`${apiUrl}/auth/signin`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ export async function loginUser(data: ILoginDataBase) {
 }
 
 export async function passwordRecovery(data: string) {try {
-    const response = await fetch("http://localhost:3001/users/search", {
+    const response = await fetch(`${apiUrl}/users/search`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -76,18 +77,7 @@ export async function passwordRecovery(data: string) {try {
 }
 
 export const fetchUsers = async () => {
-    const response = await fetch ("http://localhost:3001/users", {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-    const data = await response.json();
-    return data;
-}
-
-export const fetchUserById = async (id: string) => {
-    const response = await fetch(`http://localhost:3001/users/${id}`, {
+    const response = await fetch(`${apiUrl}/users`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -97,12 +87,11 @@ export const fetchUserById = async (id: string) => {
         throw new Error(`Error fetching user: ${response.statusText}`);
     }
     const userData = await response.json();
-    console.log("userData", userData)
     return userData;
 }
 
 export const banUser = async (id: string) => {
-    const response = await fetch(`http://localhost:3001/users/delete?id=${id}`, {
+    const response = await fetch(`${apiUrl}/users/delete?id=${id}`, {
     method: 'PUT',
     headers: {
         'Content-Type': 'application/json',
@@ -115,3 +104,22 @@ export const banUser = async (id: string) => {
     
     return response.json();
 };
+
+export const fetchAddUser = async (data: IAddFriendForm) => {
+    const {userId, friendId, token} = data
+    // no se de por donde le paso el userId
+    const response = await fetch(`${apiUrl}/users/addfriend`, {
+        method: "POST",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({friendId})
+    })
+
+    if (!response.ok) {
+        throw new Error(`Error adding friend: ${response.statusText}`);
+    }
+    const userData = await response.json();
+    return userData;
+} 

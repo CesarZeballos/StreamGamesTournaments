@@ -52,9 +52,6 @@ html, body {
   @apply font-Roboto font-thin text-xs text-lightViolet;
 }
 
-.errorForm {
-  @apply font-Roboto font-thin text-xs text-lightViolet
-}
 
 .numberCard {
   @apply font-Roboto font-black text-2xl;
@@ -67,8 +64,10 @@ html, body {
 /* buttons */
 
 .buttonPrimary {
-  @apply flex items-center bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit h-fit whitespace-nowrap
-  hover:bg-lightViolet
+  @apply flex items-center bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full border-2 border-lightViolet w-fit h-fit whitespace-nowrap
+  hover:shadow-md 
+  hover:shadow-lightViolet 
+  hover:text-lightViolet
 }
 
 .buttonSecondary {
@@ -77,11 +76,15 @@ html, body {
 }
 
 .buttonSection {
-  @apply flex flex-row items-center font-Raleway font-bold text-3xl text-white pl-6 py-4 rounded-full w-full border-2 border-lightViolet hover:shadow-md hover:shadow-lightViolet
+  @apply flex flex-row items-center font-Raleway text-5xl text-white pl-6 py-4 rounded-full w-full border-2 border-lightViolet 
+  hover:shadow-md 
+  hover:shadow-lightViolet
+  hover:text-lightViolet
 }
 
 .buttonFilter {
-  @apply flex flex-row items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full gap-4
+  @apply flex flex-row items-center font-Raleway font-semibold text-base text-white pl-4 pr-6 py-1 rounded-full gap-4
+  hover:bg-lightViolet
 }
 
 .linkButton {
@@ -101,8 +104,12 @@ html, body {
   @apply p-4 mb-8 rounded-md bg-lightViolet
 }
 
-.buttonFilter:hover {
-  @apply hover:shadow-md hover:shadow-lightViolet
+.iconButton {
+  @apply p-1 text-white rounded-full
+  hover:shadow-md 
+  hover:shadow-lightViolet
+  hover:text-BGdark
+  hover:bg-lightViolet
 }
 
 .buttonCarousel:hover, .buttonPage:hover {
@@ -117,7 +124,7 @@ html, body {
 /* utils */
 
 .bodyContainer {
-  @apply px-16;
+  @apply px-large; 
 }
 
 body {
@@ -161,7 +168,7 @@ th select {
   overflow: hidden;
   position: relative;
 }
-
+  
 .back-image {
   @apply w-3/4 h-1/3 z-10 rounded-3xl
 }
@@ -171,7 +178,16 @@ th select {
 }
 
 .input {
-  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark w-full h-12
+
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-80
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
+.inputMUI {
+  @apply bg-white rounded-md font-Roboto text-BGdark
   focus:border-solid
   focus:border-lightViolet
   focus:shadow-md
@@ -181,7 +197,6 @@ th select {
 .helper {
   @apply text-white text-xs mt-1
 }
-
 
 .loading {
   @apply text-softViolet text-5xl text-center m-8;
@@ -218,11 +233,23 @@ th select {
 }
 
 .textButton {
-  @apply flex-1 text-center overflow-hidden pr-6 sm:text-xl;
+  @apply flex-1 font-Raleway font-black text-center overflow-hidden pr-6 sm:text-xl;
 }
 
 .award-area {
   @apply flex flex-row items-center mb-2;
+}
+
+.chip {
+  @apply bg-BGlight font-Raleway font-bold text-xs text-white pl-4 py-2 rounded-full
+}
+
+.tableHeader {
+  @apply border-solid border-2 border-lightViolet font-Raleway font-medium text-base text-white flex rounded-full w-full px-6 py-1 my-4
+}
+
+.tableBody {
+  @apply font-Roboto text-base text-white
 }
 
 @media (max-width: 992px) {

@@ -6,8 +6,8 @@ import { toast } from "sonner";
 
 // faltaba el status; edu
 const initialState: ITournamentState = {
-  tournaments: [],
-  status: ""
+  status: "idle",
+  tournaments: []
 };
 
 const tournamentsSlice = createSlice({
@@ -21,15 +21,17 @@ const tournamentsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTournamentsSlice.pending, (state) => {
-        // Handle pending state if needed
+        state.status = "loading";
       })
       .addCase(getTournamentsSlice.rejected, (state, action) => {
+        state.status = "failed";
         toast.error('Error in getting tournaments', {
           position: 'top-right',
           duration: 1500,
         });
       })
       .addCase(getTournamentsSlice.fulfilled, (state, action: PayloadAction<ITournament[]>) => {
+        state.status = "succeeded";
         state.tournaments = action.payload;
       });
   }

@@ -7,6 +7,7 @@ interface PageProps {
 }
 
 const TournamentPage: React.FC<PageProps> = ({ params }) => {
+
   return (
     <div>
       <Details tournamentId={params.tournamentId} />

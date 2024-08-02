@@ -8,30 +8,83 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(uuid())
-  email         String       @unique @db.VarChar(80)
-  nickName      String       @unique
-  tokenFirebase String
-  birthDate     DateTime
-  role          Role         @default(user)
-  urlSelfie     String?
-  createdAt     DateTime     @default(now())
-  teamId        String?
-  organizedTeam Team[]       @relation("TeamOrganizer")
-  tournaments   Tournament[]
-  teams          Team[]       @relation("TeamUsers")
+  id                   String          @id @default(uuid())
+  email                String          @unique @db.VarChar(80)
+  nickname             String          @unique
+  tokenFirebase        String
+  birthdate            DateTime
+  urlProfile           String?
+  urlStream            String?
+  role                 Role            @default(user)
+  createdAt            DateTime        @default(now())
+  state                Boolean         @default(true)
+  friends              UserFriends[]   @relation("UserFriends")
+  sentFriendRequests   FriendRequest[] @relation("SentFriendRequests")
+  sentMessages         PrivateChat[]   @relation("SentMessages")
+  receivedMessages     PrivateChat[]   @relation("ReceivedMessages")
+  globalChat           GlobalChat[]    @relation("GlobalChat")
+  teams                UserTeams[]     @relation("UserTeams")
+  tournaments          Tournament[]    @relation("UserTournaments")
+  organizedTournaments Tournament[]    @relation("OrganizedTournaments")
 }
 
-model UserDeleted {
-  id          String                @id @default(uuid())
-  email       String                @db.VarChar(80)
-  nickName    String
-  birthDate   DateTime
-  role        Role
-  urlSelfie   String?
-  createdAt   DateTime
-  createdEnd  DateTime
-  description AccountDeletionReason
+model FriendRequest {
+  id        String   @id @default(uuid())
+  nickname  String
+  createdAt DateTime @default(now())
+  sender    User?    @relation("SentFriendRequests", fields: [nickname], references: [nickname], onDelete: Cascade)
+}
+
+model UserFriends {
+  id        String   @id @default(uuid())
+  nickname  String
+  createdAt DateTime @default(now())
+  user      User?    @relation("UserFriends", fields: [nickname], references: [nickname], onDelete: Cascade)
+}
+
+model PrivateChat {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  post       String   @db.Text
+  createdAt  DateTime @default(now())
+  state      Boolean  @default(true)
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+model GlobalChat {
+  id        String   @id @default(uuid())
+  nickname  String
+  post      String   @db.Text
+  createdAt DateTime @default(now())
+  state     Boolean  @default(true)
+  user      User     @relation("GlobalChat", fields: [nickname], references: [nickname])
+}
+
+model Team {
+  id              String            @id @default(uuid())
+  name            String
+  organizerId     String?
+  tournamentId    String?
+  urlAvatar       String?
+  state           Boolean           @default(true)
+  userTeamRequest UserTeamRequest[] @relation("userTeamRequest")
+  users           UserTeams[]       @relation("UserForTeams")
+  tournament      Tournament?       @relation("teams", fields: [tournamentId], references: [id])
+}
+
+model UserTeamRequest {
+  id              String @id @default(uuid())
+  userTeamRequest Team?  @relation("userTeamRequest", fields: [id], references: [id], onDelete: Cascade)
+}
+
+model UserTeams {
+  id       String @id @default(uuid())
+  nickname String
+  nameTeam String
+  team     Team?  @relation("UserForTeams", fields: [nameTeam], references: [id], onDelete: Cascade)
+  user     User?  @relation("UserTeams", fields: [nickname], references: [nickname], onDelete: Cascade)
 }
 
 model Tournament {
@@ -40,36 +93,27 @@ model Tournament {
   startDate      DateTime
   createdAt      DateTime   @default(now())
   category       Categories
-  organizerId    String
+  organizerId    String?
   gameId         String
   membersNumber  Int
-  maxTeam        Int
+  maxTeams       Int
+  price          Int
   urlAvatar      String
-  award          String[]
+  awards         String[]
   description    String
-  teams          Team[]     @relation("TournamentTeams")
-  game           Games      @relation(fields: [gameId], references: [id])
-  organizer      User       @relation(fields: [organizerId], references: [id])
-  teamId         String?
+  state          Boolean    @default(true)
+  game           Game       @relation(fields: [gameId], references: [id])
+  players        User[]     @relation("UserTournaments")
+  organizer      User?      @relation("OrganizedTournaments", fields: [organizerId], references: [id])
+  teams          Team[]     @relation("teams")
 }
 
-model Team {
-  id           String       @id @default(uuid())
-  name         String       @unique @db.VarChar(25)
-  createdAt    DateTime     @default(now())
-  urlAvatar    String
-  organizerId  String       @unique
-  organizer    User         @relation("TeamOrganizer", fields: [organizerId], references: [id])
-  tournaments  Tournament[] @relation("TournamentTeams")
-  users        User[]       @relation("TeamUsers")
-  tournamentId String?
-}
-
-model Games {
+model Game {
   id          String       @id @default(uuid())
   name        String       @unique @db.VarChar(80)
   urlImage    String
-  tournaments Tournament[] // Relación uno a muchos
+  state       Boolean      @default(true)
+  tournaments Tournament[]
 }
 
 enum Role {
@@ -82,12 +126,4 @@ enum Categories {
   beginner
   advanced
   expert
-}
-
-enum AccountDeletionReason {
-  NOT_USING
-  PRIVACY_CONCERNS
-  USER_EXPERIENCE
-  TECHNICAL_ISSUES
-  OTHERS
 }

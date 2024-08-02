@@ -3,13 +3,10 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggerGlobalMiddleware } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { preloadData } from '../preload/preload.db';
 import { PrismaService } from '../prisma/prisma.service';
-import { TeamsService } from './teams/teams.service';
+import { TeamsService } from './teams/teams.services';
 import { TournamentsService } from './tournaments/tournaments.service';
-
-const prisma = new PrismaClient();
+import { preloadData } from '../preload/preload.db';
 
 async function PreloadData(
 	prismaService: PrismaService,
@@ -31,9 +28,13 @@ async function PreloadData(
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+	const prismaService = app.get(PrismaService);
+	const teamService = app.get(TeamsService);
+	const tournamentService = app.get(TournamentsService);
+
 	try {
 		app.enableCors({
-			origin: 'http://localhost:3000',
+			origin: '*',
 			methods: 'GET,POST,PUT,DELETE',
 			allowedHeaders: 'Content-Type,Authorization',
 		});
@@ -51,17 +52,17 @@ async function bootstrap() {
 		app.use(LoggerGlobalMiddleware);
 		app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-		const prismaService = app.get(PrismaService);
-		const teamService = app.get(TeamsService);
-		const tournamentService = app.get(TournamentsService);
 		await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 
-		await app.listen(3001);
+		const port = process.env.PORT || 3001;
+		await app.listen(port, () => {
+			console.log(`App listening on port ${port}`);
+		});
 	} catch (error) {
 		console.error('Error preloading data:', error);
 	} finally {
-		await prisma.$disconnect();
+		await prismaService.$disconnect();
 	}
 }
 
