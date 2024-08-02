@@ -4,8 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggerGlobalMiddleware } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { preloadData } from '../preload/preload.db';
-import { TeamsService } from './teams/teams.service';
+import { TeamsService } from './teams/teams.services';
 import { TournamentsService } from './tournaments/tournaments.service';
 
 async function PreloadData(

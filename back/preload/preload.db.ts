@@ -1,11 +1,19 @@
-import { Games, PrismaClient, Team, Tournament, User } from '@prisma/client';
-import { gamesData } from 'helpers/games.helpers';
-import { teams } from 'helpers/teams.helpers';
-import { tournaments } from 'helpers/tournaments.helper';
-import { users } from 'helpers/users.helper';
-import { TeamsService } from 'teams/teams.service';
-import { CreateTournamentDto } from 'tournaments/createTournament.Dto';
-import { TournamentsService } from 'tournaments/tournaments.service';
+import {
+	Game,
+	Prisma,
+	PrismaClient,
+	Team,
+	Tournament,
+	User,
+} from '@prisma/client';
+import { gamesData } from 'src/helpers/games.helpers';
+import { teams } from 'src/helpers/teams.helpers';
+import { tournaments } from 'src/helpers/tournaments.helper';
+import { users } from 'src/helpers/users.helper';
+import { CreateTeamDto } from 'src/teams/createTeamDto';
+import { TeamsService } from 'src/teams/teams.services';
+import { CreateTournamentDto } from 'src/tournaments/createTournament.dto';
+import { TournamentsService } from 'src/tournaments/tournaments.service';
 
 export class preloadData {
 	constructor(
@@ -19,13 +27,13 @@ export class preloadData {
 			this.prisma.team.deleteMany({}),
 			this.prisma.tournament.deleteMany({}),
 			this.prisma.user.deleteMany({}),
-			this.prisma.games.deleteMany({}),
+			this.prisma.game.deleteMany({}),
 		]);
 	}
 
 	async addGames() {
 		for (const game of gamesData) {
-			await this.prisma.games.upsert({
+			await this.prisma.game.upsert({
 				where: { id: game.id },
 				update: {},
 				create: {
@@ -43,11 +51,11 @@ export class preloadData {
 				update: {},
 				create: {
 					email: user.email,
-					nickName: user.nickName,
+					nickname: user.nickName,
 					tokenFirebase: user.tokenFirebase,
-					birthDate: new Date(user.birthDate),
+					birthdate: new Date(user.birthDate),
 					role: user.role,
-					urlSelfie: user.urlSelfie,
+					urlProfile: user.urlSelfie,
 					createdAt: new Date(user.createdAt),
 				},
 			});
@@ -56,15 +64,37 @@ export class preloadData {
 
 	async addTeams() {
 		const usersTable: User[] = await this.prisma.user.findMany({ take: 4 });
+
+		// Verifica que el array `teams` no esté vacío
+		if (teams.length === 0) {
+			throw new Error('No teams data available');
+		}
+
 		let counter: number = 0;
 
-		for (const user of usersTable) {
-			const teamName: string = user.nickName + counter;
-			const urlAvatar: string = teams[counter].urlAvatar;
-			await this.teamService.createTeam(user.id, {
-				name: teamName,
-				urlAvatar: urlAvatar,
-			});
+		for (const team of teams) {
+			// Asegúrate de que `team` tenga los datos necesarios
+			if (!team.name || !team.urlAvatar) {
+				console.error('Team data is missing:', team);
+				continue;
+			}
+
+			// Define el ID del torneo y la lista de IDs de usuarios para cada equipo si es necesario
+			const tournamentId = null; // Cambia esto si tienes un ID de torneo para asignar
+			const userIds = usersTable.map((user) => user.id); // Asigna todos los usuarios encontrados al equipo
+
+			const teamData: CreateTeamDto = {
+				name: team.name,
+				urlAvatar: team.urlAvatar,
+				tournamentId: tournamentId,
+				userIds: userIds, // Asigna la lista de IDs de usuarios
+			};
+
+			try {
+				await this.teamService.createTeam(teamData);
+			} catch (error) {
+				console.error('Error creating team:', error);
+			}
 
 			counter++;
 		}
@@ -104,7 +134,7 @@ export class preloadData {
 			throw new Error('No organizer found');
 		}
 
-		const games = await this.prisma.games.findMany();
+		const games = await this.prisma.game.findMany();
 
 		if (games.length === 0) {
 			throw new Error('No games found');
@@ -132,12 +162,13 @@ export class preloadData {
 			const tournamentData: CreateTournamentDto = {
 				nameTournament: tournament.nameTournament,
 				startDate: tournament.startDate.toISOString(),
-				category: tournament.categories,
-				award: tournament.award,
+				category: tournament.category,
+				awards: tournament.awards,
 				description: tournament.description,
 				urlAvatar: tournament.urlAvatar,
-				membersNumber: tournament.maxMember,
-				maxTeam: tournament.maxTeam,
+				price: tournament.price,
+				membersNumber: tournament.membersNumber,
+				maxTeams: tournament.maxTeams,
 				organizerId: userOrganizer.id,
 				gameId: game.id,
 				maxMember: tournament.maxMember,
@@ -154,9 +185,9 @@ export class preloadData {
 
 		for (const tournament of tournaments) {
 			for (const team of teams) {
-				await this.tournamentsService.addTeamTournament(
+				await this.tournamentsService.updateTournament(
 					tournament.id,
-					team.id,
+					team,
 				);
 			}
 		}

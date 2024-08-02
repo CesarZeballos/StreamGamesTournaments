@@ -5,7 +5,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from 'mail/mail.service';
 
 @Module({
-	providers: [TournamentsService, PrismaService, MailService],
+	providers: [TournamentsService, PrismaService],
 	controllers: [TournamentsController],
 })
 export class TournamentsModule {}

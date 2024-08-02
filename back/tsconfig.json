@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "commonjs", // Módulo común para Node.js
+		"module": "commonjs", // Módulo común para Node.js 
 		"declaration": true, // Generar archivos de declaración (.d.ts)
 		"removeComments": true, // Eliminar comentarios en los archivos compilados
 		"emitDecoratorMetadata": true, // Emitir metadatos para decoradores

@@ -1,96 +1,40 @@
 import {
 	IsString,
 	IsNotEmpty,
-	IsEnum,
-	IsNumber,
-	IsDateString,
 	IsArray,
 	IsOptional,
 	IsUUID,
+	IsBoolean,
+	IsNumber,
+	IsDateString,
 } from 'class-validator';
 import { Categories } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 
 export class CreateTournamentDto {
-	@ApiProperty({
-		description: 'Name of the tournament',
-		example: 'Ultimate Showdown',
-	})
+	@ApiProperty({ description: 'Tournament name' })
 	@IsNotEmpty()
 	@IsString()
 	nameTournament: string;
 
 	@ApiProperty({
-		description: 'Start date of the tournament',
-		example: '2024-08-01T14:23:11.438Z',
+		description: 'Start date',
+		example: '2000-01-01T00:00:00.000Z',
 	})
 	@IsNotEmpty()
 	@IsDateString()
 	startDate: string;
 
-	@IsUUID()
-	@IsOptional()
-	id?: string;
-
-	@ApiProperty({
-		description: 'Category of the tournament',
-		example: 'beginner',
-	})
+	@ApiProperty({ description: 'Category', example: 'beginner' })
 	@IsNotEmpty()
-	@IsEnum(Categories)
 	category: Categories;
-
-	@ApiProperty({
-		description: 'Number of members in the tournament',
-		example: 16,
-	})
-	@IsNotEmpty()
-	@IsNumber()
-	membersNumber: number;
-
-	@ApiProperty({
-		description: 'Maximum number of teams allowed in the tournament',
-		example: 16,
-	})
-	@IsNotEmpty()
-	@IsNumber()
-	maxTeam: number;
-
-	@IsNotEmpty()
-	@IsNumber()
-	maxMember: number;
-
-	@ApiProperty({
-		description: 'URL for the tournament avatar',
-		example: 'https://example.com/avatar1.jpg',
-	})
-	@IsNotEmpty()
-	@IsString()
-	urlAvatar: string;
-
-	@ApiProperty({
-		description: 'Awards for the tournament',
-		example: ['Trophy', 'Medal'],
-	})
-	@IsNotEmpty()
-	@IsArray()
-	@IsString({ each: true })
-	award: string[];
-
-	@ApiProperty({
-		description: 'Description of the tournament',
-		example: 'A thrilling tournament with exciting matches!',
-	})
-	@IsNotEmpty()
-	@IsString()
-	description: string;
 
 	@ApiProperty({
 		description: 'ID of the organizer',
 		example: 'a3c4d5e6-7b8a-9b0c-1d2e-3f4g5h6i7j8k',
 	})
 	@IsNotEmpty()
-	@IsString()
+	@IsUUID()
 	organizerId: string;
 
 	@ApiProperty({
@@ -98,16 +42,74 @@ export class CreateTournamentDto {
 		example: 'l4m5n6o7-8p9q-0r1s-2t3u-4v5w6x7y8z9a',
 	})
 	@IsNotEmpty()
-	@IsString()
+	@IsUUID()
 	gameId: string;
 
+	@ApiProperty({ description: 'Number of members', example: 5 })
+	@IsNotEmpty()
+	@IsNumber()
+	membersNumber: number;
+
+	@ApiProperty({ description: 'Max teams', example: 5 })
+	@IsNotEmpty()
+	@IsNumber()
+	maxTeams: number;
+
 	@ApiProperty({
-		description: 'IDs of the teams participating in the tournament',
-		example: ['team1-uuid', 'team2-uuid'],
-		required: false,
+		description: 'Price (Es un numero y no un string)',
+		example: 500,
+	})
+	@IsNotEmpty()
+	@IsNumber()
+	price: number;
+
+	@ApiProperty({
+		description: 'Avatar URL',
+		example: 'https://CesarGato.com',
+	})
+	@IsNotEmpty()
+	@IsString()
+	urlAvatar: string;
+
+	@ApiProperty({
+		description: 'Awards',
+		example: ['$500', '$501', '$502'],
+	})
+	@IsNotEmpty()
+	@IsArray()
+	@IsString({ each: true })
+	awards: string[];
+
+	@ApiProperty({ description: 'Description' })
+	@IsNotEmpty()
+	@IsString()
+	description: string;
+
+	@ApiPropertyOptional({
+		description: 'Array of player IDs',
+		example: ['uuid1', 'uuid2', 'uuid3'],
 	})
 	@IsOptional()
 	@IsArray()
-	@IsString({ each: true })
+	@IsUUID('4', { each: true })
+	players?: string[];
+
+	@ApiPropertyOptional({
+		description: 'IDs of the teams participating in the tournament',
+		example: ['team1-uuid', 'team2-uuid'],
+	})
+	@IsOptional()
+	@IsArray()
+	@IsUUID('4', { each: true })
 	teams?: string[];
+}
+
+export class UpdateTournamentDto extends PartialType(CreateTournamentDto) {
+	@ApiPropertyOptional({
+		description: 'State of the tournament',
+		example: true,
+	})
+	@IsOptional()
+	@IsBoolean()
+	state?: boolean;
 }

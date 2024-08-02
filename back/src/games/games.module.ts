@@ -4,7 +4,7 @@ import { GamesController } from './games.controller';
 import { PrismaService } from '../../prisma/prisma.service'; 
 
 @Module({
-  providers: [GamesService, PrismaService],
-  controllers: [GamesController],
+	providers: [GamesService, PrismaService],
+	controllers: [GamesController],
 })
-export class GamesModule { }
+export class GamesModule {}
