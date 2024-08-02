@@ -1,27 +1,26 @@
 export interface IUser {
     id: string
-    nickName: string
     email: string
-    birthDate: string
+    nickname: string
+    // tokenFirebase: string
+    birthdate: string
+    urlProfile: string
+    urlSteam: string
     role: string
+    state: boolean
     teams: ITeam[]
     tournaments: ITournamentsregistered[]
+    friends: []
+    sentFriendRequests: []
+    sentMessages: []
+    receivedMessages: []
+    globalChat: []
 }
 
 export interface ITeam {
     id: string
     name: string
-    members: ITeamMember[]
-}
-
-export interface ITeamForm {
-    name: string
-    members: ITeamMember[]
-}
-
-export interface ITeamError {
-    name?: string
-    members?: string
+    members: IUser[]
 }
 
 export interface ITournamentsregistered {
@@ -29,26 +28,26 @@ export interface ITournamentsregistered {
     nameTournament: string
 }
 
-export interface ITeamMember {
-    id: string
-    nickName: string
-}
+// export interface ITeamMember {
+//     id: string
+//     nickName: string
+// }
 
 
 //register
 export interface IRegisterForm {
-    nickName: string;
+    nickname: string;
     email: string;
     password: string;
-    birthDate: string;
+    birthdate: string;
     tokenFirebase?: string
 }
 
 export interface IRegisterError {
-    nickName?: string;
+    nickname?: string;
     email?: string;
     password?: string;
-    birthDate?: string;
+    birthdate?: string;
 }
 
 //login
@@ -76,6 +75,4 @@ export interface IUserSelector {
     email: string
     birthDate: string
     role: string
-    teams: ITeam[]
-    tournaments: ITournamentsregistered[]
 }

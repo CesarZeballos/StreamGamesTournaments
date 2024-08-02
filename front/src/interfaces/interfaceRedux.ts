@@ -16,8 +16,8 @@ export interface IUserState {
 }
 
 export interface IRegisterFormSlice {
-    nickName: string;
+    nickname: string;
     email: string;
     password: string;
-    birthDate: string;
+    birthdate: string;
 }
