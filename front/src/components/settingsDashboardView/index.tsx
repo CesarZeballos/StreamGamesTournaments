@@ -1,11 +1,18 @@
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { upgradeUserSlice } from "@/redux/thunks/userSliceThunk";
+import { useDispatch, useSelector } from "react-redux";
 
 
 export const SettingsDashboardView = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.user);
+    const token = useSelector((state: RootState) => state.user.token);
 
     const stringDate = user?.birthdate.split('T')[0];
+
+    const upgradeAcount = (event: React.MouseEvent<HTMLButtonElement>) => {
+        dispatch(upgradeUserSlice({id: user?.id!, token: token!}))
+    }
 
     return (
         <div className="flex flex-col gap-9">
@@ -21,12 +28,11 @@ export const SettingsDashboardView = () => {
 
             <div>
                 <h1 className="heading5 text-lightViolet">Settings</h1>
-                <div className="flex flex-col justify-center items-center w-fit gap-2">
-                    <div className="flex flex-row mt-4 ml-12 gap-2">
+                <div className="flex flex-col mt-4 ml-4 gap-2">
                         <button className="buttonSecondary">Edit my data</button>
+                        <button className="buttonSecondary">Change email</button>
                         <button className="buttonSecondary">Change password</button>
-                    </div>
-                    {user?.role === "user" && <button className="buttonPrimary">Upgrade to organizer</button>}
+                    {user?.role === "user" && <button className="buttonPrimary" onClick={upgradeAcount}>Upgrade to organizer</button>}
                 </div>
             </div>
         </div>

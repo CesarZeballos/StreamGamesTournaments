@@ -1,6 +1,6 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice } from "../thunks/userSliceThunk";
+import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
 
 const initialState: IUserState = {
@@ -118,6 +118,24 @@ const userSlice = createSlice({
           .addCase(addfriendSlice.rejected, (state, action) => {
             state.statusAddFriend = 'failed'
             toast.error('friend request not sent', {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+
+          // UPGRADE USER
+
+          .addCase(upgradeUserSlice.pending, (state) => {
+            state.error = null
+          })
+          .addCase(upgradeUserSlice.fulfilled, (state, action) => {
+            toast.success('We will review your application. You will be notified by email when you become a tournament organizer.', {
+                position: 'top-right',
+                duration: 1500,
+              })
+            })
+          .addCase(upgradeUserSlice.rejected, (state, action) => {
+            toast.error('Failed to send the request. Please try again in a few minutes.', {
                 position: 'top-right',
                 duration: 1500,
               })

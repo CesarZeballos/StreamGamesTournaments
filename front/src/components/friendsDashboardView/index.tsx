@@ -8,68 +8,6 @@ import ChatIcon from '@mui/icons-material/Chat';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { setView } from "@/redux/slices/dashboardSlice";
 
-const users: IUser[] = [
-    // {
-    //     id: "1",
-    //     nickName: "cesar1",
-    //     email: "cesar",
-    //     birthDate: "cesar",
-    //     role: "user",
-    //     teams: [],
-    //     tournaments: [],
-    // },
-
-    // {
-    //     id: "2",
-    //     nickName: "cesar2",
-    //     email: "cesar",
-    //     birthDate: "cesar",
-    //     role: "user",
-    //     teams: [],
-    //     tournaments: [],
-    // },
-
-    // {
-    //     id: "3",
-    //     nickName: "cesar3",
-    //     email: "cesar",
-    //     birthDate: "cesar",
-    //     role: "user",
-    //     teams: [],
-    //     tournaments: [],
-    // }, 
-
-    // {
-    //     id: "4",
-    //     nickName: "cesar4",
-    //     email: "cesar",
-    //     birthDate: "cesar",
-    //     role: "user",
-    //     teams: [],
-    //     tournaments: [],
-    // },
-
-    // {
-    //     id: "5",
-    //     nickName: "cesar5",
-    //     email: "cesar",
-    //     birthDate: "cesar",
-    //     role: "user",
-    //     teams: [],
-    //     tournaments: [],
-    // },
-
-    // {
-    //     id: "6",
-    //     nickName: "cesar6",
-    //     email: "cesar",
-    //     birthDate: "cesar",
-    //     role: "user",
-    //     teams: [],
-    //     tournaments: [],
-    // },
-]
-
 export const FriendsDashboardView = () => {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user.user);

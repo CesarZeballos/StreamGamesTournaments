@@ -10,6 +10,7 @@ import { AddFriend } from "../addFriendForm";
 import { NotificationDashboardView } from "../notificationDashboardView";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 import { SettingsDashboardView } from "../settingsDashboardView";
+import { setView } from "@/redux/slices/dashboardSlice";
 
 
 export const UserDashboardView: React.FC = () => {
@@ -21,8 +22,10 @@ export const UserDashboardView: React.FC = () => {
     useEffect(() => {
         if (!user) {
             router.push("/")
+        } else if(section === "") {
+            dispatch(setView("notifications"))
         }
-    }, [router, user])
+    }, [router, user, section, dispatch])
     
     return (
             <div className="grid grid-cols-4 gap-x-6 mt-4">

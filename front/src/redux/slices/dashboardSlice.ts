@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 
 const initialState = {
-    view: "data"
+    view: ""
 }
 
 const dashboardSlice = createSlice({

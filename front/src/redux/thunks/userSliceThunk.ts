@@ -1,6 +1,6 @@
 import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
-import { IAddFriendForm, ILoginForm } from "@/interfaces/interfaceUser"
-import { fetchAddUser, loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
+import { IAddFriendForm, ILoginForm, IUpgradeUser } from "@/interfaces/interfaceUser"
+import { fetchAddUser, fetchUgradeUser, loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
 import { singInFirebaseWithEmailAndPassword, singUpFirebaseWithEmailAndPassword } from "@/utils/firebase/auth"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
@@ -38,5 +38,10 @@ export const forgotPasswordSlice = createAsyncThunk('user/postForgotPassword', a
 
 export const addfriendSlice = createAsyncThunk('user/addFriend', async (data: IAddFriendForm) => {
         const response = await fetchAddUser(data)
+        return response
+})
+
+export const upgradeUserSlice = createAsyncThunk('user/upgradeUser', async (data: IUpgradeUser) => {
+        const response = await fetchUgradeUser(data)
         return response
 })
