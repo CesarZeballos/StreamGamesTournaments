@@ -67,7 +67,7 @@ const TournamentForm: React.FC = () => {
     <PostContainer section="Create Tournament" image={image || gameImages[game]}>
       <form onSubmit={handleSubmit}>
         <div>
-          <label className="label">Tournament Name</label>
+          <label className="block text-white font-Raleway text-base">Tournament Name</label>
           <input
             type="text"
             value={name}
@@ -128,6 +128,7 @@ const TournamentForm: React.FC = () => {
             min={10}
             max={40}
           />
+          <p className="helper">You can only select from 10 to 40.</p>
         </div>
 
         <div>
@@ -141,6 +142,7 @@ const TournamentForm: React.FC = () => {
             min={2}
             max={8}
           />
+          <p className="helper">You can only select from 2 to 8.</p>
         </div>
 
         <div>
@@ -154,6 +156,7 @@ const TournamentForm: React.FC = () => {
             min={500}
             max={2500}
           />
+          <p className="helper">You can only select from 500 to 2500.</p>
         </div>
 
         <div>

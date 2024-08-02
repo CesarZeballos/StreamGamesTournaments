@@ -166,6 +166,10 @@ th select {
   @apply w-3/4 h-1/3 z-10 rounded-3xl
 }
 
+.label {
+  @apply block text-white font-Raleway text-base mt-3
+}
+
 .input {
   @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark w-full h-12
   focus:border-solid
@@ -174,9 +178,10 @@ th select {
   focus:shadow-lightViolet
 }
 
-.label {
-  @apply block text-white font-Raleway text-base mt-4
+.helper {
+  @apply text-white text-xs mt-1
 }
+
 
 .loading {
   @apply text-softViolet text-5xl text-center m-8;
