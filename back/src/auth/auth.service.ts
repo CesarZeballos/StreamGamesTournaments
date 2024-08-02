@@ -10,6 +10,7 @@ import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'mail/mail.service';
 import { MailTemplates } from 'mail/mail-templates';
+import { teams } from 'helpers/teams.helpers';
 
 @Injectable()
 export class AuthService {
@@ -40,12 +41,7 @@ export class AuthService {
 				email,
 				nickname,
 				tokenFirebase,
-				birthDate: parsedBirthDate.toISOString(),
-				teams: teamId
-					? {
-							connect: { id: teamId },
-						}
-					: undefined,
+				birthdate: parsedBirthDate.toISOString(),
 			},
 		});
 
