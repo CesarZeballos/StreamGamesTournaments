@@ -1,6 +1,6 @@
 'use client'
 import { StaticImageData } from "next/image";
-import { ITournament, IAddTeam } from "@/interfaces/interfaceTournaments";
+import { ITournament, IAddTeam, IGame } from "@/interfaces/interfaceTournaments";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
@@ -22,67 +22,7 @@ const MenuProps = {
   },
 };
 
-const friends: IUser[] = [
-    {
-        id: "1",
-        nickName: "cesar1",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
 
-    {
-        id: "2",
-        nickName: "cesar2",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-
-    {
-        id: "3",
-        nickName: "cesar3",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    }, 
-
-    {
-        id: "4",
-        nickName: "cesar4",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-
-    {
-        id: "5",
-        nickName: "cesar5",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-
-    {
-        id: "6",
-        nickName: "cesar6",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-]
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch();
     const router = useRouter();
@@ -95,24 +35,22 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
     const [tournamentData, setTournamentData] = useState<ITournament>({
         id: "",
-        nameTournament: "Prueba",
-        startDate: "2024-01-01",
+        nameTournament: "",
+        startDate: "",
         createdAt: "",
-        price: 500,
-        categories: "",
+        category: "",
+        organizerId: "",
         gameId: "",
         membersNumber: 0,
-        award: [],
-        urlAvatar: "",
-        description: "",
-        maxMember: 5,
         maxTeam: 0,
-        organizerId: "",
-        game: {
-            id: "",
-            name: "",
-            urlImage: "",
-        }
+        price: 0,
+        urlAvatar: "",
+        award: [],
+        description: "",
+        state: false,
+        game: {} as IGame,
+        players: [],
+        organizer: {} as IUser
     });
     const stringDate = tournamentData.startDate.split('T')[0];
     
@@ -136,11 +74,10 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         const selectedNicknames = typeof value === 'string' ? value.split(',') : value;
     
         // Encuentra los objetos completos basados en los nicknames seleccionados
-        const selectedMembers = friends.filter(friend => selectedNicknames.includes(friend.nickName));
+        const selectedMembers = user!.friends.filter(friend => selectedNicknames.includes(friend.nickname));
 
         const completedTeam = [...selectedMembers, userData]
     
-        // Actualiza el estado de teamMembers y addTeam
         setTeamMembers(selectedNicknames);
 
         setAddTeam(addTeam => ({
@@ -161,13 +98,13 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const teamLength = addTeam.members.length
-        if (teamLength < tournamentData.maxMember) {
-            toast.error(`this tournaments require ${tournamentData.maxMember} team members. Need ${tournamentData.maxMember - teamLength} more`, {
+        if (teamLength < tournamentData.membersNumber) {
+            toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${tournamentData.membersNumber - teamLength} more`, {
                 position: 'top-right',
                 duration: 1500,
             })
-        } else if (teamLength > tournamentData.maxMember) {
-            toast.error(`this tournaments require ${tournamentData.maxMember} team members. Need ${teamLength - tournamentData.maxMember} less`, {
+        } else if (teamLength > tournamentData.membersNumber) {
+            toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${teamLength - tournamentData.membersNumber} less`, {
                 position: 'top-right',
                 duration: 1500,
             })
@@ -228,17 +165,17 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                             }
                                 MenuProps={MenuProps}
                                 >
-                                {friends.map((friend) => (
+                                {user!.friends.map((friend) => (
                                     <MenuItem
                                     key={friend.id}
-                                    value={friend.nickName}
+                                    value={friend.nickname}
                                     >
-                                    {friend.nickName}
+                                    {friend.nickname}
                                     </MenuItem>
                                 ))}
                                 </Select>
                             </FormControl>
-                            <p className="errorForm">{`select ${tournamentData.maxMember - 1} friends`}</p>
+                            <p className="errorForm">{`select ${tournamentData.membersNumber - 1} friends`}</p>
 
                         </FormContainer> 
                     }

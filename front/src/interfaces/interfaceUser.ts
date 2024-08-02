@@ -9,6 +9,24 @@ export interface IUser {
     role: string
     state: boolean
     tournaments: ITournamentsregistered[]
+    friends: IFriend[]
+    sentFriendRequests: []
+    sentMessages: []
+    receivedMessages: []
+    globalChat: []
+}
+
+interface IFriend {
+    id: string
+    email: string
+    nickname: string
+    // tokenFirebase: string
+    birthdate: string
+    urlProfile: string
+    urlSteam: string
+    role: string
+    state: boolean
+    tournaments: ITournamentsregistered[]
     friends: []
     sentFriendRequests: []
     sentMessages: []
