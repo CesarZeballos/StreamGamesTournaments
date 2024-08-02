@@ -41,11 +41,11 @@ html, body {
 }
 
 .heading5 {
-  @apply font-Raleway font-black text-base
+  @apply font-Raleway font-black text-sm
 }
 
 .body {
-  @apply font-Roboto font-normal text-base;
+  @apply font-Roboto font-normal text-sm;
 }
 
 .errorForm {
@@ -64,14 +64,19 @@ html, body {
 /* buttons */
 
 .buttonPrimary {
-  @apply flex items-center bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full border-2 border-lightViolet w-fit h-fit whitespace-nowrap
+  @apply flex items-center bg-BGdark font-Raleway font-bold text-sm text-white px-9 py-2 rounded-full border-2 border-lightViolet w-fit h-fit whitespace-nowrap
   hover:shadow-md 
   hover:shadow-lightViolet 
   hover:text-lightViolet
 }
 
-.buttonSecondary {
+.buttonNavbar {
   @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap
+  focus:text-lightViolet hover:text-lightViolet
+}
+
+.buttonSecondary {
+  @apply flex items-center font-Raleway font-normal text-sm text-white px-9 py-2 w-fit h-fit whitespace-nowrap
   focus:text-lightViolet hover:text-lightViolet
 }
 
@@ -124,7 +129,7 @@ html, body {
 /* utils */
 
 .bodyContainer {
-  @apply px-large; 
+  @apply mx-large mt-24; 
 }
 
 body {

@@ -13,30 +13,22 @@ const NavBar: React.FC = () => {
     const router = useRouter();
     const user = useSelector((state: RootState) => state.user.user);
 
-    const logout = () => {
-        dispatch(logoutSlice())
-        setTimeout(() => {
-            router.push("/")
-        }, 1500);
-    }
-
     return (
-        <div className="bg-BGlight grid grid-cols-[40%_60%] bodyContainer mt-4 mb-4 overflow-hidden">
+        <div className="bg-BGlight grid grid-cols-[40%_60%] px-large  pt-4 pb-4 overflow-hidden">
         <div>
         <Image src={logo} alt="Logo" className="flex justify-start items-center w-2/4 h-fit"/>
         </div>
         <div className="flex justify-end gap-x-1 overflow-hidden p-1">
-            <Link className="buttonSecondary" href="/">Home</Link>
-            <Link className="buttonSecondary" href="/tournaments">Tournaments</Link>
+            <Link className="buttonNavbar" href="/">Home</Link>
+            <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
             {user ? 
             <div className="flex gap-x-8">
-                <Link className="buttonSecondary flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
-                <button className="buttonSecondary" onClick={logout}>Sign Out</button> 
+                <Link className="buttonNavbar flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
             </div>
             :
             <div className="flex gap-x-8">
-                <Link className="buttonSecondary" href="/login">Sign In</Link>
-                <Link className="buttonPrimary" href="/register">Sign Up</Link>
+                <Link className="buttonNavbar" href="/login">Sign In</Link>
+                <Link className="buttonPrimary text-base" href="/register">Sign Up</Link>
             </div>
             }
         </div>
