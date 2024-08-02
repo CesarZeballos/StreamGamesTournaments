@@ -1,13 +1,13 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { forgotPasswordSlice, loginSlice, registerSlice, reloadUSerDataSlice } from "../thunks/userSliceThunk";
+import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
-import { addTeam } from "../thunks/tournamentsSliceThunk";
 
 const initialState: IUserState = {
   user: null,
   status: 'idle',
   statusRegister: 'idle',
+  statusAddFriend: 'idle',
   error: null,
   token: null,
   statusForgotPassword: ""
@@ -21,7 +21,7 @@ const userSlice = createSlice({
             state.user = action.payload.user
         },
         logoutSlice(state) {
-            toast(`See you later ${state.user?.nickName}`, {
+            toast(`See you later ${state.user?.nickname}`, {
                 position: 'top-right',
                 duration: 1500,
               })
@@ -61,7 +61,6 @@ const userSlice = createSlice({
         .addCase(loginSlice.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.statusRegister = 'idle'
-            console.log("payload", action.payload)
             if (action.payload) {
                 state.user = action.payload.user
                 state.token = action.payload.token
@@ -74,26 +73,10 @@ const userSlice = createSlice({
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
-            toast.error('fail in login', {
+            toast.error('fail in login: user or password incorrect', {
                 position: 'top-right',
                 duration: 1500,
               })
-          })
-
-          // RELOAD USER DATA
-          .addCase(reloadUSerDataSlice.pending, (state) => {
-            state.status = 'loading'
-            state.error = null
-          })
-          .addCase(reloadUSerDataSlice.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            state.statusRegister = 'idle'
-            // state.user = action.payload.user
-            // state.token = action.payload.token
-            console.log("payload", action.payload)
-          })
-          .addCase(reloadUSerDataSlice.rejected, (state, action) => {
-            state.status = 'failed'
           })
 
           // FORGOT PASSWORD
@@ -120,25 +103,21 @@ const userSlice = createSlice({
               })
           })
 
-          // ADD TEAM TO TOURNAMENTS
-          .addCase(addTeam.pending, (state) => {
-            state.status = 'loading'
+          // ADD FRIEND
+          .addCase(addfriendSlice.pending, (state) => {
+            state.statusAddFriend = 'loading'
             state.error = null
           })
-          .addCase(addTeam.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            state.statusRegister = 'idle'
-            // state.user = action.payload.user
-            // state.token = action.payload.token
-
-            toast.success(`Your team added to the tournament`, {
+          .addCase(addfriendSlice.fulfilled, (state, action) => {
+            state.statusAddFriend = 'succeeded'
+            toast.success('friend request sent', {
                 position: 'top-right',
                 duration: 1500,
               })
-          })
-          .addCase(addTeam.rejected, (state, action) => {
-            state.status = 'failed'
-            toast.error('fail in adding team', {
+            })
+          .addCase(addfriendSlice.rejected, (state, action) => {
+            state.statusAddFriend = 'failed'
+            toast.error('friend request not sent', {
                 position: 'top-right',
                 duration: 1500,
               })

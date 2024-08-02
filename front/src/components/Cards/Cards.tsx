@@ -40,7 +40,7 @@ const Cards: React.FC = () => {
         return cards.filter(card => {
             const cardDate = parse(card.startDate, "dd/MM", new Date());
 
-            const categoryMatches = card.categories === filter;
+            const categoryMatches = card.category === filter;
             const nameMatches = card.game.name === filter;
             // const priceCategory = price[card.id]?.price;
             // const priceMatches = priceCategory === filter;

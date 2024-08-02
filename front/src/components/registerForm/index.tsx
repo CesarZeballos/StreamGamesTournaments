@@ -16,17 +16,17 @@ export const RegisterForm: React.FC = () => {
     const router = useRouter();
 
     const [data, setData] = useState<IRegisterForm>({
-        nickName: "",
+        nickname: "",
         email: "",
         password: "",
-        birthDate: ""
+        birthdate: ""
     })
 
     const [errorRegister, setErrorRegister] = useState<IRegisterError>({
-        nickName: "",
+        nickname: "",
         email: "",
         password: "",
-        birthDate: ""
+        birthdate: ""
     })
 
     // Control de ingreso a la página
@@ -39,6 +39,7 @@ export const RegisterForm: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
+        console.log("handleChange", data)
         setData({
             ...data,
             [name]: value
@@ -50,16 +51,12 @@ export const RegisterForm: React.FC = () => {
 
     const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        if (!errorRegister.nickName && !errorRegister.email && !errorRegister.password && !errorRegister.birthDate) {
+        if (!errorRegister.nickname && !errorRegister.email && !errorRegister.password && !errorRegister.birthdate) {
             const registerData = {
                 ...data,
-                birthdate: new Date(data.birthDate).toISOString()
+                birthdate: new Date(data.birthdate).toISOString()
             }
             dispatch(registerSlice(registerData))
-            setTimeout(() => {
-                dispatch(loginSlice(registerData))
-                router.push("/")
-            }, 1500)
         } else {
             toast('error register', {
                 position: 'top-right',
@@ -68,21 +65,33 @@ export const RegisterForm: React.FC = () => {
         }
     }, [data, errorRegister, dispatch])
     
+    const registerStatus = useSelector((state: RootState) => state.user.statusRegister)
+    useEffect(() => {
+        if (registerStatus === "failed") {
+            return
+        } else if (registerStatus === "succeeded") {
+            setTimeout(() => {
+                dispatch(loginSlice({
+                    email: data.email,
+                    password: data.password}))
+                router.push("/")
+            }, 1500)
+    }}, [registerStatus, router, data, dispatch])
+
     return (
-        <form onSubmit={handleSubmit}>
-            <h1 className="heading2 text-white mb-16">Register</h1>
+        <form onSubmit={handleSubmit} className="mt-9">
             <FourColumsContainer imagen="register" URLimagen={"/register.jpg"}>
-                <FormContainer section={"Enter your data"}>
+                <FormContainer section={"Register"}>
                     <div className="flex flex-col gap-2 w-fit">
                         <label className="body text-white">Nickname</label>
                         <input type="text"
-                            name="nickName"
-                            value={data.nickName}
+                            name="nickname"
+                            value={data.nickname}
                             onChange={handleChange}
                             className="input"
                             required
                         />
-                        {errorRegister.nickName ? (<p className="errorForm">{errorRegister.nickName}</p>) : (<p className="errorForm"><br /></p>)}
+                        {errorRegister.nickname ? (<p className="errorForm">{errorRegister.nickname}</p>) : (<p className="errorForm"><br /></p>)}
                     </div>
 
                     <div className="flex flex-col gap-2 w-fit">
@@ -112,13 +121,13 @@ export const RegisterForm: React.FC = () => {
                     <div className="flex flex-col gap-2 w-fit">
                         <label className="body text-white">Birthdate</label>
                         <input type="date"
-                            name="birthDate"
-                            value={data.birthDate}
+                            name="birthdate"
+                            value={data.birthdate}
                             onChange={handleChange}
                             className="input"
                             required
                         />
-                        {errorRegister.birthDate ? (<p className="errorForm">{errorRegister.birthDate}</p>) : (<p className="errorForm"><br /></p>)}
+                        {errorRegister.birthdate ? (<p className="errorForm">{errorRegister.birthdate}</p>) : (<p className="errorForm"><br /></p>)}
                     </div>
 
                     <button type="submit" className="buttonPrimary mt-4">Register</button>

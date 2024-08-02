@@ -17,7 +17,10 @@ export class AuthController {
 	@ApiOperation({ summary: 'Sign in an existing user' })
 	@Post('signin')
 	async signIn(@Body() signInDto: SignInDto) {
-		console.log("response en el controller", await this.authService.signIn(signInDto));
+		console.log(
+			'response en el controller',
+			await this.authService.signIn(signInDto),
+		);
 		return await this.authService.signIn(signInDto);
 	}
 }

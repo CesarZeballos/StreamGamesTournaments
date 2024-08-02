@@ -4,16 +4,20 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggerGlobalMiddleware } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { preloadData } from '../preload/preload.db';
-import { TeamsService } from './teams/teams.service';
+import { TeamsService } from './teams/teams.services';
 import { TournamentsService } from './tournaments/tournaments.service';
+import { preloadData } from '../preload/preload.db';
 
 async function PreloadData(
 	prismaService: PrismaService,
 	teamService: TeamsService,
 	tournamentsService: TournamentsService,
 ) {
-	const preload = new preloadData(prismaService, teamService, tournamentsService);
+	const preload = new preloadData(
+		prismaService,
+		teamService,
+		tournamentsService,
+	);
 	await preload.clearTables();
 	await preload.addGames();
 	await preload.addUsers();
@@ -58,7 +62,7 @@ async function bootstrap() {
 	} catch (error) {
 		console.error('Error preloading data:', error);
 	} finally {
-		await prismaService.$disconnect();  
+		await prismaService.$disconnect();
 	}
 }
 

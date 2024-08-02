@@ -1,29 +1,45 @@
 import { StaticImageData } from "next/image";
+import { IUser } from "./interfaceUser";
 
 export interface ITournament {
     id: string;
     nameTournament: string;
     startDate: string;
     createdAt: string;
-    price: number;
-    categories: string;
+    category: string;
+    organizerId: string;
     gameId: string;
     membersNumber: number;
-    award: string[];
-    urlAvatar: string;
-    description: string;
-    maxMember: number;
     maxTeam: number;
-    organizerId: string;
-    game: {
-        id: string;
-        name: string;
-        urlImage: string;
-    };
+    price: number;
+    urlAvatar: string;
+    award: string[];
+    description: string;
+    state: boolean;
+    game: IGame;
+    players: [];
+    organizer: IUser;
 }
 
+export interface IGame {
+    id: string;
+    name: string;
+    urlImage: string;
+    state: boolean
+}
+
+//interface para el form de agregar equipo
 export interface IAddTeam {
     tournamentId: string
-    teamId: string
-    payment: string
+    teamName: string
+    organizarId: string
+    members: IUser[]
+}
+
+//interface para mostrar mis torneos en el dashboard user
+export interface IMyTournaments {
+    id: string
+    nameTournament: string
+    startDate: string
+    status: string
 }

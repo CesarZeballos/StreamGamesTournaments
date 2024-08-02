@@ -1,7 +1,6 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	Param,
 	ParseUUIDPipe,
@@ -17,11 +16,10 @@ import {
 	ApiQuery,
 	ApiParam,
 	ApiBody,
-	PartialType,
+	PartialType
 } from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto, UpdateGameDto } from './games.dto';
-import { UpdateTeamDto } from 'teams/teams.dto';
 import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
 import { Roles } from 'auth/roles.decorator';
@@ -73,10 +71,9 @@ export class GamesController {
 	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
 	@ApiResponse({ status: 200, description: 'Juego encontrado.' })
 	@ApiResponse({ status: 404, description: 'Juego no encontrado.' })
-	async getGameById(@Param('id', ParseUUIDPipe) id: string) {
+	async getGameById(@Param('id', new ParseUUIDPipe()) id: string) {
 		return await this.gamesService.getGameById(id);
 	}
-
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
 	@Post()
@@ -123,12 +120,12 @@ export class GamesController {
 
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
-	@Delete(':id')
+	@Put(':id')
 	@ApiOperation({ summary: 'Eliminar un juego por su ID' })
 	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
 	@ApiResponse({ status: 200, description: 'Juego eliminado exitosamente.' })
 	@ApiResponse({ status: 404, description: 'Juego no encontrado.' })
-	async deleteGame(@Param('id', ParseUUIDPipe) id: string) {
+	async deleteGame(@Param('id', new ParseUUIDPipe()) id: string) {
 		return await this.gamesService.deleteGame(id);
 	}
 }

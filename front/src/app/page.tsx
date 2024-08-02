@@ -8,10 +8,8 @@ return (
     <>
         <Suspense fallback={<p className="loading">Loading Home Page...</p>}>
         <LiveBanner/>
-        <div className="bodyContainer">
         <FindBanner/>
         <RegisterBanner/>
-        </div>
         </Suspense>
     </>
 );
