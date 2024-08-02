@@ -12,11 +12,12 @@ interface UsersListProps {
 
 const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeactivateUser }) => {
   return (
+  <div className="w-full overflow-hidden">
     <table className='rounded-lg mb-small overflow-hidden text-center bg-white text-BGdark'>
       <thead className='bg-cyan-300'>
         <UserFilters onFilter={onFilter} />
         <tr className='text-indigo-900'>
-          <th>NickName</th>
+          <th>Nickname</th>
           <th>Role</th>
           <th>Tournament</th>
           <th>Ban User</th>
@@ -25,16 +26,17 @@ const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeact
       <tbody>
         {users.map(user => (
           <tr key={user.id}>
-            <td>{user.nickName}</td>
+            <td>{user.nickname}</td>
             <td>{user.role}</td>
             <td>{user.tournaments.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>
             <td>
-              <button onClick={() => onDeactivateUser(user.id)}>Ban User</button>
+              <button className='hover:bg-softViolet p-2 rounded-lg' onClick={() => onDeactivateUser(user.id)}>Ban User</button>
             </td>
           </tr>
         ))}
       </tbody>
     </table>
+    </div>
   );
 };
 

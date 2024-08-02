@@ -16,6 +16,12 @@ export interface IUser {
     globalChat: []
 }
 
+export interface IUserFilters {
+    nickname: string;
+    role: string;
+    tournaments: string;
+}
+
 interface IFriend {
     id: string
     email: string

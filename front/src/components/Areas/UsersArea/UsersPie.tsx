@@ -63,12 +63,30 @@ const UsersPie: React.FC<UserPieProps> = ({ activeUsers, inactiveUsers, usersInT
             offsetY: 0,
             fontSize: '10px',
             itemMargin: {
-              horizontal: 10,
-              vertical: 8
+              horizontal: 5,
+              vertical: 5
             }
           }
         }
-      }
+      },
+      {
+        breakpoint: 620, // Puedes agregar más breakpoints si lo necesitas
+        options: {
+          chart: {
+            width: '110%'
+          },
+          legend: {
+            position: 'bottom',
+            offsetX: 0,
+            offsetY: 0,
+            fontSize: '8px',
+            itemMargin: {
+              horizontal: 1,
+              vertical: 1
+            }
+          }
+        }
+      },
     ],
     plotOptions: {
       pie: {
@@ -89,7 +107,7 @@ const UsersPie: React.FC<UserPieProps> = ({ activeUsers, inactiveUsers, usersInT
   return (
   <>
       <h1 className='heading3 text-center text-lightViolet mb-small'>Users Graphs</h1>
-    <div className="flex justify-center items-center p-4 bg-white rounded-lg w-full max-h-500px">
+    <div className="flex justify-center items-center text-center bg-white rounded-lg w-full max-h-500px">
       <div className="overflow-hidden">
         <ApexCharts options={options} series={series} type="pie" width={600} />
       </div>

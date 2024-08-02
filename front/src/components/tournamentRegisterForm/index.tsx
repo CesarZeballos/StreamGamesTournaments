@@ -179,7 +179,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                         </FormContainer> 
                     }
 
-                    <FormContainer>
+                    <FormContainer section={""}>
                         <div className="flex flex-row gap-2">
                             <button type="submit" className="buttonPrimary">Register team</button>
                             <button className="buttonSecondary" onClick={goBack}>Cancel</button>

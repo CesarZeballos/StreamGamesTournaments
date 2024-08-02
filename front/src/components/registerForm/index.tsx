@@ -63,7 +63,7 @@ export const RegisterForm: React.FC = () => {
                 duration: 1500,
             })
         }
-    }, [errorRegister.nickName, errorRegister.email, errorRegister.password, errorRegister.birthDate, data, dispatch, router])
+    }, [errorRegister.nickname, errorRegister.email, errorRegister.password, errorRegister.birthdate, data, dispatch])
     
     const registerStatus = useSelector((state: RootState) => state.user.statusRegister)
     useEffect(() => {

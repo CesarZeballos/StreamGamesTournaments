@@ -132,10 +132,11 @@ body {
 }
 
 table {
+  width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  width: 100%;
   border-radius: 1rem;
+  overflow: hidden;
 }
 
 thead {
@@ -146,6 +147,7 @@ td {
   border-radius: 0;
   border: 1px solid #e100ff;
   padding: 1rem;
+  overflow: hidden;
 }
 
 th {
@@ -153,11 +155,16 @@ th {
   border-radius: 0;
   border: 1px solid #e100ff;
   padding: 1rem;
+  overflow: hidden;
 }
 
 th select {
-  width: 100%; /* Para que los selects ocupen todo el ancho de la celda */
   padding: 4px;
+  overflow: hidden;
+}
+
+.filter {
+  @apply mt-2 mb-2 block w-full border-2 border-softViolet rounded-md shadow-sm text-BGdark p-4 overflow-hidden
 }
 
 .selector {

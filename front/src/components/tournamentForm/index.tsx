@@ -5,16 +5,21 @@ import { postTournament } from "@/utils/fetchTournaments";
 import { gameImages, categoryIcons, categories, gameName } from "@/utils/tournamentsData";
 import { ITournamentPost } from "@/interfaces/interfaceTournaments";
 import { PostContainer } from "./PostContainer";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
+import { StaticImageData } from "next/image";
+
+type ImageSource = StaticImageData | string;
+
 
 const TournamentForm: React.FC = () => {
-  const [name, setName] = useState<string>("");
+  const [nameTournament, setNameTournament] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const categoryOptions = Object.keys(categoryIcons);
   const [game, setGame] = useState<string>("");
   const gameOptions = Object.keys(gameImages);
 
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<ImageSource | null>(null);
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.[0]) {
       const file = URL.createObjectURL(event.target.files[0]);
@@ -31,21 +36,22 @@ const TournamentForm: React.FC = () => {
     newAwards[index] = value;
     setAwards(newAwards);
   };
-
-  const [startDate, setStartDate] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data: ITournamentPost = {
+      nameTournament,
       startDate,
-      categories: category,
-      price,
-      award: awards,
-      urlStream: image || gameImages[game],
-      membersNumber,
-      maxTeam,
+      category: category,
       organizerId: "placeholder-organizer-id",
       gameId: game,
+      membersNumber,
+      maxTeam,
+      price,
+      urlAvatar: image || gameImages[game],
+      award: awards,
+      description,
     };
 
     try {
@@ -70,8 +76,8 @@ const TournamentForm: React.FC = () => {
           <label className="block text-white font-Raleway text-base">Tournament Name</label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={nameTournament}
+            onChange={(e) => setNameTournament(e.target.value)}
             placeholder="Create a name for the Tournament"
             required
             className="input"
@@ -197,6 +203,19 @@ const TournamentForm: React.FC = () => {
             className="input"
             min={minDate}
           />
+        </div>
+
+        <div>
+          <label className="label">Description</label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            className="input"
+            maxLength={200}
+          />
+          <p className="helper">Maximum 200 characters allowed.</p>
         </div>
 
         <div className="flex justify-center">

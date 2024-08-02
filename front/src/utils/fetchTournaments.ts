@@ -5,7 +5,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function fetchTournaments(): Promise<ITournament[]> {
     console.log("URL_API", apiUrl)
-        const response = await fetch(`${apiUrl}/tournaments`, {
+        const response = await fetch("http://localhost:3001/tournaments", {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export async function fetchTournamentsOriginal(): Promise<ITournament[]> {
 }
 
 export async function postTournament(data: ITournamentPost) {
-    const response = await fetch(`${apiUrl}/tournaments/add`, {
+    const response = await fetch("http://localhost:3001/tournaments/add", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export async function postTournament(data: ITournamentPost) {
 }
 
 export async function fetchTournamentById(id: string) {
-        const response = await fetch(`${apiUrl}/tournaments/${id}`, {
+        const response = await fetch(`http://localhost:3001/tournaments${id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

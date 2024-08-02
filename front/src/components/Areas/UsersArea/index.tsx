@@ -8,7 +8,7 @@ import UsersPie from './UsersPie';
 
 const UsersArea: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
-  const [filters, setFilters] = useState<IUserFilters>({ nickName: '', inTournament: '', role: '' });
+  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '' });
   const [userToBan, setUserToBan] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -21,16 +21,16 @@ const UsersArea: React.FC = () => {
           .filter((user: { role: string; tournaments: string | any[]; }) => {
             return (
               (filters.role === '' || user.role === filters.role) &&
-              (filters.inTournament === '' ||
-                (filters.inTournament === 'true' ? user.tournaments.length > 0 :
-                  filters.inTournament === 'false' ? user.tournaments.length === 0 : true))
+              (filters.tournaments === '' ||
+                (filters.tournaments === 'true' ? user.tournaments.length > 0 :
+                  filters.tournaments === 'false' ? user.tournaments.length === 0 : true))
             );
           });
-        const sortedUsers = filteredUsers.sort((a: { nickName: string; }, b: { nickName: string; }) => {
-          if (filters.nickName === 'asc') {
-            return a.nickName.localeCompare(b.nickName);
-          } else if (filters.nickName === 'desc') {
-            return b.nickName.localeCompare(a.nickName);
+        const sortedUsers = filteredUsers.sort((a: { nickname: string; }, b: { nickname: string; }) => {
+          if (filters.nickname === 'asc') {
+            return a.nickname.localeCompare(b.nickname);
+          } else if (filters.nickname === 'desc') {
+            return b.nickname.localeCompare(a.nickname);
           } else {
             return 0;
           }

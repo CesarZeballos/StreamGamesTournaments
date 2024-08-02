@@ -8,7 +8,6 @@ export interface ITournament {
     nameTournament: string;
     startDate: string;
     createdAt: string;
-
     category: string;
     organizerId: string;
     gameId: string;
@@ -25,15 +24,17 @@ export interface ITournament {
 }
 
 export interface ITournamentPost {
+    nameTournament: string;
     startDate: string;
-    categories: string;
-    price: number;
-    award: string[];
-    urlStream: string | ImageSource;
-    membersNumber: number;
-    maxTeam: number;
+    category: string;
     organizerId: string;
     gameId: string;
+    membersNumber: number;
+    maxTeam: number;
+    price: number;
+    urlAvatar: ImageSource;
+    award: string[];
+    description: string;
 }
 
 export interface IGame {
