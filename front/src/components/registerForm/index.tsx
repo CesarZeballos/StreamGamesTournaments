@@ -39,6 +39,7 @@ export const RegisterForm: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
+        console.log("handleChange", data)
         setData({
             ...data,
             [name]: value
@@ -84,7 +85,7 @@ export const RegisterForm: React.FC = () => {
                     <div className="flex flex-col gap-2 w-fit">
                         <label className="body text-white">Nickname</label>
                         <input type="text"
-                            name="nickName"
+                            name="nickname"
                             value={data.nickname}
                             onChange={handleChange}
                             className="input"
@@ -120,7 +121,7 @@ export const RegisterForm: React.FC = () => {
                     <div className="flex flex-col gap-2 w-fit">
                         <label className="body text-white">Birthdate</label>
                         <input type="date"
-                            name="birthDate"
+                            name="birthdate"
                             value={data.birthdate}
                             onChange={handleChange}
                             className="input"
