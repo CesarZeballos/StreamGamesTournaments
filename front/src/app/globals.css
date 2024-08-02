@@ -125,14 +125,14 @@ body {
 }
 
 table {
-  border-collapse: separate; /* Cambia a 'separate' para aplicar bordes redondeados */
-  border-spacing: 0; /* Asegúrate de que no haya espaciado entre celdas */
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
-  border-radius: 1rem; /* Aplica el borde redondeado */
+  border-radius: 1rem;
 }
 
 thead {
-  overflow: hidden; /* Asegúrate de que los bordes redondeados se muestren correctamente */
+  overflow: hidden;
 }
 
 td {
@@ -158,8 +158,8 @@ th select {
 }
 
 .chart-container {
-  overflow: hidden; /* Evita el desbordamiento visible */
-  position: relative; /* Asegura que el gráfico se ajuste al contenedor */
+  overflow: hidden;
+  position: relative;
 }
 
 .back-image {
