@@ -17,7 +17,10 @@ export class UsersRepository {
 				include: {
 					teams: true,
 					tournaments: true,
-					organizedTeam: true,
+					organizedTournaments: true,
+					sentFriendRequests: true,
+					friends: true,
+					globalChat: true,
 				},
 			});
 			if (users.length === 0) {
@@ -39,7 +42,10 @@ export class UsersRepository {
 				include: {
 					teams: true,
 					tournaments: true,
-					organizedTeam: true,
+					organizedTournaments: true,
+					sentFriendRequests: true,
+					friends: true,
+					globalChat: true,
 				},
 			});
 			if (user) {

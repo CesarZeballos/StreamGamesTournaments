@@ -6,10 +6,9 @@ import {
 	Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateUserDto, SignInDto } from './auth.user.Dto';
+import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'mail/mail.service';
-import { MailTemplates } from 'mail/mail-templates';
 
 @Injectable()
 export class AuthService {
@@ -21,8 +20,7 @@ export class AuthService {
 	) {}
 
 	async signUp(createUserDto: CreateUserDto) {
-		const { email, nickName, tokenFirebase, birthDate, teamId } =
-			createUserDto;
+		const { email, nickname, tokenFirebase, birthdate } = createUserDto;
 
 		const userExists = await this.prisma.user.findUnique({
 			where: {
@@ -30,35 +28,20 @@ export class AuthService {
 			},
 		});
 
-		if (userExists) {
+		if (userExists && userExists.state === true) {
 			throw new BadRequestException('User already exists');
 		}
 
-		//const hashedPassword = await bcrypt.hash(tokenFirebase, 10);
-
-		const parsedBirthDate = new Date(birthDate);
+		const parsedBirthDate = new Date(birthdate);
 
 		const user = await this.prisma.user.create({
 			data: {
 				email,
-				nickName,
+				nickname,
 				tokenFirebase,
-				birthDate: parsedBirthDate.toISOString(),
-				teams: teamId
-					? {
-							connect: { id: teamId },
-						}
-					: undefined,
+				birthdate: parsedBirthDate.toISOString(),
 			},
 		});
-
-		console.log('user', user);
-
-		// Obtener el contenido del correo de bienvenida de las plantillas
-		const mailContent = MailTemplates.welcomeEmail(email, nickName);
-
-		// Enviar el correo de bienvenida
-		await this.mailService.sendMail(mailContent);
 
 		return {
 			message: 'User created successfully',
