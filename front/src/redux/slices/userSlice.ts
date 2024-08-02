@@ -1,6 +1,6 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { forgotPasswordSlice, loginSlice, registerSlice, reloadUSerDataSlice } from "../thunks/userSliceThunk";
+import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
 
 const initialState: IUserState = {
@@ -79,22 +79,6 @@ const userSlice = createSlice({
               })
           })
 
-          // RELOAD USER DATA
-          .addCase(reloadUSerDataSlice.pending, (state) => {
-            state.status = 'loading'
-            state.error = null
-          })
-          .addCase(reloadUSerDataSlice.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            state.statusRegister = 'idle'
-            // state.user = action.payload.user
-            // state.token = action.payload.token
-            console.log("payload", action.payload)
-          })
-          .addCase(reloadUSerDataSlice.rejected, (state, action) => {
-            state.status = 'failed'
-          })
-
           // FORGOT PASSWORD
           .addCase(forgotPasswordSlice.pending, (state) => {
             state.status = 'loading'
@@ -120,18 +104,18 @@ const userSlice = createSlice({
           })
 
           // ADD FRIEND
-          .addCase(registerSlice.pending, (state) => {
+          .addCase(addfriendSlice.pending, (state) => {
             state.statusAddFriend = 'loading'
             state.error = null
           })
-          .addCase(registerSlice.fulfilled, (state, action) => {
+          .addCase(addfriendSlice.fulfilled, (state, action) => {
             state.statusAddFriend = 'succeeded'
             toast.success('friend request sent', {
                 position: 'top-right',
                 duration: 1500,
               })
             })
-          .addCase(registerSlice.rejected, (state, action) => {
+          .addCase(addfriendSlice.rejected, (state, action) => {
             state.statusAddFriend = 'failed'
             toast.error('friend request not sent', {
                 position: 'top-right',

@@ -22,3 +22,9 @@ export interface IRegisterFormSlice {
     password: string;
     birthdate: string;
 }
+
+export interface IAuxiliarState {
+  users: IUser[];
+  status: string;
+  error: string | null;
+}
