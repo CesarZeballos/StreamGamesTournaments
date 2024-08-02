@@ -1,18 +1,18 @@
 import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
-import { ILoginForm } from "@/interfaces/interfaceUser"
-import { fetchUserById, loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
+import { IAddFriendForm, ILoginForm } from "@/interfaces/interfaceUser"
+import { fetchAddUser, loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
 import { singInFirebaseWithEmailAndPassword, singUpFirebaseWithEmailAndPassword } from "@/utils/firebase/auth"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 export const registerSlice = createAsyncThunk('user/postRegister', async (data: IRegisterFormSlice) => {
-    const { nickName, email, password, birthDate } = data
+    const { nickname, email, password, birthdate } = data
 
         const responseFirebase = await singUpFirebaseWithEmailAndPassword(data)
         const response = await postUser({ 
-            nickName: nickName,
+            nickname: nickname,
             email: email,
             password: password,
-            birthDate: birthDate,
+            birthdate: birthdate,
             tokenFirebase: responseFirebase
         })
         return response
@@ -36,8 +36,7 @@ export const forgotPasswordSlice = createAsyncThunk('user/postForgotPassword', a
         return response
 })
 
-export const reloadUSerDataSlice = createAsyncThunk('user/reloadUserData', async (id: string | undefined) => {
-        if(!id) return
-        const response = await fetchUserById(id)
+export const addfriendSlice = createAsyncThunk('user/addFriend', async (data: IAddFriendForm) => {
+        const response = await fetchAddUser(data)
         return response
 })

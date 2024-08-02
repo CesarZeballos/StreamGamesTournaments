@@ -29,7 +29,7 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = async ({ 
 
   const gameImage = gameImages[tournament.game.name];
   const gameIcon = gameIcons[tournament.game.name];
-  const categoryIcon = categoryIcons[tournament.categories];
+  const categoryIcon = categoryIcons[tournament.category];
 
   return (
     <>

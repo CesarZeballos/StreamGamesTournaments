@@ -24,7 +24,7 @@ export const SearchBarDashboard: React.FC = () => {
     
     return (
         <div className="bg-BGdark rounded-3xl py-4 px-12 mr-9 h-full flex flex-col items-center w-fit">
-            <h1 className="heading5 text-lightViolet mb-6">Hi {user?.nickName}!</h1>
+            <h1 className="heading5 text-lightViolet mb-6">Hi {user?.nickname}!</h1>
             <button className="buttonSecondary" onClick={() => handleViewClick("data")}>Data</button>
             <button className="buttonSecondary" onClick={() => handleViewClick("notifications")}>Notifications</button>
             <button className="buttonSecondary" onClick={() => handleViewClick("friends")}>Friends</button>
