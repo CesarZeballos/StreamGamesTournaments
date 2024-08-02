@@ -9,6 +9,7 @@ import {
 	Delete,
 	BadRequestException,
 	Query,
+	UseGuards,
 } from '@nestjs/common';
 import {
 	ApiTags,
@@ -21,6 +22,10 @@ import {
 import { TournamentsService } from './tournaments.service';
 import { CreateTournamentDto } from './createTournament.Dto';
 import { UpdateTournamentDto } from './updateTournament.Dto';
+import { JwtAuthGuard } from 'auth/jwt-auth.guard';
+import { RolesGuard } from 'auth/roles.guard';
+import { Roles } from 'auth/roles.decorator';
+import { Role } from '@prisma/client';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
@@ -86,6 +91,9 @@ export class TournamentsController {
 		return this.tournamentsService.getTournamentById(id);
 	}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer)
 	@Post('add')
 	@ApiOperation({
 		summary: 'Create a new tournament',
@@ -118,6 +126,9 @@ export class TournamentsController {
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer)
 	@Put('team')
 	@ApiOperation({
 		summary: 'Add a team to a tournament',
@@ -142,6 +153,9 @@ export class TournamentsController {
 		return this.tournamentsService.addTeamTournament(tournamentId, teamId);
 	}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer)
 	@Put('update/:id')
 	@ApiOperation({
 		summary: 'Update a tournament',
@@ -181,6 +195,9 @@ export class TournamentsController {
 		);
 	}
 
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer)
 	@Delete('delete/team')
 	@ApiOperation({
 		summary: 'Remove a team from a tournament',
@@ -211,6 +228,9 @@ export class TournamentsController {
 		return this.tournamentsService.deleteTeam(tournamentId, teamId);
 	}
 
+	@UseGuards(JwtAuthGuard)
+	@Roles(Role.admin)
+	@Roles(Role.organizer)
 	@Delete('deleteTournament/:id')
 	@ApiOperation({
 		summary: 'Delete a tournament',
