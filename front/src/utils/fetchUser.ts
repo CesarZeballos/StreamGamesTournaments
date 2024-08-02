@@ -92,14 +92,16 @@ export const fetchUsers = async () => {
 
 export const fetchAddUser = async (data: IAddFriendForm) => {
     const {userId, friendId, token} = data
-    // no se de por donde le paso el userId
-    const response = await fetch(`${apiUrl}/users/addfriend`, {
+    const response = await fetch(`${apiUrl}/users/addFriend`, {
         method: "POST",
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({friendId})
+        body: JSON.stringify({
+            userId: userId, 
+            friendId: friendId
+        })
     })
 
     if (!response.ok) {
