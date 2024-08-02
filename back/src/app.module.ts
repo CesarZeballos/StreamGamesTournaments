@@ -8,6 +8,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { GamesModule } from './games/games.module';
 import { UsersModule } from './users/users.module';
 import { TeamsModule } from './teams/teams.module';
+import { PayPalModule } from 'paypal/paypal.module';
 import { MailModule } from 'mail/mail.module';
 
 @Module({
@@ -19,6 +20,7 @@ import { MailModule } from 'mail/mail.module';
 		PrismaModule,
 		FileUploadModule,
 		TeamsModule,
+		PayPalModule
 		MailModule,
 	],
 	controllers: [AppController],

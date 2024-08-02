@@ -9,6 +9,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto, SignInDto } from '../auth/auth.user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'mail/mail.service';
+import { MailTemplates } from 'mail/mail-templates';
 
 @Injectable()
 export class AuthService {
@@ -39,7 +40,12 @@ export class AuthService {
 				email,
 				nickname,
 				tokenFirebase,
-				birthdate: parsedBirthDate.toISOString(),
+				birthDate: parsedBirthDate.toISOString(),
+				teams: teamId
+					? {
+							connect: { id: teamId },
+						}
+					: undefined,
 			},
 		});
 
