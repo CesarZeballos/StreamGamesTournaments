@@ -1,117 +1,68 @@
 'use client'
-import { RootState } from "@/redux/store";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 //icons
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ITeamError, ITeamForm, ITeamMember, IUser, IUserSelector } from "@/interfaces/interfaceUser";
-import { validateTeamName } from "@/utils/validateForms/validationAddTeam";
+import { IUser, IUserSelector } from "@/interfaces/interfaceUser";
 import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
-
-const users: IUser[] = [
-    {
-        id: "1",
-        nickName: "cesar1",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-
-    {
-        id: "2",
-        nickName: "cesar2",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-
-    {
-        id: "3",
-        nickName: "cesar3",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    }, 
-
-    {
-        id: "4",
-        nickName: "cesar4",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-
-    {
-        id: "5",
-        nickName: "cesar5",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-
-    {
-        id: "6",
-        nickName: "cesar6",
-        email: "cesar",
-        birthDate: "cesar",
-        role: "user",
-        teams: [],
-        tournaments: [],
-    },
-]
+import { addfriendSlice } from "@/redux/thunks/userSliceThunk";
+import { toast } from "sonner";
+import { setView } from "@/redux/slices/dashboardSlice";
+import { fetchUsers } from "@/utils/fetchUser";
+import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 
 export const AddFriend: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const [userSelector, setUserSelector] = useState<IUserSelector[]>([]);
-    const [friend, setFriend] = useState<IUser>({} as IUser);
+    const [friend, setFriend] = useState<string>("");
 
+    const userActive = useSelector((state: RootState) => state.user);
+    const users = useSelector((state: RootState) => state.auxiliar.users);
+    
     useEffect(() => {
-        if(userSelector. length === 0) {
+        dispatch(getUsersSlice());
+        if(userSelector.length === 0) {
             for (let i = 0; i < users.length; i++) {
                 userSelector.push({
                     id: users[i].id,
-                    label: users[i].nickName,
+                    label: users[i].nickname,
                     email: users[i].email,
-                    birthDate: users[i].birthDate,
-                    role: users[i].role,
-                    teams: users[i].teams,
-                    tournaments: users[i].tournaments
+                    birthdate: users[i].birthdate,
+                    role: users[i].role
                 })
             }
         }
     }, [])
 
     const handleChange = (event: any, value: IUserSelector | null) => {
+        console.log(value)
         if (value) {
-            setFriend({
-                id: value.id,
-                nickName: value.label,
-                email: value.email,
-                birthDate: value.birthDate,
-                role: value.role,
-                teams: value.teams,
-                tournaments: value.tournaments
-            }
-            )
+            setFriend(value.id)
         }}
 
         const handlesubmit = (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            console.log(friend)
+            if(friend !== "") {
+                dispatch(addfriendSlice({userId: userActive.user?.id!, friendId: friend, token: userActive.token!}))
+        } else {
+            toast.error('Select a friend', {
+                position: 'top-right',
+                duration: 1500,
+            })
         }
+    }
+
+    const addFriendStatus = useSelector((state: RootState) => state.user.statusAddFriend)
+    useEffect(() => {
+        if (addFriendStatus === "succeeded") {
+        setTimeout(() => {
+            dispatch(setView("friends"))
+        }, 2000);
+    }}, [addFriendStatus, dispatch])
 
 
 

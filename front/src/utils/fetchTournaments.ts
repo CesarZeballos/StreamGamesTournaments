@@ -40,15 +40,3 @@ export async function fetchTournamentById(id: string) {
             return tournament;
         }
 }
-
-// export async function addTeamFetch(data: IAddTeam) {
-//         const response = await fetch(`${apiUrl}/tournaments/team`, {
-//             method: "PUT",
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(data)
-//         });
-//         const addTeamResponse = await response.json();
-//         return addTeamResponse;
-// }

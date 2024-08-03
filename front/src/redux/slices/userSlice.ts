@@ -1,12 +1,13 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { forgotPasswordSlice, loginSlice, registerSlice, reloadUSerDataSlice } from "../thunks/userSliceThunk";
+import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
 
 const initialState: IUserState = {
   user: null,
   status: 'idle',
   statusRegister: 'idle',
+  statusAddFriend: 'idle',
   error: null,
   token: null,
   statusForgotPassword: ""
@@ -20,7 +21,7 @@ const userSlice = createSlice({
             state.user = action.payload.user
         },
         logoutSlice(state) {
-            toast(`See you later ${state.user?.nickName}`, {
+            toast(`See you later ${state.user?.nickname}`, {
                 position: 'top-right',
                 duration: 1500,
               })
@@ -78,22 +79,6 @@ const userSlice = createSlice({
               })
           })
 
-          // RELOAD USER DATA
-          .addCase(reloadUSerDataSlice.pending, (state) => {
-            state.status = 'loading'
-            state.error = null
-          })
-          .addCase(reloadUSerDataSlice.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            state.statusRegister = 'idle'
-            // state.user = action.payload.user
-            // state.token = action.payload.token
-            console.log("payload", action.payload)
-          })
-          .addCase(reloadUSerDataSlice.rejected, (state, action) => {
-            state.status = 'failed'
-          })
-
           // FORGOT PASSWORD
           .addCase(forgotPasswordSlice.pending, (state) => {
             state.status = 'loading'
@@ -113,6 +98,26 @@ const userSlice = createSlice({
           .addCase(forgotPasswordSlice.rejected, (state, action) => {
             state.status = 'failed'
             toast.error('fail in password recovery', {
+                position: 'top-right',
+                duration: 1500,
+              })
+          })
+
+          // ADD FRIEND
+          .addCase(addfriendSlice.pending, (state) => {
+            state.statusAddFriend = 'loading'
+            state.error = null
+          })
+          .addCase(addfriendSlice.fulfilled, (state, action) => {
+            state.statusAddFriend = 'succeeded'
+            toast.success('friend request sent', {
+                position: 'top-right',
+                duration: 1500,
+              })
+            })
+          .addCase(addfriendSlice.rejected, (state, action) => {
+            state.statusAddFriend = 'failed'
+            toast.error('friend request not sent', {
                 position: 'top-right',
                 duration: 1500,
               })

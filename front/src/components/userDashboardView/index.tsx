@@ -9,6 +9,7 @@ import { DataDashboardView } from "../dataDashboardView";
 import { SearchBarDashboard } from "../searchbarDashboard";
 import { AddFriend } from "../addFriendForm";
 import { NotificationDashboardView } from "../notificationDashboardView";
+import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 
 
 export const UserDashboardView: React.FC = () => {

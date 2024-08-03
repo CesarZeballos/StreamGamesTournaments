@@ -4,11 +4,12 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { MailService } from 'mail/mail.service';
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
-} from './createTournament.Dto';
+} from '../tournaments/createTournament.Dto';
+import { MailService } from 'mail/mail.service';
+import { MailTemplates } from 'mail/mail-templates';
 import { Categories } from '@prisma/client';
 
 @Injectable()
@@ -96,6 +97,24 @@ export class TournamentsService {
 						: undefined,
 				},
 			});
+
+			// Enviar correo de creación de torneo
+			const mailOptions = MailTemplates.tournamentCreated(
+				organizerExists.email,
+				organizerExists.nickname,
+				tournament.nameTournament,
+			);
+			try {
+				await this.mailService.sendMail(mailOptions);
+				console.log(
+					`Tournament creation email sent to ${organizerExists.email}`,
+				);
+			} catch (error) {
+				console.error(
+					`Failed to send tournament creation email to ${organizerExists.email}`,
+					error.stack,
+				);
+			}
 
 			return tournament;
 		} catch (error) {

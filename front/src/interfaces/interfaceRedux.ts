@@ -11,13 +11,20 @@ export interface IUserState {
   status: string;
   statusRegister: string;
   statusForgotPassword: string;
+  statusAddFriend: string
   error: string | null;
   token: string | null;
 }
 
 export interface IRegisterFormSlice {
-    nickName: string;
+    nickname: string;
     email: string;
     password: string;
-    birthDate: string;
+    birthdate: string;
+}
+
+export interface IAuxiliarState {
+  users: IUser[];
+  status: string;
+  error: string | null;
 }

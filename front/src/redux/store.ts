@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import cardsReducer from './slices/cardsSlice';
 import tournamentsReducer from './slices/tournamentSlice';
 import userReducer from './slices/userSlice';
+import auxiliarReducer from './slices/auxiliarSlice';
 import dashboardReducer from './slices/dashboardSlice';
 import { useDispatch } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   tournaments: tournamentsReducer,
   user: userReducer,
   dashboard: dashboardReducer,
+  auxiliar: auxiliarReducer
 });
 
 // persistencia de datos

@@ -73,6 +73,7 @@ const users: IUser[] = [
 export const FriendsDashboardView = () => {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user.user);
+    const friends = user?.friends || [] as IUser[];
 
     const deleteFriend = (event: React.MouseEvent<HTMLButtonElement>) => {
         const {value} = event.currentTarget
@@ -97,16 +98,16 @@ export const FriendsDashboardView = () => {
                     <th className="text-center">Chat</th>
                     <th className="text-center">Delete</th>
                 </thead>
-                {users.length === 0 ? (
+                {friends.length === 0 ? (
                     <div className="flex flex-col w-full items-center justify-center gap-6 mt-10">
                         <p className="body text-white">{"You don't have any friends"}</p>
                         <button className="buttonPrimary" onClick={() => handleViewClick("addFriend")}>Add friend</button>
                     </div>
                 ) : 
                 (<tbody className="tableBody flex flex-col gap-2">
-                    {users.map((user) => (
+                    {friends.map((user) => (
                         <tr key={user.id} className="flex flex-row justify-around">
-                            <td>{user.nickName}</td>
+                            <td>{user.nickname}</td>
                             <td className="text-center">
                                 <button className="iconButton" value={user.id} onClick={newChat}>
                                     <ChatIcon />
