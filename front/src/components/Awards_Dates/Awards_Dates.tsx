@@ -2,9 +2,9 @@ import Image from "next/image";
 import { ITournament } from "@/interfaces/interfaceTournaments";
 import { awardImages } from "@/utils/tournamentsData";
 
-
 export const Awards_Dates: React.FC<{ tournament: ITournament }> = ({ tournament }) => {
-    const awards = tournament.award.map((award, index) => {
+    // Asegúrate de que `tournament.award` sea un array
+    const awards = Array.isArray(tournament.award) ? tournament.award.map((award, index) => {
         const awardImage = awardImages[index];
 
         return (
@@ -13,7 +13,7 @@ export const Awards_Dates: React.FC<{ tournament: ITournament }> = ({ tournament
                 <p className="heading4 text-white ml-2">{award}</p>
             </div>
         );
-    });
+    }) : [];
 
     return (
         <div className="flex flex-col">

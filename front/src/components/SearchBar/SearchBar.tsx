@@ -1,18 +1,12 @@
-import Image from "next/image";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setFilter } from "@/redux/slices/cardsSlice";
-import allIcon from "../../app/assets/images/icons/all-W.png";
-import csIcon from "../../app/assets/images/icons/cs-W.png";
-import ftIcon from "../../app/assets/images/icons/fortnite-W.png";
-import lolIcon from "../../app/assets/images/icons/lol-W.png";
+import { setFilter } from "@/redux/slices/tournamentSlice";
 
 //icons import
 import { MdGames } from "react-icons/md";
 import { SiLeagueoflegends } from "react-icons/si";
 import { SiCounterstrike } from "react-icons/si";
 import { TbBrandFortnite } from "react-icons/tb";
-
 
 const SearchBar: React.FC = () => {
   const dispatch = useDispatch();

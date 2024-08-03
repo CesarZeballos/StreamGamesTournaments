@@ -7,11 +7,11 @@ interface UserFiltersProps {
 }
 
 const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
-  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '' });
+  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: '' });
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const filterValue: string = name === 'inTournament' ? value : value;
+    const filterValue = name === 'state' || name === 'tournaments' ? value : value;
 
     const updatedFilters = {
       ...filters,
@@ -43,6 +43,13 @@ const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
           <option value="">All Users</option>
           <option value="true">In Tournament</option>
           <option value="false">Without Tournament</option>
+        </select>
+      </td>
+      <td>
+        <select name="state" value={filters.state} className='filter' onChange={handleFilterChange}>
+          <option value="">All Users</option>
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
         </select>
       </td>
       <td>Ban</td>

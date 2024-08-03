@@ -35,7 +35,7 @@ export const UserDashboardView: React.FC = () => {
                     {section === 'tournaments' && <TournamentsDashboardView/>}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                    <img className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
+                    <Image className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
                 </div>
             </div>
     )

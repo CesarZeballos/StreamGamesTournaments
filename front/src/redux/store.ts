@@ -1,5 +1,4 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import cardsReducer from './slices/cardsSlice';
 import tournamentsReducer from './slices/tournamentSlice';
 import userReducer from './slices/userSlice';
 import auxiliarReducer from './slices/auxiliarSlice';
@@ -10,7 +9,6 @@ import storage from 'redux-persist/lib/storage';
 
 // Combinamos todos los reducers en uno solo
 const rootReducer = combineReducers({
-  cards: cardsReducer,
   tournaments: tournamentsReducer,
   user: userReducer,
   dashboard: dashboardReducer,

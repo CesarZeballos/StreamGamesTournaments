@@ -4,6 +4,7 @@ import { ITournament } from "@/interfaces/interfaceTournaments";
 export interface ITournamentState {
   status: string;
   tournaments: ITournament[];
+  filter: string | number;
 }
 
 export interface IUserState {

@@ -37,6 +37,12 @@ export interface ITournamentPost {
     description: string;
 }
 
+export interface ITournamentState {
+    tournaments: ITournament[];
+    filter: string;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+}
+
 export interface IGame {
     id: string;
     name: string;

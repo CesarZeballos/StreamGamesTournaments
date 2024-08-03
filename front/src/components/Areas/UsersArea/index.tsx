@@ -8,7 +8,7 @@ import UsersPie from './UsersPie';
 
 const UsersArea: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
-  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '' });
+  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: '' });
   const [userToBan, setUserToBan] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -18,25 +18,24 @@ const UsersArea: React.FC = () => {
         const allUsers = await fetchUsers();
         const filteredUsers = allUsers
           .filter((user: { role: string; }) => user.role !== 'admin')
-          .filter((user: { role: string; tournaments: string | any[]; }) => {
-            return (
-              (filters.role === '' || user.role === filters.role) &&
-              (filters.tournaments === '' ||
-                (filters.tournaments === 'true' ? user.tournaments.length > 0 :
-                  filters.tournaments === 'false' ? user.tournaments.length === 0 : true))
-            );
+          .filter((user: { role: string; tournaments: string[]; state: boolean; }) => 
+            (filters.role === '' || user.role === filters.role) &&
+            (filters.tournaments === '' || 
+              (filters.tournaments === 'true' ? user.tournaments.length > 0 : 
+                filters.tournaments === 'false' ? user.tournaments.length === 0 : true)) &&
+            (filters.state === '' || user.state === (filters.state === 'true'))
+          )
+          .sort((a: { nickname: string; }, b: { nickname: string; }) => {
+            if (filters.nickname === 'asc') {
+              return a.nickname.localeCompare(b.nickname);
+            } else if (filters.nickname === 'desc') {
+              return b.nickname.localeCompare(a.nickname);
+            } else {
+              return 0;
+            }
           });
-        const sortedUsers = filteredUsers.sort((a: { nickname: string; }, b: { nickname: string; }) => {
-          if (filters.nickname === 'asc') {
-            return a.nickname.localeCompare(b.nickname);
-          } else if (filters.nickname === 'desc') {
-            return b.nickname.localeCompare(a.nickname);
-          } else {
-            return 0;
-          }
-        });
 
-        setUsers(sortedUsers);
+        setUsers(filteredUsers);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -59,7 +58,7 @@ const UsersArea: React.FC = () => {
       try {
         await banUser(userToBan);
         alert("User Banned Successfully");
-        setUsers(users.filter(user => user.id !== userToBan));
+        setUsers(users.map(user => user.id === userToBan ? { ...user, state: false } : user));
       } catch (error) {
         alert("Failed to ban user");
         console.error("Error banning user:", error);

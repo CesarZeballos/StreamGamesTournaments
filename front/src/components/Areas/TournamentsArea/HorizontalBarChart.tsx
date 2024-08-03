@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
-import { fetchTournamentsOriginal } from '@/utils/fetchTournaments';
+import { fetchTournaments } from '@/utils/fetchTournaments';
 import { Roboto } from 'next/font/google';
 import { ITournament } from '@/interfaces/interfaceTournaments';
 import { IChartData } from '@/interfaces/interfaceChart';
@@ -18,7 +18,7 @@ const HorizontalBarChart: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const tournaments = await fetchTournamentsOriginal();
+      const tournaments = await fetchTournaments();
       const pastTournaments = new Array(12).fill(0);
       const upcomingTournaments = new Array(12).fill(0);
       const currentDate = new Date();

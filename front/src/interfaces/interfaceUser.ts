@@ -20,6 +20,7 @@ export interface IUserFilters {
     nickname: string;
     role: string;
     tournaments: string;
+    state: string;
 }
 
 interface IFriend {

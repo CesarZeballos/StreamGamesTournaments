@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
-import { setFilter } from "@/redux/slices/cardsSlice";
-
+import { setFilter } from "@/redux/slices/tournamentSlice";
 //icons import
 import { PiMedalMilitary } from "react-icons/pi";
 import { PiMedalMilitaryFill } from "react-icons/pi";
@@ -9,6 +8,7 @@ import { TbMilitaryAward } from "react-icons/tb";
 const SideBar: React.FC = () => {
   const dispatch = useDispatch();
   const handleFilterClick = (filter: string) => {
+    console.log('Setting filter:', filter);
     dispatch(setFilter(filter));
   };
 

@@ -36,7 +36,7 @@ export const AddFriend: React.FC = () => {
                 })
             }
         }
-    }, [])
+    }, [dispatch, userSelector, users])
 
     const handleChange = (event: any, value: IUserSelector | null) => {
         console.log(value)
