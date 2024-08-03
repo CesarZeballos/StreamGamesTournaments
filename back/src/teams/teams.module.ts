@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { TeamsService } from './teams.services';
 import { TeamsController } from './teams.controller';
 import { PrismaService } from '../../prisma/prisma.service';
+import { TeamsService } from './teams.service';
 
 @Module({
 	providers: [TeamsService, PrismaService],

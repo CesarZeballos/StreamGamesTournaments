@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
 @Injectable()
@@ -20,9 +20,12 @@ export class MailService {
 	async sendMail(mailOptions: nodemailer.SendMailOptions): Promise<void> {
 		try {
 			await this.transporter.sendMail(mailOptions);
-			//console.log('Correo enviado con éxito');
+			console.log('Correo enviado con éxito');
 		} catch (error) {
 			console.error('Error al enviar el correo:', error);
+			throw new InternalServerErrorException(
+				'No se pudo enviar el correo.',
+			);
 		}
 	}
 }

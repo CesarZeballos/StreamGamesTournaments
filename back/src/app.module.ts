@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { TeamsModule } from './teams/teams.module';
 import { PayPalModule } from 'paypal/paypal.module';
 import { MailModule } from 'mail/mail.module';
+import { AdminModule } from 'admin/admin.module';
 
 @Module({
 	imports: [
@@ -22,6 +23,7 @@ import { MailModule } from 'mail/mail.module';
 		TeamsModule,
 		PayPalModule,
 		MailModule,
+		AdminModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
