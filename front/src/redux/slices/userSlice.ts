@@ -1,7 +1,8 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
+import { REHYDRATE } from "redux-persist";
 
 const initialState: IUserState = {
   user: null,
@@ -33,6 +34,22 @@ const userSlice = createSlice({
         }
     }, extraReducers: (builder) => {
         builder
+        // REHYDRATE
+        .addCase(REHYDRATE as any, (state, action: AnyAction) => {
+          if (action.payload) {
+            const rehydratedState = action.payload.user;
+            if (rehydratedState) {
+              state.user = rehydratedState.user;
+              state.status = rehydratedState.status;
+              state.statusRegister = rehydratedState.statusRegister;
+              state.statusAddFriend = rehydratedState.statusAddFriend;
+              state.error = rehydratedState.error;
+              state.token = rehydratedState.token;
+              state.statusForgotPassword = rehydratedState.statusForgotPassword;
+            }
+          }
+        })
+
         // REGISTER
         .addCase(registerSlice.pending, (state) => {
             state.statusRegister = 'loading'

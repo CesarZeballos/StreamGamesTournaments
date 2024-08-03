@@ -4,8 +4,21 @@ import { ITournament } from "@/interfaces/interfaceTournaments";
 export interface ITournamentState {
   status: string;
   tournaments: ITournament[];
+  currentPage: number;
+  filters: IFilters;
+  tournamentsGame: ITournament[];
+  tournamentsCategory: ITournament[];
+  tournamentsPrice: ITournament[];
+  tournamentsDate: ITournament[];
+  tournamentsFiltered: ITournament[];
 }
 
+export interface IFilters {
+  game: string;
+  category: string;
+  price: number;
+  date: string;
+}
 export interface IUserState {
   user: IUser | null;
   status: string;

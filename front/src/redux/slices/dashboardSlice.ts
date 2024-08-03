@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { REHYDRATE } from "redux-persist"
 
 
 const initialState = {
@@ -12,6 +13,17 @@ const dashboardSlice = createSlice({
         setView(state, action: PayloadAction<string>) {
             state.view = action.payload
         }
+    }, extraReducers: (builder) => {
+        builder
+        .addCase(REHYDRATE as any, (state, action: AnyAction) => {
+            if (action.payload) {
+                // Validar el estado rehidratado
+                const { view } = action.payload.auxiliar || {};
+                if (view) {
+                    state.view = view;
+                }
+            }
+        })
     }
 })
 
