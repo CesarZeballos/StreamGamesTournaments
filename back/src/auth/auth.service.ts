@@ -101,6 +101,7 @@ import { CreateUserDto, SignInDto } from './auth.user.Dto';
 import { MailService } from 'mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
+import { MailTemplates } from 'mail/mail-templates';
 
 @Injectable()
 export class AuthService {
@@ -139,6 +140,21 @@ export class AuthService {
 		// Generar el token JWT
 		const payload = { userId: user.id, email: user.email };
 		const token = await this.jwtService.sign(payload);
+
+		// Enviar correo de bienvenida
+		const mailOptions = MailTemplates.welcomeEmail(email, nickname);
+		try {
+			await this.mailService.sendMail(mailOptions);
+			this.logger.log(`Welcome email sent to ${email}`);
+		} catch (error) {
+			this.logger.error(
+				`Failed to send welcome email to ${email}`,
+				error.stack,
+			);
+			throw new InternalServerErrorException(
+				'Error sending welcome email',
+			);
+		}
 
 		return {
 			message: 'User created successfully',
