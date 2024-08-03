@@ -1,131 +1,161 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
 	IsString,
 	IsNotEmpty,
-	IsArray,
 	IsOptional,
-	IsUUID,
+	IsArray,
 	IsBoolean,
-	IsNumber,
 	IsDateString,
+	IsInt,
+	IsUUID,
 } from 'class-validator';
-import { Categories } from '@prisma/client'; // Asegúrate de que Categories esté exportado correctamente
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 
 export class CreateTournamentDto {
-	@ApiProperty({
-		description: 'Nombre del torneo',
-		example: 'Tournament Name',
-	})
-	@IsNotEmpty()
+	@ApiProperty({ example: 'Nombre del Torneo' })
 	@IsString()
+	@IsNotEmpty()
 	nameTournament: string;
 
-	@ApiProperty({
-		description: 'Fecha de inicio del torneo',
-		example: '2024-08-01T00:00:00.000Z',
-	})
-	@IsNotEmpty()
+	@ApiProperty({ example: '2024-12-31T23:59:59Z' })
 	@IsDateString()
+	@IsNotEmpty()
 	startDate: string;
 
-	@ApiProperty({
-		description: 'Categoría del torneo',
-		example: 'beginner',
-	})
-	@IsNotEmpty()
+	@ApiProperty({ example: 'beginner' })
 	@IsString()
-	category: Categories; // Asegúrate de que Categories sea un string en tu DTO
-
-	@ApiProperty({
-		description: 'ID del organizador',
-		example: '123e4567-e89b-12d3-a456-426614174000',
-	})
 	@IsNotEmpty()
-	@IsUUID()
-	organizerId: string;
+	category: string;
 
-	@ApiProperty({
-		description: 'ID del juego',
-		example: '123e4567-e89b-12d3-a456-426614174000',
-	})
-	@IsNotEmpty()
+	@ApiProperty({ example: 'uuid-del-organizador' })
 	@IsUUID()
+	@IsOptional()
+	organizerId?: string;
+
+	@ApiProperty({ example: 'uuid-del-juego' })
+	@IsUUID()
+	@IsNotEmpty()
 	gameId: string;
 
-	@ApiProperty({
-		description: 'Número de miembros',
-		example: 5,
-	})
+	@ApiProperty({ example: 10 })
+	@IsInt()
 	@IsNotEmpty()
-	@IsNumber()
 	membersNumber: number;
 
-	@ApiProperty({
-		description: 'Número máximo de equipos',
-		example: 10,
-	})
+	@ApiProperty({ example: 20 })
+	@IsInt()
 	@IsNotEmpty()
-	@IsNumber()
 	maxTeams: number;
 
-	@ApiProperty({
-		description: 'Precio del torneo',
-		example: 500,
-	})
+	@ApiProperty({ example: 100 })
+	@IsInt()
 	@IsNotEmpty()
-	@IsNumber()
 	price: number;
 
-	@ApiProperty({
-		description: 'URL del avatar del torneo',
-		example: 'https://example.com/avatar.jpg',
-	})
-	@IsNotEmpty()
+	@ApiProperty({ example: 'https://example.com/avatar.png' })
 	@IsString()
+	@IsNotEmpty()
 	urlAvatar: string;
 
-	@ApiProperty({
-		description: 'Premios del torneo',
-		example: ['$500', '$1000'],
-	})
-	@IsNotEmpty()
+	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
 	@IsArray()
 	@IsString({ each: true })
+	@IsNotEmpty()
 	awards: string[];
 
-	@ApiProperty({
-		description: 'Descripción del torneo',
-		example: 'Este torneo es para jugadores principiantes.',
-	})
-	@IsNotEmpty()
+	@ApiProperty({ example: 'Descripción del torneo' })
 	@IsString()
+	@IsNotEmpty()
 	description: string;
 
-	@ApiPropertyOptional({
-		description: 'Array de IDs de jugadores',
-		example: ['123e4567-e89b-12d3-a456-426614174000'],
-	})
-	@IsOptional()
+	@ApiProperty({ example: ['uuid-del-jugador1', 'uuid-del-jugador2'] })
 	@IsArray()
 	@IsUUID('4', { each: true })
+	@IsOptional()
 	players?: string[];
 
-	@ApiPropertyOptional({
-		description: 'IDs de los equipos que participan en el torneo',
-		example: ['123e4567-e89b-12d3-a456-426614174000'],
-	})
-	@IsOptional()
+	@ApiProperty({ example: ['uuid-del-equipo1', 'uuid-del-equipo2'] })
 	@IsArray()
 	@IsUUID('4', { each: true })
+	@IsOptional()
 	teams?: string[];
 }
 
-export class UpdateTournamentDto extends PartialType(CreateTournamentDto) {
-	@ApiPropertyOptional({
-		description: 'Estado del torneo',
-		example: true,
-	})
+export class UpdateTournamentDto {
+	@ApiProperty({ example: 'uuid-del-torneo' })
+	@IsUUID()
+	@IsNotEmpty()
+	id: string;
+
+	@ApiProperty({ example: 'Nombre del Torneo' })
+	@IsString()
 	@IsOptional()
+	nameTournament?: string;
+
+	@ApiProperty({ example: '2024-12-31T23:59:59Z' })
+	@IsDateString()
+	@IsOptional()
+	startDate?: string;
+
+	@ApiProperty({ example: 'beginner' })
+	@IsString()
+	@IsOptional()
+	category?: string;
+
+	@ApiProperty({ example: 'uuid-del-organizador' })
+	@IsUUID()
+	@IsOptional()
+	organizerId?: string;
+
+	@ApiProperty({ example: 'uuid-del-juego' })
+	@IsUUID()
+	@IsOptional()
+	gameId?: string;
+
+	@ApiProperty({ example: 10 })
+	@IsInt()
+	@IsOptional()
+	membersNumber?: number;
+
+	@ApiProperty({ example: 20 })
+	@IsInt()
+	@IsOptional()
+	maxTeams?: number;
+
+	@ApiProperty({ example: 100 })
+	@IsInt()
+	@IsOptional()
+	price?: number;
+
+	@ApiProperty({ example: 'https://example.com/avatar.png' })
+	@IsString()
+	@IsOptional()
+	urlAvatar?: string;
+
+	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
+	@IsArray()
+	@IsString({ each: true })
+	@IsOptional()
+	awards?: string[];
+
+	@ApiProperty({ example: 'Descripción del torneo' })
+	@IsString()
+	@IsOptional()
+	description?: string;
+
+	@ApiProperty({ example: true })
 	@IsBoolean()
+	@IsOptional()
 	state?: boolean;
+
+	@ApiProperty({ example: ['uuid-del-jugador1', 'uuid-del-jugador2'] })
+	@IsArray()
+	@IsUUID('4', { each: true })
+	@IsOptional()
+	players?: string[];
+
+	@ApiProperty({ example: ['uuid-del-equipo1', 'uuid-del-equipo2'] })
+	@IsArray()
+	@IsUUID('4', { each: true })
+	@IsOptional()
+	teams?: string[];
 }

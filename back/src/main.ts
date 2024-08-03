@@ -4,33 +4,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggerGlobalMiddleware } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { TeamsService } from './teams/teams.services';
-import { TournamentsService } from './tournaments/tournaments.service';
-import { preloadData } from '../preload/preload.db';
-
-async function PreloadData(
-	prismaService: PrismaService,
-	teamService: TeamsService,
-	tournamentsService: TournamentsService,
-) {
-	const preload = new preloadData(
-		prismaService,
-		teamService,
-		tournamentsService,
-	);
-	await preload.clearTables();
-	await preload.addGames();
-	await preload.addUsers();
-	await preload.addTeams();
-	await preload.addTournaments();
-	await preload.addTeamForTournament();
-}
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	const prismaService = app.get(PrismaService);
-	const teamService = app.get(TeamsService);
-	const tournamentService = app.get(TournamentsService);
 
 	try {
 		app.enableCors({
@@ -51,9 +28,6 @@ async function bootstrap() {
 
 		app.use(LoggerGlobalMiddleware);
 		app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-
-		await PreloadData(prismaService, teamService, tournamentService);
-		console.log('Data preloaded successfully');
 
 		const port = process.env.PORT || 3001;
 		await app.listen(port, () => {

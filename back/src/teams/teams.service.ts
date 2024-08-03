@@ -1,11 +1,15 @@
 import {
+	BadRequestException,
 	ConflictException,
 	Injectable,
+	InternalServerErrorException,
 	NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateTeamDto, UpdateTeamDto } from './createTeamDto';
+
 import { Prisma, Team, User } from '@prisma/client';
+import { TournamentsService } from 'tournaments/tournaments.service';
+import { CreateTeamDto } from './createTeamDto';
 
 @Injectable()
 export class TeamsService {
@@ -38,25 +42,64 @@ export class TeamsService {
 
 		return team;
 	}
-
-	async createTeam(
-		userId: string,
-		createTeamDto: CreateTeamDto,
-	): Promise<Team> {
+	async createTeam(createTeamDto: CreateTeamDto): Promise<Team> {
+		// Crear el equipo inicialmente con los datos básicos
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
-			organizerId: userId,
+			organizerId: createTeamDto.organizerId,
 			tournament: createTeamDto.tournamentId
 				? { connect: { id: createTeamDto.tournamentId } }
 				: undefined,
-			users: { connect: { id: userId } },
+			urlAvatar: createTeamDto.urlAvatar,
 		};
 
-		return await this.prisma.team.create({ data: teamData });
-	}
+		const team = await this.prisma.team.create({ data: teamData });
 
-	async updateTeam(id: string, updateTeamDto: UpdateTeamDto): Promise<Team> {
-		const team = await this.prisma.team.findUnique({ where: { id } });
+		// Conectar usuarios al equipo después de crear el equipo
+		if (createTeamDto.users && createTeamDto.users.length > 0) {
+			for (const userId of createTeamDto.users) {
+				const user = await this.prisma.user.findUnique({
+					where: { id: userId },
+				});
+				if (!user) {
+					throw new BadRequestException(
+						`User with ID ${userId} not found`,
+					);
+				}
+
+				// Conectar el usuario al equipo
+				await this.prisma.userTeams.create({
+					data: {
+						nickname: user.nickname,
+						nameTeam: team.id,
+					},
+				});
+			}
+		}
+
+		return team;
+	}
+	/*async createTeam(team: CreateTeamDto): Promise<Team> {
+		const teamData: Prisma.TeamCreateInput = {
+			name: team.name,
+			organizerId: team.organizerId,
+			tournament: team.tournamentId
+				? { connect: { id: team.tournamentId } }
+				: undefined,
+			users: team.users
+				? { connect: team.users.map((userId) => ({ id: userId })) }
+				: undefined,
+			urlAvatar: team.urlAvatar,
+		};
+
+		const teamCreated = await this.prisma.team.create({ data: teamData });
+
+		return teamCreated;
+	}*/
+	async updateTeam(updateTeamDto: any): Promise<Team> {
+		const team = await this.prisma.team.findUnique({
+			where: { id: updateTeamDto.id },
+		});
 
 		if (!team) throw new NotFoundException('Team does not exist');
 
@@ -73,7 +116,7 @@ export class TeamsService {
 				}
 
 				const teamMembers = await this.prisma.team.findUnique({
-					where: { id },
+					where: { id: updateTeamDto.id },
 					select: { users: true },
 				});
 
@@ -83,9 +126,10 @@ export class TeamsService {
 					);
 				}
 
-				const userInTeam = await this.prisma.team.findFirst({
+				const userInTeam = await this.prisma.team.findUnique({
 					where: {
-						id,
+						id: updateTeamDto.id,
+
 						users: {
 							some: { id: newUserId },
 						},
@@ -115,16 +159,12 @@ export class TeamsService {
 		};
 
 		return await this.prisma.team.update({
-			where: { id },
+			where: { id: team.id },
 			data: updateData,
 		});
 	}
 
-	async deleteMember(
-		teamId: string,
-		userId: string,
-		memberId: string,
-	): Promise<Team> {
+	async deleteMember(teamId: string, memberId: string): Promise<Team> {
 		const team = await this.prisma.team.findUnique({
 			where: { id: teamId },
 		});
@@ -145,18 +185,11 @@ export class TeamsService {
 		});
 	}
 
-	async deleteTeam(organizerId: string, teamId: string): Promise<Team> {
+	async deleteTeam(teamId: string): Promise<Team> {
 		const team = await this.prisma.team.findUnique({
 			where: { id: teamId },
 		});
 		if (!team) throw new NotFoundException('Team does not exist');
-
-		const organizerExists = await this.prisma.user.findUnique({
-			where: { id: organizerId },
-		});
-
-		if (!organizerExists)
-			throw new NotFoundException('Organizer does not exist');
 
 		return await this.prisma.team.delete({ where: { id: teamId } });
 	}
