@@ -17,10 +17,15 @@ export interface IFilters {
 }
 
 export interface IFiltersProp {
-  game?: string;
-  category?: string;
-  price?: string;
-  date?: string;
+  name: filterEmun;
+  value: string;
+}
+
+export const enum filterEmun {
+  game = "game",
+  category = "category",
+  price = "price",
+  date = "date"
 }
 
 export interface IUserState {

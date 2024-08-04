@@ -12,39 +12,27 @@ import { MdGames } from "react-icons/md";
 import { SiLeagueoflegends } from "react-icons/si";
 import { SiCounterstrike } from "react-icons/si";
 import { TbBrandFortnite } from "react-icons/tb";
-import { RootState } from "@/redux/store";
-import { IFilters } from "@/interfaces/interfaceRedux";
-import { setRunFilters } from "@/redux/slices/tournamentSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { filterEmun, IFilters } from "@/interfaces/interfaceRedux";
+import { filtered } from "@/redux/thunks/auxiliarSliceThunk";
 
 
 const SearchBar: React.FC = () => {
-  const dispatch = useDispatch();
-  const filters = useSelector((state: RootState) => state.tournament.filters);
-  const [changeFilter, setChangeFilter] = React.useState<IFilters>({
-    game: filters.game,
-    category: filters.category,
-    price: filters.price,
-    date: filters.date
-  });
-
+  const dispatch = useDispatch<AppDispatch>();
   const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = event.currentTarget;
-    setChangeFilter({
-      ...changeFilter,
-      [name]: value
-    })
+    dispatch(filtered({
+      name: name as filterEmun,
+      value: value
+    }))
   };
-
-  useEffect(() => {
-    dispatch(setRunFilters(changeFilter)), [changeFilter]
-  }, [changeFilter, dispatch])
 
   return (
     <div className="flex flex-row justify-center p-2 gap-6">
-      <button className="buttonFilter" name="game" value={""} onClick={handleFilterClick}>
+      {/* <button className="buttonFilter" name="game" value={""} onClick={handleFilterClick}>
         <MdGames />
         <p>All Tournaments</p>
-      </button>
+      </button> */}
       <button className="buttonFilter" name="game" value={"CounterStrike Go"} onClick={handleFilterClick}>
         <SiCounterstrike />
         <p>Counter Strike</p>

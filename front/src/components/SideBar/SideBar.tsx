@@ -5,32 +5,21 @@ import { setFilter } from "@/redux/slices/cardsSlice";
 import { PiMedalMilitary } from "react-icons/pi";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import { TbMilitaryAward } from "react-icons/tb";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import React, { useEffect } from "react";
-import { IFilters } from "@/interfaces/interfaceRedux";
-import { setRunFilters } from "@/redux/slices/tournamentSlice";
+import { filterEmun, IFilters } from "@/interfaces/interfaceRedux";
+import { filtered } from "@/redux/thunks/auxiliarSliceThunk";
 
 const SideBar: React.FC = () => {
-  const dispatch = useDispatch();
-  const filters = useSelector((state: RootState) => state.tournament.filters);
-  const [changeFilter, setChangeFilter] = React.useState<IFilters>({
-    game: filters.game,
-    category: filters.category,
-    price: filters.price,
-    date: filters.date
-  });
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = event.currentTarget;
-    setChangeFilter({
-      ...changeFilter,
-      [name]: value
-    })
+    dispatch(filtered({
+      name: name as filterEmun,
+      value: value
+    }))
   };
-
-  useEffect(() => {
-    dispatch(setRunFilters(changeFilter)), [changeFilter]
-  }, [changeFilter, dispatch])
 
   return (
     <div className="flex flex-col justify-start p-6 bg-BGdark rounded-3xl mt-8 mb-medium w-64 h-fit gap-4">
@@ -75,9 +64,9 @@ const SideBar: React.FC = () => {
           <button className="buttonFilter" name="date" value={"nextMonths"} onClick={handleFilterClick}>
               <p>Next Months</p>
           </button>
-          <button className="buttonFilter" name="date" value={"more"} onClick={handleFilterClick}>
+          {/* <button className="buttonFilter" name="date" value={"more"} onClick={handleFilterClick}>
               <p>More</p>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
