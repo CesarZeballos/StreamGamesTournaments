@@ -64,7 +64,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     //control de ingreso a la page
     useEffect(() => {
-        if (!user || user === null) {
+        if (!user || user === null || user.id === undefined) {
             router.push("/login")
         } 
     }, [user, router]);

@@ -10,8 +10,6 @@ export const getUsersSlice = createAsyncThunk('auxiliar/getUsers', async () => {
 })
 
 // ejecucion los filtros:
-
-
 export const filtered = createAsyncThunk(
     'tournament/setRootFilters', 
     async (props: IFiltersProp, { dispatch }) => {
