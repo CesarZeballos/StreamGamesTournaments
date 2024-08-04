@@ -7,4 +7,4 @@ import { TeamsService } from './teams.service';
 	providers: [TeamsService, PrismaService],
 	controllers: [TeamsController],
 })
-export class TeamsModule {}
+export class TeamsModule { }

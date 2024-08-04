@@ -17,7 +17,7 @@ export class TournamentsService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly mailService: MailService,
-	) {}
+	) { }
 
 	async getAllTournaments(page: number, limit: number) {
 		const skip = (page - 1) * limit;
@@ -28,7 +28,7 @@ export class TournamentsService {
 			include: {
 				game: true,
 				players: true,
-				organizer: true,
+				teams: true,
 			},
 		});
 
@@ -91,7 +91,6 @@ export class TournamentsService {
 				},
 			});
 
-			// Enviar correo de creación de torneo
 			const mailOptions = MailTemplates.tournamentCreated(
 				organizerExists.email,
 				organizerExists.nickname,

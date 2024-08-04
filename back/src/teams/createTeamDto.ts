@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsString, IsOptional, IsArray, ArrayNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsArray, ArrayNotEmpty, IsUUID, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTeamDto {
@@ -46,4 +46,12 @@ export class CreateTeamDto {
 	users: string[];
 }
 
-export class UpdateTeamDto extends PartialType(CreateTeamDto) {}
+export class UpdateTeamDto extends PartialType(CreateTeamDto) {
+	@ApiProperty({
+		description: 'ID of the team',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	id: string
+}

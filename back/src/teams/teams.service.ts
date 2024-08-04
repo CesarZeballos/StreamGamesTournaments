@@ -11,7 +11,7 @@ import { CreateTeamDto } from './createTeamDto';
 
 @Injectable()
 export class TeamsService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getAllTeams(page: number, limit: number): Promise<Team[]> {
 		const skip = (page - 1) * limit;
@@ -149,10 +149,10 @@ export class TeamsService {
 				: undefined,
 			users: updateTeamDto.userIds
 				? {
-						connect: updateTeamDto.userIds.map((userId) => ({
-							id: userId,
-						})),
-					}
+					connect: updateTeamDto.userIds.map((userId) => ({
+						id: userId,
+					})),
+				}
 				: undefined,
 		};
 
