@@ -1,16 +1,36 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "@/redux/slices/cardsSlice";
 
 //icons import
 import { PiMedalMilitary } from "react-icons/pi";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import { TbMilitaryAward } from "react-icons/tb";
+import { RootState } from "@/redux/store";
+import React, { useEffect } from "react";
+import { IFilters } from "@/interfaces/interfaceRedux";
+import { setRunFilters } from "@/redux/slices/tournamentSlice";
 
 const SideBar: React.FC = () => {
   const dispatch = useDispatch();
-  const handleFilterClick = (filter: string) => {
-    dispatch(setFilter(filter));
+  const filters = useSelector((state: RootState) => state.tournament.filters);
+  const [changeFilter, setChangeFilter] = React.useState<IFilters>({
+    game: filters.game,
+    category: filters.category,
+    price: filters.price,
+    date: filters.date
+  });
+
+  const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { name, value } = event.currentTarget;
+    setChangeFilter({
+      ...changeFilter,
+      [name]: value
+    })
   };
+
+  useEffect(() => {
+    dispatch(setRunFilters(changeFilter)), [changeFilter]
+  }, [changeFilter, dispatch])
 
   return (
     <div className="flex flex-col justify-start p-6 bg-BGdark rounded-3xl mt-8 mb-medium w-64 h-fit gap-4">
@@ -19,15 +39,15 @@ const SideBar: React.FC = () => {
       <div className="flex flex-col gap-2">
         <h1 className="heading5 text-lightViolet">Competition Difficulty</h1>
         <div>
-          <button className="buttonFilter" onClick={() => handleFilterClick("beginner")}>
+          <button className="buttonFilter" name="category" value={"beginner"} onClick={handleFilterClick}>
             <PiMedalMilitary />
             <p>Beginner</p>
           </button>
-          <button className="buttonFilter" onClick={() => handleFilterClick("advanced")}>
+          <button className="buttonFilter" name="category" value={"advanced"} onClick={handleFilterClick}>
             <PiMedalMilitaryFill />
             <p>Advanced</p>
           </button>
-          <button className="buttonFilter" onClick={() => handleFilterClick("expert")}>
+          <button className="buttonFilter" name="category" value={"expert"} onClick={handleFilterClick}>
             <TbMilitaryAward />
             <p>Expert</p>
           </button>
@@ -36,24 +56,27 @@ const SideBar: React.FC = () => {
 
         <h1 className="heading5 text-lightViolet">Price range</h1>
         <div>
-          <button className="buttonFilter" onClick={() => handleFilterClick("CHEAP")}>
+          <button className="buttonFilter" name="price" value={"cheap"} onClick={handleFilterClick}>
           <p>$0 - $500</p>
           </button>
-          <button className="buttonFilter" onClick={() => handleFilterClick("MIDDLE")}>
+          <button className="buttonFilter" name="price" value={"medium"} onClick={handleFilterClick}>
           <p>$501 - $1000</p>
           </button>
-          <button className="buttonFilter" onClick={() => handleFilterClick("EXPENSIVE")}>
+          <button className="buttonFilter" name="price" value={"expensive"} onClick={handleFilterClick}>
           <p>$1001 - More</p>
           </button>
         </div>
 
         <h1 className="heading5 text-lightViolet">Date</h1>
         <div>
-          <button className="buttonFilter" onClick={() => handleFilterClick("THIS_MONTH")}>
+          <button className="buttonFilter" name="date" value={"thisMonth"} onClick={handleFilterClick}>
               <p>This Month</p>
           </button>
-          <button className="buttonFilter" onClick={() => handleFilterClick("NEXT_MONTHS")}>
+          <button className="buttonFilter" name="date" value={"nextMonths"} onClick={handleFilterClick}>
               <p>Next Months</p>
+          </button>
+          <button className="buttonFilter" name="date" value={"more"} onClick={handleFilterClick}>
+              <p>More</p>
           </button>
         </div>
       </div>

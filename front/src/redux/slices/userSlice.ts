@@ -83,7 +83,7 @@ const userSlice = createSlice({
                 state.token = action.payload.token
             } else return
 
-            toast.success(`welcome ${action.payload.user.nickName}`, {
+            toast.success(`welcome ${action.payload.user.nickname}`, {
                 position: 'top-right',
                 duration: 1500,
               })

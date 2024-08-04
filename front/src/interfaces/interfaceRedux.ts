@@ -6,19 +6,23 @@ export interface ITournamentState {
   tournaments: ITournament[];
   currentPage: number;
   filters: IFilters;
-  tournamentsGame: ITournament[];
-  tournamentsCategory: ITournament[];
-  tournamentsPrice: ITournament[];
-  tournamentsDate: ITournament[];
   tournamentsFiltered: ITournament[];
 }
 
 export interface IFilters {
   game: string;
   category: string;
-  price: number;
+  price: string;
   date: string;
 }
+
+export interface IFiltersProp {
+  game?: string;
+  category?: string;
+  price?: string;
+  date?: string;
+}
+
 export interface IUserState {
   user: IUser | null;
   status: string;
