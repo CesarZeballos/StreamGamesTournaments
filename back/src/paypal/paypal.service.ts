@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import {
+	ConflictException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import * as paypal from '@paypal/checkout-server-sdk';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class PayPalService {
-	private clientId =
-		'AbZ9yYVHCp0Q_0CCONEnymyfhZ0w8ne5ww3GuzZSH_rJMmLYw6N9529rbyvPdlwZvK0xGe6oAxOmn-JP';
-	private clientSecret =
-		'EFCylinPgX6KSJKOtkO07RietlNFLLPYR5nduW8B5IKcOX60QanxFqBxcNLN2v7oh0rZaBgm2GEZ1l8Z';
+	constructor(private readonly prisma: PrismaService) {}
+	private clientId = process.env.PAYPAL_CLIENT_ID;
+	private clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 
 	private environment = new paypal.core.SandboxEnvironment(
 		this.clientId,
@@ -14,7 +18,27 @@ export class PayPalService {
 	);
 	private client = new paypal.core.PayPalHttpClient(this.environment);
 
-	async createOrder() {
+	async createOrder(createTeamDto: any) {
+		const tournament = await this.prisma.tournament.findUnique({
+			where: { id: createTeamDto.tournamentId },
+			include: { teams: { include: { users: true } } },
+		});
+
+		if (!tournament)
+			throw new NotFoundException(
+				`Tournament with id: ${createTeamDto.tournamentId} does not exists,
+            `,
+			);
+
+		for (const team of tournament.teams) {
+			for (const userExistsInTournament of team.users) {
+				if (createTeamDto.users.includes(userExistsInTournament.id))
+					throw new ConflictException(
+						` User with id: ${userExistsInTournament.id} already exists in tournament,
+                    `,
+					);
+			}
+		}
 		const request = new paypal.orders.OrdersCreateRequest();
 		request.headers['Content-Type'] = 'application/json';
 		request.requestBody({

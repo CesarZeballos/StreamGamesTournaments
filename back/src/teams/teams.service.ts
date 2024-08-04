@@ -8,10 +8,14 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 import { Prisma, Team, User } from '@prisma/client';
 import { CreateTeamDto } from './createTeamDto';
+import { PayPalService } from 'paypal/paypal.service';
 
 @Injectable()
 export class TeamsService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly paypalService: PayPalService,
+	) { }
 
 	async getAllTeams(page: number, limit: number): Promise<Team[]> {
 		const skip = (page - 1) * limit;
@@ -48,18 +52,22 @@ export class TeamsService {
 
 		if (!tournament)
 			throw new NotFoundException(
-				`Tournament with id: ${createTeamDto.tournamentId} does not exists`,
+				`Tournament with id: ${createTeamDto.tournamentId} does not exists,
+            `,
 			);
 
 		for (const team of tournament.teams) {
 			for (const userExistsInTournament of team.users) {
 				if (createTeamDto.users.includes(userExistsInTournament.id))
 					throw new ConflictException(
-						`User with id: ${userExistsInTournament.id} already exists in tournament`,
+						` User with id: ${userExistsInTournament.id} already exists in tournament,
+                    `,
 					);
 			}
 		}
 
+		await this.paypalService.captureOrder(createTeamDto.paypal);
+		// Crear el equipo inicialmente con los datos básicos
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
 			organizerId: createTeamDto.organizerId,
