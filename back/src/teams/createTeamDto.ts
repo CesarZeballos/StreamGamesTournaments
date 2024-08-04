@@ -44,6 +44,9 @@ export class CreateTeamDto {
 	@ArrayNotEmpty()
 	@IsString({ each: true })
 	users: string[];
+
+	@IsString()
+	paypal: string;
 }
 
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {}
