@@ -100,3 +100,10 @@ export interface IAddFriendForm {
     friendId: string
     token: string
 }
+
+//ugrade user
+
+export interface IUpgradeUser {
+    id: string
+    token: string
+}

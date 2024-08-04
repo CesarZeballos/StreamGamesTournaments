@@ -1,22 +1,28 @@
-import Image from "next/image";
-import logo from "../../app/assets/images/icons/logo2.png";
+'use client';
+import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 
 const Footer: React.FC = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+  
   return (
-    <>
-      <div className="bg-BGdark grid grid-cols-[70%_30%] p-4">
-        <Image
-          src={logo}
-          alt="Logo"
-          className="flex justify-center items-center w-2/4 h-fit m-8"
-        />
-        <div className="flex flex-col justify-between items-start p-2 text-white text-xl gap-4 mb-2">
-          <button className="buttonSecondary">Tournaments</button>
-          <button className="buttonSecondary">Teams</button>
-          <button className="buttonSecondary">Sign In</button>
+
+      <div className="bg-BGdark flex flex-row gap-6 my-9 items-center justify-center">
+        <Link className="buttonNavbar" href="/">Home</Link>
+        <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
+        {user ? 
+        <div className="flex gap-x-8">
+            <Link className="buttonNavbar flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
         </div>
+        :
+        <div className="flex gap-x-8">
+            <Link className="buttonNavbar" href="/login">Sign In</Link>
+            <Link className="buttonPrimary text-base" href="/register">Sign Up</Link>
+        </div>
+        }
       </div>
-    </>
   );
 };
 

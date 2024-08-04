@@ -5,11 +5,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FriendsDashboardView } from "../friendsDashboardView";
 import { TournamentsDashboardView } from "../tournamentsDashboardView";
-import { DataDashboardView } from "../dataDashboardView";
 import { SearchBarDashboard } from "../searchbarDashboard";
 import { AddFriend } from "../addFriendForm";
 import { NotificationDashboardView } from "../notificationDashboardView";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
+import { SettingsDashboardView } from "../settingsDashboardView";
+import { setView } from "@/redux/slices/dashboardSlice";
 
 
 export const UserDashboardView: React.FC = () => {
@@ -18,21 +19,25 @@ export const UserDashboardView: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
     const section = useSelector((state: RootState) => state.dashboard.view);
     
+
+    const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
-        if (!user) {
+        if (token === null) {
             router.push("/")
+        } else if(section === "") {
+            dispatch(setView("notifications"))
         }
-    }, [router, user])
+    }, [router, token, section, dispatch])
     
     return (
             <div className="grid grid-cols-4 gap-x-6 mt-4">
                 <SearchBarDashboard />
                 <div className="col-span-2 f-full pt-4">
-                    {section === 'data' && <DataDashboardView/>}
                     {section === 'notifications' && <NotificationDashboardView/>}
                     {section === 'friends' && <FriendsDashboardView/>}
                     {section === 'addFriend' && <AddFriend/>}
                     {section === 'tournaments' && <TournamentsDashboardView/>}
+                    {section === 'settings' && <SettingsDashboardView/>}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
                     <img className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />

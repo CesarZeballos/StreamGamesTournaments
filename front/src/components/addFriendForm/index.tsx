@@ -12,7 +12,6 @@ import React from "react";
 import { addfriendSlice } from "@/redux/thunks/userSliceThunk";
 import { toast } from "sonner";
 import { setView } from "@/redux/slices/dashboardSlice";
-import { fetchUsers } from "@/utils/fetchUser";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 
 export const AddFriend: React.FC = () => {
@@ -36,7 +35,7 @@ export const AddFriend: React.FC = () => {
                 })
             }
         }
-    }, [])
+    }, [users, dispatch, userSelector])
 
     const handleChange = (event: any, value: IUserSelector | null) => {
         console.log(value)

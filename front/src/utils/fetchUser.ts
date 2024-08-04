@@ -1,4 +1,4 @@
-import { IAddFriendForm, ILoginDataBase, ILoginForm, IRegisterForm } from "@/interfaces/interfaceUser";
+import { IAddFriendForm, ILoginDataBase, ILoginForm, IRegisterForm, IUpgradeUser } from "@/interfaces/interfaceUser";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -92,14 +92,16 @@ export const fetchUsers = async () => {
 
 export const fetchAddUser = async (data: IAddFriendForm) => {
     const {userId, friendId, token} = data
-    // no se de por donde le paso el userId
-    const response = await fetch(`${apiUrl}/users/addfriend`, {
+    const response = await fetch(`${apiUrl}/users/addFriend`, {
         method: "POST",
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({friendId})
+        body: JSON.stringify({
+            userId: userId, 
+            friendId: friendId
+        })
     })
 
     if (!response.ok) {
@@ -108,3 +110,21 @@ export const fetchAddUser = async (data: IAddFriendForm) => {
     const userData = await response.json();
     return userData;
 } 
+
+export const fetchUgradeUser = async (data: IUpgradeUser) => {
+    const {id, token} = data
+    const response = await fetch(`${apiUrl}/users/upgradeUser`, {
+        method: "POST",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            userId: id
+        })
+    })
+
+    if (!response.ok) {
+        throw new Error(`Error adding friend: ${response.statusText}`);
+    }
+}

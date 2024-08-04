@@ -4,7 +4,6 @@ import { format } from "date-fns";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function fetchTournaments(): Promise<ITournament[]> {
-    console.log("URL_API", apiUrl)
         const response = await fetch(`${apiUrl}/tournaments`, {
             method: "GET",
             headers: {

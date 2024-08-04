@@ -10,6 +10,7 @@ import { RootState } from "@/redux/store";
 import { toast } from "sonner";
 import { IUser } from "@/interfaces/interfaceUser";
 import { Box, Chip, FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
+import { setView } from "@/redux/slices/dashboardSlice";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,7 +31,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     // Seteo de la informacion
     const user = useSelector((state: RootState) => state.user.user);
     const [userData, setUserData] = useState<IUser>(user!);
-    const tournaments = useSelector((state: RootState) => state.tournaments.tournaments);
+    const tournaments = useSelector((state: RootState) => state.tournament.tournaments);
     const turnament = tournaments.find((tournament) => tournament.id === tourId);
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
     const [tournamentData, setTournamentData] = useState<ITournament>({
@@ -62,11 +63,12 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     });
 
     //control de ingreso a la page
+    const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
-        if (!user || user === null) {
+        if (token === null || user === null) {
             router.push("/login")
-        } 
-    }, [user, router]);
+        }
+    }, [router, token, dispatch, user])
 
     // selector de miembros
     const handleChangeMembers = (event: SelectChangeEvent<typeof teamMembers>) => {
@@ -117,6 +119,11 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         router.push("/tournaments/" + tourId);
     }
+    
+    const addFriend = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        dispatch(setView("addFriends"))
+        router.push("/dashboard")
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -140,42 +147,52 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                                 required />
                             </div>
 
-                            <p className="body text-white">Members</p>
-                            <FormControl sx={{ m: 1, width: 320 }}>
-                                <Select
-                                multiple
-                                displayEmpty
-                                value={teamMembers}
-                                onChange={handleChangeMembers}
-                                className="inputMUI"
-                                input={<OutlinedInput 
-                                    id="multipleMembers" 
-                                    />}
-                                renderValue={(selected) => {
-                                    if (selected.length === 0) {
-                                    return <em className="body text-BGdark">Members</em>;
-                                    } else return (<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                    {selected.map((value) => (
-                                        <Chip 
-                                        className="chip" 
-                                        key={value} label={value} />
-                                    ))}
-                                    </Box>)
-                                }     
+                            <p className="body text-white mt-4">Members</p>
+                            {
+                                !user?.friends || user?.friends.length === 0 ? <div className="flex flex-row items-center">
+                                    <p className="body text-white">No friends yet. add them</p>
+                                    <button className="buttonSecondary" onClick={addFriend}>Here</button>  
+                                    </div>
+                                    : 
+                                    <div>
+
+                                        <FormControl sx={{ m: 1, width: 320 }}>
+                                            <Select
+                                            multiple
+                                            displayEmpty
+                                            value={teamMembers}
+                                            onChange={handleChangeMembers}
+                                            className="inputMUI"
+                                            input={<OutlinedInput 
+                                                id="multipleMembers" 
+                                                />}
+                                            renderValue={(selected) => {
+                                                if (selected.length === 0) {
+                                                return <em className="body text-BGdark">Members</em>;
+                                                } else return (<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                                {selected.map((value) => (
+                                                    <Chip 
+                                                    className="chip" 
+                                                    key={value} label={value} />
+                                                ))}
+                                                </Box>)
+                                            }     
+                                        }
+                                            MenuProps={MenuProps}
+                                            >
+                                            {user!.friends.map((friend) => (
+                                                <MenuItem
+                                                key={friend.id}
+                                                value={friend.nickname}
+                                                >
+                                                {friend.nickname}
+                                                </MenuItem>
+                                            ))}
+                                            </Select>
+                                        </FormControl>
+                                        <p className="errorForm">{`select ${tournamentData.membersNumber - 1} friends`}</p>
+                                    </div>
                             }
-                                MenuProps={MenuProps}
-                                >
-                                {user!.friends.map((friend) => (
-                                    <MenuItem
-                                    key={friend.id}
-                                    value={friend.nickname}
-                                    >
-                                    {friend.nickname}
-                                    </MenuItem>
-                                ))}
-                                </Select>
-                            </FormControl>
-                            <p className="errorForm">{`select ${tournamentData.membersNumber - 1} friends`}</p>
 
                         </FormContainer> 
                     }
