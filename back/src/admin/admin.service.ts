@@ -4,7 +4,7 @@ import { Role } from '@prisma/client';
 
 @Injectable()
 export class AdminService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async banUser(userId: string) {
 		const user = await this.prisma.user.findUnique({
@@ -13,12 +13,13 @@ export class AdminService {
 			},
 		});
 		if (!user) {
-			throw new Error('User not found');
+			throw new NotFoundException(`User with id: ${userId} does not exists`);
 		}
 		return this.prisma.user.update({
 			where: { id: userId },
 			data: {
 				state: false,
+				isBanned: true
 			},
 		});
 	}

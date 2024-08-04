@@ -2,11 +2,11 @@ import {
 	Injectable,
 	NotFoundException,
 	InternalServerErrorException,
+	BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Tournament, User } from '@prisma/client';
-import { UpdateUserDto } from 'auth/auth.user.Dto';
-
+import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
 
 @Injectable()
 export class UsersService {
@@ -34,7 +34,7 @@ export class UsersService {
 			return users;
 		} catch (error) {
 			console.error('Failed to get all users:', error);
-			throw new Error('Failed to get users');
+			throw new InternalServerErrorException('Failed to get users');
 		}
 	}
 
@@ -86,7 +86,9 @@ export class UsersService {
 				tournaments: userTournaments,
 			};
 		} catch (error) {
-			throw new NotFoundException(`No user found with id ${id}`);
+			throw new InternalServerErrorException(
+				`Failed to get user with id ${id}`,
+			);
 		}
 	}
 
@@ -95,10 +97,11 @@ export class UsersService {
 			const user = await this.prisma.user.findUnique({
 				where: { email },
 			});
-			if (user)
+			if (!user) {
 				throw new NotFoundException(
 					`No user found with email ${email}`,
 				);
+			}
 			return user;
 		} catch (error) {
 			throw new InternalServerErrorException(
@@ -123,12 +126,55 @@ export class UsersService {
 
 	async disableUser(id: string): Promise<User> {
 		try {
-			const updatedUser = await this.prisma.user.delete({
+			const deletedUser = await this.prisma.user.delete({
 				where: { id },
 			});
-			return updatedUser;
+			return deletedUser;
 		} catch (error) {
-			throw new Error(`Failed to disable user with id ${id}`);
+			throw new InternalServerErrorException(
+				`Failed to disable user with id ${id}`,
+			);
 		}
+	}
+
+	async addFriend(addFriendDto: AddFriendDto) {
+		const { nickname, userId } = addFriendDto;
+
+		const existingFriend = await this.prisma.userFriends.findUnique({
+			where: { nickname },
+		});
+
+		if (existingFriend) {
+			throw new BadRequestException('El amigo ya está añadido.');
+		}
+
+		const userExists = await this.prisma.user.findUnique({
+			where: { id: userId },
+		});
+
+		if (!userExists) {
+			throw new BadRequestException('El usuario no existe.');
+		}
+
+		return this.prisma.userFriends.create({
+			data: {
+				nickname,
+				user: { connect: { id: userId } },
+			},
+		});
+	}
+
+	async removeFriend(id: string) {
+		const friend = await this.prisma.userFriends.findUnique({
+			where: { id },
+		});
+
+		if (!friend) {
+			throw new NotFoundException('Amigo no encontrado.');
+		}
+
+		return this.prisma.userFriends.delete({
+			where: { id },
+		});
 	}
 }

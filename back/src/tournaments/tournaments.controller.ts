@@ -32,7 +32,7 @@ import {
 @ApiTags('Tournaments')
 @Controller('tournaments')
 export class TournamentsController {
-	constructor(private readonly tournamentsService: TournamentsService) {}
+	constructor(private readonly tournamentsService: TournamentsService) { }
 
 	@Get()
 	@ApiOperation({
@@ -145,7 +145,7 @@ export class TournamentsController {
 	/* @UseGuards(JwtAuthGuard)
 	@Roles(Role.admin)
 	@Roles(Role.organizer) */
-	@Delete('deleteTournament/:id')
+	@Put('deleteTournament/:id')
 	@ApiOperation({
 		summary: 'Delete a tournament',
 		description: 'Remove a specific tournament by its ID.',

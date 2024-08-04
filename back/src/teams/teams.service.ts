@@ -2,13 +2,11 @@ import {
 	BadRequestException,
 	ConflictException,
 	Injectable,
-	InternalServerErrorException,
 	NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
 import { Prisma, Team, User } from '@prisma/client';
-import { TournamentsService } from 'tournaments/tournaments.service';
 import { CreateTeamDto } from './createTeamDto';
 import { PayPalService } from 'paypal/paypal.service';
 

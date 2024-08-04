@@ -10,4 +10,4 @@ import { PayPalModule } from 'paypal/paypal.module';
 	controllers: [TeamsController],
 	exports: [TeamsService],
 })
-export class TeamsModule {}
+export class TeamsModule { }
