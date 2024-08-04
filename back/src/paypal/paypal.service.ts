@@ -5,14 +5,10 @@ import {
 } from '@nestjs/common';
 import * as paypal from '@paypal/checkout-server-sdk';
 import { PrismaService } from '../../prisma/prisma.service';
-//import { TeamsService } from 'teams/teams.service';
 
 @Injectable()
 export class PayPalService {
-	constructor(
-		//private readonly teamsService: TeamsService,
-		private readonly prisma: PrismaService,
-	) {}
+	constructor(private readonly prisma: PrismaService) {}
 	private clientId = process.env.PAYPAL_CLIENT_ID;
 	private clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 
