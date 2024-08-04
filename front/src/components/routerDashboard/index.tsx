@@ -4,10 +4,19 @@ import { RootState } from "@/redux/store"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { SearchBarDashboard } from "../searchbarDashboard"
+import { useRouter } from "next/navigation"
 
 export const RouterDashboard: React.FC = () => {
+    const router = useRouter();
     const rol = useSelector((state: RootState) => state.user.user?.role);
     const dispatch = useDispatch();
+
+    const token = useSelector((state: RootState) => state.user.token);
+    useEffect(() => {
+        if (token === null) {
+            router.push("/")
+        }
+    }, [router, token, dispatch])
     
     useEffect(() => {
         dispatch(setView("data"))

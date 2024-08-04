@@ -63,11 +63,12 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     });
 
     //control de ingreso a la page
+    const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
-        if (!user || user === null || user.id === undefined) {
+        if (token === null || user === null) {
             router.push("/login")
-        } 
-    }, [user, router]);
+        }
+    }, [router, token, dispatch, user])
 
     // selector de miembros
     const handleChangeMembers = (event: SelectChangeEvent<typeof teamMembers>) => {

@@ -30,12 +30,12 @@ export const RegisterForm: React.FC = () => {
     })
 
     // Control de ingreso a la página
-    const user = useSelector((state: RootState) => state.user.user);
+    const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
-        if (user) {
-            router.push("/")
+        if (token === null) {
+            router.push("/dashboard")
         }
-    }, [router, user])
+    }, [router, token, dispatch])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;

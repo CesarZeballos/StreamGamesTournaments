@@ -28,12 +28,12 @@ export const LoginForm: React.FC = () => {
     })
 
     //control de ingreso a la page
-    const user = useSelector((state: RootState) => state.user.user);
+    const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
-        if (user) {
-            router.push("/")
+        if (token !== null) {
+            router.push("/dashboard")
         }
-    }, [router, user])
+    }, [router, token, dispatch])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target

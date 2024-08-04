@@ -19,13 +19,15 @@ export const UserDashboardView: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
     const section = useSelector((state: RootState) => state.dashboard.view);
     
+
+    const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
-        if (!user) {
+        if (token === null) {
             router.push("/")
         } else if(section === "") {
             dispatch(setView("notifications"))
         }
-    }, [router, user, section, dispatch])
+    }, [router, token, section, dispatch])
     
     return (
             <div className="grid grid-cols-4 gap-x-6 mt-4">
