@@ -31,7 +31,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     // Seteo de la informacion
     const user = useSelector((state: RootState) => state.user.user);
     const [userData, setUserData] = useState<IUser>(user!);
-    const tournaments = useSelector((state: RootState) => state.tournaments.tournaments);
+    const tournaments = useSelector((state: RootState) => state.tournament.tournaments);
     const turnament = tournaments.find((tournament) => tournament.id === tourId);
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
     const [tournamentData, setTournamentData] = useState<ITournament>({
