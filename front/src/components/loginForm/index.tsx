@@ -27,14 +27,6 @@ export const LoginForm: React.FC = () => {
         password: ""
     })
 
-    //control de ingreso a la page
-    const token = useSelector((state: RootState) => state.user.token);
-    useEffect(() => {
-        if (token !== null) {
-            router.push("/dashboard")
-        }
-    }, [router, token, dispatch])
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
         const errors = validateLogin(data)
