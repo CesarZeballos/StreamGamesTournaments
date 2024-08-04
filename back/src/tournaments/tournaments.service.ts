@@ -9,6 +9,8 @@ import {
 	UpdateTournamentDto,
 } from '../tournaments/createTournament.Dto';
 import { MailService } from 'mail/mail.service';
+import { MailTemplates } from 'mail/mail-templates';
+import { Categories } from '@prisma/client';
 
 @Injectable()
 export class TournamentsService {
@@ -44,6 +46,7 @@ export class TournamentsService {
 				game: true,
 				players: true,
 				organizer: true,
+				teams: true,
 			},
 		});
 
@@ -82,6 +85,7 @@ export class TournamentsService {
 			const tournament = await this.prisma.tournament.create({
 				data: {
 					...data,
+					category: data.category as Categories,
 					awards: awardsAsStrings,
 					organizer: { connect: { id: organizerId } },
 					game: { connect: { id: gameId } },
@@ -94,6 +98,24 @@ export class TournamentsService {
 				},
 			});
 
+			// Enviar correo de creación de torneo
+			const mailOptions = MailTemplates.tournamentCreated(
+				organizerExists.email,
+				organizerExists.nickname,
+				tournament.nameTournament,
+			);
+			try {
+				await this.mailService.sendMail(mailOptions);
+				console.log(
+					`Tournament creation email sent to ${organizerExists.email}`,
+				);
+			} catch (error) {
+				console.error(
+					`Failed to send tournament creation email to ${organizerExists.email}`,
+					error.stack,
+				);
+			}
+
 			return tournament;
 		} catch (error) {
 			throw new BadRequestException(
@@ -102,11 +124,8 @@ export class TournamentsService {
 		}
 	}
 
-	async updateTournament(
-		id: string,
-		updateTournamentDto: UpdateTournamentDto,
-	) {
-		const { organizerId, gameId, teams, players, ...data } =
+	async updateTournament(updateTournamentDto: UpdateTournamentDto) {
+		const { id, organizerId, gameId, teams, players, ...data } =
 			updateTournamentDto;
 
 		const tournament = await this.prisma.tournament.findUnique({
@@ -159,7 +178,7 @@ export class TournamentsService {
 		}
 
 		if (players) {
-			updateData.participants = {
+			updateData.players = {
 				connect: players.map((userId) => ({ id: userId })),
 			};
 		}
