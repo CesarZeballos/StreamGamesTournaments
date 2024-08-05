@@ -21,17 +21,18 @@ const SearchBar: React.FC = () => {
     }))
   };
 
+
   return (
     <div className="flex flex-row justify-center p-2 gap-6">
-      <button className="buttonFilter" name="game" value={"CounterStrike Go"} onClick={handleFilterClick}>
+      <button className={`buttonFilter ${filters === "CounterStrike Go" && "buttonFilterActive"}`} name="game" value={"CounterStrike Go"} onClick={handleFilterClick}>
         <SiCounterstrike />
         <p>Counter Strike</p>
       </button>
-      <button className="buttonFilter" name="game" value={"Fortnite"} onClick={handleFilterClick}>
+      <button className={`buttonFilter ${filters === "Fortnite" && "buttonFilterActive"}`} name="game" value={"Fortnite"} onClick={handleFilterClick}>
         <TbBrandFortnite />
         <p>Fortnite</p>
       </button>
-      <button className="buttonFilter" name="game" value={"League of Legends"} onClick={handleFilterClick}>
+      <button className={`buttonFilter ${filters === "League of Legends" && "buttonFilterActive"}`} name="game" value={"League of Legends"} onClick={handleFilterClick}>
         <SiLeagueoflegends />
         <p>League of Legends</p>
       </button>
