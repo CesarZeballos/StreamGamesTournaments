@@ -53,9 +53,9 @@ export interface IGame {
 //interface para el form de agregar equipo
 export interface IAddTeam {
     tournamentId: string
-    teamName: string
-    organizarId: string
-    members: IUser[]
+    name: string
+    organizerId: string
+    users: string[]
 }
 
 //interface para mostrar mis torneos en el dashboard user

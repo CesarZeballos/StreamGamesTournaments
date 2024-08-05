@@ -5,6 +5,7 @@ import {
 	IsOptional,
 	IsString,
 	IsUrl,
+	IsUUID,
 	Length,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -31,6 +32,15 @@ export class CreateGameDto {
 }
 
 export class UpdateGameDto extends PartialType(CreateGameDto) {
+
+	@ApiProperty({
+		description: 'ID of the game',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	id: string
+
 	@ApiPropertyOptional({
 		description: 'Estado del juego',
 		example: true,

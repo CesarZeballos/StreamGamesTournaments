@@ -5,6 +5,7 @@ import {
 	IsDateString,
 	IsOptional,
 	IsBoolean,
+	IsUUID,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PartialType } from '@nestjs/mapped-types';
@@ -47,6 +48,15 @@ export class CreateUserDto extends SignInDto {
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
+
+	@ApiProperty({
+		description: 'ID of the user',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	id: string
+
 	@ApiPropertyOptional({
 		description: 'URL del stream del usuario',
 		example: 'http://example.com/stream',
@@ -84,18 +94,19 @@ export class UserBanForAdminDto extends PartialType(UpdateUserDto) {
 
 export class AddFriendDto {
 	@ApiProperty({
-	  description: 'ID del usuario amigo que se desea agregar',
-	  example: 'user-id-456',
+		description: 'ID of the user',
+		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
-	@IsString()
+	@IsUUID()
 	@IsNotEmpty()
-	friendId: string;
-  
+	userId: string
+
 	@ApiProperty({
-	  description: 'ID del usuario que solicita agregar el amigo',
-	  example: 'user-id-123',
+		description: 'ID of the friend',
+		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
-	@IsString()
+	@IsUUID()
 	@IsNotEmpty()
-	userId: string;
-  }
+	friendId: string
+
+}

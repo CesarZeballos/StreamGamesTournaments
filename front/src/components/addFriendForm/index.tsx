@@ -9,11 +9,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IUser, IUserSelector } from "@/interfaces/interfaceUser";
 import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
-import { addfriendSlice } from "@/redux/thunks/userSliceThunk";
+import { addfriendSlice, reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import { toast } from "sonner";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 import { useRouter } from "next/navigation";
+import { setStatusFriend } from "@/redux/slices/userSlice";
 
 export const AddFriend: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -66,14 +67,17 @@ export const AddFriend: React.FC = () => {
         if (addFriendStatus === "succeeded") {
         setTimeout(() => {
             dispatch(setView("friends"))
-        }, 2000);
+            dispatch(reloadUserSlice({
+                email: userActive.user?.email!,
+                tokenFirebase: userActive.user?.tokenFirebase
+            }))
+            dispatch(setStatusFriend())
+        }, 1500);
     }}, [addFriendStatus, dispatch])
-
-
 
     return (
         <form onSubmit={handlesubmit} className="flex flex-col gap-2">
-            <h1 className="heading4 text-white">Find your friend</h1>
+            <h1 className="heading5 text-lightViolet">Find your friend</h1>
             
             <p className="body text-white mt-4">Search by nickname</p>
             <Autocomplete

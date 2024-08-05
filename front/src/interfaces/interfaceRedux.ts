@@ -1,5 +1,5 @@
 import { IUser } from "./interfaceUser";
-import { ITournament } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
 
 export interface ITournamentState {
   status: string;
@@ -49,4 +49,10 @@ export interface IAuxiliarState {
   users: IUser[];
   status: string;
   error: string | null;
+  statusPayment: string
+}
+
+export interface IAddTeamToTournament {
+    teamData: IAddTeam
+    token: string
 }

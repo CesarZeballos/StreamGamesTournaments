@@ -14,6 +14,8 @@ import { SettingsDashboardView } from "../settingsDashboardView";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import TournamentForm from "../tournamentForm";
+import UsersArea from "../Areas/UsersArea";
+import TournamentsArea from "../Areas/TournamentsArea";
 
 export const UserDashboardView: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -43,10 +45,13 @@ export const UserDashboardView: React.FC = () => {
                     {section === 'myTournaments' && <TournamentsDashboardView/>}
                     {section === 'createTournament' && <TournamentForm />}
 
+                    {section === 'users' && <UsersArea/>}
+                    {section === 'torunamentsAdmin' && <TournamentsArea/>}
+
                 </div>
-                <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
+                {/* <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
                     <Image className="w-full h-full object-cover" width={500} height={500} src="/dashboard.jpg" alt="dashboard" />
-                </div>
+                </div> */}
             </div>
     )
 }

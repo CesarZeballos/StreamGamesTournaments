@@ -2,6 +2,7 @@
 import React from 'react';
 import UserFilters from './UserFilters';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
+import BlockIcon from '@mui/icons-material/Block';
 
 interface UsersListProps {
   users: IUser[];
@@ -37,27 +38,25 @@ const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeact
   });
 
   return (
-    <div className="w-full overflow-hidden">
-      <table className='rounded-lg mb-small overflow-hidden text-center bg-white text-BGdark'>
-        <thead className='bg-cyan-300'>
-          <UserFilters onFilter={onFilter} />
-          <tr className='text-indigo-900'>
-            <th>Nickname</th>
-            <th>Role</th>
-            <th>Tournament</th>
-            <th>State</th>
-            <th>Ban User</th>
-          </tr>
+    <div>
+      <table className='w-full'>
+        <thead className='tableHeader flex flex-row justify-around'>
+            <th className='text-center w-36'>Nickname</th>
+            <th className='text-center w-36'>Role</th>
+            <th className='text-center w-36'>Tournament</th>
+            <th className='text-center w-36'>State</th>
+            <th className='text-center w-36'>Ban User</th>
         </thead>
-        <tbody>
+          <UserFilters onFilter={onFilter} />
+        <tbody className="tableBody flex flex-col gap-2">
           {sortedUsers.map(user => (
-            <tr key={user.id}>
-              <td>{user.nickname}</td>
-              <td>{user.role}</td>
-              <td>{user.tournaments.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>
-              <td>{user.state ? 'Active' : 'Inactive'}</td>
-              <td>
-                <button className='hover:bg-softViolet p-2 rounded-lg' onClick={() => onDeactivateUser(user.id)}>Ban User</button>
+            <tr className="flex flex-row justify-around" key={user.id}>
+              <td className='text-center w-36'>{user.nickname}</td>
+              <td className='text-center w-36'>{user.role}</td>
+              <td className='text-center w-36'>{user.tournaments.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>
+              <td className='text-center w-36'>{user.state ? 'Active' : 'Inactive'}</td>
+              <td className='text-center w-36'>
+                <button className='iconButton' onClick={() => onDeactivateUser(user.id)}><BlockIcon />  </button>
               </td>
             </tr>
           ))}

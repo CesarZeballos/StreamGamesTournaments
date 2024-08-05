@@ -47,6 +47,7 @@ export const SearchBarDashboard: React.FC = () => {
             <div className="flex flex-col items-center gap-2">
                 <h1 className="heading5 text-lightViolet">Admin options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("users")}>Users</button>
+                <button className="buttonSecondary" onClick={() => handleViewClick("torunamentsAdmin")}>Tournament graphs</button>
             </div>}
 
             <div className="flex flex-col items-center gap-2">

@@ -11,7 +11,7 @@ import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
 
 @Injectable()
 export class UsersService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getAllUsers(): Promise<User[]> {
 		try {
@@ -141,52 +141,85 @@ export class UsersService {
 		}
 	}
 
-	async addFriend(info: AddFriendDto) {
-		const user = await this.getUserById(info.userId);
-		if (!user)
-			throw new NotFoundException(
-				`User with id: ${info.userId} does not exist`,
-			);
-
-		const friend = await this.getUserById(info.friendId);
-		if (!friend)
-			throw new NotFoundException(
-				`User with id: ${info.friendId} does not exist`,
-			);
-
-		const friendExists = await this.prisma.userFriends.findFirst({
-			where: {
-				nickname: friend.nickname,
-			},
-		});
-		if (friendExists)
-			throw new ConflictException(
-				`Friend with nickname: ${friend.id} already exists`,
-			);
-
-		const friendData: Prisma.UserFriendsCreateInput = {
-			user: { connect: { id: user.id } },
-		};
-
-		return await this.prisma.userFriends.create({ data: friendData });
-	}
-
-	async removeFriend(id: string) {
-		// Busca la relación de amistad usando el ID
-		const friend = await this.prisma.userFriends.findUnique({
-			where: { id },
-		});
-
-		// Verifica si el amigo existe
-		if (!friend) {
-			throw new NotFoundException('Amigo no encontrado.');
+	async addFriend(userId: string, friendId: string): Promise<User[]> {
+		if (userId === friendId) {
+			throw new BadRequestException('Cannot add yourself as a friend');
 		}
 
-		// Elimina la relación de amistad y retorna el mensaje de éxito
-		await this.prisma.userFriends.delete({
-			where: { id },
+		const [user, friend] = await this.prisma.$transaction([
+			this.prisma.user.findUnique({ where: { id: userId } }),
+			this.prisma.user.findUnique({ where: { id: friendId } }),
+		]);
+
+		if (!user) {
+			throw new NotFoundException(`User with id ${userId} not found`);
+		}
+
+		if (!friend) {
+			throw new NotFoundException(`User with id ${friendId} not found`);
+		}
+
+		const existingFriendship = await this.prisma.userFriends.findFirst({
+			where: {
+				OR: [
+					{ userId, friendId },
+					{ userId: friendId, friendId: userId },
+				],
+			},
 		});
 
-		return { message: 'Amigo eliminado exitosamente.' };
+		if (existingFriendship) {
+			throw new ConflictException('Already friends');
+		}
+
+		await this.prisma.$transaction(async (prisma) => {
+			await prisma.userFriends.create({
+				data: {
+					user: { connect: { id: userId } },
+					friend: { connect: { id: friendId } },
+				},
+			});
+
+			await prisma.userFriends.create({
+				data: {
+					user: { connect: { id: friendId } },
+					friend: { connect: { id: userId } },
+				},
+			});
+		});
+
+		return this.prisma.user.findMany({
+			where: {
+				OR: [
+					{ id: userId },
+					{ id: friendId },
+				],
+			},
+			include: {
+				friends: true,
+			},
+		});
+	}
+
+	async removeFriend(userId: string, friendId: string): Promise<void> {
+		if (userId === friendId) {
+			throw new BadRequestException('Cannot remove yourself as a friend');
+		}
+
+		await this.prisma.$transaction(async (prisma) => {
+			await prisma.userFriends.deleteMany({
+				where: {
+					userId,
+					friendId,
+				},
+			});
+
+			await prisma.userFriends.deleteMany({
+				where: {
+					userId: friendId,
+					friendId: userId,
+				},
+			});
+		});
 	}
 }

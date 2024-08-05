@@ -5,12 +5,14 @@ import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
 import { fetchUsers, banUser } from '@/utils/fetchUser';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import UsersPie from './UsersPie';
+import { toast } from 'sonner';
 
 const UsersArea: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: '' });
   const [userToBan, setUserToBan] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -57,10 +59,16 @@ const UsersArea: React.FC = () => {
     if (userToBan) {
       try {
         await banUser(userToBan);
-        alert("User Banned Successfully");
+        toast.success("User Banned Successfully", {
+          position: "top-right",
+          duration: 1500,
+        });
         setUsers(users.map(user => user.id === userToBan ? { ...user, state: false } : user));
       } catch (error) {
-        alert("Failed to ban user");
+        toast.error("Failed to ban user", {
+          position: "top-right",
+          duration: 1500,
+        });
         console.error("Error banning user:", error);
       } finally {
         setShowConfirmModal(false);
@@ -68,6 +76,8 @@ const UsersArea: React.FC = () => {
       }
     }
   };
+
+  const [view, setView] = useState<string>('table');
 
   const cancelBanUser = () => {
     setShowConfirmModal(false);
@@ -79,21 +89,45 @@ const UsersArea: React.FC = () => {
   const usersInTournament = users.filter(user => user.tournaments.length > 0).length;
   const usersOutTournament = users.filter(user => user.tournaments.length === 0).length;
 
+  const handleChangeView = (view: string) => {
+    setView(view);
+  };
+
+
+
   return (
     <>
-      <h1 className='heading3 text-center text-lightViolet mb-small'>Users Manage</h1>
-      <UsersList
-        users={users}
-        filters={filters}
-        onFilter={handleFilter}
-        onDeactivateUser={handleBanUser}
-      />
-      <UsersPie
-        activeUsers={activeUsers}
-        inactiveUsers={inactiveUsers}
-        usersInTournament={usersInTournament}
-        usersOutTournament={usersOutTournament}
-      />
+      <div>
+        <h1 className="heading5 text-lightViolet">Users</h1>
+            <div className="flex flex-row w-full items-center justify-around mt-4">
+          <button className='buttonFilter' onClick={() => handleChangeView('table')}>Table</button>
+          <button className='buttonFilter' onClick={() => handleChangeView('pie')}>Graphs</button>
+
+        </div>
+        {view === 'table' && (
+          <div className='col-span-3'>
+            <h1 className='label text-start text-lightViolet mb-small'>Users table</h1>
+            <UsersList
+              users={users}
+              filters={filters}
+              onFilter={handleFilter}
+              onDeactivateUser={handleBanUser}
+            />
+          </div>
+          )}
+          {view === 'pie' && (
+          <div className='col-span-3'>
+            <UsersPie
+              activeUsers={activeUsers}
+              inactiveUsers={inactiveUsers}
+              usersInTournament={usersInTournament}
+              usersOutTournament={usersOutTournament}
+            />
+          </div>
+          )}
+      </div>
+
+
       <ConfirmModal
         show={showConfirmModal}
         message="Are you sure you want to ban this user?"
