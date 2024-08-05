@@ -79,6 +79,10 @@ export class AuthService {
 
 			const user = await this.prisma.user.findUnique({
 				where: { email },
+				include: {
+					friends: true,
+					tournaments: true,
+				}
 			});
 
 			if (!user) {
