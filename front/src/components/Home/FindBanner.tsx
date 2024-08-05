@@ -1,13 +1,7 @@
 "use client";
-import Image from "next/image";
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { setFilter } from "@/redux/slices/cardsSlice";
-import allIcon from "../../app/assets/images/icons/all-A.png"
-import csIcon from "../../app/assets/images/icons/cs-A.png";
-import ftIcon from "../../app/assets/images/icons/fortnite-A.png";
-import lolIcon from "../../app/assets/images/icons/lol-A.png";
 
 //icons import
 import { MdGames } from "react-icons/md";
