@@ -40,7 +40,7 @@ export const UserDashboardView: React.FC = () => {
                     {section === 'settings' && <SettingsDashboardView/>}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                    <Image className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
+                    <Image className="w-full h-full object-cover" width={500} height={500} src="/dashboard.jpg" alt="dashboard" />
                 </div>
             </div>
     )
