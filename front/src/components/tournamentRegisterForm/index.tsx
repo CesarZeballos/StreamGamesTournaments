@@ -41,9 +41,9 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     
     const [addTeam, setAddTeam] = useState<IAddTeam>({
         tournamentId: tourId,
-        teamName: "",
-        organizarId: user!.id,
-        members: []
+        name: "",
+        organizerId: user!.id,
+        users: []
     });
 
     //control de ingreso a la page
@@ -63,12 +63,16 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         const selectedMembers = user!.friends.filter(friend => selectedNicknames.includes(friend.nickname));
 
         const completedTeam = [...selectedMembers, userData]
-    
+        
+        const membersIdArray: string[] = []
+        for(let i = 0; i < completedTeam.length; i++) {
+            membersIdArray.push(completedTeam[i].id)
+        }
         setTeamMembers(selectedNicknames);
 
         setAddTeam(addTeam => ({
           ...addTeam,
-          members: completedTeam
+          users: membersIdArray
         }));
       };
 
@@ -83,7 +87,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const teamLength = addTeam.members.length
+        const teamLength = addTeam.users.length
         if (teamLength < tournamentData.membersNumber) {
             toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${tournamentData.membersNumber - teamLength} more`, {
                 position: 'top-right',
@@ -95,7 +99,6 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                 duration: 1500,
             })
         } else {
-            console.log("addTeam", addTeam)
             try {
                 fetchAddTeamToTournament(addTeam, token!)
                 dispatch(setView("tournaments"))
@@ -141,8 +144,8 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                             <div className="flex flex-col gap-2">
                                 <label className="body text-white">team name</label>
                                 <input type="text"
-                                name="teamName"
-                                value={addTeam.teamName}
+                                name="name"
+                                value={addTeam.name}
                                 onChange={handleChange}
                                 className="input"
                                 required />

@@ -45,6 +45,7 @@ export class TeamsService {
 		return team;
 	}
 	async createTeam(createTeamDto: CreateTeamDto): Promise<Team> {
+		console.log(createTeamDto);
 		const tournament = await this.prisma.tournament.findUnique({
 			where: { id: createTeamDto.tournamentId },
 			include: { teams: { include: { users: true } } },
@@ -66,7 +67,7 @@ export class TeamsService {
 			}
 		}
 
-		//await this.paypalService.captureOrder(createTeamDto.paypal);
+		await this.paypalService.captureOrder(createTeamDto.paypal);
 
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,

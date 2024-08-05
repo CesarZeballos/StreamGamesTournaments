@@ -51,7 +51,11 @@ export const fetchAddTeamToTournament = async (data: IAddTeam, token: string) =>
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data)
-    })
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error adding team to tournament: ${response.statusText}`);
+    }
     console.log("response", response)
     return response
     
