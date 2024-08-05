@@ -1,9 +1,9 @@
 'use client';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { captureOrderSlice, createOrderSlice } from '@/redux/thunks/tournamentsSliceThunk';
 import { IAddTeamToTournament } from '@/interfaces/interfaceRedux';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 interface PayPalButtonProps {
   data: IAddTeamToTournament;
@@ -12,82 +12,38 @@ interface PayPalButtonProps {
 
 const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;  // Accede a la variable de entorno
+  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
-  useEffect(() => {
-    if (!clientId) {
-      console.error('PayPal client ID is missing');
-      return;
-    }
+  if (!clientId) {
+    console.error('PayPal client ID is missing');
+    return null;
+  }
 
-    const loadPayPalScript = () => {
-      const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
-      script.async = true;
-      document.body.appendChild(script);
-
-      script.onload = () => {
-        console.log('PayPal SDK loaded');
-      };
-
-      script.onerror = () => {
-        console.error('PayPal script failed to load.');
-      };
-
-      return () => {
-        document.body.removeChild(script);
-      };
-    };
-
-    loadPayPalScript();
-  }, [clientId]);
-
-  const handlePayPalClick = async () => {
-    // @ts-ignore
-    const paypal = window.paypal;
-
-    if (!paypal) {
-      console.error('PayPal SDK is not loaded');
-      return;
-    }
-
-    try {
-      const orderId = await dispatch(createOrderSlice(data)).unwrap();
-
-      // Crear la orden
-      paypal.Buttons({
-        createOrder: (data, actions) => {
-          return orderId;
-        },
-        onApprove: async (data, actions) => {
-          console.log("orderId", data.orderID)
+  return (
+    <PayPalScriptProvider options={{ clientId, currency: 'USD' }}>
+      <PayPalButtons
+        createOrder={async () => {
+          try {
+            const orderId = await dispatch(createOrderSlice(data)).unwrap();
+            return orderId; // Asegúrate de que esta acción devuelva el orderID
+          } catch (error) {
+            console.error('Error creating order:', error);
+            return '';
+          }
+        }}
+        onApprove={async (data: { orderID: string }) => {
           try {
             await dispatch(captureOrderSlice(data.orderID)).unwrap();
             onSuccess(data.orderID);
           } catch (error) {
             console.error('Error capturing order:', error);
           }
-        },
-        onError: (err) => {
+        }}
+        onError={(err: any) => {
           console.error('PayPal Buttons error:', err);
-        }
-      }).render('#paypal-button-container');
-
-      // Capturar la orden
-      await paypal.Buttons().createOrder();
-      await paypal.Buttons().onApprove();
-    } catch (error) {
-      console.error('Error handling PayPal payment:', error);
-    }
-  };
-
-  return (
-    <div>
-      <button onClick={handlePayPalClick} style={{ /* tus estilos aquí */ }}>
-        Pagar con PayPal
-      </button>
-      <div id="paypal-button-container" style={{ display: 'none' }}></div>
-    </div>
+        }}
+      />
+    </PayPalScriptProvider>
   );
 };
 
