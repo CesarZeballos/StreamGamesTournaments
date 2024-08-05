@@ -1,3 +1,4 @@
+import { IAddTeamToTournament } from "@/interfaces/interfaceRedux";
 import { IAddTeam, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -44,34 +45,31 @@ export async function fetchTournamentById(id: string) {
 }
 
 //funcion para inscribirse al torneo:
-export const fetchAddTeamToTournament = async (data: IAddTeam, token: string) => {
-    const response = await fetch(`${apiUrl}/teams`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error(`Error adding team to tournament: ${response.statusText}`);
-    }
-    console.log("response", response)
-    return response
-}
-
-export const fetchPaymentTournament = async (data: IAddTeam, token: string) => {
+export const fetchPaymentTournament = async (info: IAddTeamToTournament) => {
     const response = await fetch(`${apiUrl}/paypal/create-order`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${info.token}`
+        },
+        body: JSON.stringify(info.teamData)
+    });
+    
+    const data = await response.json();
+    return data.id
+}
+
+export const fetchAddTeamToTournament = async (data: IAddTeamToTournament) => {
+    const response = await fetch(`${apiUrl}/teams`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${data.token}`
         },
         body: JSON.stringify(data)
     });
-    if (!response.ok) {
-        throw new Error(`Error adding team to tournament: ${response.statusText}`);
-    }
-    console.log("response payment", response)
-    return response
+
+    const dataResponse = await response.json();
+    return dataResponse
 }
+

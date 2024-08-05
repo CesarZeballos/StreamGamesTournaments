@@ -15,6 +15,7 @@ import { fetchAddTeamToTournament } from "@/utils/fetchTournaments";
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import { isoToDate } from "@/utils/formatDate";
 import { postTeamToTournamentSlice } from "@/redux/thunks/tournamentsSliceThunk";
+import PayPalButton from "../paypalButton";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -100,32 +101,30 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                 duration: 1500,
             })
         } else {
-            try {
-                dispatch(postTeamToTournamentSlice({teamData: addTeam,token: token!}))
-            } catch {
-                toast.error("something went wrong", {
-                    position: 'top-right',
-                    duration: 1500,
-                })
-            }
         }
     }
-
-    const payment = useSelector((state: RootState) => state.auxiliar.statusPayment);
-    useEffect(() => {
-        if(payment === "succeeded") {
+    
+    const onSuccess = (orderId: string) => {
+        try {
+            dispatch(postTeamToTournamentSlice({teamData: addTeam, orderId: orderId, token: token!}))
             dispatch(setView("tournaments"))
             dispatch(reloadUserSlice({
                 email: user!.email!,
-                tokenFirebase: user!.tokenFirebase
-            }))
-            router.push("/dashboard")
-            toast.success(`Your team is registered in the ${tournamentData.nameTournament}`, {
+                    tokenFirebase: user!.tokenFirebase
+                }))
+                router.push("/dashboard")
+                toast.success(`Your team is registered in the ${tournamentData.nameTournament}`, {
+                    position: 'top-right',
+                    duration: 1500,
+                })
+        } catch {
+            toast.error("something went wrong", {
                 position: 'top-right',
                 duration: 1500,
             })
+        }
         } 
-    }, [payment, dispatch, router, user, tournamentData.nameTournament])
+
 
     const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         router.push("/tournaments/" + tourId);
@@ -210,7 +209,8 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
                     <FormContainer section={""}>
                         <div className="flex flex-row gap-2">
-                            <button type="submit" className="buttonPrimary">Register team</button>
+                            <PayPalButton data={{teamData: addTeam, token: token!}} onSuccess={onSuccess} />
+                            {/* <button type="submit" className="buttonPrimary">Register team</button> */}
                             <button className="buttonSecondary" onClick={goBack}>Cancel</button>
                         </div>
                     </FormContainer>
