@@ -1,4 +1,5 @@
 'use client'
+import Image from "next/image";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -11,16 +12,16 @@ import { NotificationDashboardView } from "../notificationDashboardView";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 import { SettingsDashboardView } from "../settingsDashboardView";
 import { setView } from "@/redux/slices/dashboardSlice";
-
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
+import TournamentForm from "../tournamentForm";
 
 export const UserDashboardView: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
     const user = useSelector((state: RootState) => state.user);
     const section = useSelector((state: RootState) => state.dashboard.view);
-    
-
     const token = useSelector((state: RootState) => state.user.token);
+    
     useEffect(() => {
         if (token === null) {
             router.push("/")
@@ -38,9 +39,13 @@ export const UserDashboardView: React.FC = () => {
                     {section === 'addFriend' && <AddFriend/>}
                     {section === 'tournaments' && <TournamentsDashboardView/>}
                     {section === 'settings' && <SettingsDashboardView/>}
+                    
+                    {section === 'myTournaments' && <TournamentsDashboardView/>}
+                    {section === 'createTournament' && <TournamentForm />}
+
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                    <img className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
+                    <Image className="w-full h-full object-cover" width={500} height={500} src="/dashboard.jpg" alt="dashboard" />
                 </div>
             </div>
     )

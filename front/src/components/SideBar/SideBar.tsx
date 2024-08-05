@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "@/redux/slices/cardsSlice";
 
 //icons import
 import { PiMedalMilitary } from "react-icons/pi";
@@ -12,6 +11,9 @@ import { filtered } from "@/redux/thunks/auxiliarSliceThunk";
 
 const SideBar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const category = useSelector((state: RootState) => state.tournament.filters.category)
+  const price = useSelector((state: RootState) => state.tournament.filters.price)
+  const date = useSelector((state: RootState) => state.tournament.filters.date)
 
   const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = event.currentTarget;
@@ -27,16 +29,16 @@ const SideBar: React.FC = () => {
       
       <div className="flex flex-col gap-2">
         <h1 className="heading5 text-lightViolet">Competition Difficulty</h1>
-        <div>
-          <button className="buttonFilter" name="category" value={"beginner"} onClick={handleFilterClick}>
+        <div className="flex flex-col gap-1">
+          <button className={`buttonFilter ${category === "beginner" && "buttonFilterActive"}`} name="category" value={"beginner"} onClick={handleFilterClick}>
             <PiMedalMilitary />
             <p>Beginner</p>
           </button>
-          <button className="buttonFilter" name="category" value={"advanced"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${category === "advanced" && "buttonFilterActive"}`} name="category" value={"advanced"} onClick={handleFilterClick}>
             <PiMedalMilitaryFill />
             <p>Advanced</p>
           </button>
-          <button className="buttonFilter" name="category" value={"expert"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${category === "expert" && "buttonFilterActive"}`} name="category" value={"expert"} onClick={handleFilterClick}>
             <TbMilitaryAward />
             <p>Expert</p>
           </button>
@@ -44,29 +46,26 @@ const SideBar: React.FC = () => {
   
 
         <h1 className="heading5 text-lightViolet">Price range</h1>
-        <div>
-          <button className="buttonFilter" name="price" value={"cheap"} onClick={handleFilterClick}>
+        <div className="flex flex-col gap-1">
+        <button className={`buttonFilter ${price === "cheap" && "buttonFilterActive"}`} name="price" value={"cheap"} onClick={handleFilterClick}>
           <p>$0 - $500</p>
           </button>
-          <button className="buttonFilter" name="price" value={"medium"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${price === "medium" && "buttonFilterActive"}`} name="price" value={"medium"} onClick={handleFilterClick}>
           <p>$501 - $1000</p>
           </button>
-          <button className="buttonFilter" name="price" value={"expensive"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${price === "expensive" && "buttonFilterActive"}`} name="price" value={"expensive"} onClick={handleFilterClick}>
           <p>$1001 - More</p>
           </button>
         </div>
 
         <h1 className="heading5 text-lightViolet">Date</h1>
-        <div>
-          <button className="buttonFilter" name="date" value={"thisMonth"} onClick={handleFilterClick}>
+        <div  className="flex flex-col gap-1">
+        <button className={`buttonFilter ${date === "thisMonth" && "buttonFilterActive"}`} name="date" value={"thisMonth"} onClick={handleFilterClick}>
               <p>This Month</p>
           </button>
-          <button className="buttonFilter" name="date" value={"nextMonths"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${date === "nextMonths" && "buttonFilterActive"}`} name="date" value={"nextMonths"} onClick={handleFilterClick}>
               <p>Next Months</p>
           </button>
-          {/* <button className="buttonFilter" name="date" value={"more"} onClick={handleFilterClick}>
-              <p>More</p>
-          </button> */}
         </div>
       </div>
     </div>

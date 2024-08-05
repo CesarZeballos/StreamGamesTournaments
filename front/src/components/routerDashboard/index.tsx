@@ -1,15 +1,17 @@
 'use client'
 import { setView } from "@/redux/slices/dashboardSlice"
-import { RootState } from "@/redux/store"
+import { AppDispatch, RootState } from "@/redux/store"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { SearchBarDashboard } from "../searchbarDashboard"
 import { useRouter } from "next/navigation"
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk"
 
 export const RouterDashboard: React.FC = () => {
     const router = useRouter();
     const rol = useSelector((state: RootState) => state.user.user?.role);
-    const dispatch = useDispatch();
+    const data = useSelector((state: RootState) => state.user.user);
+    const dispatch = useDispatch<AppDispatch>();
 
     const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
@@ -19,15 +21,15 @@ export const RouterDashboard: React.FC = () => {
     }, [router, token, dispatch])
     
     useEffect(() => {
-        dispatch(setView("data"))
-        if (rol === 'admin') {
-            window.location.href = '/dashboard/admin';
-        } else if (rol === 'user') {
-            window.location.href = '/dashboard/user';
-        } else if (rol === 'organizer') {
-            window.location.href = '/dashboard/organizer';
-        }
-    }, [rol, dispatch])
+        router.push("/dashboard/user")
+    }, [])
+
+    useEffect(() => {
+        dispatch(reloadUserSlice({
+            email: data?.email!,
+            tokenFirebase: data?.tokenFirebase
+        }))
+    }, [data, dispatch])
 
     return (
         <div className="grid grid-cols-4 gap-x-6 mt-4">

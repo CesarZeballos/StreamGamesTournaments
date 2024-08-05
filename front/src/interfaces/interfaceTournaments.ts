@@ -1,6 +1,8 @@
 import { StaticImageData } from "next/image";
 import { IUser } from "./interfaceUser";
 
+type ImageSource = StaticImageData | string;
+
 export interface ITournament {
     id: string;
     nameTournament: string;
@@ -13,12 +15,32 @@ export interface ITournament {
     maxTeam: number;
     price: number;
     urlAvatar: string;
-    award: string[];
+    awards: string[];
     description: string;
     state: boolean;
     game: IGame;
     players: [];
     organizer: IUser;
+}
+
+export interface ITournamentPost {
+    nameTournament: string;
+    startDate: string;
+    category: string;
+    organizerId: string;
+    gameId: string;
+    membersNumber: number;
+    maxTeam: number;
+    price: number;
+    urlAvatar: ImageSource;
+    award: string[];
+    description: string;
+}
+
+export interface ITournamentState {
+    tournaments: ITournament[];
+    filter: string;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 export interface IGame {

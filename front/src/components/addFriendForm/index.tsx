@@ -13,32 +13,38 @@ import { addfriendSlice } from "@/redux/thunks/userSliceThunk";
 import { toast } from "sonner";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
+import { useRouter } from "next/navigation";
 
 export const AddFriend: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
     const [userSelector, setUserSelector] = useState<IUserSelector[]>([]);
     const [friend, setFriend] = useState<string>("");
 
     const userActive = useSelector((state: RootState) => state.user);
     const users = useSelector((state: RootState) => state.auxiliar.users);
+
+    useEffect(() => {
+        dispatch(getUsersSlice())
+    }, [dispatch])
     
     useEffect(() => {
-        dispatch(getUsersSlice());
-        if(userSelector.length === 0) {
-            for (let i = 0; i < users.length; i++) {
-                userSelector.push({
-                    id: users[i].id,
-                    label: users[i].nickname,
-                    email: users[i].email,
-                    birthdate: users[i].birthdate,
-                    role: users[i].role
-                })
+            if(userSelector.length === 0) {
+                for (let i = 0; i < users.length; i++) {
+                    if(users[i].id !== userActive.user?.id){
+                        userSelector.push({
+                            id: users[i].id,
+                            label: users[i].nickname,
+                            email: users[i].email,
+                            birthdate: users[i].birthdate,
+                            role: users[i].role
+                        })
+                    }
+                }
             }
-        }
-    }, [users, dispatch, userSelector])
+    }, [users, userSelector, dispatch, userActive.user?.id])
 
     const handleChange = (event: any, value: IUserSelector | null) => {
-        console.log(value)
         if (value) {
             setFriend(value.id)
         }}

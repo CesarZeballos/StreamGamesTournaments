@@ -14,6 +14,9 @@ export const SearchBarDashboard: React.FC = () => {
     const handleViewClick = (view: string) => {
         dispatch(setView(view))
     }
+    const handleRoot = () => {
+        router.push("/postTournament")
+}
 
     const logout = () => {
         dispatch(logoutSlice())
@@ -33,13 +36,15 @@ export const SearchBarDashboard: React.FC = () => {
                 <button className="buttonPrimary" onClick={() => handleViewClick("addFriend")}>Add friend</button>
             </div>
 
-            {userRol === "organizer" || userRol === "admin" && <div  className="flex flex-col items-center gap-2">
+            {userRol === "organizer" || userRol === "admin" && 
+            <div  className="flex flex-col items-center gap-2">
                 <h1 className="heading5 text-lightViolet">Organizer options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("myTournaments")}>Organized tournaments</button>
-                <button className="buttonSecondary" onClick={() => handleViewClick("createTournament")}>Create Tournament</button>
-                </div>}
+                <button className="buttonSecondary" onClick={() => handleRoot()}>Create Tournament</button>
+            </div>}
 
-            {userRol === "admin" && <div className="flex flex-col items-center gap-2">
+            {userRol === "admin" && 
+            <div className="flex flex-col items-center gap-2">
                 <h1 className="heading5 text-lightViolet">Admin options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("users")}>Users</button>
             </div>}
