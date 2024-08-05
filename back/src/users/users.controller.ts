@@ -27,7 +27,7 @@ import { Role } from '@prisma/client'; */
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-	constructor(private readonly usersService: UsersService) {}
+	constructor(private readonly usersService: UsersService) { }
 
 	/* @UseGuards(JwtAuthGuard) */
 	@Get()
@@ -136,7 +136,8 @@ export class UsersController {
 		description: 'Amigo ya añadido o datos inválidos',
 	})
 	addFriend(@Body() addFriendDto: AddFriendDto) {
-		return this.usersService.addFriend(addFriendDto);
+		const { userId, friendId } = addFriendDto
+		return this.usersService.addFriend(userId, friendId);
 	}
 
 	@Delete('remove-friend/:id')
@@ -150,8 +151,8 @@ export class UsersController {
 		status: 200,
 		description: 'Amigo eliminado exitosamente',
 	})
-	@ApiResponse({ status: 404, description: 'Amigo no encontrado' })
-	removeFriend(@Param('id') id: string) {
-		return this.usersService.removeFriend(id);
+	@ApiResponse({ status: 404, description: 'friends does not exist' })
+	removeFriend(@Param('id') id: string, @Param('id') id2: string) {
+		return this.usersService.removeFriend(id, id2);
 	}
 }

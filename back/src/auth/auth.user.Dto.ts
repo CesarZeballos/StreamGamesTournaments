@@ -109,12 +109,4 @@ export class AddFriendDto {
 	@IsNotEmpty()
 	friendId: string
 
-	@ApiProperty({
-		description: 'nickname to user',
-		example: '123e4567-e89b-12d3-a456-426614174000',
-	})
-	@IsUUID()
-	@IsNotEmpty()
-	nickname?: string
-
 }
