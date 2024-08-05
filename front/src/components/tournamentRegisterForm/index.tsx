@@ -45,7 +45,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         maxTeam: 0,
         price: 0,
         urlAvatar: "",
-        award: [],
+        awards: [],
         description: "",
         state: false,
         game: {} as IGame,

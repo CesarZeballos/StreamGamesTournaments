@@ -29,6 +29,7 @@ export const RouterDashboard: React.FC = () => {
             email: data?.email!,
             tokenFirebase: data?.tokenFirebase
         }))
+        dispatch(setView("notifications"))
     }, [data, dispatch])
 
     return (
