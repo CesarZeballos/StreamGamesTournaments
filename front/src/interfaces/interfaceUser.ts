@@ -2,7 +2,7 @@ export interface IUser {
     id: string
     email: string
     nickname: string
-    // tokenFirebase: string
+    tokenFirebase: string
     birthdate: string
     urlProfile: string
     urlSteam: string
@@ -20,7 +20,7 @@ interface IFriend {
     id: string
     email: string
     nickname: string
-    // tokenFirebase: string
+    tokenFirebase: string
     birthdate: string
     urlProfile: string
     urlSteam: string

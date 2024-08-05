@@ -3,6 +3,7 @@ import { format } from "date-fns";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+//funcion para recibir todos los torneos
 export async function fetchTournaments(): Promise<ITournament[]> {
         const response = await fetch(`${apiUrl}/tournaments`, {
             method: "GET",
@@ -24,6 +25,7 @@ export async function fetchTournaments(): Promise<ITournament[]> {
         return formattedTournaments;
 }
 
+// funcion para recibir el torneo por id
 export async function fetchTournamentById(id: string) {
         const response = await fetch(`${apiUrl}/tournaments/${id}`, {
             method: "GET",
@@ -39,3 +41,6 @@ export async function fetchTournamentById(id: string) {
             return tournament;
         }
 }
+
+//funcion para inscribirse al torneo:
+//la ruta es: 

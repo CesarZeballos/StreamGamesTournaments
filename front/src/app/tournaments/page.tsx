@@ -13,7 +13,6 @@ const Tournaments: React.FC = () => {
         <SearchBar />
         <div className="grid grid-cols-[25%_75%]">
         <SideBar />
-        {/* <Cards /> */}
         <TournamentContainer />
         </div>
         </div>

@@ -1,6 +1,6 @@
 import { IUserState } from "@/interfaces/interfaceRedux";
 import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
+import { addfriendSlice, forgotPasswordSlice, loginSlice, registerSlice, reloadUserSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
 
@@ -94,6 +94,23 @@ const userSlice = createSlice({
                 position: 'top-right',
                 duration: 1500,
               })
+          })
+
+          // RELOAD USER
+          .addCase(reloadUserSlice.pending, (state) => {
+            state.status = 'loading'
+            state.error = null
+          })
+          .addCase(reloadUserSlice.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.statusRegister = 'idle'
+            if (action.payload) {
+                state.user = action.payload.user
+                state.token = action.payload.token
+            } else return
+          })
+          .addCase(reloadUserSlice.rejected, (state, action) => {
+            state.status = 'failed'
           })
 
           // FORGOT PASSWORD

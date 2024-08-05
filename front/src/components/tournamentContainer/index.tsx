@@ -13,10 +13,9 @@ export const TournamentContainer: React.FC = () => {
         dispatch(getTournamentsSlice())
     }, [])
     return (
-        <div className="grid grid-cols-3 gap-x-6 gap-y-8">
-            {!tournaments && <p>No tournaments found</p>}
-            {tournaments.length === 0 ? 
-            <h1>sorry, no tournaments found</h1> : (
+        <div className="grid grid-cols-3 mt-8 gap-x-6 gap-y-8">
+            {!tournaments && <h1 className="heading5 text-lightViolet text-center col-span-2 mt-9">No tournaments found</h1>}
+            {tournaments.length === 0 ? <h1 className="heading5 text-lightViolet text-center col-span-2 mt-9">sorry, no tournaments found</h1> : (
                 tournaments.map((tournament) => (
                     <Tournaments key={tournament.id} tournament={tournament} />
                 ))
