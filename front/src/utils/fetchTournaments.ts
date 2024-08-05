@@ -58,5 +58,20 @@ export const fetchAddTeamToTournament = async (data: IAddTeam, token: string) =>
     }
     console.log("response", response)
     return response
-    
+}
+
+export const fetchPaymentTournament = async (data: IAddTeam, token: string) => {
+    const response = await fetch(`${apiUrl}/paypal/create-order`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+        throw new Error(`Error adding team to tournament: ${response.statusText}`);
+    }
+    console.log("response payment", response)
+    return response
 }

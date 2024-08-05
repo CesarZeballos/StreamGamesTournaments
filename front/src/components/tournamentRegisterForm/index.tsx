@@ -14,6 +14,7 @@ import { setView } from "@/redux/slices/dashboardSlice";
 import { fetchAddTeamToTournament } from "@/utils/fetchTournaments";
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import { isoToDate } from "@/utils/formatDate";
+import { postTeamToTournamentSlice } from "@/redux/thunks/tournamentsSliceThunk";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -100,17 +101,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             })
         } else {
             try {
-                fetchAddTeamToTournament(addTeam, token!)
-                dispatch(setView("tournaments"))
-                dispatch(reloadUserSlice({
-                    email: user!.email!,
-                    tokenFirebase: user!.tokenFirebase
-                }))
-                router.push("/dashboard")
-                toast.success(`Your team is registered in the ${tournamentData.nameTournament}`, {
-                    position: 'top-right',
-                    duration: 1500,
-                })
+                dispatch(postTeamToTournamentSlice({teamData: addTeam,token: token!}))
             } catch {
                 toast.error("something went wrong", {
                     position: 'top-right',
@@ -119,6 +110,22 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             }
         }
     }
+
+    const payment = useSelector((state: RootState) => state.auxiliar.statusPayment);
+    useEffect(() => {
+        if(payment === "succeeded") {
+            dispatch(setView("tournaments"))
+            dispatch(reloadUserSlice({
+                email: user!.email!,
+                tokenFirebase: user!.tokenFirebase
+            }))
+            router.push("/dashboard")
+            toast.success(`Your team is registered in the ${tournamentData.nameTournament}`, {
+                position: 'top-right',
+                duration: 1500,
+            })
+        } 
+    }, [payment, dispatch, router, user, tournamentData.nameTournament])
 
     const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         router.push("/tournaments/" + tourId);
