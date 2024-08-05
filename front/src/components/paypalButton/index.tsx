@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
-import { captureOrderSlice, createOrderSlice, postTeamToTournamentSlice } from '@/redux/thunks/tournamentsSliceThunk';
+import { captureOrderSlice, createOrderSlice } from '@/redux/thunks/tournamentsSliceThunk';
 import { IAddTeamToTournament } from '@/interfaces/interfaceRedux';
 
 interface PayPalButtonProps {
@@ -27,32 +27,7 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
       document.body.appendChild(script);
 
       script.onload = () => {
-        // @ts-ignore
-        paypal.Buttons({
-          createOrder: async () => {
-            try {
-              const orderId = await dispatch(createOrderSlice(data)).unwrap();
-              return orderId; // Asegúrate de que esta acción devuelva el orderID
-            } catch (error) {
-              console.error('Error creating order:', error);
-              // Manejar el error adecuadamente
-              return '';
-            }
-          },
-          onApprove: async (data: { orderID: string }) => {
-            console.log("orderId", data.orderID)
-            try {
-              await dispatch(captureOrderSlice(data.orderID)).unwrap();
-              onSuccess(data.orderID);
-            } catch (error) {
-              console.error('Error capturing order:', error);
-              // Manejar el error adecuadamente
-            }
-          },
-          onError: (err: any) => {
-            console.error('PayPal Buttons error:', err);
-          }
-        }).render('#paypal-button-container');
+        console.log('PayPal SDK loaded');
       };
 
       script.onerror = () => {
@@ -65,10 +40,55 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
     };
 
     loadPayPalScript();
+  }, [clientId]);
 
-  }, [data, onSuccess, dispatch, clientId]);
+  const handlePayPalClick = async () => {
+    // @ts-ignore
+    const paypal = window.paypal;
 
-  return <div id="paypal-button-container"></div>;
+    if (!paypal) {
+      console.error('PayPal SDK is not loaded');
+      return;
+    }
+
+    try {
+      const orderId = await dispatch(createOrderSlice(data)).unwrap();
+
+      // Crear la orden
+      paypal.Buttons({
+        createOrder: (data, actions) => {
+          return orderId;
+        },
+        onApprove: async (data, actions) => {
+          console.log("orderId", data.orderID)
+          try {
+            await dispatch(captureOrderSlice(data.orderID)).unwrap();
+            onSuccess(data.orderID);
+          } catch (error) {
+            console.error('Error capturing order:', error);
+          }
+        },
+        onError: (err) => {
+          console.error('PayPal Buttons error:', err);
+        }
+      }).render('#paypal-button-container');
+
+      // Capturar la orden
+      await paypal.Buttons().createOrder();
+      await paypal.Buttons().onApprove();
+    } catch (error) {
+      console.error('Error handling PayPal payment:', error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handlePayPalClick} style={{ /* tus estilos aquí */ }}>
+        Pagar con PayPal
+      </button>
+      <div id="paypal-button-container" style={{ display: 'none' }}></div>
+    </div>
+  );
 };
 
 export default PayPalButton;
