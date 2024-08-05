@@ -50,23 +50,23 @@ export class TeamsService {
 			include: { teams: { include: { users: true } } },
 		});
 
-		if (!tournament)
+		if (!tournament) {
 			throw new NotFoundException(
-				`Tournament with id: ${createTeamDto.tournamentId} does not exists,
-            `,
+				`Tournament with id: ${createTeamDto.tournamentId} does not exist.`,
 			);
+		}
 
 		for (const team of tournament.teams) {
 			for (const userExistsInTournament of team.users) {
-				if (createTeamDto.users.includes(userExistsInTournament.id))
+				if (createTeamDto.users.some(user => user.id === userExistsInTournament.id)) {
 					throw new ConflictException(
-						` User with id: ${userExistsInTournament.id} already exists in tournament,
-                    `,
+						`User with id: ${userExistsInTournament.id} already exists in the tournament.`,
 					);
+				}
 			}
 		}
 
-		await this.paypalService.captureOrder(createTeamDto.paypal);
+		//await this.paypalService.captureOrder(createTeamDto.paypal);
 
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
@@ -80,19 +80,17 @@ export class TeamsService {
 		const team = await this.prisma.team.create({ data: teamData });
 
 		if (createTeamDto.users && createTeamDto.users.length > 0) {
-			for (const userId of createTeamDto.users) {
-				const user = await this.prisma.user.findUnique({
-					where: { id: userId },
+			for (const user of createTeamDto.users) {
+				const foundUser = await this.prisma.user.findUnique({
+					where: { id: user.id },
 				});
-				if (!user) {
-					throw new BadRequestException(
-						`User with ID ${userId} not found`,
-					);
+				if (!foundUser) {
+					throw new BadRequestException(`User with ID ${user.id} not found`);
 				}
 
 				await this.prisma.userTeams.create({
 					data: {
-						nickname: user.nickname,
+						nickname: foundUser.nickname,
 						nameTeam: team.id,
 					},
 				});
@@ -101,6 +99,9 @@ export class TeamsService {
 
 		return team;
 	}
+
+
+
 
 	async updateTeam(updateTeamDto: any): Promise<Team> {
 		const team = await this.prisma.team.findUnique({
