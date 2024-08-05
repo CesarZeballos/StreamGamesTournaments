@@ -54,5 +54,6 @@ export interface IAuxiliarState {
 
 export interface IAddTeamToTournament {
     teamData: IAddTeam
+    orderId?: string
     token: string
 }

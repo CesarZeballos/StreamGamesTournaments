@@ -49,15 +49,10 @@ const auxiliarSlice = createSlice({
         // ADD TEAM TO TOURNAMENT
         .addCase(postTeamToTournamentSlice.pending, (state) => {
           state.statusPayment = 'loading'
-          toast.loading('Waiting for your payment', {
-              position: 'top-right',
-              duration: 1500,
-          })
-            
         })
         .addCase(postTeamToTournamentSlice.fulfilled, (state, action) => {
           state.statusPayment = 'succeeded'
-          toast.success(`Payment succeeded`, {
+          toast.success(`Payment succeeded. your team is registered`, {
               position: 'top-right',
               duration: 1500,
             })
