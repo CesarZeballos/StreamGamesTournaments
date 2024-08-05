@@ -47,7 +47,7 @@ export class PayPalService {
 				{
 					amount: {
 						currency_code: 'USD',
-						value: '100.00',
+						value: tournament.price.toString(),
 					},
 				},
 			],
