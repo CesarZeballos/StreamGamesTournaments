@@ -44,6 +44,7 @@ export class TeamsService {
 
 		return team;
 	}
+
 	async createTeam(createTeamDto: CreateTeamDto): Promise<Team> {
 		const tournament = await this.prisma.tournament.findUnique({
 			where: { id: createTeamDto.tournamentId },
@@ -51,41 +52,36 @@ export class TeamsService {
 		});
 
 		if (!tournament) {
-			throw new NotFoundException(
-				`Tournament with id: ${createTeamDto.tournamentId} does not exist.`,
-			);
+			throw new NotFoundException(`Tournament with id: ${createTeamDto.tournamentId} does not exist.`);
 		}
 
 		for (const team of tournament.teams) {
 			for (const userExistsInTournament of team.users) {
-				if (createTeamDto.users.some(user => user.id === userExistsInTournament.id)) {
-					throw new ConflictException(
-						`User with id: ${userExistsInTournament.id} already exists in the tournament.`,
-					);
+				if (createTeamDto.users.includes(userExistsInTournament.id)) {
+					throw new ConflictException(`User with id: ${userExistsInTournament.id} already exists in the tournament.`);
 				}
 			}
 		}
 
-		//await this.paypalService.captureOrder(createTeamDto.paypal);
+		await this.paypalService.captureOrder(createTeamDto.paypal);
 
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
 			organizerId: createTeamDto.organizerId,
-			tournament: createTeamDto.tournamentId
-				? { connect: { id: createTeamDto.tournamentId } }
-				: undefined,
+			tournament: createTeamDto.tournamentId ? { connect: { id: createTeamDto.tournamentId } } : undefined,
 			urlAvatar: createTeamDto.urlAvatar,
 		};
 
 		const team = await this.prisma.team.create({ data: teamData });
 
 		if (createTeamDto.users && createTeamDto.users.length > 0) {
-			for (const user of createTeamDto.users) {
+			for (const userId of createTeamDto.users) {
 				const foundUser = await this.prisma.user.findUnique({
-					where: { id: user.id },
+					where: { id: userId },
 				});
+
 				if (!foundUser) {
-					throw new BadRequestException(`User with ID ${user.id} not found`);
+					throw new BadRequestException(`User with ID ${userId} not found`);
 				}
 
 				await this.prisma.userTeams.create({
@@ -99,8 +95,6 @@ export class TeamsService {
 
 		return team;
 	}
-
-
 
 
 	async updateTeam(updateTeamDto: any): Promise<Team> {

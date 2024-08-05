@@ -44,7 +44,7 @@ export class CreateTeamDto {
 	@IsArray()
 	@ArrayNotEmpty()
 	@IsString({ each: true })
-	users: User[];
+	users: string[];
 
 	@IsString()
 	paypal: string;
