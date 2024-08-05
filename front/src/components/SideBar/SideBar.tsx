@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "@/redux/slices/cardsSlice";
 
 //icons import
 import { PiMedalMilitary } from "react-icons/pi";

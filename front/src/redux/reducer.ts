@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import userSlice from './slices/userSlice';
-import cardsSlice from './slices/cardsSlice';
 import dashboardSlice from './slices/dashboardSlice';
 import auxiliarSlice from './slices/auxiliarSlice';
 import tournamentsSlice from './slices/tournamentSlice';
@@ -20,7 +19,8 @@ const rootReducer = combineReducers({
   tournament: tournamentsSlice,
   cards: cardsSlice,
   dashboard: dashboardSlice,
-  auxiliar: auxiliarSlice
+  auxiliar: auxiliarSlice,
+  tournaments: tournamentSlice
 });
 
 export default rootReducer;

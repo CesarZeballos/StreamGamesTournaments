@@ -139,12 +139,62 @@ html, body {
 body {
   @apply bg-gradient-to-b from-BGlight to-BGdark;
 }
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+thead {
+  overflow: hidden;
+}
+
+td {
+  border-radius: 0;
+  border: 1px solid #e100ff;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+th {
+  background-color: #f4f4f4;
+  border-radius: 0;
+  border: 1px solid #e100ff;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+th select {
+  padding: 4px;
+  overflow: hidden;
+}
+
+.filter {
+  @apply mt-2 mb-2 block w-full border-2 border-softViolet rounded-md shadow-sm text-BGdark p-4 overflow-hidden
+}
+
+.selector {
+  @apply mt-2 mb-2 block w-full border-2 border-softViolet rounded-md shadow-sm text-BGdark
+}
+
+.chart-container {
+  overflow: hidden;
+  position: relative;
+}
   
 .back-image {
   @apply w-3/4 h-1/3 z-10 rounded-3xl
 }
 
+.label {
+  @apply block text-white font-Raleway text-base mt-3
+}
+
 .input {
+
   @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-80
   focus:border-solid
   focus:border-lightViolet
@@ -158,6 +208,10 @@ body {
   focus:border-lightViolet
   focus:shadow-md
   focus:shadow-lightViolet
+}
+
+.helper {
+  @apply text-white text-xs mt-1
 }
 
 .loading {
@@ -198,6 +252,10 @@ body {
   @apply flex-1 font-Raleway font-black text-center overflow-hidden pr-6 sm:text-xl;
 }
 
+.award-area {
+  @apply flex flex-row items-center mb-2;
+}
+
 .chip {
   @apply bg-BGlight font-Raleway font-bold text-xs text-white pl-4 py-2 rounded-full
 }
@@ -209,6 +267,7 @@ body {
 .tableBody {
   @apply font-Roboto text-base text-white
 }
+
 @media (max-width: 992px) {
   .father-container {
     transform: scale(0);

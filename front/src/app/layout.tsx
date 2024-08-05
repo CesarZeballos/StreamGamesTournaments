@@ -5,7 +5,6 @@ import { Providers } from "@/redux/provider";
 import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "sonner";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 

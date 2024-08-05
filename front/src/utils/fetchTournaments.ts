@@ -1,5 +1,4 @@
-import { ITournament, IAddTeam } from "@/interfaces/interfaceTournaments";
-import { format } from "date-fns";
+import { ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -27,7 +26,7 @@ export async function fetchTournaments(): Promise<ITournament[]> {
 
 // funcion para recibir el torneo por id
 export async function fetchTournamentById(id: string) {
-        const response = await fetch(`${apiUrl}/tournaments/${id}`, {
+        const response = await fetch(`http://localhost:3001/tournaments/${id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -38,6 +37,7 @@ export async function fetchTournamentById(id: string) {
         } else {
             const tournament = await response.json();
             console.log("Raw API response:", tournament);
+        console.log("Awards field:", tournament.award);
             return tournament;
         }
 }

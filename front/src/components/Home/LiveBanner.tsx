@@ -41,6 +41,7 @@ const LiveBanner: React.FC = () => {
 
     return (
         <Suspense fallback={<div className="loading">Loading banner...</div>}>
+
             <div className="flex flex-row items-center mb-36 mt-9">
                 <button className="iconButton ml-8" onClick={handlePrev}><ArrowBackIosRoundedIcon /></button>
                 <div className="relative flex flex-row justify-center h-96 rounded-3xl overflow-hidden mx-16">

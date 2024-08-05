@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { categoryIcons } from "@/utils/tournamentsData";
 import { ITournament } from "@/interfaces/interfaceTournaments";
 import award1 from "../../app/assets/images/icons/award1.png"
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';

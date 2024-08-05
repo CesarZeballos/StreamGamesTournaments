@@ -18,8 +18,8 @@ const initialState: ITournamentState = {
   tournamentsFiltered: [],
 };
 
-const tournamentsSlice = createSlice({
-  name: "tournaments",
+const tournamentSlice = createSlice({
+  name: 'tournaments',
   initialState,
   reducers: {
     setTournaments(state, action: PayloadAction<ITournament[]>) {
@@ -103,10 +103,10 @@ const tournamentsSlice = createSlice({
         }
       })
       .addCase(getTournamentsSlice.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
-      .addCase(getTournamentsSlice.rejected, (state, action) => {
-        state.status = "failed";
+      .addCase(getTournamentsSlice.rejected, (state) => {
+        state.status = 'failed';
         toast.error('Error in getting tournaments', {
           position: 'top-right',
           duration: 1500,
@@ -117,7 +117,7 @@ const tournamentsSlice = createSlice({
         state.tournaments = action.payload
         state.tournamentsFiltered = action.payload
       });
-  }
+  },
 });
 
 export const { setTournaments, setRunFilters, setRootFilters } = tournamentsSlice.actions;

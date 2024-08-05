@@ -1,4 +1,5 @@
 'use client'
+import Image from "next/image";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -11,7 +12,6 @@ import { NotificationDashboardView } from "../notificationDashboardView";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 import { SettingsDashboardView } from "../settingsDashboardView";
 import { setView } from "@/redux/slices/dashboardSlice";
-
 
 export const UserDashboardView: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -40,7 +40,7 @@ export const UserDashboardView: React.FC = () => {
                     {section === 'settings' && <SettingsDashboardView/>}
                 </div>
                 <div className="w-64 h-64 border-lightViolet border-4 rounded-full overflow-hidden">
-                    <img className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
+                    <Image className="w-full h-full object-cover" src="/dashboard.jpg" alt="dashboard" />
                 </div>
             </div>
     )
