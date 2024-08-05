@@ -21,15 +21,8 @@ export const RouterDashboard: React.FC = () => {
     }, [router, token, dispatch])
     
     useEffect(() => {
-        dispatch(setView("data"))
-        if (rol === 'admin') {
-            window.location.href = '/dashboard/admin';
-        } else if (rol === 'user') {
-            window.location.href = '/dashboard/user';
-        } else if (rol === 'organizer') {
-            window.location.href = '/dashboard/organizer';
-        }
-    }, [rol, dispatch])
+        router.push("/dashboard/user")
+    }, [])
 
     useEffect(() => {
         dispatch(reloadUserSlice({

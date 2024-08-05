@@ -11,7 +11,7 @@ import { StaticImageData } from "next/image";
 type ImageSource = StaticImageData | string;
 
 
-const TournamentForm: React.FC = () => {
+export const TournamentForm: React.FC = () => {
   const [nameTournament, setNameTournament] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [category, setCategory] = useState<string>("");
