@@ -1,7 +1,8 @@
 import { IAuxiliarState } from "@/interfaces/interfaceRedux";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, AnyAction  } from "@reduxjs/toolkit";
 import { getUsersSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
+import { REHYDRATE } from "redux-persist";
 
 
 const initialState: IAuxiliarState = {
@@ -19,6 +20,16 @@ const auxiliarSlice = createSlice({
         }
     }, extraReducers: (builder) => {
         builder
+        .addCase(REHYDRATE as any, (state, action: AnyAction) => {
+            if (action.payload) {
+                // Validar el estado rehidratado
+                const { users, status } = action.payload.auxiliar || {};
+                if (users && status) {
+                    state.users = users;
+                    state.status = status;
+                }
+            }
+        })
         .addCase(getUsersSlice.pending, (state) => {
             state.status = 'loading'
         })

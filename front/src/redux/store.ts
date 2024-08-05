@@ -1,33 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import cardsReducer from './slices/cardsSlice';
-import tournamentsReducer from './slices/tournamentSlice';
-import userReducer from './slices/userSlice';
-import auxiliarReducer from './slices/auxiliarSlice';
-import dashboardReducer from './slices/dashboardSlice';
 import { useDispatch } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
-// Combinamos todos los reducers en uno solo
-const rootReducer = combineReducers({
-  cards: cardsReducer,
-  tournaments: tournamentsReducer,
-  user: userReducer,
-  dashboard: dashboardReducer,
-  auxiliar: auxiliarReducer
-});
-
-// persistencia de datos
-const persistConfig = {
-  key: 'root',
-  storage,
-}
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+import rootReducer from './reducer';
 
 // Configuramos el store con el rootReducer
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // Necesario para evitar advertencias de serialización

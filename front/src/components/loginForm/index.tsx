@@ -27,14 +27,6 @@ export const LoginForm: React.FC = () => {
         password: ""
     })
 
-    //control de ingreso a la page
-    const user = useSelector((state: RootState) => state.user.user);
-    useEffect(() => {
-        if (user) {
-            router.push("/")
-        }
-    }, [router, user])
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
         const errors = validateLogin(data)

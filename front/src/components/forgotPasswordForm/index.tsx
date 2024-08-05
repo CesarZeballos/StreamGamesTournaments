@@ -17,6 +17,13 @@ export const ForgotPasswordForm = () => {
     const [email, setEmail] = useState('')
     const [error, setError] = useState('')
 
+    const token = useSelector((state: RootState) => state.user.token);
+    useEffect(() => {
+        if (token !== null) {
+            router.push("/dashboard")
+        }
+    }, [router, token, dispatch])
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target
         console.log(value)

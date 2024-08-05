@@ -5,7 +5,6 @@ import { Providers } from "@/redux/provider";
 import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "sonner";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +25,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Providers>
-          <NavBar />
+          <nav className="fixed top-0 left-0 w-full z-50">
+            <NavBar />
+          </nav>
             <main className="flex-grow">
               {children}
               <Toaster position="bottom-right"/>

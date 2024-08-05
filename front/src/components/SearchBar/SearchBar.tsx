@@ -1,41 +1,38 @@
-import Image from "next/image";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setFilter } from "@/redux/slices/cardsSlice";
-import allIcon from "../../app/assets/images/icons/all-W.png";
-import csIcon from "../../app/assets/images/icons/cs-W.png";
-import ftIcon from "../../app/assets/images/icons/fortnite-W.png";
-import lolIcon from "../../app/assets/images/icons/lol-W.png";
+import { useDispatch, useSelector } from "react-redux";
 
 //icons import
-import { MdGames } from "react-icons/md";
 import { SiLeagueoflegends } from "react-icons/si";
 import { SiCounterstrike } from "react-icons/si";
 import { TbBrandFortnite } from "react-icons/tb";
+import { AppDispatch, RootState } from "@/redux/store";
+import { filterEmun } from "@/interfaces/interfaceRedux";
+import { filtered } from "@/redux/thunks/auxiliarSliceThunk";
 
 
 const SearchBar: React.FC = () => {
-  const dispatch = useDispatch();
-
-  const handleFilterClick = (filter: string) => {
-    dispatch(setFilter(filter));
+  const dispatch = useDispatch<AppDispatch>();
+  const filters = useSelector((state: RootState) => state.tournament.filters.game)
+  const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { name, value } = event.currentTarget;
+    dispatch(filtered({
+      name: name as filterEmun,
+      value: value
+    }))
   };
+
 
   return (
     <div className="flex flex-row justify-center p-2 gap-6">
-      <button className="buttonFilter" onClick={() => handleFilterClick("All Tournaments")}>
-        <MdGames />
-        <p>All Tournaments</p>
-      </button>
-      <button className="buttonFilter" onClick={() => handleFilterClick("CounterStrike Go")}>
+      <button className={`buttonFilter ${filters === "CounterStrike Go" && "buttonFilterActive"}`} name="game" value={"CounterStrike Go"} onClick={handleFilterClick}>
         <SiCounterstrike />
         <p>Counter Strike</p>
       </button>
-      <button className="buttonFilter" onClick={() => handleFilterClick("Fortnite")}>
+      <button className={`buttonFilter ${filters === "Fortnite" && "buttonFilterActive"}`} name="game" value={"Fortnite"} onClick={handleFilterClick}>
         <TbBrandFortnite />
         <p>Fortnite</p>
       </button>
-      <button className="buttonFilter" onClick={() => handleFilterClick("League of Legends")}>
+      <button className={`buttonFilter ${filters === "League of Legends" && "buttonFilterActive"}`} name="game" value={"League of Legends"} onClick={handleFilterClick}>
         <SiLeagueoflegends />
         <p>League of Legends</p>
       </button>

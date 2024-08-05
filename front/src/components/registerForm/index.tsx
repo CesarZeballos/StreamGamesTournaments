@@ -29,14 +29,6 @@ export const RegisterForm: React.FC = () => {
         birthdate: ""
     })
 
-    // Control de ingreso a la página
-    const user = useSelector((state: RootState) => state.user.user);
-    useEffect(() => {
-        if (user) {
-            router.push("/")
-        }
-    }, [router, user])
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         console.log("handleChange", data)
@@ -63,7 +55,7 @@ export const RegisterForm: React.FC = () => {
                 duration: 1500,
             })
         }
-    }, [data, errorRegister, dispatch])
+    }, [errorRegister.nickname, errorRegister.email, errorRegister.password, errorRegister.birthdate, data, dispatch])
     
     const registerStatus = useSelector((state: RootState) => state.user.statusRegister)
     useEffect(() => {

@@ -4,6 +4,28 @@ import { ITournament } from "@/interfaces/interfaceTournaments";
 export interface ITournamentState {
   status: string;
   tournaments: ITournament[];
+  currentPage: number;
+  filters: IFilters;
+  tournamentsFiltered: ITournament[];
+}
+
+export interface IFilters {
+  game: string;
+  category: string;
+  price: string;
+  date: string;
+}
+
+export interface IFiltersProp {
+  name: filterEmun;
+  value: string;
+}
+
+export const enum filterEmun {
+  game = "game",
+  category = "category",
+  price = "price",
+  date = "date"
 }
 
 export interface IUserState {

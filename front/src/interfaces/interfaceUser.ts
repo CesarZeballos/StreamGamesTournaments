@@ -2,7 +2,7 @@ export interface IUser {
     id: string
     email: string
     nickname: string
-    // tokenFirebase: string
+    tokenFirebase: string
     birthdate: string
     urlProfile: string
     urlSteam: string
@@ -16,11 +16,18 @@ export interface IUser {
     globalChat: []
 }
 
+export interface IUserFilters {
+    nickname: string;
+    role: string;
+    tournaments: string;
+    state: string;
+}
+
 interface IFriend {
     id: string
     email: string
     nickname: string
-    // tokenFirebase: string
+    tokenFirebase: string
     birthdate: string
     urlProfile: string
     urlSteam: string
@@ -98,5 +105,12 @@ export interface IUserSelector {
 export interface IAddFriendForm {
     userId: string
     friendId: string
+    token: string
+}
+
+//ugrade user
+
+export interface IUpgradeUser {
+    id: string
     token: string
 }

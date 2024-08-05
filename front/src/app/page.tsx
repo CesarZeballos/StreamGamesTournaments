@@ -5,13 +5,13 @@ import RegisterBanner from "@/components/Home/RegisterBanner";
 
 const HomePage: React.FC = () => {
 return (
-    <>
+    <div className="mt-24">
         <Suspense fallback={<p className="loading">Loading Home Page...</p>}>
         <LiveBanner/>
         <FindBanner/>
         <RegisterBanner/>
         </Suspense>
-    </>
+    </div>
 );
 };
 

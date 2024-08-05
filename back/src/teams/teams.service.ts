@@ -67,7 +67,7 @@ export class TeamsService {
 		}
 
 		await this.paypalService.captureOrder(createTeamDto.paypal);
-		// Crear el equipo inicialmente con los datos básicos
+
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
 			organizerId: createTeamDto.organizerId,
