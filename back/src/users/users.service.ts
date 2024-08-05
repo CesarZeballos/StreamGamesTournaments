@@ -2,14 +2,15 @@ import {
 	Injectable,
 	NotFoundException,
 	InternalServerErrorException,
+	ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Tournament, User } from '@prisma/client';
-import { UpdateUserDto } from 'auth/auth.user.Dto';
+import { Prisma, Tournament, User, UserFriends } from '@prisma/client';
+import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
 
 @Injectable()
 export class UsersService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getAllUsers(): Promise<User[]> {
 		try {
@@ -36,10 +37,9 @@ export class UsersService {
 			throw new Error('Failed to get users');
 		}
 	}
-
 	async getUserById(
 		id: string,
-	): Promise<Partial<User> & { tournaments: Tournament[] }> {
+	): Promise<Partial<User> & { tournaments: Tournament[] } & { friends: UserFriends[] }> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
@@ -83,6 +83,7 @@ export class UsersService {
 			return {
 				...userNotData,
 				tournaments: userTournaments,
+				friends: user.friends
 			};
 		} catch (error) {
 			throw new NotFoundException(`No user found with id ${id}`);
@@ -130,4 +131,22 @@ export class UsersService {
 			throw new Error(`Failed to disable user with id ${id}`);
 		}
 	}
+
+	async addFriend(info: AddFriendDto) {
+		const user = await this.getUserById(info.userId);
+		if (!user) throw new NotFoundException(`User with id: ${info.userId} does not exist`);
+
+		const friend = await this.getUserById(info.friendId);
+		if (!friend) throw new NotFoundException(`User with id: ${info.friendId} does not exist`);
+
+		const friendExists = user.friends.some(f => f.nickname === friend.nickname);
+		if (friendExists) throw new ConflictException(`Friend with nickname: ${friend.nickname} already exists`);
+
+		const friendData: Prisma.UserFriendsCreateInput = {
+			user: { connect: { id: friend.id } }
+		};
+
+		await this.prisma.userFriends.create({ data: friendData });
+	}
+
 }
