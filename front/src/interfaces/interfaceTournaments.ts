@@ -13,7 +13,7 @@ export interface ITournament {
     maxTeam: number;
     price: number;
     urlAvatar: string;
-    award: string[];
+    awards: string[];
     description: string;
     state: boolean;
     game: IGame;

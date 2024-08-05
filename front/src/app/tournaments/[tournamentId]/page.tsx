@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { toast } from 'sonner';
+import { CategoryIcon, GameIcon, PriceIcon } from '@/components/Tournaments/type';
 
 const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params }) => {
   const router = useRouter();
@@ -43,24 +44,38 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params
 
   return (
     <>
-    <Image
-        src={gameImage}
-        alt={tournament.nameTournament}
-        className="w-full max-h-500px"
-      />
-      <div className='bodyContainer mt-medium mb-medium grid grid-cols-2 gap-4'>
-        <div className='flex flex-col'>
-          <h1 className='heading2 text-lightViolet'>Tournament {tournament.nameTournament}</h1>
-          <button className='buttonPrimary mt-4' onClick={handleClick}>Register</button>
-          <div className="flex flex-row justify-start gap-x-4 mt-6">
-            <Image src={categoryIcon} alt="Icon" className="m-icon" />
-            <Image src={gameIcon} alt="Icon" className="m-icon" />
-            <Image src={navigationIcons.vip} alt="Icon" className="m-icon" />
-          </div>
-          <p className='description text-2xl mt-6'>{tournament.description}</p>
-          </div>
-      <Awards_Dates tournament={tournament} />
-      </div>
+    <div className='w-full h-96 overflow-hidden'>
+      <Image
+          src={gameImage}
+          alt={tournament.nameTournament}
+          className="object-cover"
+        />
+    </div>
+      <div className='bodyContainer mb-medium grid grid-cols-2 gap-4'>
+        <div className='flex flex-col gap-4'>
+          <h1 className='heading2 text-lightViolet'>{tournament.nameTournament}</h1>
+          <button className='buttonPrimary' onClick={handleClick}>Register</button>
+          
+          <div className="flex flex-row gap-6">
+            <div className="flex flex-row items-center gap-4">
+              <CategoryIcon category={tournament.category} />
+              <p className='body text-white text-2xl'>{tournament.category}</p>
+            </div>
+            <div className="flex flex-row items-center gap-4">
+              <GameIcon game={tournament.game.name} />
+              <p className='body text-white text-2xl'>{tournament.game.name}</p>
+            </div>
+            <div className="flex flex-row items-center gap-4">
+              <PriceIcon price={tournament.price} />
+              <p className='body text-white text-2xl'>U$S {tournament.price}</p>
+            </div>
+            </div>
+
+          <p className='body text-white text-2xl mt-6'>{tournament.description}</p>
+          
+        </div>
+          <Awards_Dates tournament={tournament} />
+        </div>
       </>
   );
 };
