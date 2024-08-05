@@ -30,7 +30,7 @@ export const SettingsDashboardView = () => {
                 <h1 className="heading5 text-lightViolet">Settings</h1>
                 <div className="flex flex-col mt-4 ml-4 gap-2">
                         <button className="buttonSecondary">Edit my data</button>
-                        <button className="buttonSecondary">Change email</button>
+                        {/* <button className="buttonSecondary">Change email</button> */}
                         <button className="buttonSecondary">Change password</button>
                     {user?.role === "user" && <button className="buttonPrimary" onClick={upgradeAcount}>Upgrade to organizer</button>}
                 </div>
