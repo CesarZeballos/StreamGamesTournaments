@@ -3,9 +3,10 @@ import {
 	NotFoundException,
 	InternalServerErrorException,
 	BadRequestException,
+	ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Tournament, User } from '@prisma/client';
+import { Prisma, Tournament, User, UserFriends } from '@prisma/client';
 import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
 
 @Injectable()
@@ -38,9 +39,11 @@ export class UsersService {
 		}
 	}
 
-	async getUserById(
-		id: string,
-	): Promise<Partial<User> & { tournaments: Tournament[] }> {
+	async getUserById(id: string): Promise<
+		Partial<User> & { tournaments: Tournament[] } & {
+			friends: UserFriends[];
+		}
+	> {
 		try {
 			const user = await this.prisma.user.findUnique({
 				where: { id },
@@ -84,6 +87,7 @@ export class UsersService {
 			return {
 				...userNotData,
 				tournaments: userTournaments,
+				friends: user.friends,
 			};
 		} catch (error) {
 			throw new InternalServerErrorException(
@@ -137,44 +141,52 @@ export class UsersService {
 		}
 	}
 
-	async addFriend(addFriendDto: AddFriendDto) {
-		const { nickname, userId } = addFriendDto;
+	async addFriend(info: AddFriendDto) {
+		const user = await this.getUserById(info.userId);
+		if (!user)
+			throw new NotFoundException(
+				`User with id: ${info.userId} does not exist`,
+			);
 
-		const existingFriend = await this.prisma.userFriends.findUnique({
-			where: { nickname },
-		});
+		const friend = await this.getUserById(info.friendId);
+		if (!friend)
+			throw new NotFoundException(
+				`User with id: ${info.friendId} does not exist`,
+			);
 
-		if (existingFriend) {
-			throw new BadRequestException('El amigo ya está añadido.');
-		}
-
-		const userExists = await this.prisma.user.findUnique({
-			where: { id: userId },
-		});
-
-		if (!userExists) {
-			throw new BadRequestException('El usuario no existe.');
-		}
-
-		return this.prisma.userFriends.create({
-			data: {
-				nickname,
-				user: { connect: { id: userId } },
+		const friendExists = await this.prisma.userFriends.findFirst({
+			where: {
+				nickname: friend.nickname,
 			},
 		});
+		if (friendExists)
+			throw new ConflictException(
+				`Friend with nickname: ${friend.id} already exists`,
+			);
+
+		const friendData: Prisma.UserFriendsCreateInput = {
+			user: { connect: { id: user.id } },
+		};
+
+		return await this.prisma.userFriends.create({ data: friendData });
 	}
 
 	async removeFriend(id: string) {
+		// Busca la relación de amistad usando el ID
 		const friend = await this.prisma.userFriends.findUnique({
 			where: { id },
 		});
 
+		// Verifica si el amigo existe
 		if (!friend) {
 			throw new NotFoundException('Amigo no encontrado.');
 		}
 
-		return this.prisma.userFriends.delete({
+		// Elimina la relación de amistad y retorna el mensaje de éxito
+		await this.prisma.userFriends.delete({
 			where: { id },
 		});
+
+		return { message: 'Amigo eliminado exitosamente.' };
 	}
 }

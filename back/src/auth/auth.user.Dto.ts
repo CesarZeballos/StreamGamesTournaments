@@ -84,18 +84,18 @@ export class UserBanForAdminDto extends PartialType(UpdateUserDto) {
 
 export class AddFriendDto {
 	@ApiProperty({
-		description: 'Apodo del usuario amigo que se desea agregar',
-		example: 'JaneDoe',
+	  description: 'ID del usuario amigo que se desea agregar',
+	  example: 'user-id-456',
 	})
 	@IsString()
 	@IsNotEmpty()
-	nickname: string;
-
+	friendId: string;
+  
 	@ApiProperty({
-		description: 'ID del usuario que solicita agregar el amigo',
-		example: 'user-id-123',
+	  description: 'ID del usuario que solicita agregar el amigo',
+	  example: 'user-id-123',
 	})
 	@IsString()
 	@IsNotEmpty()
 	userId: string;
-}
+  }
