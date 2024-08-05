@@ -19,7 +19,8 @@ model User {
   createdAt            DateTime        @default(now())
   state                Boolean         @default(true)
   isBanned             Boolean         @default(false)
-  friends              UserFriends[]   @relation("UserFriends")
+  friends              UserFriends[]   @relation("UserFriendsUser")
+  friendRequests       UserFriends[]   @relation("UserFriendsFriend")
   sentFriendRequests   FriendRequest[] @relation("SentFriendRequests")
   sentMessages         PrivateChat[]   @relation("SentMessages")
   receivedMessages     PrivateChat[]   @relation("ReceivedMessages")
@@ -38,9 +39,11 @@ model FriendRequest {
 
 model UserFriends {
   id        String   @id @default(uuid())
-  nickname  String  
+  userId    String
+  friendId  String
   createdAt DateTime @default(now())
-  user      User?    @relation("UserFriends", fields: [nickname], references: [nickname], onDelete: Cascade)
+  user      User     @relation("UserFriendsUser", fields: [userId], references: [id], onDelete: Cascade)
+  friend    User     @relation("UserFriendsFriend", fields: [friendId], references: [id], onDelete: Cascade)
 }
 
 model PrivateChat {
@@ -99,7 +102,7 @@ model Tournament {
   membersNumber  Int
   maxTeams       Int
   price          Int
-  urlAvatar      String
+  urlAvatar      String?
   awards         String[]
   description    String
   state          Boolean    @default(true)

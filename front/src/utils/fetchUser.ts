@@ -6,7 +6,7 @@ export async function postUser(data:IRegisterForm) {
     const dataFetch = JSON.stringify(data)
     console.log("dataFetch", dataFetch)
     try {
-        const response = await fetch("http://localhost:3001/auth/signup", {
+        const response = await fetch(`${apiUrl}/auth/signup`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export async function postUser(data:IRegisterForm) {
 
 export async function loginUser(data: ILoginDataBase) {
     try {
-        const response = await fetch("http://localhost:3001/auth/signin", {
+        const response = await fetch(`${apiUrl}/auth/signin`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export async function loginUser(data: ILoginDataBase) {
 }
 
 export async function passwordRecovery(data: string) {try {
-    const response = await fetch("http://localhost:3001/users/search", {
+    const response = await fetch(`${apiUrl}/users/search`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export async function passwordRecovery(data: string) {try {
 }
 
 export const fetchUsers = async () => {
-    const response = await fetch("http://localhost:3001/users", {
+    const response = await fetch(`${apiUrl}/users`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export const fetchUsers = async () => {
 }
 
 export const banUser = async (id: string) => {
-    const response = await fetch(`http://localhost:3001/users/delete?id=${id}`, {
+    const response = await fetch(`${apiUrl}/users/delete?id=${id}`, {
     method: 'PUT',
     headers: {
         'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-
+import EngineeringIcon from '@mui/icons-material/Engineering';
 
 export const NotificationDashboardView: React.FC = () => {
 
@@ -9,6 +9,8 @@ export const NotificationDashboardView: React.FC = () => {
                 <button className="buttonSecondary">Friend requests</button>
                 <button className="buttonSecondary">Tournaments requests</button>
             </div>
+
+            <h1 className="heading5 text-lightViolet mt-8 flex gap-4"><EngineeringIcon />Work in process</h1>
         </div>
     )
 }

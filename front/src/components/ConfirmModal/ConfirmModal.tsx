@@ -12,7 +12,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ show, message, onConfirm, o
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 outline-none focus:outline-none">
-      <div className="bg-BGlight rounded-lg border-2 border-cyan-500 relative p-6 flex flex-col text-white">
+      <div className="bg-BGlight rounded-lg relative p-6 flex flex-col text-white">
         <p className='text-lightViolet text-lg'>{message}</p>
         <div className='flex flex-row justify-around m-4'>
         <button className='buttonPrimary' onClick={onCancel}>Cancel</button>

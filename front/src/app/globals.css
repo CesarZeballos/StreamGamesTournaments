@@ -140,7 +140,7 @@ body {
   @apply bg-gradient-to-b from-BGlight to-BGdark;
 }
 
-table {
+/* .table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -148,18 +148,18 @@ table {
   overflow: hidden;
 }
 
-thead {
+.thead {
   overflow: hidden;
 }
 
-td {
+.td {
   border-radius: 0;
   border: 1px solid #e100ff;
   padding: 1rem;
   overflow: hidden;
 }
 
-th {
+.th {
   background-color: #f4f4f4;
   border-radius: 0;
   border: 1px solid #e100ff;
@@ -167,13 +167,17 @@ th {
   overflow: hidden;
 }
 
-th select {
+.th select {
   padding: 4px;
   overflow: hidden;
-}
+} */
 
 .filter {
-  @apply mt-2 mb-2 block w-full border-2 border-softViolet rounded-md shadow-sm text-BGdark p-4 overflow-hidden
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-36
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
 }
 
 .selector {
@@ -265,7 +269,7 @@ th select {
 }
 
 .tableBody {
-  @apply font-Roboto text-base text-white
+  @apply font-Roboto text-sm text-white px-6
 }
 
 @media (max-width: 992px) {
