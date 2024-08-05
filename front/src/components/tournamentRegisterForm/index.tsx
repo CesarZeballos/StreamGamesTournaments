@@ -6,11 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
 import { FormContainer } from "../formContainer";
 import { useRouter } from "next/navigation";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { toast } from "sonner";
 import { IUser } from "@/interfaces/interfaceUser";
 import { Box, Chip, FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
 import { setView } from "@/redux/slices/dashboardSlice";
+import { fetchAddTeamToTournament } from "@/utils/fetchTournaments";
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
+import { isoToDate } from "@/utils/formatDate";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -24,7 +27,7 @@ const MenuProps = {
 };
 
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
     // Seteo de la informacion
@@ -33,26 +36,8 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const tournaments = useSelector((state: RootState) => state.tournament.tournaments);
     const turnament = tournaments.find((tournament) => tournament.id === tourId);
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
-    const [tournamentData, setTournamentData] = useState<ITournament>({
-        id: "",
-        nameTournament: "",
-        startDate: "",
-        createdAt: "",
-        category: "",
-        organizerId: "",
-        gameId: "",
-        membersNumber: 0,
-        maxTeam: 0,
-        price: 0,
-        urlAvatar: "",
-        awards: [],
-        description: "",
-        state: false,
-        game: {} as IGame,
-        players: [],
-        organizer: {} as IUser
-    });
-    const stringDate = tournamentData.startDate.split('T')[0];
+    const [tournamentData, setTournamentData] = useState<ITournament>(turnament!);
+    const stringDate = isoToDate(tournamentData?.startDate)
     
     const [addTeam, setAddTeam] = useState<IAddTeam>({
         tournamentId: tourId,
@@ -111,9 +96,26 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             })
         } else {
             console.log("addTeam", addTeam)
-            //enviar la data
+            try {
+                fetchAddTeamToTournament(addTeam, token!)
+                dispatch(setView("tournaments"))
+                dispatch(reloadUserSlice({
+                    email: user!.email!,
+                    tokenFirebase: user!.tokenFirebase
+                }))
+                router.push("/dashboard")
+                toast.success(`Your team is registered in the ${tournamentData.nameTournament}`, {
+                    position: 'top-right',
+                    duration: 1500,
+                })
+            } catch {
+                toast.error("something went wrong", {
+                    position: 'top-right',
+                    duration: 1500,
+                })
+            }
         }
-        }
+    }
 
     const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         router.push("/tournaments/" + tourId);

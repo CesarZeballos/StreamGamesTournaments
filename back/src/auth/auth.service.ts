@@ -73,32 +73,43 @@ export class AuthService {
 
 	async signIn(signInDto: SignInDto) {
 		const { email, tokenFirebase } = signInDto;
-
+	
 		try {
 			this.logger.log(`Attempting to sign in user with email: ${email}`);
-
+	
 			const user = await this.prisma.user.findUnique({
 				where: { email },
 				include: {
-					friends: true,
+					friends: {
+						include: {
+							friend: true
+						}
+					},
 					tournaments: true,
-				}
+					organizedTournaments: true
+				},
 			});
-
+	
 			if (!user) {
 				this.logger.warn(`User not found with email: ${email}`);
 				throw new UnauthorizedException('Invalid credentials');
 			}
-
+	
 			const payload = { userId: user.id, email: user.email };
 			const token = await this.jwtService.sign(payload);
-
+	
 			this.logger.log(`User signed in successfully with email: ${email}`);
-
+	
+			// Formatear los amigos para devolver los datos completos
+			const friends = user.friends.map(friendship => friendship.friend);
+	
 			return {
 				message: 'User logged in successfully',
-				user,
 				token,
+				user: {
+					...user,
+					friends,
+				},
 			};
 		} catch (error) {
 			if (error instanceof UnauthorizedException) {

@@ -15,7 +15,7 @@ export const SettingsDashboardView = () => {
         // dispatch(upgradeUserSlice({id: user?.id!, token: token!}))
         toast.success("Upgrade acount request successfully submitted", {
             position: "top-right", 
-            duration: 1500
+            duration: 1500 
         })
     }
 

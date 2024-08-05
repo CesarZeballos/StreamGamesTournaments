@@ -1,4 +1,4 @@
-import { ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -27,7 +27,7 @@ export async function fetchTournaments(): Promise<ITournament[]> {
 
 // funcion para recibir el torneo por id
 export async function fetchTournamentById(id: string) {
-        const response = await fetch(`http://localhost:3001/tournaments/${id}`, {
+        const response = await fetch(`${apiUrl}/tournaments/${id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -44,4 +44,15 @@ export async function fetchTournamentById(id: string) {
 }
 
 //funcion para inscribirse al torneo:
-//la ruta es: 
+export const fetchAddTeamToTournament = async (data: IAddTeam, token: string) => {
+    const response = await fetch(`${apiUrl}/teams`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    console.log("response", response)
+    return response
+    
+}
