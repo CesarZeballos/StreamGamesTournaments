@@ -7,7 +7,6 @@ import {
 	Post,
 	Put,
 	Query,
-	UseGuards,
 } from '@nestjs/common';
 import {
 	ApiTags,
@@ -27,7 +26,7 @@ import { Role } from '@prisma/client'; */
 @ApiTags('games')
 @Controller('games')
 export class GamesController {
-	constructor(private readonly gamesService: GamesService) {}
+	constructor(private readonly gamesService: GamesService) { }
 
 	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)

@@ -1,7 +1,5 @@
 import {
-	ConflictException,
 	Injectable,
-	NotFoundException,
 } from '@nestjs/common';
 import * as paypal from '@paypal/checkout-server-sdk';
 import { PrismaService } from '../../prisma/prisma.service';

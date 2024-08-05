@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
-import { Prisma, Team, User } from '@prisma/client';
+import { Prisma, Team } from '@prisma/client';
 import { CreateTeamDto } from './createTeamDto';
 import { PayPalService } from 'paypal/paypal.service';
 

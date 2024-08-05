@@ -1,7 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { IsString, IsOptional, IsArray, ArrayNotEmpty, IsUUID, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
 
 export class CreateTeamDto {
 	@ApiProperty({
