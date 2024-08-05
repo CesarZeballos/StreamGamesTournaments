@@ -165,8 +165,9 @@ export class UsersService {
 			);
 
 		const friendData: Prisma.UserFriendsCreateInput = {
-			user: { connect: { id: user.id } },
+			user: { connect: { id: friend.id } },
 		};
+		
 
 		return await this.prisma.userFriends.create({ data: friendData });
 	}

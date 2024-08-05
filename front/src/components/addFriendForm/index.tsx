@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 import { useRouter } from "next/navigation";
+import { setStatusFriend } from "@/redux/slices/userSlice";
 
 export const AddFriend: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -66,10 +67,9 @@ export const AddFriend: React.FC = () => {
         if (addFriendStatus === "succeeded") {
         setTimeout(() => {
             dispatch(setView("friends"))
-        }, 2000);
+            dispatch(setStatusFriend())
+        }, 1500);
     }}, [addFriendStatus, dispatch])
-
-
 
     return (
         <form onSubmit={handlesubmit} className="flex flex-col gap-2">
