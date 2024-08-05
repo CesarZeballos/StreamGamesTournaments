@@ -73,10 +73,11 @@ export class AuthService {
 
 	async signIn(signInDto: SignInDto) {
 		const { email, tokenFirebase } = signInDto;
-	
+
+
 		try {
 			this.logger.log(`Attempting to sign in user with email: ${email}`);
-	
+
 			const user = await this.prisma.user.findUnique({
 				where: { email },
 				include: {
@@ -89,20 +90,23 @@ export class AuthService {
 					organizedTournaments: true
 				},
 			});
-	
+
+			if (user) {
+				if (user.isBanned === true) throw new BadRequestException(`User with email: ${user.email} is banned`)
+			}
 			if (!user) {
 				this.logger.warn(`User not found with email: ${email}`);
 				throw new UnauthorizedException('Invalid credentials');
 			}
-	
+
 			const payload = { userId: user.id, email: user.email };
 			const token = await this.jwtService.sign(payload);
-	
+
 			this.logger.log(`User signed in successfully with email: ${email}`);
-	
+
 			// Formatear los amigos para devolver los datos completos
 			const friends = user.friends.map(friendship => friendship.friend);
-	
+
 			return {
 				message: 'User logged in successfully',
 				token,
