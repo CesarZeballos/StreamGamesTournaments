@@ -1,9 +1,31 @@
 import { IUser } from "./interfaceUser";
-import { ITournament } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
 
 export interface ITournamentState {
   status: string;
   tournaments: ITournament[];
+  currentPage: number;
+  filters: IFilters;
+  tournamentsFiltered: ITournament[];
+}
+
+export interface IFilters {
+  game: string;
+  category: string;
+  price: string;
+  date: string;
+}
+
+export interface IFiltersProp {
+  name: filterEmun;
+  value: string;
+}
+
+export const enum filterEmun {
+  game = "game",
+  category = "category",
+  price = "price",
+  date = "date"
 }
 
 export interface IUserState {
@@ -11,13 +33,26 @@ export interface IUserState {
   status: string;
   statusRegister: string;
   statusForgotPassword: string;
+  statusAddFriend: string
   error: string | null;
   token: string | null;
 }
 
 export interface IRegisterFormSlice {
-    nickName: string;
+    nickname: string;
     email: string;
     password: string;
-    birthDate: string;
+    birthdate: string;
+}
+
+export interface IAuxiliarState {
+  users: IUser[];
+  status: string;
+  error: string | null;
+  statusPayment: string
+}
+
+export interface IAddTeamToTournament {
+    teamData: IAddTeam
+    token: string
 }

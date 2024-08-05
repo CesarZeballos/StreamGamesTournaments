@@ -1,9 +1,10 @@
-import { ITournament, IAddTeam } from "@/interfaces/interfaceTournaments";
-import { format } from "date-fns";
+import { IAddTeam, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+//funcion para recibir todos los torneos
 export async function fetchTournaments(): Promise<ITournament[]> {
-    try {
-        const response = await fetch("http://localhost:3001/tournaments", {
+        const response = await fetch(`${apiUrl}/tournaments`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -13,24 +14,20 @@ export async function fetchTournaments(): Promise<ITournament[]> {
             throw new Error(`Error fetching tournaments: ${response.statusText}`);
         }
         const allTournaments = await response.json();
-        console.log("Raw API response:", allTournaments);
         if (!Array.isArray(allTournaments)) {
             throw new Error("API response is not an array.");
         }
-        const formattedTournaments = allTournaments.map((tournament: ITournament) => ({
-            ...tournament,
-            startDate: format(new Date(tournament.startDate), "dd/MM")
-        }));
-        return formattedTournaments;
-    } catch (error) {
-        console.error("Error fetching tournaments.", error);
-        return [];
-    }
+        // const formattedTournaments = allTournaments.map((tournament: ITournament) => ({
+        //     ...tournament,
+        //     startDate: format(new Date(tournament.startDate), "dd/MM")
+        // }));
+        // return formattedTournaments;
+        return allTournaments;
 }
 
+// funcion para recibir el torneo por id
 export async function fetchTournamentById(id: string) {
-    try {
-        const response = await fetch(`http://localhost:3001/tournaments/${id}`, {
+        const response = await fetch(`${apiUrl}/tournaments/${id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -41,25 +38,40 @@ export async function fetchTournamentById(id: string) {
         } else {
             const tournament = await response.json();
             console.log("Raw API response:", tournament);
+        console.log("Awards field:", tournament.award);
             return tournament;
         }
-    } catch (error) {
-        console.error("Error fetching tournament.", error);
-    }
 }
 
-export async function addTeamFetch(data: IAddTeam) {
-    try {
-        const response = await fetch("http://localhost:3001/tournaments/team", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-        const addTeamResponse = await response.json();
-        return addTeamResponse;
-    } catch (error) {
-        console.error("Error adding team.", error);
+//funcion para inscribirse al torneo:
+export const fetchAddTeamToTournament = async (data: IAddTeam, token: string) => {
+    const response = await fetch(`${apiUrl}/teams`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error adding team to tournament: ${response.statusText}`);
     }
+    console.log("response", response)
+    return response
+}
+
+export const fetchPaymentTournament = async (data: IAddTeam, token: string) => {
+    const response = await fetch(`${apiUrl}/paypal/create-order`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    });
+    if (!response.ok) {
+        throw new Error(`Error adding team to tournament: ${response.statusText}`);
+    }
+    console.log("response payment", response)
+    return response
 }

@@ -41,20 +41,17 @@ html, body {
 }
 
 .heading5 {
-  @apply font-Raleway font-black text-base
+  @apply font-Raleway font-black text-sm
 }
 
 .body {
-  @apply font-Roboto font-normal text-base;
+  @apply font-Roboto font-normal text-sm;
 }
 
 .errorForm {
   @apply font-Roboto font-thin text-xs text-lightViolet;
 }
 
-.errorForm {
-  @apply font-Roboto font-thin text-xs text-lightViolet
-}
 
 .numberCard {
   @apply font-Roboto font-black text-2xl;
@@ -67,21 +64,36 @@ html, body {
 /* buttons */
 
 .buttonPrimary {
-  @apply flex items-center bg-BGdark font-Raleway font-bold text-base text-white px-9 py-2 rounded-full shadow-sm shadow-lightViolet w-fit h-fit whitespace-nowrap
-  hover:bg-lightViolet
+  @apply flex items-center bg-BGdark font-Raleway font-bold text-sm text-white px-9 py-2 rounded-full border-2 border-lightViolet w-fit h-fit whitespace-nowrap
+  hover:shadow-md 
+  hover:shadow-lightViolet 
+  hover:text-lightViolet
 }
 
-.buttonSecondary {
+.buttonNavbar {
   @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap
   focus:text-lightViolet hover:text-lightViolet
 }
 
+.buttonSecondary {
+  @apply flex items-center font-Raleway font-normal text-sm text-white px-9 py-2 w-fit h-fit whitespace-nowrap
+  focus:text-lightViolet hover:text-lightViolet
+}
+
 .buttonSection {
-  @apply flex flex-row items-center font-Raleway font-bold text-3xl text-white pl-6 py-4 rounded-full w-full border-2 border-lightViolet hover:shadow-md hover:shadow-lightViolet
+  @apply flex flex-row items-center font-Raleway text-5xl text-white pl-6 py-4 rounded-full w-full border-2 border-lightViolet 
+  hover:shadow-md 
+  hover:shadow-lightViolet
+  hover:text-lightViolet
 }
 
 .buttonFilter {
-  @apply flex flex-row items-center font-Raleway font-bold text-base text-white pl-4 pr-6 py-2 rounded-full gap-4
+  @apply flex flex-row items-center font-Raleway font-semibold text-base text-white pl-4 pr-6 py-1 rounded-full gap-4
+  hover:bg-lightViolet
+}
+
+.buttonFilterActive{
+  @apply flex flex-row items-center font-Raleway font-semibold text-base text-white pl-4 pr-6 py-1 rounded-full gap-4 bg-lightViolet
 }
 
 .linkButton {
@@ -101,8 +113,12 @@ html, body {
   @apply p-4 mb-8 rounded-md bg-lightViolet
 }
 
-.buttonFilter:hover {
-  @apply hover:shadow-md hover:shadow-lightViolet
+.iconButton {
+  @apply p-1 text-white rounded-full
+  hover:shadow-md 
+  hover:shadow-lightViolet
+  hover:text-BGdark
+  hover:bg-lightViolet
 }
 
 .buttonCarousel:hover, .buttonPage:hover {
@@ -117,23 +133,89 @@ html, body {
 /* utils */
 
 .bodyContainer {
-  @apply px-16;
+  @apply mx-large mt-24; 
 }
 
 body {
   @apply bg-gradient-to-b from-BGlight to-BGdark;
 }
 
-.back-image {
-  @apply w-3/4 h-1/3 z-10 rounded-3xl
+/* .table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 1rem;
+  overflow: hidden;
 }
 
-.input {
-  @apply bg-white rounded-md px-3 py-1 font-Roboto text-BGdark
+.thead {
+  overflow: hidden;
+}
+
+.td {
+  border-radius: 0;
+  border: 1px solid #e100ff;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.th {
+  background-color: #f4f4f4;
+  border-radius: 0;
+  border: 1px solid #e100ff;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.th select {
+  padding: 4px;
+  overflow: hidden;
+} */
+
+.filter {
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-36
   focus:border-solid
   focus:border-lightViolet
   focus:shadow-md
   focus:shadow-lightViolet
+}
+
+.selector {
+  @apply mt-2 mb-2 block w-full border-2 border-softViolet rounded-md shadow-sm text-BGdark
+}
+
+.chart-container {
+  overflow: hidden;
+  position: relative;
+}
+  
+.back-image {
+  @apply w-3/4 h-1/3 z-10 rounded-3xl
+}
+
+.label {
+  @apply block text-white font-Raleway text-base mt-3
+}
+
+.input {
+
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-80
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
+.inputMUI {
+  @apply bg-white rounded-md font-Roboto text-BGdark
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
+.helper {
+  @apply text-white text-xs mt-1
 }
 
 .loading {
@@ -171,7 +253,23 @@ body {
 }
 
 .textButton {
-  @apply flex-1 text-center overflow-hidden pr-6 sm:text-xl;
+  @apply flex-1 font-Raleway font-black text-center overflow-hidden pr-6 sm:text-xl;
+}
+
+.award-area {
+  @apply flex flex-row items-center mb-2;
+}
+
+.chip {
+  @apply bg-BGlight font-Raleway font-bold text-xs text-white pl-4 py-2 rounded-full
+}
+
+.tableHeader {
+  @apply border-solid border-2 border-lightViolet font-Raleway font-medium text-base text-white flex rounded-full w-full px-6 py-1 my-4
+}
+
+.tableBody {
+  @apply font-Roboto text-sm text-white px-6
 }
 
 @media (max-width: 992px) {

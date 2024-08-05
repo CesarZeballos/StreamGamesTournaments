@@ -1,56 +1,72 @@
-import Image from "next/image";
-import { useDispatch } from "react-redux";
-import { setFilter } from "@/redux/slices/cardsSlice";
-import beginner from "../../app/assets/images/icons/beginner-dark.png";
-import advanced from "../../app/assets/images/icons/advanced-dark.png";
-import expert from "../../app/assets/images/icons/expert-dark.png";
+import { useDispatch, useSelector } from "react-redux";
+
+//icons import
+import { PiMedalMilitary } from "react-icons/pi";
+import { PiMedalMilitaryFill } from "react-icons/pi";
+import { TbMilitaryAward } from "react-icons/tb";
+import { AppDispatch, RootState } from "@/redux/store";
+import React, { useEffect } from "react";
+import { filterEmun, IFilters } from "@/interfaces/interfaceRedux";
+import { filtered } from "@/redux/thunks/auxiliarSliceThunk";
 
 const SideBar: React.FC = () => {
-  const dispatch = useDispatch();
-  const handleFilterClick = (filter: string) => {
-    dispatch(setFilter(filter));
+  const dispatch = useDispatch<AppDispatch>();
+  const category = useSelector((state: RootState) => state.tournament.filters.category)
+  const price = useSelector((state: RootState) => state.tournament.filters.price)
+  const date = useSelector((state: RootState) => state.tournament.filters.date)
+
+  const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { name, value } = event.currentTarget;
+    dispatch(filtered({
+      name: name as filterEmun,
+      value: value
+    }))
   };
 
   return (
-    <div className="flex flex-col justify-start p-6 bg-BGdark rounded-3xl mt-8 mb-medium w-full h-fit">
+    <div className="flex flex-col justify-start p-6 bg-BGdark rounded-3xl mt-8 mb-medium w-64 h-fit gap-4">
       <h1 className="heading4 text-white">Filters</h1>
-      <div>
-        <h1 className="section-title">Competition Difficulty</h1>
-        <button className="item-container" onClick={() => handleFilterClick("beginner")}>
-          <Image src={beginner} alt="Beginner" className="item-image" />
-          <p className="item-text">Beginner</p>
-        </button>
-        <button className="item-container" onClick={() => handleFilterClick("advanced")}>
-          <Image src={advanced} alt="Advanced" className="item-image" />
-          <p className="item-text">Advanced</p>
-        </button>
-        <button className="item-container" onClick={() => handleFilterClick("expert")}>
-          <Image src={expert} alt="Expert" className="item-image" />
-          <p className="item-text">Expert</p>
-        </button>
-      </div>
-      <div>
-        <h1 className="section-title">Price-Range</h1>
-        <div>
-          <button className="item-container" onClick={() => handleFilterClick("CHEAP")}>
-          <p className="item-text">$0 - $500</p>
+      
+      <div className="flex flex-col gap-2">
+        <h1 className="heading5 text-lightViolet">Competition Difficulty</h1>
+        <div className="flex flex-col gap-1">
+          <button className={`buttonFilter ${category === "beginner" && "buttonFilterActive"}`} name="category" value={"beginner"} onClick={handleFilterClick}>
+            <PiMedalMilitary />
+            <p>Beginner</p>
           </button>
-          <button className="item-container" onClick={() => handleFilterClick("MIDDLE")}>
-          <p className="item-text">$501 - $1000</p>
+          <button className={`buttonFilter ${category === "advanced" && "buttonFilterActive"}`} name="category" value={"advanced"} onClick={handleFilterClick}>
+            <PiMedalMilitaryFill />
+            <p>Advanced</p>
           </button>
-          <button className="item-container" onClick={() => handleFilterClick("EXPENSIVE")}>
-          <p className="item-text">$1001 - More</p>
+          <button className={`buttonFilter ${category === "expert" && "buttonFilterActive"}`} name="category" value={"expert"} onClick={handleFilterClick}>
+            <TbMilitaryAward />
+            <p>Expert</p>
           </button>
         </div>
-      </div>
-        <h1 className="section-title">Date</h1>
-      <div>
-          <button className="item-container" onClick={() => handleFilterClick("THIS_MONTH")}>
-              <p className="item-text">This Month</p>
+  
+
+        <h1 className="heading5 text-lightViolet">Price range</h1>
+        <div className="flex flex-col gap-1">
+        <button className={`buttonFilter ${price === "cheap" && "buttonFilterActive"}`} name="price" value={"cheap"} onClick={handleFilterClick}>
+          <p>$0 - $500</p>
           </button>
-          <button className="item-container" onClick={() => handleFilterClick("NEXT_MONTHS")}>
-              <p className="item-text">Next Months</p>
+          <button className={`buttonFilter ${price === "medium" && "buttonFilterActive"}`} name="price" value={"medium"} onClick={handleFilterClick}>
+          <p>$501 - $1000</p>
           </button>
+          <button className={`buttonFilter ${price === "expensive" && "buttonFilterActive"}`} name="price" value={"expensive"} onClick={handleFilterClick}>
+          <p>$1001 - More</p>
+          </button>
+        </div>
+
+        <h1 className="heading5 text-lightViolet">Date</h1>
+        <div  className="flex flex-col gap-1">
+        <button className={`buttonFilter ${date === "thisMonth" && "buttonFilterActive"}`} name="date" value={"thisMonth"} onClick={handleFilterClick}>
+              <p>This Month</p>
+          </button>
+          <button className={`buttonFilter ${date === "nextMonths" && "buttonFilterActive"}`} name="date" value={"nextMonths"} onClick={handleFilterClick}>
+              <p>Next Months</p>
+          </button>
+        </div>
       </div>
     </div>
   );

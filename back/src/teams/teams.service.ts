@@ -1,15 +1,21 @@
 import {
+	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { Prisma, Team } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateTeamDto, UpdateTeamDto } from './teams.dto';
+
+import { Prisma, Team, User } from '@prisma/client';
+import { CreateTeamDto } from './createTeamDto';
+import { PayPalService } from 'paypal/paypal.service';
 
 @Injectable()
 export class TeamsService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly paypalService: PayPalService,
+	) { }
 
 	async getAllTeams(page: number, limit: number): Promise<Team[]> {
 		const skip = (page - 1) * limit;
@@ -17,7 +23,7 @@ export class TeamsService {
 			take: limit,
 			skip,
 			include: {
-				tournaments: true,
+				tournament: true,
 				users: true,
 			},
 		});
@@ -26,151 +32,173 @@ export class TeamsService {
 	}
 
 	async getTeamById(id: string): Promise<Team> {
-		const team = await this.prisma.team.findUnique({ where: { id } });
-		if (!team) throw new NotFoundException(`Team id ${id} do not exists`);
+		const team = await this.prisma.team.findUnique({
+			where: { id },
+			include: {
+				tournament: true,
+				users: true,
+			},
+		});
+		if (!team)
+			throw new NotFoundException(`Team with ID ${id} does not exist`);
+
+		return team;
+	}
+	async createTeam(createTeamDto: CreateTeamDto): Promise<Team> {
+		console.log(createTeamDto);
+		const tournament = await this.prisma.tournament.findUnique({
+			where: { id: createTeamDto.tournamentId },
+			include: { teams: { include: { users: true } } },
+		});
+
+		if (!tournament) {
+			throw new NotFoundException(
+				`Tournament with id: ${createTeamDto.tournamentId} does not exist.`,
+			);
+		}
+
+		for (const team of tournament.teams) {
+			for (const userExistsInTournament of team.users) {
+				if (createTeamDto.users.some(user => user.id === userExistsInTournament.id)) {
+					throw new ConflictException(
+						`User with id: ${userExistsInTournament.id} already exists in the tournament.`,
+					);
+				}
+			}
+		}
+
+		await this.paypalService.captureOrder(createTeamDto.paypal);
+
+		const teamData: Prisma.TeamCreateInput = {
+			name: createTeamDto.name,
+			organizerId: createTeamDto.organizerId,
+			tournament: createTeamDto.tournamentId
+				? { connect: { id: createTeamDto.tournamentId } }
+				: undefined,
+			urlAvatar: createTeamDto.urlAvatar,
+		};
+
+		const team = await this.prisma.team.create({ data: teamData });
+
+		if (createTeamDto.users && createTeamDto.users.length > 0) {
+			for (const user of createTeamDto.users) {
+				const foundUser = await this.prisma.user.findUnique({
+					where: { id: user.id },
+				});
+				if (!foundUser) {
+					throw new BadRequestException(`User with ID ${user.id} not found`);
+				}
+
+				await this.prisma.userTeams.create({
+					data: {
+						nickname: foundUser.nickname,
+						nameTeam: team.id,
+					},
+				});
+			}
+		}
 
 		return team;
 	}
 
-	async createTeam(id: string, team: CreateTeamDto): Promise<Team> {
-		const userTeam = await this.prisma.team.findFirst({
-			where: {
-				users: {
-					some: { id },
-				},
-			},
+
+
+
+	async updateTeam(updateTeamDto: any): Promise<Team> {
+		const team = await this.prisma.team.findUnique({
+			where: { id: updateTeamDto.id },
 		});
 
-		if (userTeam)
-			throw new ConflictException(
-				'¡The user is already a member of a team!',
-			);
+		if (!team) throw new NotFoundException('Team does not exist');
 
-		const teamName = await this.prisma.team.findUnique({
-			where: { name: team.name },
-		});
-
-		if (teamName)
-			throw new ConflictException('¡The name already exists in a team!');
-
-		const teamData: Prisma.TeamCreateInput = {
-			...team,
-			organizer: { connect: { id } },
-			tournaments: team.tournamentId
-				? { connect: { id: team.tournamentId } }
-				: undefined,
-			users: { connect: { id } },
-			createdAt: new Date(),
-		};
-
-		return await this.prisma.team.create({ data: teamData });
-	}
-
-	async updateTeam(id: string, updateTeam: UpdateTeamDto): Promise<Team> {
-		const team = await this.prisma.team.findUnique({ where: { id } });
-
-		if (!team) throw new NotFoundException('¡Team not exists!');
-
-		if (updateTeam.user) {
-			for (const newUser of updateTeam.user) {
+		if (updateTeamDto.userIds) {
+			for (const newUserId of updateTeamDto.userIds) {
 				const userExists = await this.prisma.user.findUnique({
-					where: { id: newUser.id },
+					where: { id: newUserId },
 				});
 
 				if (!userExists) {
 					throw new NotFoundException(
-						`¡User with ID ${newUser.id} does not exist!`,
+						`User with ID ${newUserId} does not exist`,
 					);
 				}
 
 				const teamMembers = await this.prisma.team.findUnique({
-					where: { id: updateTeam.id },
+					where: { id: updateTeamDto.id },
 					select: { users: true },
 				});
 
 				if (teamMembers && teamMembers.users.length >= 5) {
 					throw new ConflictException(
-						`The team already has 5 members. Cannot add more users.`,
+						'The team already has 5 members',
 					);
 				}
 
-				const userInTeam = await this.prisma.team.findFirst({
+				const userInTeam = await this.prisma.team.findUnique({
 					where: {
-						id,
+						id: updateTeamDto.id,
+
 						users: {
-							some: {
-								id: newUser.id,
-							},
+							some: { id: newUserId },
 						},
 					},
 				});
 
 				if (userInTeam) {
 					throw new ConflictException(
-						`¡User with ID ${newUser.id} is already a member of this team!`,
+						`User with ID ${newUserId} is already a member of this team`,
 					);
 				}
 			}
 		}
 
 		const updateData: Prisma.TeamUpdateInput = {
-			...updateTeam,
-			tournaments: updateTeam.tournamentId
-				? { connect: { id: updateTeam.tournamentId } }
+			name: updateTeamDto.name,
+			tournament: updateTeamDto.tournamentId
+				? { connect: { id: updateTeamDto.tournamentId } }
 				: undefined,
-			users: updateTeam.user
-				? { connect: updateTeam.user.map((user) => ({ id: user.id })) }
+			users: updateTeamDto.userIds
+				? {
+					connect: updateTeamDto.userIds.map((userId) => ({
+						id: userId,
+					})),
+				}
 				: undefined,
 		};
 
 		return await this.prisma.team.update({
-			where: { id },
+			where: { id: team.id },
 			data: updateData,
 		});
 	}
 
-	async deleteMember(
-		idTeam: string,
-		idOrganizer: string,
-		idMember: string,
-	): Promise<Team> {
+	async deleteMember(teamId: string, memberId: string): Promise<Team> {
 		const team = await this.prisma.team.findUnique({
-			where: { id: idTeam },
+			where: { id: teamId },
 		});
-		if (!team) throw new NotFoundException('¡Id team do not exists!');
+		if (!team) throw new NotFoundException('Team does not exist');
 
-		const organizer = await this.prisma.team.findUnique({
-			where: { organizerId: idOrganizer },
-		});
-
-		if (!organizer)
-			throw new NotFoundException('¡Id organizer do not exists!');
-
-		const member = await this.prisma.team.findUnique({
-			where: { id: idTeam, users: { some: { id: idMember } } },
+		const userInTeam = await this.prisma.team.findUnique({
+			where: { id: teamId },
+			select: { users: { where: { id: memberId } } },
 		});
 
-		if (!member) throw new NotFoundException('¡Id member do no exists!');
+		if (!userInTeam || !userInTeam.users.length) {
+			throw new NotFoundException('Member is not part of the team');
+		}
 
 		return await this.prisma.team.update({
-			where: { id: idTeam },
-			data: { users: { disconnect: { id: idMember } } },
+			where: { id: teamId },
+			data: { users: { disconnect: { id: memberId } } },
 		});
 	}
 
-	async deleteTeam(idOrganizer: string, idTeam: string): Promise<Team> {
+	async deleteTeam(teamId: string): Promise<Team> {
 		const team = await this.prisma.team.findUnique({
-			where: { id: idTeam },
+			where: { id: teamId },
 		});
-		if (!team) throw new NotFoundException('¡Team do not exists!');
+		if (!team) throw new NotFoundException('Team does not exist');
 
-		const organizer = await this.prisma.team.findUnique({
-			where: { id: idOrganizer },
-		});
-
-		if (!organizer)
-			throw new NotFoundException('¡Organizer do not exists!');
-
-		return await this.prisma.team.delete({ where: { id: idTeam } });
+		return await this.prisma.team.delete({ where: { id: teamId } });
 	}
 }

@@ -10,12 +10,14 @@ const config: Config = {
   theme: {
     extend: {
         colors: {
-        lightViolet: "#E35AFF",
+        lighting: "#E35AFF",
+        lightViolet: "#CE00F1",
         softViolet: "#C15AEC",
         BGdark: "#301048",
-        BGlight: "#49176B",
+        BGlight: "#28004b",
+        // BGdarkness: "#170C20",
         white: "#ffffff",
-        greenAlert: "#2AEB1D"
+        greenAlert: "#2AEB1D",
       },
 
       fontFamily: {

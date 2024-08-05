@@ -1,4 +1,4 @@
-import { Games, PrismaClient, Team, Tournament, User } from '@prisma/client';
+import { PrismaClient, Team, Tournament, User } from '@prisma/client';
 import { gamesData } from 'helpers/games.helpers';
 import { teams } from 'helpers/teams.helpers';
 import { tournaments } from 'helpers/tournaments.helper';
@@ -8,157 +8,162 @@ import { CreateTournamentDto } from 'tournaments/createTournament.Dto';
 import { TournamentsService } from 'tournaments/tournaments.service';
 
 export class preloadData {
-	constructor(
-		private readonly prisma: PrismaClient,
-		private readonly teamService: TeamsService,
-		private readonly tournamentsService: TournamentsService,
-	) {}
+    constructor(
+        private readonly prisma: PrismaClient,
+        private readonly teamService: TeamsService,
+        private readonly tournamentsService: TournamentsService,
+    ) { }
 
-	async clearTables() {
-		await this.prisma.$transaction([
-			this.prisma.team.deleteMany({}),
-			this.prisma.tournament.deleteMany({}),
-			this.prisma.user.deleteMany({}),
-			this.prisma.games.deleteMany({}),
-		]);
-	}
+    async clearTables() {
+        await this.prisma.$transaction([
+            this.prisma.team.deleteMany({}),
+            this.prisma.tournament.deleteMany({}),
+            this.prisma.user.deleteMany({}),
+            this.prisma.game.deleteMany({}),
+        ]);
+    }
 
-	async addGames() {
-		for (const game of gamesData) {
-			await this.prisma.games.upsert({
-				where: { id: game.id },
-				update: {},
-				create: {
-					name: game.name,
-					urlImage: game.urlImage,
-				},
-			});
-		}
-	}
+    async addGames() {
+        for (const game of gamesData) {
+            await this.prisma.game.upsert({
+                where: { id: game.id },
+                update: {},
+                create: {
+                    name: game.name,
+                    urlImage: game.urlImage,
+                },
+            });
+        }
+    }
 
-	async addUsers() {
-		for (const user of users) {
-			await this.prisma.user.upsert({
-				where: { id: user.id },
-				update: {},
-				create: {
-					email: user.email,
-					nickName: user.nickName,
-					tokenFirebase: user.tokenFirebase,
-					birthDate: new Date(user.birthDate),
-					role: user.role,
-					urlSelfie: user.urlSelfie,
-					createdAt: new Date(user.createdAt),
-				},
-			});
-		}
-	}
+    async addUsers() {
+        for (const user of users) {
+            await this.prisma.user.upsert({
+                where: { id: user.id },
+                update: {},
+                create: {
+                    email: user.email,
+                    nickname: user.nickName,
+                    tokenFirebase: user.tokenFirebase,
+                    birthdate: new Date(user.birthDate),
+                    role: user.role,
+                    urlProfile: user.urlSelfie,
+                    createdAt: new Date(user.createdAt),
+                },
+            });
+        }
+    }
 
-	async addTeams() {
-		const usersTable: User[] = await this.prisma.user.findMany({ take: 4 });
-		let counter: number = 0;
+    async addTournaments() {
+        const userOrganizer: User = await this.prisma.user.findFirst({
+            where: {
+                role: 'organizer',
+            },
+        });
+        console.log(userOrganizer)
+        if (!userOrganizer) {
+            throw new Error('No organizer found');
+        }
 
-		for (const user of usersTable) {
-			const teamName: string = user.nickName + counter;
-			const urlAvatar: string = teams[counter].urlAvatar;
-			await this.teamService.createTeam(user.id, {
-				name: teamName,
-				urlAvatar: urlAvatar,
-			});
+        const games = await this.prisma.game.findMany();
 
-			counter++;
-		}
-	}
+        if (games.length === 0) {
+            throw new Error('No games found');
+        }
 
-	async addUserForTeam() {
-		let member: number = 4;
-		let teamCounter: number = 0;
-		let userPosition: number = 0;
-		const userTable: User[] = await this.prisma.user.findMany();
-		const teamsTable: Team[] = await this.prisma.team.findMany();
+        for (const tournament of tournaments) {
+            let gameName = '';
 
-		const selectedUsers = userTable.slice(member, member + 4);
+            if (tournament.nameTournament.includes('Counter-Strike')) {
+                gameName = 'CounterStrike Go';
+            } else if (tournament.nameTournament.includes('Fortnite')) {
+                gameName = 'Fortnite';
+            } else if (
+                tournament.nameTournament.includes('League of Legends')
+            ) {
+                gameName = 'League of Legends';
+            }
 
-		for (const team of teamsTable) {
-			const updateTeam = teamsTable[teamCounter];
-			for (let i = 0; i < 4 && selectedUsers.length > 0; i++) {
-				await this.teamService.updateTeam(
-					updateTeam.id,
-					selectedUsers[userPosition],
-				);
-				userPosition++;
-			}
-			member += 4;
-			teamCounter++;
-		}
-	}
+            const game = games.find((g) => g.name === gameName);
 
-	async addTournaments() {
-		const userOrganizer: User = await this.prisma.user.findFirst({
-			where: {
-				role: 'organizer',
-			},
-		});
+            if (!game) {
+                throw new Error(`Game ${gameName} not found`);
+            }
 
-		if (!userOrganizer) {
-			throw new Error('No organizer found');
-		}
+            const tournamentData: CreateTournamentDto = {
+                nameTournament: tournament.nameTournament,
+                startDate: tournament.startDate.toISOString(),
+                category: tournament.category,
+                awards: tournament.awards,
+                description: tournament.description,
+                urlAvatar: tournament.urlAvatar,
+                membersNumber: tournament.membersNumber,
+                maxTeams: tournament.maxTeams,
+                organizerId: userOrganizer.id,
+                gameId: game.id,
+                price: tournament.price
+            };
 
-		const games = await this.prisma.games.findMany();
+            await this.tournamentsService.createTournament(tournamentData);
+        }
+    }
 
-		if (games.length === 0) {
-			throw new Error('No games found');
-		}
+    async addTeamsWithPlayers() {
+        const usersorganizer: User[] = await this.prisma.user.findMany({ take: 4 });
+        const userTable: User[] = await this.prisma.user.findMany();
+        let counter: number = 0;
+        let userPosition: number = 4; // Empieza después de los organizadores
 
-		for (const tournament of tournaments) {
-			let gameName = '';
+        for (const user of usersorganizer) {
+            const urlAvatar: string = teams[counter].urlAvatar;
+            // Crear el equipo con el organizador
+            const createdTeam = await this.prisma.team.create({
+                data: {
+                    name: `Team ${counter + 1}`,
+                    organizerId: user.id,
+                    urlAvatar: urlAvatar,
+                    state: true,
+                },
+            });
 
-			if (tournament.nameTournament.includes('Counter-Strike')) {
-				gameName = 'CounterStrike Go';
-			} else if (tournament.nameTournament.includes('Fortnite')) {
-				gameName = 'Fortnite';
-			} else if (
-				tournament.nameTournament.includes('League of Legends')
-			) {
-				gameName = 'League of Legends';
-			}
+            // Agregar jugadores al equipo creado
+            for (let i = 0; i < 4 && userPosition < userTable.length; i++) {
+                const selectedUser = userTable[userPosition];
+                await this.prisma.userTeams.create({
+                    data: {
+                        nickname: selectedUser.nickname,
+                        nameTeam: createdTeam.id,
+                    },
+                });
+                userPosition++;
+            }
 
-			const game = games.find((g) => g.name === gameName);
+            counter++;
+        }
+    }
 
-			if (!game) {
-				throw new Error(`Game ${gameName} not found`);
-			}
 
-			const tournamentData: CreateTournamentDto = {
-				nameTournament: tournament.nameTournament,
-				startDate: tournament.startDate.toISOString(),
-				category: tournament.categories,
-				award: tournament.award,
-				description: tournament.description,
-				urlAvatar: tournament.urlAvatar,
-				membersNumber: tournament.maxMember,
-				maxTeam: tournament.maxTeam,
-				organizerId: userOrganizer.id,
-				gameId: game.id,
-				maxMember: tournament.maxMember,
-			};
 
-			await this.tournamentsService.createTournament(tournamentData);
-		}
-	}
 
-	async addTeamForTournament() {
-		const teams: Team[] = await this.prisma.team.findMany();
-		const tournaments: Tournament[] =
-			await this.prisma.tournament.findMany();
+    async addTeamForTournament() {
+        const teams: Team[] = await this.prisma.team.findMany();
+        const tournaments: Tournament[] = await this.prisma.tournament.findMany();
 
-		for (const tournament of tournaments) {
-			for (const team of teams) {
-				await this.tournamentsService.addTeamTournament(
-					tournament.id,
-					team.id,
-				);
-			}
-		}
-	}
+        let teamIndex = 0;
+
+        for (const tournament of tournaments) {
+            for (let i = 0; i < 4 && teamIndex < teams.length; i++) {
+                await this.prisma.tournament.update({
+                    where: { id: tournament.id },
+                    data: {
+                        teams: {
+                            connect: { id: teams[teamIndex].id }
+                        }
+                    }
+                });
+                teamIndex++;
+            }
+        }
+    }
+
 }

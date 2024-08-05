@@ -2,68 +2,111 @@ import {
 	IsString,
 	IsEmail,
 	IsNotEmpty,
-	MinLength,
+	IsDateString,
 	IsOptional,
+	IsBoolean,
+	IsUUID,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PartialType } from '@nestjs/mapped-types';
-
-export class CreateUserDto {
-	@ApiProperty({
-		description: 'Dirección de correo electrónico del usuario',
-		example: 'user@example.com',
-	})
-	@IsEmail()
-	email: string;
-
-	@ApiProperty({
-		description: 'Apodo del usuario',
-		example: 'JohnDoe',
-	})
-	@IsString()
-	@IsNotEmpty()
-	nickName: string;
-
-	@ApiProperty({
-		description: 'Contraseña del usuario (mínimo 8 caracteres)',
-		example: 'password123',
-	})
-	@IsString()
-	@MinLength(8)
-	tokenFirebase: string;
-
-	@ApiProperty({
-		description: 'Fecha de nacimiento del usuario',
-		example: '2000-01-01T00:00:00.000Z',
-	})
-	@IsString()
-	birthDate: string;
-
-	@ApiProperty({
-		description: 'ID del equipo asociado al usuario (opcional)',
-		example: 'teamId123',
-		required: false,
-	})
-	@IsOptional()
-	@IsString()
-	teamId?: string;
-}
+import { Role } from '@prisma/client';
 
 export class SignInDto {
 	@ApiProperty({
 		description: 'Dirección de correo electrónico del usuario',
 		example: 'user@example.com',
 	})
+	@IsNotEmpty()
 	@IsEmail()
 	email: string;
 
 	@ApiProperty({
-		description: 'Contraseña del usuario',
-		example: 'password123',
+		description: 'Token de Firebase del usuario',
+		example: 'someFirebaseToken',
 	})
 	@IsString()
 	@IsNotEmpty()
 	tokenFirebase: string;
 }
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class CreateUserDto extends SignInDto {
+	@ApiProperty({
+		description: 'Apodo del usuario',
+		example: 'JohnDoe',
+	})
+	@IsString()
+	@IsNotEmpty()
+	nickname: string;
+
+	@ApiProperty({
+		description: 'Fecha de nacimiento del usuario',
+		example: '2000-01-01T00:00:00.000Z',
+	})
+	@IsNotEmpty()
+	@IsDateString()
+	birthdate: string;
+}
+
+export class UpdateUserDto extends PartialType(CreateUserDto) {
+
+	@ApiProperty({
+		description: 'ID of the user',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	id: string
+
+	@ApiPropertyOptional({
+		description: 'URL del stream del usuario',
+		example: 'http://example.com/stream',
+	})
+	@IsOptional()
+	@IsString()
+	urlStream?: string;
+
+	@ApiPropertyOptional({
+		description: 'URL profile del usuario',
+		example: 'http://example.com/stream',
+	})
+	@IsOptional()
+	@IsString()
+	urlProfile?: string;
+
+	@ApiPropertyOptional({
+		description: 'Estado del usuario',
+		example: true,
+	})
+	@IsOptional()
+	@IsBoolean()
+	state?: boolean;
+}
+
+export class UserBanForAdminDto extends PartialType(UpdateUserDto) {
+	@ApiPropertyOptional({
+		description: 'Role del usuario',
+		example: 'user',
+	})
+	@IsOptional()
+	@IsString()
+	role?: Role;
+}
+
+export class AddFriendDto {
+	@ApiProperty({
+		description: 'ID of the user',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	userId: string
+
+	@ApiProperty({
+		description: 'ID of the friend',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	friendId: string
+
+}

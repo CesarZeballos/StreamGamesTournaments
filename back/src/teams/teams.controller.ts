@@ -18,9 +18,9 @@ import {
 	ApiBody,
 } from '@nestjs/swagger';
 import { TeamsService } from './teams.service';
-import { CreateTeamDto, DeleteMemberDto, UpdateTeamDto } from './teams.dto';
+import { CreateTeamDto, UpdateTeamDto } from './createTeamDto';
 
-@ApiTags('teams') // Etiqueta para agrupar en la documentación
+@ApiTags('teams')
 @Controller('teams')
 export class TeamsController {
 	constructor(private readonly teamsService: TeamsService) {}
@@ -31,11 +31,13 @@ export class TeamsController {
 		name: 'page',
 		required: false,
 		description: 'Número de página para la paginación',
+		example: 1,
 	})
 	@ApiQuery({
 		name: 'limit',
 		required: false,
 		description: 'Número de elementos por página',
+		example: 10,
 	})
 	@ApiResponse({
 		status: 200,
@@ -47,7 +49,7 @@ export class TeamsController {
 		@Query('limit') limit: string,
 	) {
 		!page ? (page = '1') : page;
-		!limit ? (limit = '9') : limit;
+		!limit ? (limit = '10') : limit;
 		if (page && limit)
 			return this.teamsService.getAllTeams(Number(page), Number(limit));
 	}
@@ -66,30 +68,16 @@ export class TeamsController {
 	@ApiBody({ type: CreateTeamDto, description: 'Datos del nuevo equipo' })
 	@ApiResponse({ status: 201, description: 'Equipo creado exitosamente.' })
 	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
-	async createTeam(
-		@Param('id', ParseUUIDPipe) id: string,
-		@Body() team: CreateTeamDto,
-	) {
-		return await this.teamsService.createTeam(id, team);
+	async createTeam(@Body() team: CreateTeamDto) {
+		return await this.teamsService.createTeam(team);
 	}
 
-	@Put('id')
+	@Put(':id')
 	@ApiOperation({ summary: 'Actualizar un equipo' })
 	@ApiParam({ name: 'id', type: 'string', description: 'ID del equipo' })
 	@ApiBody({
-		description: 'Datos del equipo a actualizar',
 		type: UpdateTeamDto,
-		examples: {
-			default: {
-				summary: 'Ejemplo de actualización de equipo',
-				value: {
-					name: 'Nuevo Nombre del Equipo',
-					urlAvatar: 'https://example.com/new-avatar.jpg',
-					tournamentId: '123e4567-e89b-12d3-a456-426614174000',
-					user: ['123e4567-e89b-12d3-a456-426614174000'],
-				},
-			},
-		},
+		description: 'Datos actualizados del equipo',
 	})
 	@ApiResponse({
 		status: 200,
@@ -97,50 +85,42 @@ export class TeamsController {
 	})
 	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
 	@ApiResponse({ status: 404, description: 'Equipo no encontrado.' })
-	async updateTeam(
-		@Param('id', ParseUUIDPipe) id: string,
-		@Body() team: UpdateTeamDto,
-	) {
-		return await this.teamsService.updateTeam(id, team);
+	async updateTeam(@Body() team: UpdateTeamDto) {
+		return await this.teamsService.updateTeam(team);
 	}
 
-	@Put('user')
+	@Put('deleteMember')
 	@ApiOperation({ summary: 'Eliminar un miembro del equipo' })
 	@ApiBody({
-		type: DeleteMemberDto,
-		description: 'Datos del miembro a eliminar',
+		description: 'Datos necesarios para eliminar un miembro del equipo',
+		type: Object,
+		examples: {
+			example1: {
+				value: { idMember: 'abc123', idTeam: 'team123' },
+				description: 'Ejemplo de datos para eliminar un miembro',
+			},
+		},
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Miembro eliminado del equipo exitosamente.',
+		description: 'Miembro del equipo eliminado exitosamente.',
 	})
 	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
 	@ApiResponse({
 		status: 404,
-		description: 'Equipo o miembro no encontrado.',
+		description: 'Miembro o equipo no encontrado.',
 	})
-	async deleteMember(
-		@Param('id', ParseUUIDPipe) id: string,
-		@Body() data: DeleteMemberDto,
-	) {
+	async deleteMember(@Body() data: { idMember: string; idTeam: string }) {
 		const { idMember, idTeam } = data;
-		return await this.teamsService.deleteMember(idTeam, id, idMember);
+		return await this.teamsService.deleteMember(idTeam, idMember);
 	}
 
-	@Delete()
+	@Delete(':teamId')
 	@ApiOperation({ summary: 'Eliminar un equipo' })
 	@ApiParam({ name: 'teamId', type: 'string', description: 'ID del equipo' })
-	@ApiParam({
-		name: 'organizerId',
-		type: 'string',
-		description: 'ID del organizador',
-	})
 	@ApiResponse({ status: 200, description: 'Equipo eliminado exitosamente.' })
 	@ApiResponse({ status: 404, description: 'Equipo no encontrado.' })
-	async deleteTeam(
-		@Param('teamId', ParseUUIDPipe) teamId: string,
-		@Param('organizerId', ParseUUIDPipe) organizerId: string,
-	) {
-		return await this.teamsService.deleteTeam(organizerId, teamId);
+	async deleteTeam(@Param('teamId', ParseUUIDPipe) teamId: string) {
+		return await this.teamsService.deleteTeam(teamId);
 	}
 }

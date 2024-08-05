@@ -27,14 +27,6 @@ export const LoginForm: React.FC = () => {
         password: ""
     })
 
-    //control de ingreso a la page
-    const user = useSelector((state: RootState) => state.user.user);
-    useEffect(() => {
-        if (user) {
-            router.push("/")
-        }
-    }, [router, user])
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
         const errors = validateLogin(data)
@@ -57,24 +49,27 @@ export const LoginForm: React.FC = () => {
         event.preventDefault()
         if (!errorLogin.email || !errorLogin.password) {
             dispatch(loginSlice(data))
-            setTimeout(() => {
-                if(user) {
-                    router.push("/")
-                } else return
-            }, 1500);
         } else {
             toast.error('Email or password incorrect', {
                 position: 'top-right',
                 duration: 1500,
-              })
+            })
         }
     }
+
+    const loginStatus = useSelector((state: RootState) => state.user.status)
+    useEffect(() => {
+        if (loginStatus === "succeeded") {
+        setTimeout(() => {
+            router.push("/")
+        }, 2000);
+    }}, [loginStatus, router])
+    
     
     return (
-        <form onSubmit={handleSubmit}>
-            <h1 className="heading2 text-white mb-16">Login</h1>
+        <form onSubmit={handleSubmit} className="mt-9">
             <FourColumsContainer imagen="login" URLimagen={"/login.jpg"}>
-                    <FormContainer section={"Enter your data"}>
+                    <FormContainer section={"Login"}>
                         <div className="flex flex-col gap-2 w-fit">
                             <label className="body text-white">Email</label>
                             <input type="text"
