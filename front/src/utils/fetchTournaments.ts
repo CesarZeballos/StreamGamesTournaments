@@ -17,11 +17,12 @@ export async function fetchTournaments(): Promise<ITournament[]> {
         if (!Array.isArray(allTournaments)) {
             throw new Error("API response is not an array.");
         }
-        const formattedTournaments = allTournaments.map((tournament: ITournament) => ({
-            ...tournament,
-            startDate: format(new Date(tournament.startDate), "dd/MM")
-        }));
-        return formattedTournaments;
+        // const formattedTournaments = allTournaments.map((tournament: ITournament) => ({
+        //     ...tournament,
+        //     startDate: format(new Date(tournament.startDate), "dd/MM")
+        // }));
+        // return formattedTournaments;
+        return allTournaments;
 }
 
 // funcion para recibir el torneo por id

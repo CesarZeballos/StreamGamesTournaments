@@ -2,12 +2,16 @@ import Image from "next/image";
 import { ITournament } from "@/interfaces/interfaceTournaments";
 import award1 from "../../app/assets/images/icons/award1.png"
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { isoToDate } from "@/utils/formatDate";
 
 export const Awards_Dates: React.FC<{ tournament: ITournament }> = ({tournament}) => {
+
+    const date = isoToDate(tournament.startDate);
+    
     return (
         <div className="flex flex-col">
             <div className="flex flex-row ml-small">
-                <h1 className="numberInfo text-white">{tournament.startDate}</h1>
+                <h1 className="numberInfo text-white">{date}</h1>
                 <h2 className="heading3 text-white ml-4 mt-1">Tournament Start</h2>
             </div>
         <div className="bg-BGdark rounded-3xl flex flex-col justify-start p-6 m-4">

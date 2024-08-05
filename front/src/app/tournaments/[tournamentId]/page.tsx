@@ -10,12 +10,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { toast } from 'sonner';
 import { CategoryIcon, GameIcon, PriceIcon } from '@/components/Tournaments/type';
+import { isoToDate } from '@/utils/formatDate';
 
 const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params }) => {
   const router = useRouter();
   const allTournament = useSelector((state: RootState) => state.tournament.tournaments);
   const tournamentId = params.tournamentId;
-  const tournament = allTournament.find((tournament) => tournament.id === tournamentId);
+  const tournament = allTournament.find((tournament: { id: string; }) => tournament.id === tournamentId);
   const token = useSelector((state: RootState) => state.user.token);
 
   if (!tournament) {

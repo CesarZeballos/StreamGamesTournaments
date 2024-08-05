@@ -17,10 +17,8 @@ const persistedReducer = persistReducer(persistConfig, userSlice);
 const rootReducer = combineReducers({
   user: persistedReducer,
   tournament: tournamentsSlice,
-  cards: cardsSlice,
   dashboard: dashboardSlice,
   auxiliar: auxiliarSlice,
-  tournaments: tournamentSlice
 });
 
 export default rootReducer;

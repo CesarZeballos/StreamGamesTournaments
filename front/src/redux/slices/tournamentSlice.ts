@@ -70,17 +70,17 @@ const tournamentSlice = createSlice({
       
           if (state.filters.date === "thisMonth") {
             dateArray = priceArray.filter((t) => {
-              const tournamentDate = parseDate(t.startDate);
+              const tournamentDate = new Date(t.startDate);
               return tournamentDate.getMonth() === currentMonth && tournamentDate.getFullYear() === currentYear;
             });
           } else if (state.filters.date === "nextMonths") {
             dateArray = priceArray.filter((t) => {
-              const tournamentDate = parseDate(t.startDate);
+              const tournamentDate = new Date(t.startDate);
               return tournamentDate.getMonth() === currentMonth + 1 && tournamentDate.getFullYear() === currentYear;
             });
           } else if (state.filters.date === "moreMonths") {
             dateArray = priceArray.filter((t) => {
-              const tournamentDate = parseDate(t.startDate);
+              const tournamentDate = new Date(t.startDate);
               return tournamentDate.getMonth() > currentMonth + 1 && tournamentDate.getFullYear() === currentYear;
             });
           }
@@ -120,11 +120,5 @@ const tournamentSlice = createSlice({
   },
 });
 
-export const { setTournaments, setRunFilters, setRootFilters } = tournamentsSlice.actions;
-export default tournamentsSlice.reducer;
-
-function parseDate(dateString: string) {
-  const [day, month] = dateString.split('/').map(Number);
-  const year = new Date().getFullYear(); // Utiliza el año actual
-  return new Date(year, month - 1, day); // Mes en JavaScript es 0-indexado
-}
+export const { setTournaments, setRunFilters, setRootFilters } = tournamentSlice.actions;
+export default tournamentSlice.reducer;

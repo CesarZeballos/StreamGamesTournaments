@@ -4,9 +4,12 @@ import Link from "next/link";
 import { ITournament } from "@/interfaces/interfaceTournaments";
 import { gameImages } from "@/utils/tournamentsData";
 import { CategoryIcon, GameIcon, PriceIcon } from "./type";
+import { isoToDate } from "@/utils/formatDate";
 
 export const Tournaments: React.FC<{ tournament: ITournament }> = ({ tournament }) => {
     const gameImage = gameImages[tournament.game.name] || "/default-image.png";
+
+    const date = isoToDate(tournament.startDate);
 
     return (
         <Link href={`/tournaments/${tournament.id}`}>
@@ -21,7 +24,7 @@ export const Tournaments: React.FC<{ tournament: ITournament }> = ({ tournament 
                 <div className="absolute bottom-1 left-0 right-0 p-4 bg-BGdark rounded-3xl h-fit">
                     <div className="flex justify-between items-center mb-2">
                         <h1 className="heading5 text-lightViolet text-wrap">{tournament.game.name}</h1>
-                        <h1 className="numberCard text-white">{tournament.startDate}</h1>
+                        <h1 className="numberCard text-white">{date}</h1>
                     </div>
                     <div className="flex flex-row gap-4">
                         <CategoryIcon category={tournament.category} />
