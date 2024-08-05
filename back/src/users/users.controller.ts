@@ -6,6 +6,8 @@ import {
 	Put,
 	Body,
 	UseGuards,
+	Delete,
+	Post,
 } from '@nestjs/common';
 import {
 	ApiTags,
@@ -16,7 +18,7 @@ import {
 	ApiBody,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from 'auth/auth.user.Dto';
+import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
 /* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
 import { Roles } from 'auth/roles.decorator';
@@ -118,5 +120,38 @@ export class UsersController {
 	@ApiResponse({ status: 404, description: 'Usuario no encontrado' })
 	disableUser(@Query('id') id: string) {
 		return this.usersService.disableUser(id);
+	}
+	@Post('add-friend')
+	@ApiOperation({ summary: 'Agregar un amigo' })
+	@ApiBody({
+		description: 'Datos para agregar un amigo',
+		type: AddFriendDto,
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Amigo agregado exitosamente',
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Amigo ya añadido o datos inválidos',
+	})
+	addFriend(@Body() addFriendDto: AddFriendDto) {
+		return this.usersService.addFriend(addFriendDto);
+	}
+
+	@Delete('remove-friend/:id')
+	@ApiOperation({ summary: 'Eliminar un amigo por ID' })
+	@ApiParam({
+		name: 'id',
+		type: 'string',
+		description: 'ID del amigo a eliminar',
+	})
+	@ApiResponse({
+		status: 200,
+		description: 'Amigo eliminado exitosamente',
+	})
+	@ApiResponse({ status: 404, description: 'Amigo no encontrado' })
+	removeFriend(@Param('id') id: string) {
+		return this.usersService.removeFriend(id);
 	}
 }

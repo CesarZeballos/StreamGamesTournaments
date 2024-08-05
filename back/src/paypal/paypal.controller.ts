@@ -1,4 +1,4 @@
-import { Controller, Post, Param } from '@nestjs/common';
+import { Controller, Post, Param, Body } from '@nestjs/common';
 import { PayPalService } from './paypal.service';
 
 @Controller('paypal')
@@ -6,8 +6,8 @@ export class PayPalController {
 	constructor(private readonly payPalService: PayPalService) {}
 
 	@Post('create-order')
-	async createOrder() {
-		return this.payPalService.createOrder();
+	async createOrder(@Body() paypal: any) {
+		return this.payPalService.createOrder(paypal);
 	}
 
 	@Post('capture-order/:orderId')

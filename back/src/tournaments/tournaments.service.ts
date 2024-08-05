@@ -17,7 +17,7 @@ export class TournamentsService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly mailService: MailService,
-	) {}
+	) { }
 
 	async getAllTournaments(page: number, limit: number) {
 		const skip = (page - 1) * limit;
@@ -28,7 +28,7 @@ export class TournamentsService {
 			include: {
 				game: true,
 				players: true,
-				organizer: true,
+				teams: true,
 			},
 		});
 
@@ -58,8 +58,7 @@ export class TournamentsService {
 	}
 
 	async createTournament(createTournamentDto: CreateTournamentDto) {
-		const { organizerId, gameId, players, teams, ...data } =
-			createTournamentDto;
+		const { organizerId, gameId, ...data } = createTournamentDto;
 
 		const organizerExists = await this.prisma.user.findUnique({
 			where: { id: organizerId },
@@ -89,16 +88,9 @@ export class TournamentsService {
 					awards: awardsAsStrings,
 					organizer: { connect: { id: organizerId } },
 					game: { connect: { id: gameId } },
-					players: players
-						? { connect: players.map((userId) => ({ id: userId })) }
-						: undefined,
-					teams: teams
-						? { connect: teams.map((teamId) => ({ id: teamId })) }
-						: undefined,
 				},
 			});
 
-			// Enviar correo de creación de torneo
 			const mailOptions = MailTemplates.tournamentCreated(
 				organizerExists.email,
 				organizerExists.nickname,

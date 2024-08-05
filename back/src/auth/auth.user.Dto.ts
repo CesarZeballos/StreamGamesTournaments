@@ -72,7 +72,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 	state?: boolean;
 }
 
-export class UserDtoForAdmin extends PartialType(UpdateUserDto) {
+export class UserBanForAdminDto extends PartialType(UpdateUserDto) {
 	@ApiPropertyOptional({
 		description: 'Role del usuario',
 		example: 'user',
@@ -81,3 +81,21 @@ export class UserDtoForAdmin extends PartialType(UpdateUserDto) {
 	@IsString()
 	role?: Role;
 }
+
+export class AddFriendDto {
+	@ApiProperty({
+	  description: 'ID del usuario amigo que se desea agregar',
+	  example: 'user-id-456',
+	})
+	@IsString()
+	@IsNotEmpty()
+	friendId: string;
+  
+	@ApiProperty({
+	  description: 'ID del usuario que solicita agregar el amigo',
+	  example: 'user-id-123',
+	})
+	@IsString()
+	@IsNotEmpty()
+	userId: string;
+  }
