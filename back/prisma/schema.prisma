@@ -102,7 +102,7 @@ model Tournament {
   membersNumber  Int
   maxTeams       Int
   price          Int
-  urlAvatar      String
+  urlAvatar      String?
   awards         String[]
   description    String
   state          Boolean    @default(true)

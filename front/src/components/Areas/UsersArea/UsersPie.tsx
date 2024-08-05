@@ -106,11 +106,11 @@ const UsersPie: React.FC<UserPieProps> = ({ activeUsers, inactiveUsers, usersInT
 
   return (
   <>
-      <h1 className='heading3 text-center text-lightViolet mb-small'>Users Graphs</h1>
-    <div className="flex justify-center items-center text-center bg-white rounded-lg w-full max-h-500px">
-      <div className="overflow-hidden">
-        <ApexCharts options={options} series={series} type="pie" width={600} />
-      </div>
+      <h1 className='heading5 text-start text-lightViolet mb-small'>Users Graphs</h1>
+    <div className="bg-white rounded-lg w-fit">
+      {/* <div className="overflow-hidden"> */}
+        <ApexCharts options={options} series={series} type="pie" width={550}/>
+      {/* </div> */}
     </div>
     </>
   );

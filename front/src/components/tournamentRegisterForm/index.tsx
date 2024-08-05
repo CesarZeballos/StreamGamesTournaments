@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
 import { FormContainer } from "../formContainer";
 import { useRouter } from "next/navigation";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { toast } from "sonner";
 import { IUser } from "@/interfaces/interfaceUser";
 import { Box, Chip, FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
 import { setView } from "@/redux/slices/dashboardSlice";
+import { fetchAddTeamToTournament } from "@/utils/fetchTournaments";
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
+import { isoToDate } from "@/utils/formatDate";
+import { postTeamToTournamentSlice } from "@/redux/thunks/tournamentsSliceThunk";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -24,7 +28,7 @@ const MenuProps = {
 };
 
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
     // Seteo de la informacion
@@ -33,32 +37,14 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const tournaments = useSelector((state: RootState) => state.tournament.tournaments);
     const turnament = tournaments.find((tournament) => tournament.id === tourId);
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
-    const [tournamentData, setTournamentData] = useState<ITournament>({
-        id: "",
-        nameTournament: "",
-        startDate: "",
-        createdAt: "",
-        category: "",
-        organizerId: "",
-        gameId: "",
-        membersNumber: 0,
-        maxTeam: 0,
-        price: 0,
-        urlAvatar: "",
-        award: [],
-        description: "",
-        state: false,
-        game: {} as IGame,
-        players: [],
-        organizer: {} as IUser
-    });
-    const stringDate = tournamentData.startDate.split('T')[0];
+    const [tournamentData, setTournamentData] = useState<ITournament>(turnament!);
+    const stringDate = isoToDate(tournamentData?.startDate)
     
     const [addTeam, setAddTeam] = useState<IAddTeam>({
         tournamentId: tourId,
-        teamName: "",
-        organizarId: user!.id,
-        members: []
+        name: "",
+        organizerId: user!.id,
+        users: []
     });
 
     //control de ingreso a la page
@@ -78,12 +64,16 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         const selectedMembers = user!.friends.filter(friend => selectedNicknames.includes(friend.nickname));
 
         const completedTeam = [...selectedMembers, userData]
-    
+        
+        const membersIdArray: string[] = []
+        for(let i = 0; i < completedTeam.length; i++) {
+            membersIdArray.push(completedTeam[i].id)
+        }
         setTeamMembers(selectedNicknames);
 
         setAddTeam(addTeam => ({
           ...addTeam,
-          members: completedTeam
+          users: membersIdArray
         }));
       };
 
@@ -98,7 +88,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const teamLength = addTeam.members.length
+        const teamLength = addTeam.users.length
         if (teamLength < tournamentData.membersNumber) {
             toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${tournamentData.membersNumber - teamLength} more`, {
                 position: 'top-right',
@@ -110,10 +100,32 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                 duration: 1500,
             })
         } else {
-            console.log("addTeam", addTeam)
-            //enviar la data
+            try {
+                dispatch(postTeamToTournamentSlice({teamData: addTeam,token: token!}))
+            } catch {
+                toast.error("something went wrong", {
+                    position: 'top-right',
+                    duration: 1500,
+                })
+            }
         }
-        }
+    }
+
+    const payment = useSelector((state: RootState) => state.auxiliar.statusPayment);
+    useEffect(() => {
+        if(payment === "succeeded") {
+            dispatch(setView("tournaments"))
+            dispatch(reloadUserSlice({
+                email: user!.email!,
+                tokenFirebase: user!.tokenFirebase
+            }))
+            router.push("/dashboard")
+            toast.success(`Your team is registered in the ${tournamentData.nameTournament}`, {
+                position: 'top-right',
+                duration: 1500,
+            })
+        } 
+    }, [payment, dispatch, router, user, tournamentData.nameTournament])
 
     const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         router.push("/tournaments/" + tourId);
@@ -139,8 +151,8 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                             <div className="flex flex-col gap-2">
                                 <label className="body text-white">team name</label>
                                 <input type="text"
-                                name="teamName"
-                                value={addTeam.teamName}
+                                name="name"
+                                value={addTeam.name}
                                 onChange={handleChange}
                                 className="input"
                                 required />

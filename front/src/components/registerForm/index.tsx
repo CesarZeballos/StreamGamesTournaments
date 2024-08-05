@@ -31,7 +31,6 @@ export const RegisterForm: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        console.log("handleChange", data)
         setData({
             ...data,
             [name]: value

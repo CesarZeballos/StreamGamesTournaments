@@ -3,12 +3,14 @@ import { createSlice, PayloadAction, AnyAction  } from "@reduxjs/toolkit";
 import { getUsersSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
+import { postTeamToTournamentSlice } from "../thunks/tournamentsSliceThunk";
 
 
 const initialState: IAuxiliarState = {
     users: [],
     status: 'idle',
-    error: null
+    error: null,
+    statusPayment: 'idle'
 }
 
 const auxiliarSlice = createSlice({
@@ -42,6 +44,29 @@ const auxiliarSlice = createSlice({
             toast.error('users not loaded', {
                 position: 'top-right',
                 duration: 1500,
+            })
+        })
+        // ADD TEAM TO TOURNAMENT
+        .addCase(postTeamToTournamentSlice.pending, (state) => {
+          state.statusPayment = 'loading'
+          toast.loading('Waiting for your payment', {
+              position: 'top-right',
+              duration: 1500,
+          })
+            
+        })
+        .addCase(postTeamToTournamentSlice.fulfilled, (state, action) => {
+          state.statusPayment = 'succeeded'
+          toast.success(`Payment succeeded`, {
+              position: 'top-right',
+              duration: 1500,
+            })
+        })
+        .addCase(postTeamToTournamentSlice.rejected, (state, action) => {
+          state.statusPayment = 'failed'
+          toast.error("something went wrong", {
+              position: 'top-right',
+              duration: 1500,
             })
         })
     }

@@ -31,6 +31,9 @@ const userSlice = createSlice({
             state.error = null
             state.token = null
             state.statusRegister = 'idle'            
+        },
+        setStatusFriend(state) {
+            state.statusAddFriend = 'idle'
         }
     }, extraReducers: (builder) => {
         builder
@@ -177,5 +180,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {setUser, logoutSlice} = userSlice.actions;
+export const {setUser, logoutSlice, setStatusFriend} = userSlice.actions;
 export default userSlice.reducer;

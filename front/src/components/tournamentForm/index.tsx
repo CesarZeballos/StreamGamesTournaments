@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { postTournament } from "@/utils/fetchTournaments";
+// import { postTournament } from "@/utils/fetchTournaments";
 import { gameImages, categoryIcons, categories, gameName } from "@/utils/tournamentsData";
 import { ITournamentPost } from "@/interfaces/interfaceTournaments";
 import { PostContainer } from "./PostContainer";
@@ -55,7 +55,7 @@ export const TournamentForm: React.FC = () => {
     };
 
     try {
-      await postTournament(data);
+      // await postTournament(data);
       toast.success("Tournament created successfully!");
     } catch (error) {
       toast.error("Error creating tournament");
