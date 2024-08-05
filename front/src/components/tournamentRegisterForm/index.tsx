@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FourColumsContainer } from "../fourColumsContainer";
 import { FormContainer } from "../formContainer";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { AppDispatch, RootState } from "@/redux/store";
 import { toast } from "sonner";
 import { IUser } from "@/interfaces/interfaceUser";
@@ -15,6 +16,12 @@ import { fetchAddTeamToTournament } from "@/utils/fetchTournaments";
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import { isoToDate } from "@/utils/formatDate";
 import { postTeamToTournamentSlice } from "@/redux/thunks/tournamentsSliceThunk";
+=======
+import { RootState } from "@/redux/store";
+import { toast } from "sonner";
+import { IUser } from "@/interfaces/interfaceUser";
+import { Box, Chip, FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
+>>>>>>> origin/cesar
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -27,6 +34,67 @@ const MenuProps = {
   },
 };
 
+const friends: IUser[] = [
+    {
+        id: "1",
+        nickName: "cesar1",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "2",
+        nickName: "cesar2",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "3",
+        nickName: "cesar3",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    }, 
+
+    {
+        id: "4",
+        nickName: "cesar4",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "5",
+        nickName: "cesar5",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "6",
+        nickName: "cesar6",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+]
 export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
@@ -34,6 +102,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     // Seteo de la informacion
     const user = useSelector((state: RootState) => state.user.user);
     const [userData, setUserData] = useState<IUser>(user!);
+<<<<<<< HEAD
     const tournaments = useSelector((state: RootState) => state.tournament.tournaments);
     const turnament = tournaments.find((tournament) => tournament.id === tourId);
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
@@ -54,6 +123,47 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             router.push("/login")
         }
     }, [router, token, dispatch, user])
+=======
+    const tournaments = useSelector((state: RootState) => state.tournaments.tournaments);
+    const turnament = tournaments.find((tournament) => tournament.id === tourId);
+    const [teamMembers, setTeamMembers] = useState<string[]>([]);
+    const [tournamentData, setTournamentData] = useState<ITournament>({
+        id: "",
+        nameTournament: "Prueba",
+        startDate: "2024-01-01",
+        createdAt: "",
+        price: 500,
+        categories: "",
+        gameId: "",
+        membersNumber: 0,
+        award: [],
+        urlAvatar: "",
+        description: "",
+        maxMember: 5,
+        maxTeam: 0,
+        organizerId: "",
+        game: {
+            id: "",
+            name: "",
+            urlImage: "",
+        }
+    });
+    const stringDate = tournamentData.startDate.split('T')[0];
+    
+    const [addTeam, setAddTeam] = useState<IAddTeam>({
+        tournamentId: tourId,
+        teamName: "",
+        organizarId: user!.id,
+        members: []
+    });
+
+    //control de ingreso a la page
+    useEffect(() => {
+        if (!user || user === null) {
+            router.push("/login")
+        } 
+    }, [user, router]);
+>>>>>>> origin/cesar
 
     // selector de miembros
     const handleChangeMembers = (event: SelectChangeEvent<typeof teamMembers>) => {
@@ -61,6 +171,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         const selectedNicknames = typeof value === 'string' ? value.split(',') : value;
     
         // Encuentra los objetos completos basados en los nicknames seleccionados
+<<<<<<< HEAD
         const selectedMembers = user!.friends.filter(friend => selectedNicknames.includes(friend.nickname));
 
         const completedTeam = [...selectedMembers, userData]
@@ -69,11 +180,22 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
         for(let i = 0; i < completedTeam.length; i++) {
             membersIdArray.push(completedTeam[i].id)
         }
+=======
+        const selectedMembers = friends.filter(friend => selectedNicknames.includes(friend.nickName));
+
+        const completedTeam = [...selectedMembers, userData]
+    
+        // Actualiza el estado de teamMembers y addTeam
+>>>>>>> origin/cesar
         setTeamMembers(selectedNicknames);
 
         setAddTeam(addTeam => ({
           ...addTeam,
+<<<<<<< HEAD
           users: membersIdArray
+=======
+          members: completedTeam
+>>>>>>> origin/cesar
         }));
       };
 
@@ -88,6 +210,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+<<<<<<< HEAD
         const teamLength = addTeam.users.length
         if (teamLength < tournamentData.membersNumber) {
             toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${tournamentData.membersNumber - teamLength} more`, {
@@ -96,10 +219,21 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             })
         } else if (teamLength > tournamentData.membersNumber) {
             toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${teamLength - tournamentData.membersNumber} less`, {
+=======
+        const teamLength = addTeam.members.length
+        if (teamLength < tournamentData.maxMember) {
+            toast.error(`this tournaments require ${tournamentData.maxMember} team members. Need ${tournamentData.maxMember - teamLength} more`, {
+                position: 'top-right',
+                duration: 1500,
+            })
+        } else if (teamLength > tournamentData.maxMember) {
+            toast.error(`this tournaments require ${tournamentData.maxMember} team members. Need ${teamLength - tournamentData.maxMember} less`, {
+>>>>>>> origin/cesar
                 position: 'top-right',
                 duration: 1500,
             })
         } else {
+<<<<<<< HEAD
             try {
                 dispatch(postTeamToTournamentSlice({teamData: addTeam,token: token!}))
             } catch {
@@ -134,6 +268,15 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const addFriend = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         dispatch(setView("addFriends"))
         router.push("/dashboard")
+=======
+            console.log("addTeam", addTeam)
+            //enviar la data
+        }
+        }
+
+    const goBack = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        router.push("/tournaments/" + tourId);
+>>>>>>> origin/cesar
     }
 
     return (
@@ -141,7 +284,11 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
+<<<<<<< HEAD
                         <h2 className="heading4 text-white">{tournamentData.nameTournament}</h2>
+=======
+                        <h2 className="heading5 text-white">{tournamentData.nameTournament}</h2>
+>>>>>>> origin/cesar
                         <p className="body text-white mt-4">Tournaments price ${tournamentData.price}</p>
                         <p className="body text-white">the tournament will start on {stringDate}</p>
                     </FormContainer>
@@ -151,13 +298,19 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                             <div className="flex flex-col gap-2">
                                 <label className="body text-white">team name</label>
                                 <input type="text"
+<<<<<<< HEAD
                                 name="name"
                                 value={addTeam.name}
+=======
+                                name="teamName"
+                                value={addTeam.teamName}
+>>>>>>> origin/cesar
                                 onChange={handleChange}
                                 className="input"
                                 required />
                             </div>
 
+<<<<<<< HEAD
                             <p className="body text-white mt-4">Members</p>
                             {
                                 !user?.friends || user?.friends.length === 0 ? <div className="flex flex-row items-center">
@@ -209,6 +362,48 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                     }
 
                     <FormContainer section={""}>
+=======
+                            <p className="body text-white">Members</p>
+                            <FormControl sx={{ m: 1, width: 320 }}>
+                                <Select
+                                multiple
+                                displayEmpty
+                                value={teamMembers}
+                                onChange={handleChangeMembers}
+                                className="inputMUI"
+                                input={<OutlinedInput 
+                                    id="multipleMembers" 
+                                    />}
+                                renderValue={(selected) => {
+                                    if (selected.length === 0) {
+                                    return <em className="body text-BGdark">Members</em>;
+                                    } else return (<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                    {selected.map((value) => (
+                                        <Chip 
+                                        className="chip" 
+                                        key={value} label={value} />
+                                    ))}
+                                    </Box>)
+                                }     
+                            }
+                                MenuProps={MenuProps}
+                                >
+                                {friends.map((friend) => (
+                                    <MenuItem
+                                    key={friend.id}
+                                    value={friend.nickName}
+                                    >
+                                    {friend.nickName}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
+                            <p className="errorForm">{`select ${tournamentData.maxMember - 1} friends`}</p>
+
+                        </FormContainer> 
+                    }
+                    <FormContainer>
+>>>>>>> origin/cesar
                         <div className="flex flex-row gap-2">
                             <button type="submit" className="buttonPrimary">Register team</button>
                             <button className="buttonSecondary" onClick={goBack}>Cancel</button>

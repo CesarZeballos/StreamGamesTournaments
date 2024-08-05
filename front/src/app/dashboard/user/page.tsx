@@ -7,6 +7,10 @@ const UserDashboard: React.FC = () => {
         <div className="bodyContainer mb-16">
             <UserDashboardView />
         </div>
+<<<<<<< HEAD
+=======
+        
+>>>>>>> origin/cesar
     )
 }
 

@@ -121,6 +121,12 @@ html, body {
   hover:bg-lightViolet
 }
 
+.iconButton {
+  @apply p-1 text-white rounded-full
+  hover:text-BGdark
+  hover:bg-lightViolet
+}
+
 .buttonCarousel:hover, .buttonPage:hover {
   transition: 0.5s;
   background-color: #0d0835;
@@ -148,6 +154,7 @@ body {
   overflow: hidden;
 }
 
+<<<<<<< HEAD
 .thead {
   overflow: hidden;
 }
@@ -174,6 +181,18 @@ body {
 
 .filter {
   @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-36
+=======
+.input {
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-80
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
+.inputMUI {
+  @apply bg-white rounded-md font-Roboto text-BGdark
+>>>>>>> origin/cesar
   focus:border-solid
   focus:border-lightViolet
   focus:shadow-md
@@ -272,6 +291,17 @@ body {
   @apply font-Roboto text-sm text-white px-6
 }
 
+.chip {
+  @apply bg-BGlight font-Raleway font-bold text-xs text-white pl-4 py-2 rounded-full
+}
+
+.tableHeader {
+  @apply border-solid border-2 border-lightViolet font-Raleway font-medium text-base text-white flex rounded-full w-full px-6 py-1 my-4
+}
+
+.tableBody {
+  @apply font-Roboto text-base text-white
+}
 @media (max-width: 992px) {
   .father-container {
     transform: scale(0);

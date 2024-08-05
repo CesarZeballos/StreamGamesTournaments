@@ -7,6 +7,7 @@ import { REHYDRATE } from "redux-persist";
 
 const initialState: ITournamentState = {
   status: "idle",
+<<<<<<< HEAD
   tournaments: [],
   currentPage: 1,
   filters: {
@@ -16,6 +17,9 @@ const initialState: ITournamentState = {
     date: ""
   },
   tournamentsFiltered: [],
+=======
+  tournaments: []
+>>>>>>> origin/cesar
 };
 
 const tournamentSlice = createSlice({
@@ -90,6 +94,7 @@ const tournamentSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+<<<<<<< HEAD
       .addCase(REHYDRATE as any, (state, action: AnyAction) => {
         if (action.payload) {
           const rehydratedState = action.payload.tournaments;
@@ -107,6 +112,13 @@ const tournamentSlice = createSlice({
       })
       .addCase(getTournamentsSlice.rejected, (state) => {
         state.status = 'failed';
+=======
+      .addCase(getTournamentsSlice.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getTournamentsSlice.rejected, (state, action) => {
+        state.status = "failed";
+>>>>>>> origin/cesar
         toast.error('Error in getting tournaments', {
           position: 'top-right',
           duration: 1500,
@@ -114,8 +126,12 @@ const tournamentSlice = createSlice({
       })
       .addCase(getTournamentsSlice.fulfilled, (state, action: PayloadAction<ITournament[]>) => {
         state.status = "succeeded";
+<<<<<<< HEAD
         state.tournaments = action.payload
         state.tournamentsFiltered = action.payload
+=======
+        state.tournaments = action.payload;
+>>>>>>> origin/cesar
       });
   },
 });

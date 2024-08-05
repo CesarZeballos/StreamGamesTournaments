@@ -19,7 +19,12 @@ const NavBar: React.FC = () => {
             <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
             {user ? 
             <div className="flex gap-x-8">
+<<<<<<< HEAD
                 <Link className="buttonNavbar flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
+=======
+                <Link className="buttonSecondary flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickName}`}</Link>
+                <button className="buttonSecondary" onClick={logout}>Sign Out</button> 
+>>>>>>> origin/cesar
             </div>
             :
             <div className="flex gap-x-8">

@@ -6,6 +6,7 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto, SignInDto } from './auth.user.Dto';
+
 import { MailService } from 'mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -41,7 +42,12 @@ export class AuthService {
 				email,
 				nickname,
 				tokenFirebase,
-				birthdate: parsedBirthDate.toISOString(),
+				birthDate: parsedBirthDate.toISOString(),
+				team: teamId
+					? {
+							connect: { id: teamId },
+						}
+					: undefined,
 			},
 		});
 
