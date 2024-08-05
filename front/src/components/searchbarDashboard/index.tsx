@@ -36,11 +36,11 @@ export const SearchBarDashboard: React.FC = () => {
                 <button className="buttonPrimary" onClick={() => handleViewClick("addFriend")}>Add friend</button>
             </div>
 
-            {userRol === "organizer" || userRol === "admin" && 
+            {(userRol === "organizer" || userRol === "admin") && 
             <div  className="flex flex-col items-center gap-2">
                 <h1 className="heading5 text-lightViolet">Organizer options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("myTournaments")}>Organized tournaments</button>
-                <button className="buttonSecondary" onClick={() => handleRoot()}>Create Tournament</button>
+                <button className="buttonPrimary" onClick={() => handleRoot()}>Create Tournament</button>
             </div>}
 
             {userRol === "admin" && 
