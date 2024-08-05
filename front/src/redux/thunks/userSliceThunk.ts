@@ -49,6 +49,7 @@ export const forgotPasswordSlice = createAsyncThunk('user/postForgotPassword', a
 
 export const addfriendSlice = createAsyncThunk('user/addFriend', async (data: IAddFriendForm) => {
         const response = await fetchAddUser(data)
+        console.log("data", data, "response", response)
         return response
 })
 

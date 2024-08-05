@@ -45,7 +45,6 @@ export const AddFriend: React.FC = () => {
     }, [users, userSelector, dispatch, userActive.user?.id])
 
     const handleChange = (event: any, value: IUserSelector | null) => {
-        console.log(value)
         if (value) {
             setFriend(value.id)
         }}
@@ -54,7 +53,6 @@ export const AddFriend: React.FC = () => {
             event.preventDefault();
             if(friend !== "") {
                 dispatch(addfriendSlice({userId: userActive.user?.id!, friendId: friend, token: userActive.token!}))
-                router.push("/dashboard")
         } else {
             toast.error('Select a friend', {
                 position: 'top-right',

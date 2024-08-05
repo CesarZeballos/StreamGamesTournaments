@@ -107,7 +107,7 @@ export const banUser = async (id: string) => {
 
 export const fetchAddUser = async (data: IAddFriendForm) => {
     const {userId, friendId, token} = data
-    const response = await fetch(`${apiUrl}/users/addFriend`, {
+    const response = await fetch(`${apiUrl}/users/add-friend`, {
         method: "POST",
         headers: {
             'Authorization': `Bearer ${token}`,
