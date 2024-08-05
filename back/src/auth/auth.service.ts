@@ -78,7 +78,7 @@ export class AuthService {
 			this.logger.log(`Attempting to sign in user with email: ${email}`);
 
 			const user = await this.prisma.user.findUnique({
-				where: { email },
+				where: { email }, include: { friends: { include: { user: true } }, tournaments: true, organizedTournaments: true },
 			});
 
 			if (!user) {
@@ -93,8 +93,8 @@ export class AuthService {
 
 			return {
 				message: 'User logged in successfully',
-				user,
-				token,
+				user:
+					token,
 			};
 		} catch (error) {
 			if (error instanceof UnauthorizedException) {
