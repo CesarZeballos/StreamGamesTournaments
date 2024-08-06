@@ -127,15 +127,16 @@ export const fetchAddUser = async (data: IAddFriendForm) => {
 } 
 
 export const fetchUgradeUser = async (data: IUpgradeUser) => {
+    console.log("data", data)
     const {id, token} = data
-    const response = await fetch(`${apiUrl}/users/upgradeUser`, {
-        method: "POST",
+    const response = await fetch(`${apiUrl}/admin/role/${id}`, {
+        method: "PATCH",
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            userId: id
+            role: "organizer"
         })
     })
 

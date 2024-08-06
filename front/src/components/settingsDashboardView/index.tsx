@@ -12,7 +12,7 @@ export const SettingsDashboardView = () => {
     const stringDate = user?.birthdate.split('T')[0];
 
     const upgradeAcount = (event: React.MouseEvent<HTMLButtonElement>) => {
-        // dispatch(upgradeUserSlice({id: user?.id!, token: token!}))
+        dispatch(upgradeUserSlice({id: user?.id!, token: token!}))
         toast.success("Upgrade acount request successfully submitted", {
             position: "top-right", 
             duration: 1500 
