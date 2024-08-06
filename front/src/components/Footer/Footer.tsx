@@ -9,17 +9,17 @@ const Footer: React.FC = () => {
   
   return (
 
-      <div className="bg-BGdark flex flex-row gap-6 my-9 items-center justify-center">
-        <Link className="buttonNavbar" href="/">Home</Link>
-        <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
+      <div className="bg-BGdarkness flex flex-row gap-6 pt-14 pb-11 items-center justify-center">
+        <Link className="buttonSecondary" href="/">Home</Link>
+        <Link className="buttonSecondary" href="/tournaments">Tournaments</Link>
         {user ? 
         <div className="flex gap-x-8">
-            <Link className="buttonNavbar flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
+            <Link className="buttonSecondary flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
         </div>
         :
         <div className="flex gap-x-8">
-            <Link className="buttonNavbar" href="/login">Sign In</Link>
-            <Link className="buttonPrimary text-base" href="/register">Sign Up</Link>
+            <Link className="buttonSecondary" href="/login">Sign In</Link>
+            <Link className="buttonSecondary text-base" href="/register">Sign Up</Link>
         </div>
         }
       </div>

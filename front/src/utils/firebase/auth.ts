@@ -17,8 +17,6 @@ export const singInFirebaseWithEmailAndPassword = async ({ email, password }: IL
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
     const user = userCredential.user;
     const tokenFirebase = await user.getIdToken()
-
-    console.log("response firebase", userCredential)
     
     return tokenFirebase
 }

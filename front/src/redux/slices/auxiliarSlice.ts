@@ -4,6 +4,7 @@ import { getUsersSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
 import { postTeamToTournamentSlice } from "../thunks/tournamentsSliceThunk";
+import { ITournament } from "@/interfaces/interfaceTournaments";
 
 
 const initialState: IAuxiliarState = {
@@ -19,7 +20,8 @@ const auxiliarSlice = createSlice({
     reducers: {
         setUsers(state, action: PayloadAction<IAuxiliarState>) {
             state.users = action.payload.users
-        }
+        },
+
     }, extraReducers: (builder) => {
         builder
         .addCase(REHYDRATE as any, (state, action: AnyAction) => {

@@ -57,6 +57,7 @@ export const LoginForm: React.FC = () => {
         }
     }
 
+    //ruteo automatico despues del login success
     const loginStatus = useSelector((state: RootState) => state.user.status)
     useEffect(() => {
         if (loginStatus === "succeeded") {
@@ -64,7 +65,6 @@ export const LoginForm: React.FC = () => {
             router.push("/")
         }, 2000);
     }}, [loginStatus, router])
-    
     
     return (
         <form onSubmit={handleSubmit} className="mt-9">
@@ -92,6 +92,14 @@ export const LoginForm: React.FC = () => {
                                 required
                             />
                             {errorLogin.password ? (<p className="errorForm">{errorLogin.password}</p>) : (<p className="errorForm"><br/></p>)}
+                        </div>
+                        <div>
+                            <p className="body text-white">
+                                {`if you don't have an account yet, register `}
+                                <Link href="/register" className="linkButton">
+                                    here
+                                </Link>
+                            </p>
                         </div>
 
                         <div className="mt-4 flex flex-row gap-2">
