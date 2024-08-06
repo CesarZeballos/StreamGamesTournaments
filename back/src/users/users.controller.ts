@@ -190,16 +190,6 @@ export class UsersController {
 			isBanned: false,
 		},
 	})
-	@ApiResponse({
-		status: 500,
-		description: 'Error interno del servidor',
-		example: {
-			message:
-				'Error al actualizar usuario con id: 3e2d4b85-cc50-4afa-9dde-6f403cdfeb84',
-			error: 'Internal Server Error',
-			statusCode: 500,
-		},
-	})
 	updateUser(@Query('id') id: string, @Body() data: UpdateUserDto) {
 		return this.usersService.updateUser(id, data);
 	}

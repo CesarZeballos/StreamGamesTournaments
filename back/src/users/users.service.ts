@@ -84,7 +84,6 @@ export class UsersService {
 				tokenFirebase,
 				state,
 				tournaments,
-				teams,
 				isBanned,
 				...userNotData
 			} = user;
@@ -135,8 +134,11 @@ export class UsersService {
 
 	async disableUser(id: string): Promise<User> {
 		try {
-			const deletedUser = await this.prisma.user.delete({
+			const deletedUser = await this.prisma.user.update({
 				where: { id },
+				data: {
+					state: false
+				}
 			});
 			return deletedUser;
 		} catch (error) {

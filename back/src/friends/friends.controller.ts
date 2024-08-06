@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Param, Post, Query } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { AddFriendDto } from './friends.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Friends')
 @Controller('users')
 export class FriendsController {
 
