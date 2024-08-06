@@ -4,6 +4,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 
+//icons
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import EmailIcon from '@mui/icons-material/Email';
+
 const Footer: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);
   
@@ -12,16 +18,12 @@ const Footer: React.FC = () => {
       <div className="bg-BGdarkness flex flex-row gap-6 pt-14 pb-11 items-center justify-center">
         <Link className="buttonSecondary" href="/">Home</Link>
         <Link className="buttonSecondary" href="/tournaments">Tournaments</Link>
-        {user ? 
-        <div className="flex gap-x-8">
-            <Link className="buttonSecondary flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
+        <div className="flex flex-row gap-1">
+          <p className="iconButton"><InstagramIcon/></p>
+          <p className="iconButton"><FacebookIcon/></p>
+          <p className="iconButton"><TwitterIcon/></p>
+          <p className="iconButton"><EmailIcon/></p>
         </div>
-        :
-        <div className="flex gap-x-8">
-            <Link className="buttonSecondary" href="/login">Sign In</Link>
-            <Link className="buttonSecondary text-base" href="/register">Sign Up</Link>
-        </div>
-        }
       </div>
   );
 };
