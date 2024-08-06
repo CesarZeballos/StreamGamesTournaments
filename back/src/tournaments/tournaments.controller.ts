@@ -54,15 +54,10 @@ export class TournamentsController {
 	@ApiResponse({})
 	@ApiResponse({ status: 404, description: 'No tournaments found' })
 	async getAllTournaments(
-		@Query('page') page?: string,
-		@Query('limit') limit?: string,
 	) {
-		const pageNumber = page ? Number(page) : 1;
-		const limitNumber = limit ? Number(limit) : 9;
+
 
 		return this.tournamentsService.getAllTournaments(
-			pageNumber,
-			limitNumber,
 		);
 	}
 

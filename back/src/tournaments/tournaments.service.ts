@@ -19,12 +19,9 @@ export class TournamentsService {
 		private readonly mailService: MailService,
 	) { }
 
-	async getAllTournaments(page: number, limit: number) {
-		const skip = (page - 1) * limit;
+	async getAllTournaments() {
 
 		const tournaments = await this.prisma.tournament.findMany({
-			take: limit,
-			skip: skip,
 			include: {
 				game: true,
 				players: true,
