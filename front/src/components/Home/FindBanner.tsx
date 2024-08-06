@@ -24,7 +24,7 @@ export const FindBanner: React.FC = () => {
     setTimeout(() => dispatch(filtered({
       name: name as filterEmun,
       value: value
-    })), 300);
+    })), 400);
   };
 
     return (
