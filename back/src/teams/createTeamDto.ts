@@ -1,7 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { IsString, IsOptional, IsArray, ArrayNotEmpty, IsUUID, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
 
 export class CreateTeamDto {
 	@ApiProperty({
@@ -44,8 +43,12 @@ export class CreateTeamDto {
 	@IsArray()
 	@ArrayNotEmpty()
 	@IsString({ each: true })
-	users: User[];
+	users: string[];
 
+	@ApiProperty({
+		description: 'Url of the paipal aprobed',
+		example: 'http://example.com/paypal'
+	})
 	@IsString()
 	paypal: string;
 }
@@ -58,4 +61,23 @@ export class UpdateTeamDto extends PartialType(CreateTeamDto) {
 	@IsUUID()
 	@IsNotEmpty()
 	id: string
+
+}
+
+export class DeleteMemberForTeamDto {
+	@ApiProperty({
+		description: 'ID of the team',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	teamId: string
+
+	@ApiProperty({
+		description: 'ID of the user',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	memberId: string
 }

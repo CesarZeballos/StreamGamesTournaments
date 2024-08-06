@@ -81,7 +81,7 @@ export class UsersService {
 				...teamsTournaments,
 			];
 
-			const { tokenFirebase, state, tournaments, teams, ...userNotData } =
+			const { tokenFirebase, state, tournaments, teams, isBanned, ...userNotData } =
 				user;
 
 			return {
@@ -221,5 +221,9 @@ export class UsersService {
 				},
 			});
 		});
+	}
+
+	async addFriendRequest(friend: any) {
+
 	}
 }

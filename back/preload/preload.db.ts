@@ -60,7 +60,7 @@ export class preloadData {
                 role: 'organizer',
             },
         });
-        console.log(userOrganizer)
+
         if (!userOrganizer) {
             throw new Error('No organizer found');
         }
@@ -112,11 +112,10 @@ export class preloadData {
         const usersorganizer: User[] = await this.prisma.user.findMany({ take: 4 });
         const userTable: User[] = await this.prisma.user.findMany();
         let counter: number = 0;
-        let userPosition: number = 4; // Empieza después de los organizadores
+        let userPosition: number = 4;
 
         for (const user of usersorganizer) {
             const urlAvatar: string = teams[counter].urlAvatar;
-            // Crear el equipo con el organizador
             const createdTeam = await this.prisma.team.create({
                 data: {
                     name: `Team ${counter + 1}`,
@@ -126,12 +125,11 @@ export class preloadData {
                 },
             });
 
-            // Agregar jugadores al equipo creado
             for (let i = 0; i < 4 && userPosition < userTable.length; i++) {
                 const selectedUser = userTable[userPosition];
                 await this.prisma.userTeams.create({
                     data: {
-                        nickname: selectedUser.nickname,
+                        userId: selectedUser.id,
                         nameTeam: createdTeam.id,
                     },
                 });
