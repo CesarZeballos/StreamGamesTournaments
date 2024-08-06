@@ -121,6 +121,10 @@ html, body {
   hover:bg-lightViolet
 }
 
+.iconButtonActive {
+  @apply p-1 rounded-full text-BGdark bg-lightViolet
+}
+
 .buttonCarousel:hover, .buttonPage:hover {
   transition: 0.5s;
   background-color: #0d0835;

@@ -9,13 +9,14 @@ const initialState: ITournamentState = {
   status: "idle",
   tournaments: [],
   currentPage: 1,
+  tournamentsPerPage: 9,
   filters: {
     game: "",
     category: "",
     price: "",
     date: ""
   },
-  tournamentsFiltered: [],
+  tournamentsFiltered: []
 };
 
 const tournamentSlice = createSlice({
@@ -86,7 +87,14 @@ const tournamentSlice = createSlice({
           }
       }
       state.tournamentsFiltered = dateArray
+      state.currentPage = 1
     },
+
+    // paginado
+
+    setPage(state, action: PayloadAction<number>) {
+      state.currentPage = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -120,5 +128,5 @@ const tournamentSlice = createSlice({
   },
 });
 
-export const { setTournaments, setRunFilters, setRootFilters } = tournamentSlice.actions;
+export const { setTournaments, setRunFilters, setRootFilters, setPage } = tournamentSlice.actions;
 export default tournamentSlice.reducer;

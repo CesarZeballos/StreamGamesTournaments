@@ -14,7 +14,7 @@ const config: Config = {
         lightViolet: "#CE00F1",
         softViolet: "#C15AEC",
         BGdark: "#301048",
-        BGlight: "#28004b",
+        BGlight: "#2a054a",
         BGdarkness: "#261039",
         white: "#ffffff",
         greenAlert: "#2AEB1D",
