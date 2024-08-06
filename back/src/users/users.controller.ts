@@ -21,7 +21,7 @@ import {
 	ApiBody,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from 'auth/auth.user.Dto';
+import { UpdateUserDto } from 'auth/dto/auth.user.Dto';
 /* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
 import { Roles } from 'auth/roles.decorator';
