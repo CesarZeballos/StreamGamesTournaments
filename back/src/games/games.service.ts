@@ -1,10 +1,12 @@
 import {
 	ConflictException,
+	HttpException,
+	HttpStatus,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateGameDto, UpdateGameDto } from './games.dto';
+import { CreateGameDto, UpdateGameDto } from './dto/games.dto';
 import { Game } from '@prisma/client';
 
 export interface GameWithTournamentId {
@@ -19,39 +21,70 @@ export class GamesService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async getAllGames(page: number, limit: number): Promise<Game[]> {
-		const skip = (page - 1) * limit;
-		const games = await this.prisma.game.findMany({
-			take: limit,
-			skip,
-			include: { tournaments: true },
-		});
+		try {
+			const skip = (page - 1) * limit;
+			const games = await this.prisma.game.findMany({
+				take: limit,
+				skip,
+				include: { tournaments: true },
+			});
 
-		return games;
+			return games;
+		} catch (error) {
+			throw new HttpException(
+				'Error al obtener juegos',
+				HttpStatus.INTERNAL_SERVER_ERROR,
+			);
+		}
 	}
 
 	async getGameById(id: string): Promise<Game | null> {
-		return await this.prisma.game.findUnique({
-			where: { id },
-			include: { tournaments: true },
-		});
+		try {
+			const game = await this.prisma.game.findUnique({
+				where: { id },
+				include: { tournaments: true },
+			});
+			if (!game) {
+				throw new HttpException(
+					'Juego no encontrado',
+					HttpStatus.NOT_FOUND,
+				);
+			}
+			return game;
+		} catch (error) {
+			throw new HttpException(
+				'Error al obtener juego',
+				HttpStatus.INTERNAL_SERVER_ERROR,
+			);
+		}
 	}
 
 	async postNewGame(name: string, urlImage: string): Promise<CreateGameDto> {
-		const gameNAme = await this.prisma.game.findUnique({
-			where: { name: name },
-		});
+		try {
+			const existingGame = await this.prisma.game.findUnique({
+				where: { name },
+			});
 
-		if (gameNAme)
-			throw new ConflictException(`¡Game with name: ${name} exists!`);
+			if (existingGame) {
+				throw new ConflictException(
+					`¡Juego con nombre: ${name} ya existe!`,
+				);
+			}
 
-		const newGame = await this.prisma.game.create({
-			data: {
-				name: name,
-				urlImage: urlImage,
-			},
-		});
+			const newGame = await this.prisma.game.create({
+				data: {
+					name,
+					urlImage,
+				},
+			});
 
-		return newGame;
+			return newGame;
+		} catch (error) {
+			throw new HttpException(
+				error.message || 'Error al crear un nuevo juego',
+				error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+			);
+		}
 	}
 
 	async updateGame(
@@ -61,7 +94,7 @@ export class GamesService {
 		const game = await this.prisma.game.findUnique({ where: { id: id } });
 
 		if (!game)
-			throw new NotFoundException(`¡Game with id: ${id} not exists!`);
+			throw new NotFoundException(`¡Juego con id: ${id} no existe!`);
 
 		const updateGame = await this.prisma.game.update({
 			where: { id },
@@ -72,15 +105,28 @@ export class GamesService {
 	}
 
 	async deleteGame(id: string): Promise<Game> {
-		const game = await this.prisma.game.findUnique({ where: { id } });
-		if (game.state === false)
-			throw new ConflictException(`¡Game with id: ${id} not exists!`);
-		if (!game)
-			throw new NotFoundException(`¡Game with id: ${id} not exists!`);
+		try {
+			const game = await this.prisma.game.findUnique({ where: { id } });
 
-		return await this.prisma.game.update({
-			where: { id },
-			data: { state: false },
-		});
+			if (!game) {
+				throw new NotFoundException(`¡Juego con id: ${id} no existe!`);
+			}
+
+			if (game.state === false) {
+				throw new ConflictException(
+					`¡Juego con id: ${id} ya fue eliminado!`,
+				);
+			}
+
+			return await this.prisma.game.update({
+				where: { id },
+				data: { state: false },
+			});
+		} catch (error) {
+			throw new HttpException(
+				error.message || 'Error al eliminar juego',
+				error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+			);
+		}
 	}
 }

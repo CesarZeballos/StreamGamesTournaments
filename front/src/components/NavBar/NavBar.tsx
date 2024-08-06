@@ -1,7 +1,7 @@
 'use client';
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../app/assets/images/icons/logo2.png";
+import logo from "../../../public/logo.svg";
 import { RootState } from "@/redux/store";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useSelector } from "react-redux";
@@ -10,11 +10,11 @@ const NavBar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
 
     return (
-        <div className="bg-BGlight grid grid-cols-[40%_60%] px-large  pt-4 pb-4 overflow-hidden">
-        <div>
-        <Image src={logo} alt="Logo" className="flex justify-start items-center w-2/4 h-fit"/>
+        <div className="bg-BGlight grid grid-cols-4 px-large pt-4 pb-4 overflow-hidden">
+        <div className="w-full flex justify-center">
+        <Image src={logo} alt="Logo" className="flex justify-start items-center w-fit h-16"/>
         </div>
-        <div className="flex justify-end gap-x-1 overflow-hidden p-1">
+        <div className="col-span-3 flex justify-end">
             <Link className="buttonNavbar" href="/">Home</Link>
             <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
             {user ? 

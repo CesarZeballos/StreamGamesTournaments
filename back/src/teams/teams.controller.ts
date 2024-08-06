@@ -19,12 +19,16 @@ import {
 	ApiProperty,
 } from '@nestjs/swagger';
 import { TeamsService } from './teams.service';
-import { CreateTeamDto, DeleteMemberForTeamDto, UpdateTeamDto } from './createTeamDto';
+import {
+	CreateTeamDto,
+	DeleteMemberForTeamDto,
+	UpdateTeamDto,
+} from './createTeamDto';
 
-@ApiTags('teams')
+@ApiTags('Teams')
 @Controller('teams')
 export class TeamsController {
-	constructor(private readonly teamsService: TeamsService) { }
+	constructor(private readonly teamsService: TeamsService) {}
 
 	@Get()
 	async getAllTeams(

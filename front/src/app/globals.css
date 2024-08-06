@@ -64,7 +64,7 @@ html, body {
 /* buttons */
 
 .buttonPrimary {
-  @apply flex items-center bg-BGdark font-Raleway font-bold text-sm text-white px-9 py-2 rounded-full border-2 border-lightViolet w-fit h-fit whitespace-nowrap
+  @apply flex items-center bg-BGdark font-Roboto font-semibold text-sm text-white px-9 py-2 rounded-full border-2 border-lightViolet w-fit h-fit whitespace-nowrap
   hover:shadow-md 
   hover:shadow-lightViolet 
   hover:text-lightViolet
@@ -76,7 +76,7 @@ html, body {
 }
 
 .buttonSecondary {
-  @apply flex items-center font-Raleway font-normal text-sm text-white px-9 py-2 w-fit h-fit whitespace-nowrap
+  @apply flex items-center font-Roboto font-normal text-sm text-white px-9 py-2 w-fit h-fit whitespace-nowrap
   focus:text-lightViolet hover:text-lightViolet
 }
 
@@ -88,7 +88,7 @@ html, body {
 }
 
 .buttonFilter {
-  @apply flex flex-row items-center font-Raleway font-semibold text-base text-white pl-4 pr-6 py-1 rounded-full gap-4
+  @apply flex flex-row items-center font-Roboto font-medium text-base text-white pl-6 pr-6 py-1 rounded-full gap-4
   hover:bg-lightViolet
 }
 
@@ -97,7 +97,7 @@ html, body {
 }
 
 .linkButton {
-  @apply font-Roboto font-light text-xs text-white
+  @apply font-Roboto font-light text-sm text-white w-fit
   hover:text-lightViolet
 }
 
@@ -121,10 +121,15 @@ html, body {
   hover:bg-lightViolet
 }
 
+<<<<<<< HEAD
 .iconButton {
   @apply p-1 text-white rounded-full
   hover:text-BGdark
   hover:bg-lightViolet
+=======
+.iconButtonActive {
+  @apply p-1 rounded-full text-BGdark bg-lightViolet
+>>>>>>> e7949d38bf306af6e682ca7b4b0cf7039b70b55d
 }
 
 .buttonCarousel:hover, .buttonPage:hover {
