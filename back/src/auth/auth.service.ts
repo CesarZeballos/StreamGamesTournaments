@@ -5,7 +5,7 @@ import {
 	Logger,
 	UnauthorizedException,
 } from '@nestjs/common';
-import { CreateUserDto, SignInDto } from './auth.user.Dto';
+import { CreateUserDto, SignInDto } from './dto/auth.user.Dto';
 import { MailService } from 'mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';

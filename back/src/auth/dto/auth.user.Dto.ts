@@ -48,14 +48,13 @@ export class CreateUserDto extends SignInDto {
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-
 	@ApiProperty({
-		description: 'ID of the user',
+		description: 'ID del usuario',
 		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	id: string
+	id: string;
 
 	@ApiPropertyOptional({
 		description: 'URL del stream del usuario',
@@ -66,7 +65,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 	urlStream?: string;
 
 	@ApiPropertyOptional({
-		description: 'URL profile del usuario',
+		description: 'URL foto de perfil del usuario',
 		example: 'http://example.com/stream',
 	})
 	@IsOptional()
@@ -84,19 +83,18 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
 export class AddFriendDto {
 	@ApiProperty({
-		description: 'ID of the user',
+		description: 'ID del usuario',
 		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	userId: string
+	userId: string;
 
 	@ApiProperty({
-		description: 'ID of the friend',
+		description: 'ID del amigo',
 		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	friendId: string
-
+	friendId: string;
 }
