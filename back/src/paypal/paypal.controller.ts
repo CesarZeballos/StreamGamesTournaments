@@ -3,11 +3,11 @@ import { PayPalService } from './paypal.service';
 
 @Controller('paypal')
 export class PayPalController {
-	constructor(private readonly payPalService: PayPalService) {}
+	constructor(private readonly payPalService: PayPalService) { }
 
 	@Post('create-order')
-	async createOrder(@Body() paypal: any) {
-		return this.payPalService.createOrder(paypal);
+	async createOrder(@Body() tournaments: any) {
+		return this.payPalService.createOrder(tournaments);
 	}
 
 	@Post('capture-order/:orderId')
