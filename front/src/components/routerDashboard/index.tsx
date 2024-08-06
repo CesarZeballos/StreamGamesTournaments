@@ -29,9 +29,9 @@ export const RouterDashboard = ({children}: IProps) => {
     }, [user, dispatch])
 
     return (
-        <div className="grid grid-cols-4 gap-x-6 mb-9">
+        <div className="grid grid-cols-4 gap-x-16 mb-9">
             <SearchBarDashboard />
-            <div className="col-span-3">
+            <div className="col-span-3 mt-9">
                 <Suspense fallback={<div className="heading5 text-lightViolet">Loading Dashboard...</div>}>
                     {children}
                 </Suspense>

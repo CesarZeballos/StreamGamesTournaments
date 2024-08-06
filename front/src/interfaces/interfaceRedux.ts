@@ -58,3 +58,8 @@ export interface IAddTeamToTournament {
     orderId?: string
     token: string
 }
+
+export interface IUserActionsState {
+  status: string
+  error: string | null
+}

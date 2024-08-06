@@ -1,6 +1,6 @@
 'use client'
-import { AppDispatch, RootState } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 import { DashboardViewFriends } from "../DashboardViewFriends";
 import { DashboardViewTournaments } from "../dashboardViewTournaments";
 import { DashboardViewAddFriend } from "../dashboardViewAddFriend";
@@ -9,13 +9,14 @@ import { DashboardViewSettings } from "../dashboardViewSettings";
 import DashboardTournamentForm from "../dashboardTournamentForm";
 import UsersArea from "../Areas/UsersArea";
 import TournamentsArea from "../Areas/TournamentsArea";
+import { DashboardView } from "../dashboardView";
 
 export const DashboardSelector: React.FC = () => {
     const section = useSelector((state: RootState) => state.dashboard.view);
 
     return (
             <div>
-                {/* {section === 'dashboard' && <DashboardView/>} */}
+                {section === 'dashboard' && <DashboardView/>}
                 {section === 'notifications' && <DashboardViewNotification/>}
                 {section === 'friends' && <DashboardViewFriends/>}
                 {section === 'addFriend' && <DashboardViewAddFriend/>}

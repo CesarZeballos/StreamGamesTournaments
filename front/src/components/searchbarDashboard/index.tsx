@@ -20,13 +20,11 @@ export const SearchBarDashboard: React.FC = () => {
 
     const logout = () => {
         dispatch(logoutSlice())
-        setTimeout(() => {
-            router.push("/")
-        }, 1500);
+        router.push("/")
     }
     
     return (
-        <div className="bg-BGdark rounded-3xl py-4 px-12 mr-9 h-full flex flex-col items-center gap-9 w-fit">
+        <div className="bg-BGdark rounded-3xl py-9 mr-9 h-full flex flex-col items-center gap-9 w-full">
             <h1 className="heading5 text-lightViolet">Hi {user?.nickname}!</h1>
 
             <div className="flex flex-col items-center gap-2">

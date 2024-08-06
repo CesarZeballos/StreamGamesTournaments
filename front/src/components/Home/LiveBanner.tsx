@@ -8,8 +8,6 @@ import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 
 import { banners } from "@/utils/GamesArray";
-import { SiCounterstrike, SiLeagueoflegends } from "react-icons/si";
-import { TbBrandFortnite } from "react-icons/tb";
 
 const LiveBanner: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
