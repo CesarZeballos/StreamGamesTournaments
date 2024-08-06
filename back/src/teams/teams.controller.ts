@@ -23,7 +23,7 @@ import {
 	CreateTeamDto,
 	DeleteMemberForTeamDto,
 	UpdateTeamDto,
-} from './createTeamDto';
+} from './dto/createTeamDto';
 
 @ApiTags('Teams')
 @Controller('teams')

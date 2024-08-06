@@ -27,12 +27,12 @@ import { Role } from '@prisma/client'; */
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
-} from './createTournament.Dto';
+} from './dto/createTournament.Dto';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
 export class TournamentsController {
-	constructor(private readonly tournamentsService: TournamentsService) { }
+	constructor(private readonly tournamentsService: TournamentsService) {}
 
 	@Get()
 	async getAllTournaments(
