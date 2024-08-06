@@ -47,7 +47,7 @@ export interface IGame {
     id: string;
     name: string;
     urlImage: string;
-    state: boolean
+    description?: string;
 }
 
 //interface para el form de agregar equipo
