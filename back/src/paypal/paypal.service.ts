@@ -26,7 +26,7 @@ export class PayPalService {
 				{
 					amount: {
 						currency_code: 'USD',
-						value: tournaments.price.IsString(),
+						value: tournaments.price,
 					},
 				},
 			],
@@ -36,7 +36,6 @@ export class PayPalService {
 			const response = await this.client.execute(request);
 			return response.result;
 		} catch (error) {
-			console.error('PayPal create order error:', error);
 			throw new Error('Failed to create PayPal order');
 		}
 	}

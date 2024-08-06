@@ -21,7 +21,7 @@ import {
 	ApiBody,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
+import { UpdateUserDto } from 'auth/auth.user.Dto';
 /* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
 import { Roles } from 'auth/roles.decorator';
@@ -30,7 +30,7 @@ import { Role } from '@prisma/client'; */
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-	constructor(private readonly usersService: UsersService) {}
+	constructor(private readonly usersService: UsersService) { }
 
 	/* @UseGuards(JwtAuthGuard) */
 	@Get()
@@ -246,149 +246,5 @@ export class UsersController {
 		return this.usersService.disableUser(id);
 	}
 
-	@Post('add-friend')
-	@ApiOperation({ summary: 'Agregar un amigo' })
-	@ApiBody({ type: AddFriendDto })
-	@ApiResponse({
-		status: 200,
-		description: 'Amigo agregado con éxito',
-		example: [
-			{
-				id: '32617495-7dda-4286-a179-dab7d6e75041',
-				email: 'user1@example.com',
-				nickname: 'cesar',
-				tokenFirebase:
-					'eyJhbGciOiJSUzI1NiIsImtpZCI6IjBjYjQyNzQyYWU1OGY0ZGE0NjdiY2RhZWE0Yjk1YTI5ZmJhMGM1ZjkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3RyZWFtZ2FtZXN0b3VybmFtZW50cy0yOWVlNCIsImF1ZCI6InN0cmVhbWdhbWVzdG91cm5hbWVudHMtMjllZTQiLCJhdXRoX3RpbWUiOjE3MjIyMTEwNjAsInVzZXJfaWQiOiJ0U3gxWnd4VjJpU3BMS1RJWm5BWFI1b2ZRU2IyIiwic3ViIjoidFN4MVp3eFYyaVNwTEtUSVpuQVhSNW9mUVNiMiIsImlhdCI6MTcyMjIxMTA2MCwiZXhwIjoxNzIyMjE0NjYwLCJlbWFpbCI6ImNlc2FyZXplYmFsbG9zQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJjZXNhcmV6ZWJhbGxvc0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.zzJTaAu-ZQRnkF-2Lp86cbvk_BeL4JHHWPqBoVHO0H3LO6XyMAjnHKMtQ2UBHS0vD-EGtATN5CHpWmGZ0gWfNqbJVF51Hg_InRCXgz80CJH67K-O8MUzQj1vkOTwEVHHb_DuXqT8nOyUKNEuEA1YYetZS_E1g8LsOXlsUaaYwe4WTWex17v66t_gbJuihnSPbvNDFB50NoKDY4LS4PF5PLMaKhGqlOwciatpEnXviSQD_9YJYo8KJKz3Qr4BCEf7jtJu6XJMZlXVd6RXGeUH-eIxR5GLsJGTBlpDO3TZRGtvZvP3lTMazj_BObewxZieQhDFpNAuSu_MTSnBA96mTQ',
-				birthdate: '2000-02-01T00:00:00.000Z',
-				urlProfile: 'https://example.com/selfie1.jpg',
-				urlStream: null,
-				role: 'admin',
-				createdAt: '2024-08-06T06:22:04.987Z',
-				state: true,
-				isBanned: false,
-				friends: [
-					{
-						id: '3bf7fc7e-06cd-483a-9dfd-2dde92409e0f',
-						userId: '32617495-7dda-4286-a179-dab7d6e75041',
-						friendId: 'b1619760-1088-4109-af8b-671610c57bd1',
-						createdAt: '2024-08-06T06:32:21.449Z',
-					},
-				],
-			},
-			{
-				id: 'b1619760-1088-4109-af8b-671610c57bd1',
-				email: 'user2@example.com',
-				nickname: 'user2',
-				tokenFirebase: 'password123',
-				birthdate: '2000-02-01T00:00:00.000Z',
-				urlProfile: 'https://example.com/selfie2.jpg',
-				urlStream: null,
-				role: 'organizer',
-				createdAt: '2024-08-06T06:22:04.987Z',
-				state: true,
-				isBanned: false,
-				friends: [
-					{
-						id: 'cb6edf68-3b4a-4a6f-815e-91f1395a467b',
-						userId: 'b1619760-1088-4109-af8b-671610c57bd1',
-						friendId: '32617495-7dda-4286-a179-dab7d6e75041',
-						createdAt: '2024-08-06T06:32:21.449Z',
-					},
-				],
-			},
-		],
-	})
-	@ApiResponse({
-		status: 400,
-		description: 'No se puede agregar a sí mismo como amigo',
-		example: {
-			message: 'No se puede agregar a sí mismo como amigo',
-			error: 'Bad Request',
-			statusCode: 400,
-		},
-	})
-	@ApiResponse({
-		status: 404,
-		description: 'Usuario no encontrado',
-		example: {
-			message:
-				'Usuario con id 3e2d4b85-cc50-4afa-9dde-6f403cdfeb84 no encontrado',
-			error: 'Not Found',
-			statusCode: 404,
-		},
-	})
-	@ApiResponse({
-		status: 409,
-		description: 'Ya son amigos',
-		example: {
-			message: 'Ya son amigos',
-			error: 'Conflict',
-			statusCode: 409,
-		},
-	})
-	addFriend(@Body() addFriendDto: AddFriendDto) {
-		const { userId, friendId } = addFriendDto;
-		return this.usersService.addFriend(userId, friendId);
-	}
 
-	@Delete('remove-friend/:id')
-	@ApiOperation({ summary: 'Eliminar un amigo' })
-	@ApiParam({
-		name: 'id',
-		required: true,
-		description: 'ID del usuario',
-		example: '3e2d4b85-cc50-4afa-9dde-6f403cdfeb84',
-	})
-	@ApiQuery({
-		name: 'friendId',
-		required: true,
-		description: 'ID del amigo a eliminar',
-		example: '123e4567-e89b-12d3-a456-426614174000',
-	})
-	@ApiResponse({
-		status: 200,
-		description: 'Amigo eliminado con éxito',
-		example: {
-			message: 'Amigo eliminado con éxito',
-		},
-	})
-	@ApiResponse({
-		status: 400,
-		description: 'No se puede eliminar a sí mismo como amigo',
-		example: {
-			message: 'No se puede eliminar a sí mismo como amigo',
-			error: 'Bad Request',
-			statusCode: 400,
-		},
-	})
-	@ApiResponse({
-		status: 500,
-		description: 'Error interno del servidor',
-		example: {
-			message: 'Error interno del servidor',
-			error: 'Internal Server Error',
-			statusCode: 500,
-		},
-	})
-	async removeFriend(
-		@Param('id') id: string,
-		@Query('friendId') friendId: string,
-	) {
-		try {
-			await this.usersService.removeFriend(id, friendId);
-			return { message: 'Amigo eliminado con éxito' };
-		} catch (error) {
-			if (error instanceof BadRequestException) {
-				throw new BadRequestException(
-					'No se puede eliminar a sí mismo como amigo',
-				);
-			}
-			if (error instanceof NotFoundException) {
-				throw new NotFoundException('Usuario o amigo no encontrado');
-			}
-			throw new InternalServerErrorException(
-				'Error interno del servidor',
-			);
-		}
-	}
 }
