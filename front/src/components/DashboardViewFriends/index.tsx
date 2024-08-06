@@ -1,21 +1,28 @@
 'use client'
 import { IUser } from "@/interfaces/interfaceUser";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 
 //icons
 import ChatIcon from '@mui/icons-material/Chat';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { setView } from "@/redux/slices/dashboardSlice";
+import { removefriendSlice } from "@/redux/thunks/userActionsSliceThunk";
 
 export const DashboardViewFriends = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.user);
+    const token = useSelector((state: RootState) => state.user.token);
     const friends = user?.friends || [] as IUser[];
 
     const deleteFriend = (event: React.MouseEvent<HTMLButtonElement>) => {
         const {value} = event.currentTarget
         console.log(value)
+        dispatch(removefriendSlice({
+            userId: user?.id!,
+            friendId: value,
+            token: token! 
+        }))
     }
 
     const newChat = (event: React.MouseEvent<HTMLButtonElement>) => {

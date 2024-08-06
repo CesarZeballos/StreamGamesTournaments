@@ -9,12 +9,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IUser, IUserSelector } from "@/interfaces/interfaceUser";
 import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
-import { addfriendSlice, reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import { toast } from "sonner";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 import { useRouter } from "next/navigation";
 import { setStatusFriend } from "@/redux/slices/userSlice";
+import { addfriendSlice } from "@/redux/thunks/userActionsSliceThunk";
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 
 export const DashboardViewAddFriend: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();

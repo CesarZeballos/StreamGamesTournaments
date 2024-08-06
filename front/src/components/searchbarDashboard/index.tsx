@@ -9,7 +9,6 @@ export const SearchBarDashboard: React.FC = () => {
     const router = useRouter();
     const userRol = useSelector((state: RootState) => state.user.user?.role);
     const user = useSelector((state: RootState) => state.user.user);
-    const view = useSelector((state: RootState) => state.dashboard.view);
 
     const handleViewClick = (view: string) => {
         dispatch(setView(view))

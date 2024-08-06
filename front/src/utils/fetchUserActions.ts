@@ -23,18 +23,14 @@ export const fetchAddUser = async (data: IAddFriendForm) => {
     return userData;
 } 
 
-export const deleteFriend = async (data: IAddFriendForm) => {
+export const fetchDeleteFriend = async (data: IAddFriendForm) => {
     const {userId, friendId, token} = data
-    const response = await fetch(`${apiUrl}/users/add-friend`, {
-        method: "POST",
+    const response = await fetch(`${apiUrl}/users/add-friend/${userId}?friendId=${friendId}`, {
+        method: "DELETE",
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            userId: userId, 
-            friendId: friendId
-        })
+        }
     })
 
     if (!response.ok) {

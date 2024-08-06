@@ -1,6 +1,6 @@
 import { IUserActionsState } from "@/interfaces/interfaceRedux";
 import { createSlice } from "@reduxjs/toolkit";
-import { addfriendSlice } from "../thunks/userActionsSliceThunk";
+import { addfriendSlice, removefriendSlice } from "../thunks/userActionsSliceThunk";
 import { toast } from "sonner";
 import { loginSlice, reloadUserSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
 
@@ -30,20 +30,6 @@ const userActionSlice = createSlice({
             } else return
           })
 
-        // UPGRADE USER
-        .addCase(upgradeUserSlice.fulfilled, (state, action) => {
-        toast.success('We will review your application. You will be notified by email when you become a tournament organizer.', {
-            position: 'top-right',
-            duration: 1500,
-            })
-        })
-        .addCase(upgradeUserSlice.rejected, (state, action) => {
-        toast.error('Failed to send the request. Please try again in a few minutes.', {
-            position: 'top-right',
-            duration: 1500,
-            })
-        })
-
         // ADD FRIEND
         .addCase(addfriendSlice.fulfilled, (state, action) => {
         toast.success('friend request sent', {
@@ -60,10 +46,17 @@ const userActionSlice = createSlice({
 
         // DELETE FRIEND
 
-
-
-
-        
-
+        .addCase(removefriendSlice.fulfilled, (state, action) => {
+        toast.success('friend removed', {
+            position: 'top-right',
+            duration: 1500,
+            })
+        })
+        .addCase(removefriendSlice.rejected, (state, action) => {
+        toast.error(`something went wrong, we couldn't delete your friend. try again in a few minutes.`, {
+            position: 'top-right',
+            duration: 1500,
+            })
+        })
     }
 })
