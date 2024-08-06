@@ -19,7 +19,6 @@ import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 
 export const DashboardViewAddFriend: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
     const [userSelector, setUserSelector] = useState<IUserSelector[]>([]);
     const [friend, setFriend] = useState<string>("");
 
@@ -30,17 +29,22 @@ export const DashboardViewAddFriend: React.FC = () => {
         dispatch(getUsersSlice())
     }, [dispatch])
     
+    const findById = (id: string) => {
+        return userActive.user?.friends.find((user) => user.id === id);
+    }
+
     useEffect(() => {
             if(userSelector.length === 0) {
                 for (let i = 0; i < users.length; i++) {
-                    if(users[i].id !== userActive.user?.id){
-                        userSelector.push({
-                            id: users[i].id,
-                            label: users[i].nickname,
-                            email: users[i].email,
-                            birthdate: users[i].birthdate,
-                            role: users[i].role
-                        })
+                    if(users[i].id !== userActive.user?.id && !findById(users[i].id)){
+                            userSelector.push({
+                                id: users[i].id,
+                                label: users[i].nickname,
+                                email: users[i].email,
+                                birthdate: users[i].birthdate,
+                                role: users[i].role
+                            })
+                        
                     }
                 }
             }
