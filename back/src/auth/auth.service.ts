@@ -6,7 +6,6 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto, SignInDto } from './auth.user.Dto';
-
 import { MailService } from 'mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -20,7 +19,7 @@ export class AuthService {
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
 		private readonly mailService: MailService,
-	) { }
+	) {}
 
 	async signUp(createUserDto: CreateUserDto) {
 		const { email, nickname, tokenFirebase, birthdate } = createUserDto;
@@ -31,8 +30,14 @@ export class AuthService {
 			},
 		});
 		if (userExists) {
-			if (userExists.isBanned === true) throw new BadRequestException(`User with email: ${userExists.email} is banned`)
-			if (userExists.state === true && userExists.isBanned === false) throw new BadRequestException(`User with email: ${userExists.email} already exists`)
+			if (userExists.isBanned === true)
+				throw new BadRequestException(
+					`User with email: ${userExists.email} is banned`,
+				);
+			if (userExists.state === true && userExists.isBanned === false)
+				throw new BadRequestException(
+					`User with email: ${userExists.email} already exists`,
+				);
 		}
 
 		const parsedBirthDate = new Date(birthdate);
@@ -43,11 +48,6 @@ export class AuthService {
 				nickname,
 				tokenFirebase,
 				birthdate: parsedBirthDate.toISOString(),
-				teams: teamId
-					? {
-							connect: { id: teamId },
-						}
-					: undefined,
 			},
 		});
 
@@ -78,7 +78,6 @@ export class AuthService {
 	async signIn(signInDto: SignInDto) {
 		const { email, tokenFirebase } = signInDto;
 
-
 		try {
 			this.logger.log(`Attempting to sign in user with email: ${email}`);
 
@@ -87,16 +86,19 @@ export class AuthService {
 				include: {
 					friends: {
 						include: {
-							friend: true
-						}
+							friend: true,
+						},
 					},
 					tournaments: true,
-					organizedTournaments: true
+					organizedTournaments: true,
 				},
 			});
 
 			if (user) {
-				if (user.isBanned === true) throw new BadRequestException(`User with email: ${user.email} is banned`)
+				if (user.isBanned === true)
+					throw new BadRequestException(
+						`User with email: ${user.email} is banned`,
+					);
 			}
 			if (!user) {
 				this.logger.warn(`User not found with email: ${email}`);
@@ -108,7 +110,7 @@ export class AuthService {
 
 			this.logger.log(`User signed in successfully with email: ${email}`);
 
-			const friends = user.friends.map(friendship => friendship.friend);
+			const friends = user.friends.map((friendship) => friendship.friend);
 
 			return {
 				message: 'User logged in successfully',
