@@ -85,10 +85,10 @@ model UserTeamRequest {
 
 model UserTeams {
   id       String @id @default(uuid())
-  nickname String
+  userId   String
   nameTeam String
   team     Team?  @relation("UserForTeams", fields: [nameTeam], references: [id], onDelete: Cascade)
-  user     User?  @relation("UserTeams", fields: [nickname], references: [nickname], onDelete: Cascade)
+  user     User?  @relation("UserTeams", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Tournament {

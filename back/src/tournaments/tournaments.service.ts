@@ -7,7 +7,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
-} from '../tournaments/createTournament.Dto';
+} from './dto/createTournament.Dto';
 import { MailService } from 'mail/mail.service';
 import { MailTemplates } from 'mail/mail-templates';
 import { Categories } from '@prisma/client';
@@ -17,7 +17,7 @@ export class TournamentsService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly mailService: MailService,
-	) { }
+	) {}
 
 	async getAllTournaments() {
 

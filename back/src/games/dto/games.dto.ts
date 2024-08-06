@@ -12,8 +12,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateGameDto {
 	@ApiProperty({
-		description: 'El nombre del juego',
-		example: 'Super Game',
+		description:
+			'El nombre del juego. Debe ser una cadena de caracteres con una longitud mínima de 1 y máxima de 80 caracteres',
+		example: 'GTA V',
 		minLength: 1,
 		maxLength: 80,
 	})
@@ -23,7 +24,7 @@ export class CreateGameDto {
 	name: string;
 
 	@ApiProperty({
-		description: 'La URL de la imagen del juego',
+		description: 'La URL de la imagen del juego. Debe ser una URL válida',
 		example: 'https://example.com/image.jpg',
 	})
 	@IsUrl()
@@ -32,18 +33,18 @@ export class CreateGameDto {
 }
 
 export class UpdateGameDto extends PartialType(CreateGameDto) {
-
 	@ApiProperty({
-		description: 'ID of the game',
+		description: 'El identificador único del juego. Debe ser un UUID',
 		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	id: string
+	id: string;
 
 	@ApiPropertyOptional({
-		description: 'Estado del juego',
-		example: true,
+		description:
+			'El estado del juego, donde `true` indica que el juego está activo y `false` que está inactivo. Este campo es opcional',
+		example: false,
 	})
 	@IsOptional()
 	@IsBoolean()

@@ -13,11 +13,16 @@ async function PreloadData(
 	teamService: TeamsService,
 	tournamentsService: TournamentsService,
 ) {
-	const preload = new preloadData(prismaService, teamService, tournamentsService);
+	const preload = new preloadData(
+		prismaService,
+		teamService,
+		tournamentsService,
+	);
 	await preload.clearTables();
 	await preload.addGames();
 	await preload.addUsers();
 	await preload.addTournaments();
+	await preload.addTeamsWithPlayers();
 	await preload.addTeamForTournament();
 }
 
@@ -35,9 +40,9 @@ async function bootstrap() {
 		});
 
 		const options = new DocumentBuilder()
-			.setTitle('NestJs Api')
-			.setDescription('Stream Games Tournaments Api')
-			.setVersion('1.0.0')
+			.setTitle('Stream Games Tournaments Api')
+			.setDescription('Api para manejar Stream Games Tournaments')
+			.setVersion('1.0')
 			.addBearerAuth()
 			.build();
 

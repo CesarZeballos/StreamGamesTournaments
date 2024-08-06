@@ -6,12 +6,12 @@ import {
 	ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Prisma, Tournament, User, UserFriends } from '@prisma/client';
-import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
+import { Tournament, User, UserFriends } from '@prisma/client';
+import { UpdateUserDto } from 'auth/dto/auth.user.Dto';
 
 @Injectable()
 export class UsersService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
 	async getAllUsers(): Promise<User[]> {
 		try {
@@ -35,7 +35,7 @@ export class UsersService {
 			return users;
 		} catch (error) {
 			console.error('Failed to get all users:', error);
-			throw new InternalServerErrorException('Failed to get users');
+			throw new InternalServerErrorException('Error al obtener usuarios');
 		}
 	}
 
@@ -81,8 +81,14 @@ export class UsersService {
 				...teamsTournaments,
 			];
 
-			const { tokenFirebase, state, tournaments, teams, ...userNotData } =
-				user;
+			const {
+				tokenFirebase,
+				state,
+				tournaments,
+				teams,
+				isBanned,
+				...userNotData
+			} = user;
 
 			return {
 				...userNotData,
@@ -91,7 +97,7 @@ export class UsersService {
 			};
 		} catch (error) {
 			throw new InternalServerErrorException(
-				`Failed to get user with id ${id}`,
+				`Error al obtener usuario con id: ${id}`,
 			);
 		}
 	}
@@ -103,13 +109,13 @@ export class UsersService {
 			});
 			if (!user) {
 				throw new NotFoundException(
-					`No user found with email ${email}`,
+					`No se ha encontrado ningún usuario con correo electrónico: ${email}`,
 				);
 			}
 			return user;
 		} catch (error) {
 			throw new InternalServerErrorException(
-				`Failed to get user with email ${email}`,
+				`Error al obtener usuario con email: ${email}`,
 			);
 		}
 	}
@@ -123,7 +129,7 @@ export class UsersService {
 			return updatedUser;
 		} catch (error) {
 			throw new InternalServerErrorException(
-				`Failed to update user with id ${id}`,
+				`Error al actualizar usuario con id: ${id}`,
 			);
 		}
 	}
@@ -136,14 +142,16 @@ export class UsersService {
 			return deletedUser;
 		} catch (error) {
 			throw new InternalServerErrorException(
-				`Failed to disable user with id ${id}`,
+				`Error al eliminar usuario con id: ${id}`,
 			);
 		}
 	}
 
 	async addFriend(userId: string, friendId: string): Promise<User[]> {
 		if (userId === friendId) {
-			throw new BadRequestException('Cannot add yourself as a friend');
+			throw new BadRequestException(
+				'No se puede agregar a sí mismo como amigo',
+			);
 		}
 
 		const [user, friend] = await this.prisma.$transaction([
@@ -152,11 +160,15 @@ export class UsersService {
 		]);
 
 		if (!user) {
-			throw new NotFoundException(`User with id ${userId} not found`);
+			throw new NotFoundException(
+				`Usuario con id ${userId} no encontrado`,
+			);
 		}
 
 		if (!friend) {
-			throw new NotFoundException(`User with id ${friendId} not found`);
+			throw new NotFoundException(
+				`Usuario amigo con id ${friendId} no encontrado`,
+			);
 		}
 
 		const existingFriendship = await this.prisma.userFriends.findFirst({
@@ -169,7 +181,7 @@ export class UsersService {
 		});
 
 		if (existingFriendship) {
-			throw new ConflictException('Already friends');
+			throw new ConflictException('Ya son amigos');
 		}
 
 		await this.prisma.$transaction(async (prisma) => {
@@ -190,10 +202,7 @@ export class UsersService {
 
 		return this.prisma.user.findMany({
 			where: {
-				OR: [
-					{ id: userId },
-					{ id: friendId },
-				],
+				OR: [{ id: userId }, { id: friendId }],
 			},
 			include: {
 				friends: true,
@@ -201,25 +210,47 @@ export class UsersService {
 		});
 	}
 
-	async removeFriend(userId: string, friendId: string): Promise<void> {
-		if (userId === friendId) {
-			throw new BadRequestException('Cannot remove yourself as a friend');
+	async removeFriend(id: string, friendId: string): Promise<void> {
+		if (id === friendId) {
+			throw new BadRequestException(
+				'No se puede eliminar a sí mismo como amigo',
+			);
 		}
 
-		await this.prisma.$transaction(async (prisma) => {
-			await prisma.userFriends.deleteMany({
-				where: {
-					userId,
-					friendId,
-				},
+		try {
+			// Verificar si ambos usuarios existen
+			const user = await this.prisma.user.findUnique({ where: { id } });
+			const friend = await this.prisma.user.findUnique({
+				where: { id: friendId },
 			});
 
-			await prisma.userFriends.deleteMany({
-				where: {
-					userId: friendId,
-					friendId: userId,
-				},
+			if (!user || !friend) {
+				throw new NotFoundException('Usuario o amigo no encontrado');
+			}
+
+			// Eliminar la amistad en ambas direcciones
+			await this.prisma.$transaction(async (prisma) => {
+				await prisma.userFriends.deleteMany({
+					where: {
+						userId: id,
+						friendId: friendId,
+					},
+				});
+
+				await prisma.userFriends.deleteMany({
+					where: {
+						userId: friendId,
+						friendId: id,
+					},
+				});
 			});
-		});
+		} catch (error) {
+			// Manejar cualquier error inesperado
+			throw new InternalServerErrorException(
+				'Error interno del servidor',
+			);
+		}
 	}
+
+	async addFriendRequest(friend: any) {}
 }
