@@ -5,7 +5,6 @@ import {
 	Query,
 	Put,
 	Body,
-	Post,
 	Delete,
 	Post,
 	BadRequestException,
@@ -76,7 +75,6 @@ export class UsersController {
 		return this.usersService.getAllUsers();
 	}
 
-
 	/* @UseGuards(JwtAuthGuard) */
 	@Get('search')
 	@ApiOperation({ summary: 'Buscar un usuario por correo electrónico' })
@@ -116,7 +114,6 @@ export class UsersController {
 	getUserByEmail(@Query('email') email: string) {
 		return this.usersService.getUserByEmail(email);
 	}
-
 
 	/* 	@UseGuards(JwtAuthGuard) */
 	@Get(':id')
@@ -162,7 +159,6 @@ export class UsersController {
 		return this.usersService.getUserById(id);
 	}
 
-
 	/* @UseGuards(JwtAuthGuard) */
 	@Put('update')
 	@ApiOperation({ summary: 'Actualizar un usuario' })
@@ -206,7 +202,6 @@ export class UsersController {
 	updateUser(@Query('id') id: string, @Body() data: UpdateUserDto) {
 		return this.usersService.updateUser(id, data);
 	}
-
 
 	/* @UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin) */
