@@ -93,6 +93,14 @@ export const LoginForm: React.FC = () => {
                             />
                             {errorLogin.password ? (<p className="errorForm">{errorLogin.password}</p>) : (<p className="errorForm"><br/></p>)}
                         </div>
+                        <div>
+                            <p className="body text-white">
+                                {`if you don't have an account yet, register `}
+                                <Link href="/register" className="linkButton">
+                                    here
+                                </Link>
+                            </p>
+                        </div>
 
                         <div className="mt-4 flex flex-row gap-2">
                             <button type="submit" className="buttonPrimary">Login</button>

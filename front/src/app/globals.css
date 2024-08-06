@@ -97,7 +97,7 @@ html, body {
 }
 
 .linkButton {
-  @apply font-Roboto font-light text-xs text-white
+  @apply font-Roboto font-light text-sm text-white w-fit
   hover:text-lightViolet
 }
 
