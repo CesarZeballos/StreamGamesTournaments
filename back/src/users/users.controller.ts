@@ -65,7 +65,7 @@ export class UsersController {
 	})
 	@ApiResponse({
 		status: 500,
-		description: 'Error interno del servidor.',
+		description: 'Error interno del servidor',
 		example: {
 			message: 'Error al obtener usuarios',
 			error: 'Internal Server Error',
@@ -105,7 +105,7 @@ export class UsersController {
 	})
 	@ApiResponse({
 		status: 500,
-		description: 'Error interno del servidor.',
+		description: 'Error interno del servidor',
 		example: {
 			message: 'Error al obtener usuario con email: user184@example.com',
 			error: 'Internal Server Error',
@@ -148,7 +148,7 @@ export class UsersController {
 	})
 	@ApiResponse({
 		status: 500,
-		description: 'Error interno del servidor.',
+		description: 'Error interno del servidor',
 		example: {
 			message:
 				'Error al obtener usuario con id: 3e2d4b85-cc50-4afa-9dde-6f403cdfeb84',
@@ -169,10 +169,13 @@ export class UsersController {
 		description: 'ID del usuario a actualizar',
 		example: '3e2d4b85-cc50-4afa-9dde-6f403cdfeb84',
 	})
-	@ApiBody({ type: UpdateUserDto })
+	@ApiBody({
+		type: UpdateUserDto,
+		description: 'En el body pueden modificar la propiedad que prefieran',
+	})
 	@ApiResponse({
 		status: 200,
-		description: 'Usuario actualizado con éxito.',
+		description: 'Usuario actualizado con éxito',
 		example: {
 			id: '11bfaf1d-a47b-4505-98c3-6e251ddab8fa',
 			email: 'user2@example.com',
@@ -189,7 +192,7 @@ export class UsersController {
 	})
 	@ApiResponse({
 		status: 500,
-		description: 'Error interno del servidor.',
+		description: 'Error interno del servidor',
 		example: {
 			message:
 				'Error al actualizar usuario con id: 3e2d4b85-cc50-4afa-9dde-6f403cdfeb84',
@@ -213,7 +216,7 @@ export class UsersController {
 	})
 	@ApiResponse({
 		status: 200,
-		description: 'Usuario eliminado con éxito.',
+		description: 'Usuario eliminado con éxito',
 		example: {
 			id: '7de42e11-e455-4ac1-9225-47115b0703a8',
 			email: 'user1@example.com',
@@ -231,7 +234,7 @@ export class UsersController {
 	})
 	@ApiResponse({
 		status: 500,
-		description: 'Error interno del servidor.',
+		description: 'Error interno del servidor',
 		example: {
 			message:
 				'Error al eliminar usuario con id: 3e2d4b85-cc50-4afa-9dde-6f403cdfeb84',
@@ -242,12 +245,13 @@ export class UsersController {
 	disableUser(@Query('id') id: string) {
 		return this.usersService.disableUser(id);
 	}
+
 	@Post('add-friend')
 	@ApiOperation({ summary: 'Agregar un amigo' })
 	@ApiBody({ type: AddFriendDto })
 	@ApiResponse({
 		status: 200,
-		description: 'Amigo agregado con éxito.',
+		description: 'Amigo agregado con éxito',
 		example: [
 			{
 				id: '32617495-7dda-4286-a179-dab7d6e75041',
@@ -296,16 +300,16 @@ export class UsersController {
 	})
 	@ApiResponse({
 		status: 400,
-		description: 'No se puede agregar a sí mismo como amigo.',
+		description: 'No se puede agregar a sí mismo como amigo',
 		example: {
-			message: 'No se puede agregar a sí mismo como amigo.',
+			message: 'No se puede agregar a sí mismo como amigo',
 			error: 'Bad Request',
 			statusCode: 400,
 		},
 	})
 	@ApiResponse({
 		status: 404,
-		description: 'Usuario no encontrado.',
+		description: 'Usuario no encontrado',
 		example: {
 			message:
 				'Usuario con id 3e2d4b85-cc50-4afa-9dde-6f403cdfeb84 no encontrado',
