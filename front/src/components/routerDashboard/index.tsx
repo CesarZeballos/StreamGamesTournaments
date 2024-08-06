@@ -20,13 +20,6 @@ export const RouterDashboard = ({children}: IProps) => {
             router.push("/")
         } 
     }, [token, router, dispatch])
-    
-    useEffect(() => {
-        dispatch(reloadUserSlice({
-            email: user?.email!,
-            tokenFirebase: user?.tokenFirebase
-        }))
-    }, [user, dispatch])
 
     return (
         <div className="grid grid-cols-4 gap-x-16 mb-9">

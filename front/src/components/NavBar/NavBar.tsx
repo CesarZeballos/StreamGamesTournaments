@@ -7,6 +7,7 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setView } from "@/redux/slices/dashboardSlice";
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 
 const NavBar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
@@ -16,7 +17,12 @@ const NavBar: React.FC = () => {
     const routerToDashboard = (event: React.MouseEvent<HTMLButtonElement>) => {
         router.push("/dashboard");
         dispatch(setView("dashboard"));
+        dispatch(reloadUserSlice({
+            email: user?.email!,
+            tokenFirebase: user?.tokenFirebase
+        }))
     }
+
 
     return (
         <div className="bg-BGlight grid grid-cols-4 px-large pt-4 pb-4 overflow-hidden">
