@@ -1,7 +1,8 @@
 import { IUserActionsState } from "@/interfaces/interfaceRedux";
 import { createSlice } from "@reduxjs/toolkit";
-import { addfriendSlice, loginSlice, reloadUserSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
+import { addfriendSlice } from "../thunks/userActionsSliceThunk";
 import { toast } from "sonner";
+import { loginSlice, reloadUserSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
 
 const initialState: IUserActionsState = {
     status: 'idle',
@@ -22,7 +23,6 @@ const userActionSlice = createSlice({
                 //que se actualicen las notificaciones
               } else return
             })
-
 
         .addCase(reloadUserSlice.fulfilled, (state, action) => {
             if (action.payload) {
@@ -59,6 +59,9 @@ const userActionSlice = createSlice({
         })
 
         // DELETE FRIEND
+
+
+
 
         
 
