@@ -6,8 +6,8 @@ import {
 	ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Prisma, Tournament, User, UserFriends } from '@prisma/client';
-import { AddFriendDto, UpdateUserDto } from 'auth/auth.user.Dto';
+import { Tournament, User, UserFriends } from '@prisma/client';
+import { UpdateUserDto } from 'auth/auth.user.Dto';
 
 @Injectable()
 export class UsersService {
@@ -150,7 +150,7 @@ export class UsersService {
 	async addFriend(userId: string, friendId: string): Promise<User[]> {
 		if (userId === friendId) {
 			throw new BadRequestException(
-				'No se puede agregar a sí mismo como amigo.',
+				'No se puede agregar a sí mismo como amigo',
 			);
 		}
 
