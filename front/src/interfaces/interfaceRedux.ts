@@ -5,6 +5,7 @@ export interface ITournamentState {
   status: string;
   tournaments: ITournament[];
   currentPage: number;
+  tournamentsPerPage: number;
   filters: IFilters;
   tournamentsFiltered: ITournament[];
 }

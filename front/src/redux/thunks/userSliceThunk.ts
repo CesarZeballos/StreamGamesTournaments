@@ -20,15 +20,21 @@ export const registerSlice = createAsyncThunk('user/postRegister', async (data: 
 
 export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILoginForm) => {
     const { email, password } = data
+    const responseFirebase = await singInFirebaseWithEmailAndPassword(data)
+    if(!responseFirebase) return
 
-        const responseFirebase = await singInFirebaseWithEmailAndPassword(data)
-        if(!responseFirebase) return
+    try {
         const response = await loginUser({
             email: email,
             tokenFirebase: responseFirebase
         })
-        
+
         return response
+    } catch (error) {
+        console.log("error", error)
+        return error
+    }
+        
 })
 
 export const reloadUserSlice = createAsyncThunk('user/reloadUser', async (data: ILoginDataBase) => {

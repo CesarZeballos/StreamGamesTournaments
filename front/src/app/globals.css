@@ -97,7 +97,7 @@ html, body {
 }
 
 .linkButton {
-  @apply font-Roboto font-light text-xs text-white
+  @apply font-Roboto font-light text-sm text-white w-fit
   hover:text-lightViolet
 }
 
@@ -119,6 +119,10 @@ html, body {
   hover:shadow-lightViolet
   hover:text-BGdark
   hover:bg-lightViolet
+}
+
+.iconButtonActive {
+  @apply p-1 rounded-full text-BGdark bg-lightViolet
 }
 
 .buttonCarousel:hover, .buttonPage:hover {

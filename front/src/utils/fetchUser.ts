@@ -45,7 +45,7 @@ export async function loginUser(data: ILoginDataBase) {
 
         return loginData;
     } catch (error) {
-        console.log("Error logging in user.", error)
+        return error
     }
 }
 
