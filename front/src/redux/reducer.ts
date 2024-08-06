@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import userSlice from './slices/userSlice';
 import dashboardSlice from './slices/dashboardSlice';
 import auxiliarSlice from './slices/auxiliarSlice';
+import userActionSlice from './slices/userActionsSlice';
 import tournamentsSlice from './slices/tournamentSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
@@ -16,10 +17,10 @@ const persistedReducer = persistReducer(persistConfig, userSlice);
 
 const rootReducer = combineReducers({
   user: persistedReducer,
-  // user: userSlice,
   tournament: tournamentsSlice,
   dashboard: dashboardSlice,
   auxiliar: auxiliarSlice,
+  actions: userActionSlice
 });
 
 export default rootReducer;

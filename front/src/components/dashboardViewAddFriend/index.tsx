@@ -63,7 +63,7 @@ export const DashboardViewAddFriend: React.FC = () => {
         }
     }
 
-    const addFriendStatus = useSelector((state: RootState) => state.user.statusAddFriend)
+    const addFriendStatus = useSelector((state: RootState) => state.actions.addFriendStatus)
     useEffect(() => {
         if (addFriendStatus === "succeeded") {
         setTimeout(() => {
@@ -75,6 +75,7 @@ export const DashboardViewAddFriend: React.FC = () => {
             dispatch(setStatusFriend())
         }, 1500);
     }}, [addFriendStatus, dispatch])
+ 
 
     return (
         <form onSubmit={handlesubmit} className="flex flex-col gap-2">

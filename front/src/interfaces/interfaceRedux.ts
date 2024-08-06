@@ -60,6 +60,7 @@ export interface IAddTeamToTournament {
 }
 
 export interface IUserActionsState {
-  status: string
+  addFriendStatus: string
+  removeFriendStatus: string
   error: string | null
 }
