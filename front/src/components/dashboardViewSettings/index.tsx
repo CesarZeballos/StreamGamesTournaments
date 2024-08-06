@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 
-export const SettingsDashboardView = () => {
+export const DashboardViewSettings = () => {
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.user);
     const token = useSelector((state: RootState) => state.user.token);

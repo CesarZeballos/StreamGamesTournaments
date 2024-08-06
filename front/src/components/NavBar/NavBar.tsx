@@ -2,12 +2,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../public/logo.svg";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { setView } from "@/redux/slices/dashboardSlice";
 
 const NavBar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+
+    const routerToDashboard = (event: React.MouseEvent<HTMLButtonElement>) => {
+        router.push("/dashboard");
+        dispatch(setView("dashboard"));
+    }
 
     return (
         <div className="bg-BGlight grid grid-cols-4 px-large pt-4 pb-4 overflow-hidden">
@@ -19,7 +28,7 @@ const NavBar: React.FC = () => {
             <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
             {user ? 
             <div className="flex gap-x-8">
-                <Link className="buttonNavbar flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
+                <button className="buttonNavbar flex gap-2" onClick={routerToDashboard}><SportsEsportsIcon/>{`${user?.nickname}`}</button>
             </div>
             :
             <div className="flex gap-x-8">

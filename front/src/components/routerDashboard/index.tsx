@@ -1,42 +1,40 @@
 'use client'
 import { setView } from "@/redux/slices/dashboardSlice"
 import { AppDispatch, RootState } from "@/redux/store"
-import React, { useEffect } from "react"
+import React, { Suspense, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { SearchBarDashboard } from "../searchbarDashboard"
 import { useRouter } from "next/navigation"
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk"
+import { IProps } from "@/interfaces/interfaceProps"
 
-export const RouterDashboard: React.FC = () => {
+export const RouterDashboard = ({children}: IProps) => {
     const router = useRouter();
-    const rol = useSelector((state: RootState) => state.user.user?.role);
-    const data = useSelector((state: RootState) => state.user.user);
     const dispatch = useDispatch<AppDispatch>();
-
-    const token = useSelector((state: RootState) => state.user.token);
+    
+    //seteo de la data
+    const { user, token} = useSelector((state: RootState) => state.user);
+    
     useEffect(() => {
         if (token === null) {
             router.push("/")
-        }
-    }, [router, token, dispatch])
+        } 
+    }, [token, router, dispatch])
     
     useEffect(() => {
-        router.push("/dashboard/user")
-    }, [])
-
-    useEffect(() => {
         dispatch(reloadUserSlice({
-            email: data?.email!,
-            tokenFirebase: data?.tokenFirebase
+            email: user?.email!,
+            tokenFirebase: user?.tokenFirebase
         }))
-        dispatch(setView("notifications"))
-    }, [data, dispatch])
+    }, [user, dispatch])
 
     return (
-        <div className="grid grid-cols-4 gap-x-6 mt-4">
+        <div className="grid grid-cols-4 gap-x-6 mb-9">
             <SearchBarDashboard />
-            <div className="col-span-2 f-full pt-4 flex justify-center items-center">
-                <h1 className="heading5 text-lightViolet">Loading Dashboard...</h1>
+            <div className="col-span-3">
+                <Suspense fallback={<div className="heading5 text-lightViolet">Loading Dashboard...</div>}>
+                    {children}
+                </Suspense>
             </div>       
         </div>
     )

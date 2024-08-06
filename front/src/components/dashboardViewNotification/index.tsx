@@ -1,6 +1,6 @@
 import EngineeringIcon from '@mui/icons-material/Engineering';
 
-export const NotificationDashboardView: React.FC = () => {
+export const DashboardViewNotification: React.FC = () => {
 
     return (
         <div>

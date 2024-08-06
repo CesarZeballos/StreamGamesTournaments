@@ -16,7 +16,7 @@ import { getUsersSlice } from "@/redux/thunks/auxiliarSliceThunk";
 import { useRouter } from "next/navigation";
 import { setStatusFriend } from "@/redux/slices/userSlice";
 
-export const AddFriend: React.FC = () => {
+export const DashboardViewAddFriend: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const [userSelector, setUserSelector] = useState<IUserSelector[]>([]);

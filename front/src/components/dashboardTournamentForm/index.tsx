@@ -11,7 +11,7 @@ import { StaticImageData } from "next/image";
 type ImageSource = StaticImageData | string;
 
 
-export const TournamentForm: React.FC = () => {
+export const DashboardTournamentForm: React.FC = () => {
   const [nameTournament, setNameTournament] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [category, setCategory] = useState<string>("");
@@ -226,4 +226,4 @@ export const TournamentForm: React.FC = () => {
   );
 };
 
-export default TournamentForm;
+export default DashboardTournamentForm;

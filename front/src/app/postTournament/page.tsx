@@ -1,4 +1,4 @@
-import TournamentForm from "@/components/tournamentForm";
+import TournamentForm from "@/components/dashboardTournamentForm";
 
 const PostTournament: React.FC = () => {
     return (

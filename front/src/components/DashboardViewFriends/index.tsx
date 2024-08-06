@@ -8,7 +8,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { setView } from "@/redux/slices/dashboardSlice";
 
-export const FriendsDashboardView = () => {
+export const DashboardViewFriends = () => {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user.user);
     const friends = user?.friends || [] as IUser[];

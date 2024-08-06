@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { IMyTournaments } from "@/interfaces/interfaceTournaments"
 
 
-export const TournamentsDashboardView = () => {
+export const DashboardViewTournaments = () => {
     const user = useSelector((state: RootState) => state.user.user)
     const [myTournaments, setMyTournaments] = useState<IMyTournaments[]>([])
     
