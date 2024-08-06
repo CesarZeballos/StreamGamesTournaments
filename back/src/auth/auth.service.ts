@@ -45,11 +45,9 @@ export class AuthService {
 			},
 		});
 
-		// Generar el token JWT
 		const payload = { userId: user.id, email: user.email };
 		const token = await this.jwtService.sign(payload);
 
-		// Enviar correo de bienvenida
 		const mailOptions = MailTemplates.welcomeEmail(email, nickname);
 		try {
 			await this.mailService.sendMail(mailOptions);
@@ -67,7 +65,7 @@ export class AuthService {
 		return {
 			message: 'User created successfully',
 			user,
-			token, // Incluir el token en la respuesta
+			token,
 		};
 	}
 
@@ -104,7 +102,6 @@ export class AuthService {
 
 			this.logger.log(`User signed in successfully with email: ${email}`);
 
-			// Formatear los amigos para devolver los datos completos
 			const friends = user.friends.map(friendship => friendship.friend);
 
 			return {

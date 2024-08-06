@@ -19,47 +19,9 @@ import { Role } from '@prisma/client';
 @ApiTags('Admin')
 @Controller('admin')
 export class AdminController {
-	constructor(private readonly adminService: AdminService) {}
+	constructor(private readonly adminService: AdminService) { }
 
 	@Patch('ban/:id')
-	@ApiOperation({
-		summary: 'Ban a user',
-		description: 'Bans a user when his ID is sent by parameter',
-	})
-	@ApiParam({
-		name: 'id',
-		description: 'ID of the user to be banned',
-		type: String,
-		required: true,
-	})
-	@ApiResponse({
-		status: 200,
-		description: 'User has been banned',
-		schema: {
-			example: {
-				id: '56ffe0fe-c9cd-429b-aa0b-c81c076c736d',
-				email: 'jeison@gmail.com',
-				nickname: 'Jeison',
-				tokenFirebase: 'password123',
-				birthdate: '2004-12-15T00:00:00.000Z',
-				urlProfile: 'https://example.com/selfie.jpg',
-				urlStream: null,
-				role: 'user',
-				createdAt: '2024-12-12T24:30:10.999Z',
-				state: false,
-			},
-		},
-	})
-	@ApiResponse({
-		status: 400,
-		description: 'User could not be banned',
-		schema: { example: 'User could not be banned' },
-	})
-	@ApiResponse({
-		status: 404,
-		description: 'User not found',
-		schema: { example: 'User not found' },
-	})
 	async banUser(@Param('id') id: string) {
 		try {
 			const result = await this.adminService.banUser(id);

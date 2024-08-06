@@ -18,6 +18,7 @@ async function PreloadData(
 	await preload.addGames();
 	await preload.addUsers();
 	await preload.addTournaments();
+	await preload.addTeamsWithPlayers();
 	await preload.addTeamForTournament();
 }
 

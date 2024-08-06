@@ -46,7 +46,7 @@ export class TeamsService {
 	}
 
 	async createTeam(createTeamDto: CreateTeamDto): Promise<Team> {
-		console.log(createTeamDto);
+
 		const tournament = await this.prisma.tournament.findUnique({
 			where: { id: createTeamDto.tournamentId },
 			include: { teams: { include: { users: true } } },
@@ -87,7 +87,7 @@ export class TeamsService {
 
 				await this.prisma.userTeams.create({
 					data: {
-						nickname: foundUser.nickname,
+						userId: foundUser.id,
 						nameTeam: team.id,
 					},
 				});
@@ -193,6 +193,6 @@ export class TeamsService {
 		});
 		if (!team) throw new NotFoundException('Team does not exist');
 
-		return await this.prisma.team.delete({ where: { id: teamId } });
+		return await this.prisma.team.update({ where: { id: teamId }, data: { state: false } });
 	}
 }

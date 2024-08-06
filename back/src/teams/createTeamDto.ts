@@ -45,6 +45,10 @@ export class CreateTeamDto {
 	@IsString({ each: true })
 	users: string[];
 
+	@ApiProperty({
+		description: 'Url of the paipal aprobed',
+		example: 'http://example.com/paypal'
+	})
 	@IsString()
 	paypal: string;
 }
@@ -57,4 +61,23 @@ export class UpdateTeamDto extends PartialType(CreateTeamDto) {
 	@IsUUID()
 	@IsNotEmpty()
 	id: string
+
+}
+
+export class DeleteMemberForTeamDto {
+	@ApiProperty({
+		description: 'ID of the team',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	teamId: string
+
+	@ApiProperty({
+		description: 'ID of the user',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsUUID()
+	@IsNotEmpty()
+	memberId: string
 }

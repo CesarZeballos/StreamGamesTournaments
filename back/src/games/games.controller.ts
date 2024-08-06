@@ -32,22 +32,6 @@ export class GamesController {
 	@Roles(Role.admin)
 	@Roles(Role.organizer) */
 	@Get()
-	@ApiOperation({ summary: 'Obtener todos los juegos' })
-	@ApiQuery({
-		name: 'page',
-		required: false,
-		description: 'Número de página para paginación',
-	})
-	@ApiQuery({
-		name: 'limit',
-		required: false,
-		description: 'Número de elementos por página',
-	})
-	@ApiResponse({
-		status: 200,
-		description: 'Lista de juegos obtenida exitosamente.',
-	})
-	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
 	async getAllGames(
 		@Query('page') page: string,
 		@Query('limit') limit: string,
@@ -65,19 +49,12 @@ export class GamesController {
 	@Roles(Role.admin)
 	@Roles(Role.organizer) */
 	@Get(':id')
-	@ApiOperation({ summary: 'Obtener un juego por su ID' })
-	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
-	@ApiResponse({ status: 200, description: 'Juego encontrado.' })
-	@ApiResponse({ status: 404, description: 'Juego no encontrado.' })
 	async getGameById(@Param('id', new ParseUUIDPipe()) id: string) {
 		return await this.gamesService.getGameById(id);
 	}
 	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin) */
 	@Post()
-	@ApiOperation({ summary: 'Crear un nuevo juego' })
-	@ApiResponse({ status: 201, description: 'Juego creado exitosamente.' })
-	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
 	async postNewGame(@Body() game: CreateGameDto) {
 		const { name, urlImage } = game;
 		return await this.gamesService.postNewGame(name, urlImage);
@@ -86,29 +63,6 @@ export class GamesController {
 	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin) */
 	@Put(':id')
-	@ApiOperation({ summary: 'Actualizar un juego por su ID' })
-	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
-	@ApiBody({
-		description: 'Datos para actualizar el juego',
-		type: UpdateGameDto,
-		examples: {
-			default: {
-				summary: 'Ejemplo de actualización de juego',
-				value: {
-					name: 'Nuevo Nombre del Juego',
-					urlImage: 'https://example.com/new-image.jpg',
-					tournamentId: '123e4567-e89b-12d3-a456-426614174000',
-					user: ['123e4567-e89b-12d3-a456-426614174000'],
-				},
-			},
-		},
-	})
-	@ApiResponse({
-		status: 200,
-		description: 'Juego actualizado exitosamente.',
-	})
-	@ApiResponse({ status: 400, description: 'Solicitud inválida.' })
-	@ApiResponse({ status: 404, description: 'Juego no encontrado.' })
 	async updateGame(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() game: UpdateGameDto,
@@ -119,10 +73,6 @@ export class GamesController {
 	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin) */
 	@Put(':id')
-	@ApiOperation({ summary: 'Eliminar un juego por su ID' })
-	@ApiParam({ name: 'id', type: 'string', description: 'ID del juego' })
-	@ApiResponse({ status: 200, description: 'Juego eliminado exitosamente.' })
-	@ApiResponse({ status: 404, description: 'Juego no encontrado.' })
 	async deleteGame(@Param('id', new ParseUUIDPipe()) id: string) {
 		return await this.gamesService.deleteGame(id);
 	}

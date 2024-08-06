@@ -82,16 +82,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 	state?: boolean;
 }
 
-export class UserBanForAdminDto extends PartialType(UpdateUserDto) {
-	@ApiPropertyOptional({
-		description: 'Role del usuario',
-		example: 'user',
-	})
-	@IsOptional()
-	@IsString()
-	role?: Role;
-}
-
 export class AddFriendDto {
 	@ApiProperty({
 		description: 'ID of the user',

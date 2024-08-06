@@ -22,7 +22,7 @@ import { FileUploadService } from './file-upload.service';
 @ApiTags('File-Upload')
 @Controller('uploadfile')
 export class FileUploadController {
-	constructor(private readonly fileUploadService: FileUploadService) {}
+	constructor(private readonly fileUploadService: FileUploadService) { }
 
 	@Post()
 	@ApiOperation({ summary: 'Subir un archivo' })
@@ -39,13 +39,6 @@ export class FileUploadController {
 			},
 		},
 	})
-	@ApiResponse({ status: 201, description: 'Archivo cargado exitosamente.' })
-	@ApiResponse({
-		status: 400,
-		description:
-			'Error al cargar el archivo. El tamaño del archivo puede ser mayor a 1 MB o el tipo de archivo no es soportado.',
-	})
-	@ApiResponse({ status: 415, description: 'Tipo de archivo no soportado.' })
 	@UseInterceptors(FileInterceptor('file'))
 	uploadFile(
 		@UploadedFile(
