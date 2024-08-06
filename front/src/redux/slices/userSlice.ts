@@ -91,7 +91,6 @@ const userSlice = createSlice({
                     duration: 1500,
                   })
             }
-
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'

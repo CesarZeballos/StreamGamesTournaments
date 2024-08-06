@@ -57,6 +57,7 @@ export const LoginForm: React.FC = () => {
         }
     }
 
+    //ruteo automatico despues del login success
     const loginStatus = useSelector((state: RootState) => state.user.status)
     useEffect(() => {
         if (loginStatus === "succeeded") {
@@ -64,7 +65,6 @@ export const LoginForm: React.FC = () => {
             router.push("/")
         }, 2000);
     }}, [loginStatus, router])
-    
     
     return (
         <form onSubmit={handleSubmit} className="mt-9">
