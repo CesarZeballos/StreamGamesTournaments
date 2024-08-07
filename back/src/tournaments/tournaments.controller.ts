@@ -15,11 +15,8 @@ import {
 } from '@nestjs/common';
 import {
 	ApiTags,
-	ApiResponse,
-	ApiQuery,
-	ApiParam,
 	ApiBody,
-	ApiOperation,
+	ApiConsumes,
 } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
 /* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
@@ -41,17 +38,9 @@ export class TournamentsController {
 	) { }
 
 	@Get()
-	async getAllTournaments(
-		@Query('page') page?: string,
-		@Query('limit') limit?: string,
-	) {
-		const pageNumber = page ? Number(page) : 1;
-		const limitNumber = limit ? Number(limit) : 9;
+	async getAllTournaments() {
 
-		return this.tournamentsService.getAllTournaments(
-			pageNumber,
-			limitNumber,
-		);
+		return this.tournamentsService.getAllTournaments();
 	}
 
 	@Get(':id')
@@ -64,10 +53,18 @@ export class TournamentsController {
 	@Roles(Role.organizer) */
 	@Post('add')
 	@UseInterceptors(FileInterceptor('file'))
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({
+		description: 'Crear torneo con archivo de imagen',
+		type: CreateTournamentDto,
+	})
 	async createTournament(
 		@Body() createTournamentDto: CreateTournamentDto,
 		@UploadedFile() file: Express.Multer.File,
 	) {
+		if (!file) {
+			throw new BadRequestException('File is required');
+		}
 		const uploadResult = await this.fileUploadService.uploadFile(file);
 		createTournamentDto.urlAvatar = uploadResult.secure_url;
 		return this.tournamentsService.createTournament(createTournamentDto);

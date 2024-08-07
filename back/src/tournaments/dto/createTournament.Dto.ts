@@ -10,6 +10,9 @@ import {
 } from 'class-validator';
 
 export class CreateTournamentDto {
+	@ApiProperty({ type: 'string', format: 'binary', description: 'Archivo de imagen para el torneo' })
+	file: any;
+
 	@ApiProperty({ example: 'Nombre del Torneo' })
 	@IsString()
 	@IsNotEmpty()
@@ -36,19 +39,19 @@ export class CreateTournamentDto {
 	gameId: string;
 
 	@ApiProperty({ example: 10 })
-	@IsInt()
+	@IsString()
 	@IsNotEmpty()
-	membersNumber: number;
+	membersNumber: string;
 
 	@ApiProperty({ example: 20 })
-	@IsInt()
+	@IsString()
 	@IsNotEmpty()
-	maxTeams: number;
+	maxTeams: string;
 
 	@ApiProperty({ example: 100 })
-	@IsInt()
+	@IsString()
 	@IsNotEmpty()
-	price: number;
+	price: string;
 
 	@ApiProperty({ example: 'https://example.com/avatar.png' })
 	@IsString()
@@ -56,7 +59,6 @@ export class CreateTournamentDto {
 	urlAvatar?: string;
 
 	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
-	@IsArray()
 	@IsString({ each: true })
 	@IsNotEmpty()
 	awards: string[];
