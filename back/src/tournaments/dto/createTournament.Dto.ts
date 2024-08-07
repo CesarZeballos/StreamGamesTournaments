@@ -10,7 +10,11 @@ import {
 } from 'class-validator';
 
 export class CreateTournamentDto {
-	@ApiProperty({ type: 'string', format: 'binary', description: 'Archivo de imagen para el torneo' })
+	@ApiProperty({
+		type: 'string',
+		format: 'binary',
+		description: 'Archivo de imagen para el torneo',
+	})
 	file: any;
 
 	@ApiProperty({ example: 'Nombre del Torneo' })

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as paypal from '@paypal/checkout-server-sdk';
 import { PrismaService } from '../../prisma/prisma.service';
+import { error } from 'console';
 
 @Injectable()
 export class PayPalService {
@@ -41,12 +42,6 @@ export class PayPalService {
 		const request = new paypal.orders.OrdersCaptureRequest(orderId);
 		request.headers['Content-Type'] = 'application/json';
 
-		try {
-			const response = await this.client.execute(request);
-			return response.result;
-		} catch (error) {
-			console.error('PayPal capture order error:', error);
-			throw new Error('Failed to capture PayPal order');
-		}
+		const response = await this.client.execute(request);
 	}
 }
