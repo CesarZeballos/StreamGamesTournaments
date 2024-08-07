@@ -218,7 +218,13 @@ export const DashboardTournamentForm: React.FC = () => {
 
         <div className="flex flex-col gap-2 w-fit">
           <label className="body text-white">Awards</label>
-          
+          <div className="grid grid-cols-3">
+            <div className="flex flex-col gap-2">
+              <label className="body text-white">First</label>
+              {/* no se como seria la papa renderizar esto */}
+            </div>
+
+          </div>
         </div>
 
 
