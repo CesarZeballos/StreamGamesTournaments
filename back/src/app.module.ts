@@ -10,6 +10,7 @@ import { MailModule } from 'mail/mail.module';
 import { AdminModule } from 'admin/admin.module';
 import { TeamsModule } from 'teams/teams.module';
 import { PayPalModule } from 'paypal/paypal.module';
+import { FriendsModule } from './friends/friends.module';
 import { ChatModule } from 'chat/chat.module';
 
 @Module({
@@ -24,6 +25,7 @@ import { ChatModule } from 'chat/chat.module';
 		PayPalModule,
 		MailModule,
 		AdminModule,
+		FriendsModule,
 		ChatModule,
 	],
 })

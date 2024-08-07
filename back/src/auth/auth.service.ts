@@ -19,7 +19,7 @@ export class AuthService {
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
 		private readonly mailService: MailService,
-	) {}
+	) { }
 
 	async signUp(createUserDto: CreateUserDto) {
 		const { email, nickname, tokenFirebase, birthdate } = createUserDto;
@@ -78,59 +78,71 @@ export class AuthService {
 	async signIn(signInDto: SignInDto) {
 		const { email, tokenFirebase } = signInDto;
 
-		try {
-			this.logger.log(`Attempting to sign in user with email: ${email}`);
 
-			const user = await this.prisma.user.findUnique({
-				where: { email },
-				include: {
-					friends: {
-						include: {
-							friend: true,
+		this.logger.log(`Attempting to sign in user with email: ${email}`);
+
+		const user = await this.prisma.user.findUnique({
+			where: { email },
+			include: {
+				friends: true,
+				sentFriendRequests: true,
+				sentMessages: true,
+				receivedMessages: true,
+				globalChat: true,
+				tournaments: true,
+				organizedTournaments: true,
+				teams: {
+					include: {
+						team: {
+							include: {
+								tournament: true,
+							},
 						},
 					},
-					tournaments: true,
-					organizedTournaments: true,
 				},
-			});
+			},
+		});
 
-			if (user) {
-				if (user.isBanned === true)
-					throw new BadRequestException(
-						`User with email: ${user.email} is banned`,
-					);
-			}
-			if (!user) {
-				this.logger.warn(`User not found with email: ${email}`);
-				throw new UnauthorizedException('Invalid credentials');
-			}
-
-			const payload = { userId: user.id, email: user.email };
-			const token = await this.jwtService.sign(payload);
-
-			this.logger.log(`User signed in successfully with email: ${email}`);
-
-			const friends = user.friends.map((friendship) => friendship.friend);
-
-			return {
-				message: 'User logged in successfully',
-				token,
-				user: {
-					...user,
-					friends,
-				},
-			};
-		} catch (error) {
-			if (error instanceof UnauthorizedException) {
-				throw error;
-			}
-			this.logger.error(
-				`Error during sign-in process for email: ${email}`,
-				error.stack,
-			);
-			throw new InternalServerErrorException(
-				'An error occurred during sign-in',
-			);
+		if (!user) {
+			this.logger.warn(`User not found with email: ${email}`);
+			throw new UnauthorizedException('Invalid credentials');
 		}
+		if (user.isBanned === true)
+			throw new BadRequestException(
+				`User with email: ${user.email} is banned`,
+			);
+		if (user.state === false) throw new BadRequestException(`User with email: ${user.email} does no exists`)
+
+
+		const payload = { userId: user.id, email: user.email };
+		const token = await this.jwtService.sign(payload);
+
+		this.logger.log(`User signed in successfully with email: ${email}`);
+
+
+		const singlePlayerTournaments = user.tournaments;
+		const teamsTournaments = user.teams.map(
+			(team) => team.team.tournament,
+		);
+
+		const userTournaments = [
+			...singlePlayerTournaments,
+			...teamsTournaments,
+		];
+
+		const {
+			state,
+			tournaments,
+			isBanned,
+			...userNotData
+		} = user;
+
+		return {
+			message: 'User logged in successfully',
+			...userNotData,
+			tournaments: userTournaments,
+			friends: user.friends,
+			token
+		};
 	}
 }

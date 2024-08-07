@@ -32,21 +32,4 @@ export class CreateGameDto {
 	urlImage: string;
 }
 
-export class UpdateGameDto extends PartialType(CreateGameDto) {
-	@ApiProperty({
-		description: 'El identificador único del juego. Debe ser un UUID',
-		example: '123e4567-e89b-12d3-a456-426614174000',
-	})
-	@IsUUID()
-	@IsNotEmpty()
-	id: string;
-
-	@ApiPropertyOptional({
-		description:
-			'El estado del juego, donde `true` indica que el juego está activo y `false` que está inactivo. Este campo es opcional',
-		example: false,
-	})
-	@IsOptional()
-	@IsBoolean()
-	state?: boolean;
-}
+export class UpdateGameDto extends PartialType(CreateGameDto) { }
