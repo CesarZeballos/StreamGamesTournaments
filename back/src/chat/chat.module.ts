@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+/* import { Module } from '@nestjs/common';
 import { ChatGateway } from './chat.gateway'; // Asegúrate de que la ruta sea correcta
 import { PrismaService } from '../../prisma/prisma.service'; // Asegúrate de que la ruta sea correcta
 
@@ -6,3 +6,4 @@ import { PrismaService } from '../../prisma/prisma.service'; // Asegúrate de qu
   providers: [ChatGateway, PrismaService],
 })
 export class ChatModule {}
+ */

@@ -1,4 +1,4 @@
-import {
+/* import {
 	WebSocketGateway,
 	WebSocketServer,
 	SubscribeMessage,
@@ -99,3 +99,4 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.emit('globalMessage', { nickname, content, user });
 	}
 }
+ */
