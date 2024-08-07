@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TeamsService } from 'teams/teams.service';
 import { TournamentsService } from 'tournaments/tournaments.service';
 import { preloadData } from '../preload/preload.db';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 async function PreloadData(
 	prismaService: PrismaService,
@@ -54,6 +55,8 @@ async function bootstrap() {
 
 		await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
+
+		app.useWebSocketAdapter(new IoAdapter(app));
 
 		const port = process.env.PORT || 3001;
 		await app.listen(port, () => {
