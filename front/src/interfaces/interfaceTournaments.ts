@@ -81,6 +81,7 @@ export interface IAddTeam {
     tournamentId: string
     name: string
     organizerId: string
+    token: string
     users: string[]
 }
 

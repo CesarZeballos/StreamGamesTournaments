@@ -1,5 +1,4 @@
 'use client'
-import { StaticImageData } from "next/image";
 import { ITournament, IAddTeam, IGame } from "@/interfaces/interfaceTournaments";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +10,6 @@ import { toast } from "sonner";
 import { IUser } from "@/interfaces/interfaceUser";
 import { Box, Chip, FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
 import { setView } from "@/redux/slices/dashboardSlice";
-import { fetchAddTeamToTournament } from "@/utils/fetchTournaments";
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import { isoToDate } from "@/utils/formatDate";
 import { postTeamToTournamentSlice } from "@/redux/thunks/tournamentsSliceThunk";
@@ -40,16 +38,17 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
     const [tournamentData, setTournamentData] = useState<ITournament>(turnament!);
     const stringDate = isoToDate(tournamentData?.startDate)
+    const token = useSelector((state: RootState) => state.user.token);
     
     const [addTeam, setAddTeam] = useState<IAddTeam>({
         tournamentId: tourId,
         name: "",
         organizerId: user!.id,
+        token: token!,
         users: []
     });
 
     //control de ingreso a la page
-    const token = useSelector((state: RootState) => state.user.token);
     useEffect(() => {
         if (token === null || user === null) {
             router.push("/login")
@@ -85,28 +84,10 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
             [name]: value
         })
     }
-
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        const teamLength = addTeam.users.length
-        if (teamLength < tournamentData.membersNumber) {
-            toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${tournamentData.membersNumber - teamLength} more`, {
-                position: 'top-right',
-                duration: 1500,
-            })
-        } else if (teamLength > tournamentData.membersNumber) {
-            toast.error(`this tournaments require ${tournamentData.membersNumber} team members. Need ${teamLength - tournamentData.membersNumber} less`, {
-                position: 'top-right',
-                duration: 1500,
-            })
-        } else {
-        }
-    }
     
     const onSuccess = (orderId: string) => {
         try {
-            dispatch(postTeamToTournamentSlice({teamData: addTeam, orderId: orderId, token: token!}))
+            dispatch(postTeamToTournamentSlice(addTeam))
             dispatch(setView("tournaments"))
             dispatch(reloadUserSlice({
                 email: user!.email!,
@@ -136,7 +117,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form>
             <h1 className="heading1 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
@@ -209,8 +190,11 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
 
                     <FormContainer section={""}>
                         <div className="flex flex-row gap-2">
-                            <PayPalButton data={{teamData: addTeam, token: token!}} onSuccess={onSuccess} />
-                            {/* <button type="submit" className="buttonPrimary">Register team</button> */}
+                            <PayPalButton 
+                            data={{tournamentId: addTeam.tournamentId, token: token!}} 
+                            teamData={addTeam} 
+                            numberMembers={tournamentData.membersNumber}
+                            onSuccess={onSuccess} />
                             <button className="buttonSecondary" onClick={goBack}>Cancel</button>
                         </div>
                     </FormContainer>

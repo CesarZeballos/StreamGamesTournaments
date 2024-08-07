@@ -1,5 +1,5 @@
-import { IAddTeamToTournament } from "@/interfaces/interfaceRedux";
-import { IAddTeam, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
+import { ITournamentPayment } from "@/interfaces/interfaceRedux";
+import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -44,29 +44,45 @@ export async function fetchTournamentById(id: string) {
         }
 }
 
-//funcion para inscribirse al torneo:
-export const fetchPaymentTournament = async (info: IAddTeamToTournament) => {
-    const response = await fetch(`${apiUrl}/paypal/create-order`, {
+//funcion para pagar la inscripcion al torneo:
+export const fetchPaymentTournament = async (data: ITournamentPayment) => {
+    const response = await fetch(`${apiUrl}/paypal/create-order/${data.tournamentId}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${info.token}`
-        },
-        body: JSON.stringify(info.teamData)
+            'Authorization': `Bearer ${data.token}`
+        }
     });
     
-    const data = await response.json();
-    return data.id
+    const returnData = await response.json();
+    return returnData.id
 }
 
-export const fetchAddTeamToTournament = async (data: IAddTeamToTournament) => {
+export const fetchCapturePaymentTournament = async (data: string) => {
+    const response = await fetch(`${apiUrl}/paypal/capture-order/${data}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    
+    const returnData = await response.json();
+    return returnData
+}
+
+export const fetchAddTeamToTournament = async (data: IAddTeam) => {
     const response = await fetch(`${apiUrl}/teams`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${data.token}`
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+            name: data.name,
+            tournamentId: data.tournamentId,
+            organizerId: data.organizerId,
+            users: data.users
+        })
     });
 
     const dataResponse = await response.json();

@@ -6,6 +6,7 @@ import userActionSlice from './slices/userActionsSlice';
 import tournamentsSlice from './slices/tournamentSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
+import paymentSlice from './slices/paymentSlice';
 
 //configuracion de la persistencia:
 const persistConfig = {
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   tournament: tournamentsSlice,
   dashboard: dashboardSlice,
   auxiliar: auxiliarSlice,
-  actions: userActionSlice
+  actions: userActionSlice,
+  payment: paymentSlice
 });
 
 export default rootReducer;

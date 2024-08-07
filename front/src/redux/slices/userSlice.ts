@@ -74,6 +74,7 @@ const userSlice = createSlice({
           if (action.payload.token) {
                 state.status = 'succeeded'
                 state.statusRegister = 'idle'
+                console.log("response back ", action.payload)
                 state.user = action.payload.user
                 state.token = action.payload.token
                 toast.success(`welcome ${action.payload.user.nickname}`, {
@@ -90,6 +91,7 @@ const userSlice = createSlice({
           })
         .addCase(loginSlice.rejected, (state, action) => {
             state.status = 'failed'
+            state.statusRegister = 'idle'
             console.log(action.error.message)
             toast.error('fail in login: user or password incorrect', {
                 position: 'top-right',
@@ -101,6 +103,7 @@ const userSlice = createSlice({
           .addCase(reloadUserSlice.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.statusRegister = 'idle'
+            console.log("se esta haciendo la peticion", action.payload)
             if (action.payload) {
                 state.user = action.payload.user
                 state.token = action.payload.token
@@ -108,6 +111,7 @@ const userSlice = createSlice({
           })
           .addCase(reloadUserSlice.rejected, (state, action) => {
             state.status = 'failed'
+            state.statusRegister = 'idle'
           })
 
           // FORGOT PASSWORD
