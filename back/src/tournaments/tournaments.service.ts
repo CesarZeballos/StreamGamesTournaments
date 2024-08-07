@@ -17,9 +17,10 @@ export class TournamentsService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly mailService: MailService,
-	) {}
+	) { }
 
 	async getAllTournaments() {
+
 
 		const tournaments = await this.prisma.tournament.findMany({
 			include: {
@@ -56,6 +57,9 @@ export class TournamentsService {
 
 	async createTournament(createTournamentDto: CreateTournamentDto) {
 		const { organizerId, gameId, ...data } = createTournamentDto;
+		const numberTeams = Number(data.maxTeams)
+		const numberPrice = Number(data.price)
+		const numberMember = Number(data.membersNumber)
 
 		const organizerExists = await this.prisma.user.findUnique({
 			where: { id: organizerId },
@@ -81,6 +85,9 @@ export class TournamentsService {
 			const tournament = await this.prisma.tournament.create({
 				data: {
 					...data,
+					price: numberPrice,
+					membersNumber: numberMember,
+					maxTeams: numberTeams,
 					category: data.category as Categories,
 					awards: awardsAsStrings,
 					organizer: { connect: { id: organizerId } },

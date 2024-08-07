@@ -12,7 +12,7 @@ export class preloadData {
 		private readonly prisma: PrismaClient,
 		private readonly teamService: TeamsService,
 		private readonly tournamentsService: TournamentsService,
-	) {}
+	) { }
 
 	async clearTables() {
 		await this.prisma.$transaction([
@@ -54,7 +54,7 @@ export class preloadData {
 		}
 	}
 
-	async addTournaments() {
+	/*async addTournaments() {
 		const userOrganizer: User = await this.prisma.user.findFirst({
 			where: {
 				role: 'organizer',
@@ -106,7 +106,7 @@ export class preloadData {
 
 			await this.tournamentsService.createTournament(tournamentData);
 		}
-	}
+	}*/
 
 	async addTeamsWithPlayers() {
 		const usersorganizer: User[] = await this.prisma.user.findMany({
