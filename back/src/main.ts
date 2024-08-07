@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TeamsService } from 'teams/teams.service';
 import { TournamentsService } from 'tournaments/tournaments.service';
 import { preloadData } from '../preload/preload.db';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 /*async function PreloadData(
 	prismaService: PrismaService,
@@ -21,7 +22,7 @@ import { preloadData } from '../preload/preload.db';
 	await preload.clearTables();
 	await preload.addGames();
 	await preload.addUsers();
-	/*	await preload.addTournaments();
+		await preload.addTournaments();
 		await preload.addTeamsWithPlayers();
 		await preload.addTeamForTournament();
 }*/

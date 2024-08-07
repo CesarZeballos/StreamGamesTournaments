@@ -12,7 +12,7 @@ export class preloadData {
 		private readonly prisma: PrismaClient,
 		private readonly teamService: TeamsService,
 		private readonly tournamentsService: TournamentsService,
-	) { }
+	) {}
 
 	async clearTables() {
 		await this.prisma.$transaction([
@@ -54,7 +54,7 @@ export class preloadData {
 		}
 	}
 
-	/*async addTournaments() {
+	async addTournaments() {
 		const userOrganizer: User = await this.prisma.user.findFirst({
 			where: {
 				role: 'organizer',
@@ -97,16 +97,17 @@ export class preloadData {
 				awards: tournament.awards,
 				description: tournament.description,
 				urlAvatar: tournament.urlAvatar,
-				membersNumber: tournament.membersNumber,
-				maxTeams: tournament.maxTeams,
+				membersNumber: tournament.membersNumber.toString(),
+				maxTeams: tournament.maxTeams.toString(),
 				organizerId: userOrganizer.id,
 				gameId: game.id,
-				price: tournament.price,
+				price: tournament.price.toString(),
+				file: null,
 			};
 
 			await this.tournamentsService.createTournament(tournamentData);
 		}
-	}*/
+	}
 
 	async addTeamsWithPlayers() {
 		const usersorganizer: User[] = await this.prisma.user.findMany({
@@ -141,6 +142,8 @@ export class preloadData {
 			counter++;
 		}
 	}
+
+	
 
 	async addTeamForTournament() {
 		const teams: Team[] = await this.prisma.team.findMany();

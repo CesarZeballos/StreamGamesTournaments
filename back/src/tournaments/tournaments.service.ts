@@ -56,6 +56,7 @@ export class TournamentsService {
 	}
 
 	async createTournament(createTournamentDto: CreateTournamentDto) {
+		console.log('Received DTO:', createTournamentDto.awards);
 		const { organizerId, gameId, ...data } = createTournamentDto;
 		const numberTeams = Number(data.maxTeams)
 		const numberPrice = Number(data.price)
