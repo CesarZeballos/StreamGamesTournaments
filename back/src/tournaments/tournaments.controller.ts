@@ -10,6 +10,8 @@ import {
 	BadRequestException,
 	Query,
 	UseGuards,
+	UseInterceptors,
+	UploadedFile,
 } from '@nestjs/common';
 import {
 	ApiTags,
@@ -28,11 +30,15 @@ import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
 } from './dto/createTournament.Dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileUploadService } from 'file-upload/file-upload.service';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
 export class TournamentsController {
-	constructor(private readonly tournamentsService: TournamentsService) {}
+	constructor(private readonly tournamentsService: TournamentsService,
+		private readonly fileUploadService: FileUploadService
+	) { }
 
 	@Get()
 	async getAllTournaments(
@@ -57,7 +63,13 @@ export class TournamentsController {
 	@Roles(Role.admin)
 	@Roles(Role.organizer) */
 	@Post('add')
-	async createTournament(@Body() createTournamentDto: CreateTournamentDto) {
+	@UseInterceptors(FileInterceptor('file'))
+	async createTournament(
+		@Body() createTournamentDto: CreateTournamentDto,
+		@UploadedFile() file: Express.Multer.File,
+	) {
+		const uploadResult = await this.fileUploadService.uploadFile(file);
+		createTournamentDto.urlAvatar = uploadResult.secure_url;
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 

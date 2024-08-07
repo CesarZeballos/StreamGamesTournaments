@@ -53,7 +53,7 @@ export class CreateTournamentDto {
 	@ApiProperty({ example: 'https://example.com/avatar.png' })
 	@IsString()
 	@IsNotEmpty()
-	urlAvatar: string;
+	urlAvatar?: string;
 
 	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
 	@IsArray()

@@ -10,6 +10,7 @@ import { MailModule } from 'mail/mail.module';
 import { AdminModule } from 'admin/admin.module';
 import { TeamsModule } from 'teams/teams.module';
 import { PayPalModule } from 'paypal/paypal.module';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { PayPalModule } from 'paypal/paypal.module';
 		PayPalModule,
 		MailModule,
 		AdminModule,
+		FriendsModule,
 	],
 })
 export class AppModule {}
