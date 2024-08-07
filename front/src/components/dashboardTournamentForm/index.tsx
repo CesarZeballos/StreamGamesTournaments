@@ -239,26 +239,14 @@ export const DashboardTournamentForm: React.FC = () => {
         </div>
         </div>
           <div className="col-span-1 w-full h-64 flex items-center border-lightViolet border-4 rounded-2xl overflow-hidden">
-          {imagePrevView ? (
             <Image 
               id="imagePreview" 
-              src={imagePrevView} 
+              src={imagePrevView ? imagePrevView : "https://res.cloudinary.com/dofwlsemg/image/upload/v1723001828/niyic87vymj5vqitz7my.jpg"} 
               alt="../../app/assets/images/banners/TournBanner.jpg" 
               className="w-full max-h-500px object-cover" 
               width={500} 
               height={500}
             />
-          ) : (
-            <Image 
-              id="imagePreview" 
-              src={"https://res.cloudinary.com/dofwlsemg/image/upload/v1723001828/niyic87vymj5vqitz7my.jpg"}  
-              alt="../../app/assets/images/banners/TournBanner.jpg" 
-              className="w-full max-h-500px object-cover" 
-              width={500} 
-              height={500}
-            />
-          )}
-        
         </div>
     </div>
       </form>
