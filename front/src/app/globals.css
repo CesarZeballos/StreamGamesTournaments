@@ -210,6 +210,15 @@ body {
   focus:shadow-lightViolet
 }
 
+.inputFit {
+
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-36
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
 .inputMUI {
   @apply bg-white rounded-md font-Roboto text-BGdark
   focus:border-solid

@@ -13,9 +13,6 @@ export const SearchBarDashboard: React.FC = () => {
     const handleViewClick = (view: string) => {
         dispatch(setView(view))
     }
-    const handleRoot = () => {
-        router.push("/postTournament")
-}
 
     const logout = () => {
         dispatch(logoutSlice())
@@ -37,7 +34,7 @@ export const SearchBarDashboard: React.FC = () => {
             <div  className="flex flex-col items-center gap-2">
                 <h1 className="heading5 text-lightViolet">Organizer options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("myTournaments")}>Organized tournaments</button>
-                <button className="buttonPrimary" onClick={() => handleRoot()}>Create Tournament</button>
+                <button className="buttonPrimary" onClick={() => handleViewClick("createTournament")}>Create Tournament</button>
             </div>}
 
             {userRol === "admin" && 

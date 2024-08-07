@@ -53,7 +53,7 @@ export const forgotPasswordSlice = createAsyncThunk('user/postForgotPassword', a
         return response
 })
 
-export const upgradeUserSlice = createAsyncThunk('user/upgradeUser', async (data: IUpgradeUser) => {
+export const upgradeRequestUserSlice = createAsyncThunk('user/upgradeUser', async (data: IUpgradeUser) => {
         const response = await fetchUgradeUser(data)
         return response
 })

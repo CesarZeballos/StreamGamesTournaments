@@ -21,7 +21,10 @@ export const DashboardSelector: React.FC = () => {
                 {section === 'friends' && <DashboardViewFriends/>}
                 {section === 'addFriend' && <DashboardViewAddFriend/>}
                 {section === 'tournaments' && <DashboardViewTournaments/>}
+
+
                 {section === 'settings' && <DashboardViewSettings/>}
+
                 
                 {/* {section === 'myTournaments' && <DashboardViewTournaments/>} */}
                 {section === 'createTournament' && <DashboardTournamentForm />}

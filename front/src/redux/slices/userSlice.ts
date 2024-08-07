@@ -2,7 +2,7 @@ import { IUserState } from "@/interfaces/interfaceRedux";
 import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
-import { forgotPasswordSlice, loginSlice, registerSlice, reloadUserSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
+import { forgotPasswordSlice, loginSlice, registerSlice, reloadUserSlice, upgradeRequestUserSlice } from "../thunks/userSliceThunk";
 
 const initialState: IUserState = {
   user: null,
@@ -128,14 +128,14 @@ const userSlice = createSlice({
               })
           })
 
-                  // UPGRADE USER
-        .addCase(upgradeUserSlice.fulfilled, (state, action) => {
+          // UPGRADE USER
+        .addCase(upgradeRequestUserSlice.fulfilled, (state, action) => {
           toast.success('We will review your application. You will be notified by email when you become a tournament organizer.', {
               position: 'top-right',
               duration: 1500,
               })
           })
-          .addCase(upgradeUserSlice.rejected, (state, action) => {
+          .addCase(upgradeRequestUserSlice.rejected, (state, action) => {
           toast.error('Failed to send the request. Please try again in a few minutes.', {
               position: 'top-right',
               duration: 1500,

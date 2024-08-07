@@ -32,8 +32,22 @@ export interface ITournamentPost {
     membersNumber: number;
     maxTeam: number;
     price: number;
-    urlAvatar: ImageSource;
+    urlAvatar: File | string;
     award: string[];
+    description: string;
+}
+
+export interface ITournamentPostError {
+    nameTournament: string;
+    startDate: string;
+    category: string;
+    organizerId: string;
+    gameId: string;
+    membersNumber: string;
+    maxTeam: string;
+    price: string;
+    urlAvatar: string;
+    award: string;
     description: string;
 }
 
