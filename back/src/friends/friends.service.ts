@@ -7,102 +7,49 @@ export class FriendsService {
 
     constructor(private readonly prisma: PrismaService) { }
 
-    async addFriend(userId: string, friendId: string): Promise<User[]> {
-        if (userId === friendId) {
-            throw new BadRequestException(
-                'No se puede agregar a sí mismo como amigo',
-            );
-        }
+    async addFriend(id: string) {
 
-        const [user, friend] = await this.prisma.$transaction([
-            this.prisma.user.findUnique({ where: { id: userId } }),
-            this.prisma.user.findUnique({ where: { id: friendId } }),
-        ]);
+        const friendRequest = await this.prisma.friendRequest.findUnique({ where: { id: id } })
 
-        if (!user) {
+
+        if (!friendRequest) {
             throw new NotFoundException(
-                `Usuario con id ${userId} no encontrado`,
+                `Solicitud con id ${friendRequest.id} no encontrada`,
             );
-        }
-
-        if (!friend) {
-            throw new NotFoundException(
-                `Usuario amigo con id ${friendId} no encontrado`,
-            );
-        }
-
-        const existingFriendship = await this.prisma.userFriends.findFirst({
-            where: {
-                OR: [
-                    { userId, friendId },
-                    { userId: friendId, friendId: userId },
-                ],
-            },
-        });
-
-        if (existingFriendship) {
-            throw new ConflictException('Ya son amigos');
         }
 
         await this.prisma.$transaction(async (prisma) => {
-            await prisma.friendRequest.create({
+            await prisma.userFriends.create({
                 data: {
-                    sender: { connect: { id: userId } },
-                    receiver: { connect: { id: friendId } },
+                    user: { connect: { id: friendRequest.senderId } },
+                    friend: { connect: { id: friendRequest.receiverId } },
                 },
             });
 
-            await prisma.friendRequest.create({
+            await prisma.userFriends.create({
                 data: {
-                    sender: { connect: { id: friendId } },
-                    receiver: { connect: { id: userId } },
+                    user: { connect: { id: friendRequest.receiverId } },
+                    friend: { connect: { id: friendRequest.senderId } },
                 },
             });
+
+            await this.rejectFriendRequest(id)
         });
 
-        return this.prisma.user.findMany({
-            where: {
-                OR: [{ id: userId }, { id: friendId }],
-            },
-            include: {
-                receivedFriendRequests: true,
-                sentFriendRequests: true
-            },
-        });
+        return this.prisma.user.findMany({ where: { id: friendRequest.receiverId } });
     }
 
-    async removeFriend(id: string, friendId: string): Promise<void> {
-        if (id === friendId) {
-            throw new BadRequestException(
-                'No se puede eliminar a sí mismo como amigo',
-            );
-        }
+    async removeFriend(id: string) {
 
         try {
-            const user = await this.prisma.user.findUnique({ where: { id } });
-            const friend = await this.prisma.user.findUnique({
-                where: { id: friendId },
-            });
+            const friend = await this.prisma.user.findUnique({ where: { id } });
 
-            if (!user || !friend) {
-                throw new NotFoundException('Usuario o amigo no encontrado');
+            if (!friend) {
+                throw new NotFoundException(`Amigo con id: ${friend.id}no encontrado`);
             }
 
-            await this.prisma.$transaction(async (prisma) => {
-                await prisma.userFriends.deleteMany({
-                    where: {
-                        userId: id,
-                        friendId: friendId,
-                    },
-                });
+            await this.prisma.userFriends.delete({ where: { id } });
 
-                await prisma.userFriends.deleteMany({
-                    where: {
-                        userId: friendId,
-                        friendId: id,
-                    },
-                });
-            });
         } catch (error) {
             throw new InternalServerErrorException(
                 'Error interno del servidor',
@@ -162,21 +109,17 @@ export class FriendsService {
         return friendRequest;
     }
 
-    async rejectFriendRequest(userId: string, requestId: string) {
+    async rejectFriendRequest(id: string) {
         const friendRequest = await this.prisma.friendRequest.findUnique({
-            where: { id: requestId },
+            where: { id },
         });
 
         if (!friendRequest) {
-            throw new NotFoundException(`Solicitud de amistad con id ${requestId} no encontrada`);
-        }
-
-        if (friendRequest.receiverId !== userId) {
-            throw new ForbiddenException('No tienes permiso para rechazar esta solicitud de amistad');
+            throw new NotFoundException(`Solicitud de amistad con id ${id} no encontrada`);
         }
 
         await this.prisma.friendRequest.delete({
-            where: { id: requestId },
+            where: { id },
         });
 
         return { message: 'Solicitud de amistad rechazada' };

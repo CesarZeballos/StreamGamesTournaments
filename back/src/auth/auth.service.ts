@@ -81,11 +81,11 @@ export class AuthService {
 
 		this.logger.log(`Attempting to sign in user with email: ${email}`);
 
-		const user = await this.prisma.user.findUnique({
+		const userData = await this.prisma.user.findUnique({
 			where: { email },
 			include: {
-				friends: true,
-				sentFriendRequests: true,
+				friends: { include: { friend: { select: { id: true, nickname: true } } } },
+				receivedFriendRequests: { include: { sender: { select: { id: true, nickname: true } } } },
 				sentMessages: true,
 				receivedMessages: true,
 				globalChat: true,
@@ -103,25 +103,25 @@ export class AuthService {
 			},
 		});
 
-		if (!user) {
+		if (!userData) {
 			this.logger.warn(`User not found with email: ${email}`);
 			throw new UnauthorizedException('Invalid credentials');
 		}
-		if (user.isBanned === true)
+		if (userData.isBanned === true)
 			throw new BadRequestException(
-				`User with email: ${user.email} is banned`,
+				`User with email: ${userData.email} is banned`,
 			);
-		if (user.state === false) throw new BadRequestException(`User with email: ${user.email} does no exists`)
+		if (userData.state === false) throw new BadRequestException(`User with email: ${userData.email} does no exists`)
 
 
-		const payload = { userId: user.id, email: user.email };
+		const payload = { userId: userData.id, email: userData.email };
 		const token = await this.jwtService.sign(payload);
 
 		this.logger.log(`User signed in successfully with email: ${email}`);
 
 
-		const singlePlayerTournaments = user.tournaments;
-		const teamsTournaments = user.teams.map(
+		const singlePlayerTournaments = userData.tournaments;
+		const teamsTournaments = userData.teams.map(
 			(team) => team.team.tournament,
 		);
 
@@ -135,13 +135,12 @@ export class AuthService {
 			tournaments,
 			isBanned,
 			...userNotData
-		} = user;
+		} = userData;
+		const user = { ...userNotData, tournaments: userTournaments, friends: userData.friends }
 
 		return {
 			message: 'User logged in successfully',
-			...userNotData,
-			tournaments: userTournaments,
-			friends: user.friends,
+			user,
 			token
 		};
 	}
