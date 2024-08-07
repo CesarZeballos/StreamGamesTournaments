@@ -59,7 +59,7 @@ export interface IAddTeam {
 }
 
 //interface para mostrar mis torneos en el dashboard user
-export interface IMyTournaments {
+export interface ITournamentsInscripted {
     id: string
     nameTournament: string
     startDate: string

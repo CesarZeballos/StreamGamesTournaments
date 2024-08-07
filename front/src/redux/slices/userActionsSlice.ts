@@ -13,9 +13,7 @@ const initialState: IUserActionsState = {
 const userActionSlice = createSlice({
     name: "userActions",
     initialState,
-    reducers: {
-
-    }, extraReducers: (builder) => {
+    reducers: {}, extraReducers: (builder) => {
         builder
         // SETEO DE NOTIFICACIONES
 

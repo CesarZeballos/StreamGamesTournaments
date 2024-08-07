@@ -1,3 +1,5 @@
+import { ITournament } from "./interfaceTournaments"
+
 export interface IUser {
     id: string
     email: string
@@ -8,7 +10,7 @@ export interface IUser {
     urlSteam: string
     role: string
     state: boolean
-    tournaments: ITournamentsregistered[]
+    tournaments: ITournament[]
     friends: IFriend[]
     sentFriendRequests: []
     sentMessages: []
