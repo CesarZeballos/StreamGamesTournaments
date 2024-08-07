@@ -4,6 +4,7 @@ import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
 export interface ITournamentState {
   status: string;
   tournaments: ITournament[];
+  tournamentsActives: ITournament[]
   currentPage: number;
   tournamentsPerPage: number;
   filters: IFilters;

@@ -102,6 +102,7 @@ export const DashboardTournamentForm: React.FC = () => {
     <form onSubmit={handleSubmit} >
       <div className="grid grid-cols-2">
         <div>
+          <h1 className="heading5 text-lightViolet mb-2">Create tournament</h1>
 
         <div className="flex flex-col gap-2 w-fit">
           <label className="body text-white">Tournament name</label>

@@ -8,6 +8,7 @@ import { REHYDRATE } from "redux-persist";
 const initialState: ITournamentState = {
   status: "idle",
   tournaments: [],
+  tournamentsActives: [],
   currentPage: 1,
   tournamentsPerPage: 9,
   filters: {
@@ -36,9 +37,9 @@ const tournamentSlice = createSlice({
     setRunFilters(state) {
 
       //game
-      let gameArray = state.tournaments
+      let gameArray = state.tournamentsActives
       if(state.filters.game !== "") {
-        gameArray = state.tournaments.filter((tour) => tour.game.name === state.filters.game)
+        gameArray = state.tournamentsActives.filter((tour) => tour.game.name === state.filters.game)
       } 
 
       //category
@@ -122,7 +123,10 @@ const tournamentSlice = createSlice({
       })
       .addCase(getTournamentsSlice.fulfilled, (state, action: PayloadAction<ITournament[]>) => {
         state.status = "succeeded";
+        const today = new Date();
+
         state.tournaments = action.payload
+        state.tournamentsActives = action.payload.filter((tour) => new Date(tour.startDate) > today)
         state.tournamentsFiltered = action.payload
       });
   },

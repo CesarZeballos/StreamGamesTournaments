@@ -6,10 +6,11 @@ import { DashboardViewTournaments } from "../dashboardViewTournaments";
 import { DashboardViewAddFriend } from "../dashboardViewAddFriend";
 import { DashboardViewNotification } from "../dashboardViewNotification";
 import { DashboardViewSettings } from "../dashboardViewSettings";
+import { DashboardView } from "../dashboardView";
 import DashboardTournamentForm from "../dashboardTournamentForm";
 import UsersArea from "../Areas/UsersArea";
 import TournamentsArea from "../Areas/TournamentsArea";
-import { DashboardView } from "../dashboardView";
+import { DashboardViewGameForm } from "../dashboardViewGameForm";
 
 export const DashboardSelector: React.FC = () => {
     const section = useSelector((state: RootState) => state.dashboard.view);
@@ -26,11 +27,12 @@ export const DashboardSelector: React.FC = () => {
                 {section === 'settings' && <DashboardViewSettings/>}
 
                 
-                {/* {section === 'myTournaments' && <DashboardViewTournaments/>} */}
+                {/* {section === 'myTournaments' && <DashboardViewOrganizerTournaments />} */}
                 {section === 'createTournament' && <DashboardTournamentForm />}
 
                 {section === 'users' && <UsersArea/>}
                 {section === 'torunamentsAdmin' && <TournamentsArea/>}
+                {section === 'createGame' && <DashboardViewGameForm />}
             </div>
     )
 }

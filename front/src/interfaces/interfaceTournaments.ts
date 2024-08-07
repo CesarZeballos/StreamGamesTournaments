@@ -64,6 +64,18 @@ export interface IGame {
     description?: string;
 }
 
+export interface IGamePost {
+    name: string;
+    urlImage: File | string;
+    description: string;
+}
+
+export interface IGamePostError {
+    name: string;
+    urlImage: string;
+    description: string;
+}
+
 //interface para el form de agregar equipo
 export interface IAddTeam {
     tournamentId: string
