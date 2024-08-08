@@ -9,6 +9,7 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { setView } from "@/redux/slices/dashboardSlice";
 import { removefriendSlice } from "@/redux/thunks/userActionsSliceThunk";
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
+import { toast } from "sonner";
 
 export const DashboardViewFriends = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -17,13 +18,21 @@ export const DashboardViewFriends = () => {
     const friends = user?.friends || [] as IFriend[];
 
     const deleteFriend = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const {value} = event.currentTarget
-        console.log(value)
-        dispatch(removefriendSlice({
-            id: value,
-            token: token! 
-        }))
-        dispatch(reloadUserSlice({email: user?.email!, tokenFirebase: user?.tokenFirebase}))
+        const {name, value} = event.currentTarget
+        console.log(name)
+        toast(`Are you sure you want to eliminate ${name.toString()}?`, {
+            position: 'top-right',
+            action: {
+              label: 'yes, remove this friend',
+              onClick: () => {
+                  dispatch(removefriendSlice({
+                      id: value,
+                      token: token! 
+                  }))
+                  dispatch(reloadUserSlice({email: user?.email!, tokenFirebase: user?.tokenFirebase}))
+              }
+            },
+          })
     }
 
     const newChat = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,12 +65,12 @@ export const DashboardViewFriends = () => {
                             <tr key={user.id} className="flex flex-row justify-around">
                                 <td>{user.nickname}</td>
                                 <td className="text-center">
-                                    <button className="iconButton" value={user.id} onClick={newChat}>
+                                    <button className="iconButton" value={user.id} name={user.nickname} onClick={newChat}>
                                         <ChatIcon />
                                     </button>
                                 </td>
                                 <td className="text-center">
-                                    <button className="iconButton" value={user.id} onClick={deleteFriend}>
+                                    <button className="iconButton" value={user.id} name={user.nickname} onClick={deleteFriend}>
                                         <PersonRemoveIcon />
                                     </button>
                                 </td>

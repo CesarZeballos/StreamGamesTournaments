@@ -55,7 +55,8 @@ export const fetchPaymentTournament = async (data: ITournamentPayment) => {
     });
     
     const returnData = await response.json();
-    return returnData.id
+    console.log("API response:", returnData);
+    return returnData
 }
 
 export const fetchCapturePaymentTournament = async (data: string) => {
