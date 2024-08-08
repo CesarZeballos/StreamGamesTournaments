@@ -22,7 +22,9 @@
 
 		<script>
 			// Conectar al servidor Socket.IO
-			const socket = io('http://localhost:3001');
+			const socket = io(
+				'https://streamgamestournaments.onrender.com:3001',
+			);
 			console.log('Connecting to Socket.IO server...');
 
 			const messages = document.getElementById('messages');
@@ -50,7 +52,7 @@
 
 			sendPrivateButton.addEventListener('click', () => {
 				const message = messageInput.value;
-				const senderId = 'user13'; 
+				const senderId = 'user13';
 				const receiverId = 'user14';
 				socket.emit('sendPrivateMessage', {
 					senderId,
