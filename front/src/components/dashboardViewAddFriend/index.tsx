@@ -1,11 +1,19 @@
 'use client'
+<<<<<<< HEAD
 import { AppDispatch, RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+=======
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+>>>>>>> origin/cesar
 
 //icons
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
+<<<<<<< HEAD
 import { IUser, IUserSelector } from "@/interfaces/interfaceUser";
 import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
@@ -53,10 +61,112 @@ export const DashboardViewAddFriend: React.FC = () => {
     const handleChange = (event: any, value: IUserSelector | null) => {
         if (value) {
             setFriend(value.id)
+=======
+import { ITeamError, ITeamForm, ITeamMember, IUser, IUserSelector } from "@/interfaces/interfaceUser";
+import { validateTeamName } from "@/utils/validateForms/validationAddTeam";
+import { Autocomplete, TextField } from "@mui/material";
+import React from "react";
+
+const users: IUser[] = [
+    {
+        id: "1",
+        nickName: "cesar1",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "2",
+        nickName: "cesar2",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "3",
+        nickName: "cesar3",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    }, 
+
+    {
+        id: "4",
+        nickName: "cesar4",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "5",
+        nickName: "cesar5",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+
+    {
+        id: "6",
+        nickName: "cesar6",
+        email: "cesar",
+        birthDate: "cesar",
+        role: "user",
+        teams: [],
+        tournaments: [],
+    },
+]
+
+export const AddFriend: React.FC = () => {
+    const [userSelector, setUserSelector] = useState<IUserSelector[]>([]);
+    const [friend, setFriend] = useState<IUser>({} as IUser);
+
+    useEffect(() => {
+        if(userSelector. length === 0) {
+            for (let i = 0; i < users.length; i++) {
+                userSelector.push({
+                    id: users[i].id,
+                    label: users[i].nickName,
+                    email: users[i].email,
+                    birthDate: users[i].birthDate,
+                    role: users[i].role,
+                    teams: users[i].teams,
+                    tournaments: users[i].tournaments
+                })
+            }
+        }
+    }, [])
+
+    const handleChange = (event: any, value: IUserSelector | null) => {
+        if (value) {
+            setFriend({
+                id: value.id,
+                nickName: value.label,
+                email: value.email,
+                birthDate: value.birthDate,
+                role: value.role,
+                teams: value.teams,
+                tournaments: value.tournaments
+            }
+            )
+>>>>>>> origin/cesar
         }}
 
         const handlesubmit = (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
+<<<<<<< HEAD
             if(friend !== "") {
                 dispatch(addfriendSlice({userId: userActive.user?.id!, friendId: friend, token: userActive.token!}))
         } else {
@@ -84,6 +194,16 @@ export const DashboardViewAddFriend: React.FC = () => {
     return (
         <form onSubmit={handlesubmit} className="flex flex-col gap-2">
             <h1 className="heading5 text-lightViolet">Find your friend</h1>
+=======
+            console.log(friend)
+        }
+
+
+
+    return (
+        <form onSubmit={handlesubmit} className="flex flex-col gap-2">
+            <h1 className="heading4 text-white">Find your friend</h1>
+>>>>>>> origin/cesar
             
             <p className="body text-white mt-4">Search by nickname</p>
             <Autocomplete

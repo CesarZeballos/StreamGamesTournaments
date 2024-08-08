@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseUUIDPipe, Post, Query } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { AddFriendDto } from './friends.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -9,10 +9,9 @@ export class FriendsController {
 
     constructor(private readonly friendsService: FriendsService) { }
 
-    @Post('add-friend')
-    addFriend(@Body() addFriendDto: AddFriendDto) {
-        const { userId, friendId } = addFriendDto;
-        return this.friendsService.addFriend(userId, friendId);
+    @Post('add-friend/:id')
+    addFriend(@Param('id', new ParseUUIDPipe()) id: string) {
+        return this.friendsService.addFriend(id);
     }
 
     @Post('sendfriend')
@@ -21,18 +20,14 @@ export class FriendsController {
         return this.friendsService.sendFriendRequest(userId, friendId);
     }
 
-    @Delete('sendfriend')
-    rejectFriendRequest(@Body() addFriendDto: AddFriendDto) {
-        const { userId, friendId } = addFriendDto;
-        return this.friendsService.rejectFriendRequest(userId, friendId);
+    @Delete('sendfriend/:id')
+    rejectFriendRequest(@Param('id', new ParseUUIDPipe()) id: string) {
+        return this.friendsService.rejectFriendRequest(id);
     }
 
     @Delete('remove-friend/:id')
-    async removeFriend(
-        @Param('id') id: string,
-        @Query('friendId') friendId: string,
-    ) {
+    async removeFriend(@Param('id', new ParseUUIDPipe()) id: string) {
 
-        await this.friendsService.removeFriend(id, friendId);
+        await this.friendsService.removeFriend(id);
     }
 }

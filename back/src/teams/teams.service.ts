@@ -66,11 +66,11 @@ export class TeamsService {
 				}
 			}
 		}
-
+/* 
 		const orderResult = await this.paypalService.captureOrder(createTeamDto.paypal);
 
 		if (orderResult.status === !'COMPLETED') throw new ConflictException('Error al realizar el pago')
-
+ */
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
 			organizerId: createTeamDto.organizerId,

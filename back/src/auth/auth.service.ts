@@ -76,61 +76,99 @@ export class AuthService {
 	}
 
 	async signIn(signInDto: SignInDto) {
-        const { email, tokenFirebase } = signInDto;
+		const { email, tokenFirebase } = signInDto;
 
-        try {
-            this.logger.log(`Attempting to sign in user with email: ${email}`);
+		this.logger.log(`Attempting to sign in user with email: ${email}`);
 
-            const user = await this.prisma.user.findUnique({
-                where: { email },
-                include: {
-                    friends: {
-                        include: {
-                            friend: true,
-                        },
-                    },
-                    tournaments: true,
-                    organizedTournaments: true,
-                },
-            });
+		const userData = await this.prisma.user.findUnique({
+			where: { email },
+			include: {
+				friends: {
+					include: {
+						friend: {
+							select: { id: true, nickname: true }
+						}
+					}
+				},
+				receivedFriendRequests: {
+					include: {
+						sender: {
+							select: { id: true, nickname: true }
+						}
+					}
+				},
+				sentMessages: true,
+				receivedMessages: true,
+				globalChat: true,
+				tournaments: true,
+				organizedTournaments: true,
+				teams: {
+					include: {
+						team: {
+							include: {
+								tournament: true,
+							},
+						},
+					},
+				},
+			},
+		});
 
-            if (user) {
-                if (user.isBanned === true)
-                    throw new BadRequestException(
-                        `User with email: ${user.email} is banned`,
-                    );
-            }
-            if (!user) {
-                this.logger.warn(`User not found with email: ${email}`);
-                throw new UnauthorizedException('Invalid credentials');
-            }
+		if (!userData) {
+			this.logger.warn(`User not found with email: ${email}`);
+			throw new UnauthorizedException('Invalid credentials');
+		}
+		if (userData.isBanned === true)
+			throw new BadRequestException(
+				`User with email: ${userData.email} is banned`,
+			);
+		if (userData.state === false) throw new BadRequestException(`User with email: ${userData.email} does not exist`);
 
-            const payload = { userId: user.id, email: user.email };
-            const token = await this.jwtService.sign(payload);
+		const payload = { userId: userData.id, email: userData.email };
+		const token = await this.jwtService.sign(payload);
 
-            this.logger.log(`User signed in successfully with email: ${email}`);
+		this.logger.log(`User signed in successfully with email: ${email}`);
 
-            const friends = user.friends.map((friendship) => friendship.friend);
+		const singlePlayerTournaments = userData.tournaments;
+		const teamsTournaments = userData.teams.map(
+			(team) => team.team.tournament,
+		);
 
-            return {
-                message: 'User logged in successfully',
-                token,
-                user: {
-                    ...user,
-                    friends,
-                },
-            };
-        } catch (error) {
-            if (error instanceof UnauthorizedException) {
-                throw error;
-            }
-            this.logger.error(
-                `Error during sign-in process for email: ${email}`,
-                error.stack,
-            );
-            throw new InternalServerErrorException(
-                'An error occurred during sign-in',
-            );
-        }
-    }
+		const userTournaments = [
+			...singlePlayerTournaments,
+			...teamsTournaments,
+		];
+
+		const friends = userData.friends.map(friend => ({
+			id: friend.id, // ID de la tabla intermedia
+			nickname: friend.friend.nickname,
+			friendId: friend.friend.id
+		}));
+
+		const receivedFriendRequests = userData.receivedFriendRequests.map(request => ({
+			id: request.id, // ID de la tabla intermedia
+			nickname: request.sender.nickname,
+		}));
+
+		const {
+			state,
+			tournaments,
+			isBanned,
+			...userNotData
+		} = userData;
+		const user = {
+			...userNotData,
+			tournaments: userTournaments,
+			friends,
+			receivedFriendRequests
+		};
+
+		return {
+			message: 'User logged in successfully',
+			user,
+			token
+		};
+	}
+
+
 }

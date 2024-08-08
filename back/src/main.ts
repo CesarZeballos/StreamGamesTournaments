@@ -7,8 +7,9 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TeamsService } from 'teams/teams.service';
 import { TournamentsService } from 'tournaments/tournaments.service';
 import { preloadData } from '../preload/preload.db';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
-async function PreloadData(
+/*async function PreloadData(
 	prismaService: PrismaService,
 	teamService: TeamsService,
 	tournamentsService: TournamentsService,
@@ -21,10 +22,10 @@ async function PreloadData(
 	await preload.clearTables();
 	await preload.addGames();
 	await preload.addUsers();
-	/*	await preload.addTournaments();
+		await preload.addTournaments();
 		await preload.addTeamsWithPlayers();
-		await preload.addTeamForTournament();*/
-}
+		await preload.addTeamForTournament();
+}*/
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -52,8 +53,8 @@ async function bootstrap() {
 		app.use(LoggerGlobalMiddleware);
 		app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-		await PreloadData(prismaService, teamService, tournamentService);
-		console.log('Data preloaded successfully');
+		/*	await PreloadData(prismaService, teamService, tournamentService);
+			console.log('Data preloaded successfully');*/
 
 		const port = process.env.PORT || 3001;
 		await app.listen(port, () => {

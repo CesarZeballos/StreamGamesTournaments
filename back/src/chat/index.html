@@ -1,0 +1,79 @@
+<!-- <!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Socket.IO Chat</title>
+		<script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+		<style>
+			#messages {
+				width: 100%;
+				height: 300px;
+				overflow-y: scroll;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Socket.IO Chat</h1>
+		<textarea id="messages" rows="10" cols="50" readonly></textarea><br />
+		<input type="text" id="messageInput" placeholder="Type a message" />
+		<button id="sendPrivateButton">Send Private Message</button>
+		<button id="sendGlobalButton">Send Global Message</button>
+
+		<script>
+			// Conectar al servidor Socket.IO
+			const socket = io('http://localhost:3001');
+			console.log('Connecting to Socket.IO server...');
+
+			const messages = document.getElementById('messages');
+			const messageInput = document.getElementById('messageInput');
+			const sendPrivateButton =
+				document.getElementById('sendPrivateButton');
+			const sendGlobalButton =
+				document.getElementById('sendGlobalButton');
+
+			// Evento de conexión
+			socket.on('connect', () => {
+				console.log('Socket.IO connection established');
+				messages.value += `Connected to server\n`;
+			});
+
+			// Evento para recibir mensajes privados
+			socket.on('privateMessage', (message) => {
+				messages.value += `Private Message from ${message.senderId}: ${message.content}\n`;
+			});
+
+			// Evento para recibir mensajes globales
+			socket.on('globalMessage', (message) => {
+				messages.value += `Global Message from ${message.nickname}: ${message.content}\n`;
+			});
+
+			// Enviar mensaje privado
+			sendPrivateButton.addEventListener('click', () => {
+				const message = messageInput.value;
+				const senderId = 'user1'; // Cambia según tus pruebas
+				const receiverId = 'user2'; // Cambia según tus pruebas
+				socket.emit('sendPrivateMessage', {
+					senderId,
+					receiverId,
+					content: message,
+				});
+				messages.value += `You (private): ${message}\n`;
+				messageInput.value = '';
+			});
+
+			// Enviar mensaje global
+			sendGlobalButton.addEventListener('click', () => {
+				const message = messageInput.value;
+				const nickname = 'user1'; // Cambia según tus pruebas
+				socket.emit('sendGlobalMessage', {
+					nickname,
+					content: message,
+				});
+				messages.value += `You (global): ${message}\n`;
+				messageInput.value = '';
+			});
+		</script>
+	</body>
+</html>
+ -->
