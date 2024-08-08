@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 export const DashboardView: React.FC = () => {
     const nickname = useSelector((state: RootState) => state.user.user?.nickname)
-    const friendsRequests = useSelector((state: RootState) => state.user.user?.revicedFriendRequests);
+    const friendsRequests = useSelector((state: RootState) => state.user.user?.receivedFriendRequests);
 
     const tournaments = useSelector((state: RootState) => state.user);
 
@@ -17,7 +17,7 @@ export const DashboardView: React.FC = () => {
 
                 <div className="flex flex-col gap-2 m-4">
                     {/* <p className="body text-white">{`you have ${tournaments.length} tournaments incoming`}</p> */}
-                    <p className="body text-white">{`you have ${friendsRequests?.length} friend requests`}</p>
+                    <p className="body text-white">{`you have ${friendsRequests?.length} unanswered friend requests`}</p>
                 </div>
 
             </div>

@@ -5,20 +5,26 @@ import { useDispatch, useSelector } from "react-redux";
 //icons
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
+import { useState } from "react";
+import { setView } from "@/redux/slices/dashboardSlice";
 
 export const DashboardViewFriendRequests: React.FC = () => {
-    const friendRequests = useSelector((state: RootState) => state.user.user?.revicedFriendRequests);
+    const friendRequests = useSelector((state: RootState) => state.user.user?.receivedFriendRequests);
+    const {email, tokenFirebase} = useSelector((state: RootState) => state.user.user!);
     const token = useSelector((state: RootState) => state.user.token);
     const dispatch = useDispatch<AppDispatch>();
 
     const acceptFriend = (event: React.MouseEvent<HTMLButtonElement>) => {
         const id = event.currentTarget.value;
         dispatch(aceptFriendSlice({id: id, token: token!}));
+        dispatch(reloadUserSlice({email: email!, tokenFirebase: tokenFirebase!}));
     }
 
     const declineFriend = (event: React.MouseEvent<HTMLButtonElement>) => {
         const id = event.currentTarget.value;
         dispatch(rejectFriendSlice({id: id, token: token!}));
+        dispatch(reloadUserSlice({email: email!, tokenFirebase: tokenFirebase!}));
     }
 
     return (

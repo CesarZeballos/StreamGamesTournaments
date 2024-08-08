@@ -8,11 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setView } from "@/redux/slices/dashboardSlice";
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const NavBar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
+    const {receivedFriendRequests, tournaments} = useSelector((state: RootState) => state.user.user!);
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
+
 
     const routerToDashboard = (event: React.MouseEvent<HTMLButtonElement>) => {
         router.push("/dashboard");
@@ -23,6 +26,7 @@ const NavBar: React.FC = () => {
         }))
     }
 
+    const notifications = receivedFriendRequests?.length + tournaments?.length
 
     return (
         <div className="bg-BGlight grid grid-cols-4 px-large pt-4 pb-4 overflow-hidden">
@@ -33,8 +37,9 @@ const NavBar: React.FC = () => {
             <Link className="buttonNavbar" href="/">Home</Link>
             <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
             {user ? 
-            <div className="flex gap-x-8">
+            <div className="flex gap-x-1 justify-end">
                 <button className="buttonNavbar flex gap-2" onClick={routerToDashboard}><SportsEsportsIcon/>{`${user?.nickname}`}</button>
+                {notifications > 0 && <p className="number text-white flex flex-row justify-end gap-1">{notifications} <NotificationsIcon/></p>}
             </div>
             :
             <div className="flex gap-x-8">

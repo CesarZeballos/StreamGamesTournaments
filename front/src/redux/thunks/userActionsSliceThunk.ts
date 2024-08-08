@@ -8,8 +8,9 @@ export const addfriendSlice = createAsyncThunk('user/addFriend', async (data: IA
     return response
 })
 
-export const removefriendSlice = createAsyncThunk('user/removeFriend', async (data: IAddFriendForm) => {
+export const removefriendSlice = createAsyncThunk('user/removeFriend', async (data: IFriendRequestProps) => {
     const response = await fetchDeleteFriend(data)
+    console.log("thunk",response)
     return response
 })
 

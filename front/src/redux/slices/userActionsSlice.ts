@@ -2,7 +2,7 @@ import { IUserActionsState } from "@/interfaces/interfaceRedux";
 import { createSlice } from "@reduxjs/toolkit";
 import { addfriendSlice, removefriendSlice } from "../thunks/userActionsSliceThunk";
 import { toast } from "sonner";
-import { loginSlice, reloadUserSlice, upgradeUserSlice } from "../thunks/userSliceThunk";
+import { loginSlice, reloadUserSlice } from "../thunks/userSliceThunk";
 
 const initialState: IUserActionsState = {
     addFriendStatus: 'idle',
