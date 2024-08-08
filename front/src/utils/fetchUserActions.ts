@@ -39,6 +39,7 @@ export const fetchDeleteFriend = async (data: IFriendRequestProps) => {
     }
     const userData = await response.json();
     console.log("response fetch", userData)
+    console.log("userData", response)
     return userData;
 } 
 

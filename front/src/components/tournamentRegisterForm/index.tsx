@@ -75,6 +75,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
           ...addTeam,
           users: membersIdArray
         }));
+        console.log(addTeam)
       };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -194,7 +195,8 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string }) => {
                             data={{tournamentId: addTeam.tournamentId, token: token!}} 
                             teamData={addTeam} 
                             numberMembers={tournamentData.membersNumber}
-                            onSuccess={onSuccess} />
+                            onSuccess={onSuccess} 
+                            />
                             <button className="buttonSecondary" onClick={goBack}>Cancel</button>
                         </div>
                     </FormContainer>

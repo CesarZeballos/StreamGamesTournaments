@@ -8,6 +8,7 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
 import { useState } from "react";
 import { setView } from "@/redux/slices/dashboardSlice";
+import { toast } from "sonner";
 
 export const DashboardViewFriendRequests: React.FC = () => {
     const friendRequests = useSelector((state: RootState) => state.user.user?.receivedFriendRequests);
@@ -16,8 +17,8 @@ export const DashboardViewFriendRequests: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const acceptFriend = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const id = event.currentTarget.value;
-        dispatch(aceptFriendSlice({id: id, token: token!}));
+        const {name, value} = event.currentTarget;
+        dispatch(aceptFriendSlice({id: value, token: token!}));
         dispatch(reloadUserSlice({email: email!, tokenFirebase: tokenFirebase!}));
     }
 
@@ -39,10 +40,10 @@ export const DashboardViewFriendRequests: React.FC = () => {
                             <tr key={req.id} className="flex flex-row justify-around">
                                 <td className="text-center">{req.nickname}</td>
                                 <td className="flex flex-row gap-2">
-                                    <button className="iconButton" value={req.id} onClick={acceptFriend}>
+                                    <button className="iconButton" value={req.id} name={req.nickname} onClick={acceptFriend}>
                                         <PersonAddIcon />
                                     </button>
-                                    <button className="iconButton" value={req.id} onClick={declineFriend}>
+                                    <button className="iconButton" value={req.id} name={req.nickname} onClick={declineFriend}>
                                         <PersonRemoveIcon />
                                     </button>
                                 </td>
