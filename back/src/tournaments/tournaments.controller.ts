@@ -58,7 +58,6 @@ export class TournamentsController {
 		@Body() createTournamentDto: CreateTournamentDto,
 		//@UploadedFile() file: Express.Multer.File,
 	) {
-		console.log('DATOSS AS ASDDAS ', Body, UploadedFile);
 		/* if (!file) {
 			throw new BadRequestException('File is required');
 		} */
