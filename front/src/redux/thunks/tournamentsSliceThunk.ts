@@ -9,6 +9,16 @@ export const getTournamentsSlice = createAsyncThunk('tournaments/getTournaments'
         return response
 })
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+export const postTeamToTournamentSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeamToTournament) => {
+        console.log("esto se ejecuta", data)
+        const response = await fetchPaymentTournament(data.teamData, data.token)
+=======
+export const addTeam = createAsyncThunk('tournaments/addTeam', async (data: IAddTeam) => {
+        const response = await addTeamFetch(data)
+>>>>>>> origin/cesar
+=======
 export const createOrderSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeamToTournament) => {
         console.log("esto se ejecuta", data)
         const response = await fetchPaymentTournament(data)
@@ -24,5 +34,6 @@ export const captureOrderSlice = createAsyncThunk('tournaments/postTeamToTournam
 
 export const postTeamToTournamentSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeamToTournament) => {
         const response = await fetchAddTeamToTournament(data)
+>>>>>>> 0ca9e9fa8493106d791dbed223dd19219498c1ae
         return response
 })

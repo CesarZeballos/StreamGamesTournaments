@@ -13,11 +13,7 @@ import {
 	UseInterceptors,
 	UploadedFile,
 } from '@nestjs/common';
-import {
-	ApiTags,
-	ApiBody,
-	ApiConsumes,
-} from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
 /* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
@@ -33,13 +29,13 @@ import { FileUploadService } from 'file-upload/file-upload.service';
 @ApiTags('Tournaments')
 @Controller('tournaments')
 export class TournamentsController {
-	constructor(private readonly tournamentsService: TournamentsService,
-		private readonly fileUploadService: FileUploadService
-	) { }
+	constructor(
+		private readonly tournamentsService: TournamentsService,
+		private readonly fileUploadService: FileUploadService,
+	) {}
 
 	@Get()
 	async getAllTournaments() {
-
 		return this.tournamentsService.getAllTournaments();
 	}
 
@@ -60,13 +56,14 @@ export class TournamentsController {
 	})
 	async createTournament(
 		@Body() createTournamentDto: CreateTournamentDto,
-		@UploadedFile() file: Express.Multer.File,
+		//@UploadedFile() file: Express.Multer.File,
 	) {
-		if (!file) {
+		console.log('DATOSS AS ASDDAS ', Body, UploadedFile);
+		/* if (!file) {
 			throw new BadRequestException('File is required');
-		}
-		const uploadResult = await this.fileUploadService.uploadFile(file);
-		createTournamentDto.urlAvatar = uploadResult.secure_url;
+		} */
+		//const uploadResult = await this.fileUploadService.uploadFile(file);
+		//createTournamentDto.urlAvatar = uploadResult.secure_url;
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 

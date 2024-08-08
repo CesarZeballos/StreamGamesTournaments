@@ -1,7 +1,10 @@
 import { StaticImageData } from "next/image";
 import { IUser } from "./interfaceUser";
+<<<<<<< HEAD
 
 type ImageSource = StaticImageData | string;
+=======
+>>>>>>> origin/cesar
 
 export interface ITournament {
     id: string;
@@ -53,6 +56,7 @@ export interface IGame {
 //interface para el form de agregar equipo
 export interface IAddTeam {
     tournamentId: string
+<<<<<<< HEAD
     name: string
     organizerId: string
     users: string[]
@@ -64,4 +68,9 @@ export interface IMyTournaments {
     nameTournament: string
     startDate: string
     status: string
+=======
+    teamName: string
+    organizarId: string
+    members: IUser[]
+>>>>>>> origin/cesar
 }
