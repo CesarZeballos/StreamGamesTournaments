@@ -142,6 +142,7 @@ export class AuthService {
 		const friends = userData.friends.map(friend => ({
 			id: friend.id, // ID de la tabla intermedia
 			nickname: friend.friend.nickname,
+			friendId: friend.friend.id
 		}));
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(request => ({
