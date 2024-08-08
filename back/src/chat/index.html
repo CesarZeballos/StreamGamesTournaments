@@ -50,8 +50,8 @@
 
 			sendPrivateButton.addEventListener('click', () => {
 				const message = messageInput.value;
-				const senderId = 'user13'; // Cambia según tus pruebas
-				const receiverId = 'user14'; // Cambia según tus pruebas
+				const senderId = 'user13'; 
+				const receiverId = 'user14';
 				socket.emit('sendPrivateMessage', {
 					senderId,
 					receiverId,

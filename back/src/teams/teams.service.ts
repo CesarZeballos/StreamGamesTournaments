@@ -79,11 +79,7 @@ export class TeamsService {
 				}
 			}
 		}
-		/* 
-		const orderResult = await this.paypalService.captureOrder(createTeamDto.paypal);
 
-		if (orderResult.status === !'COMPLETED') throw new ConflictException('Error al realizar el pago')
- */
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
 			organizerId: createTeamDto.organizerId,
@@ -124,8 +120,21 @@ export class TeamsService {
 				);
 
 				await this.mailService.sendMail(mailOptions); // Envía el correo
+				
+				// Crear notificación para cada usuario del equipo
+				await this.prisma.notification.create({
+					data: {
+						receivedNotification: {
+							connect: { id: foundUser.id },
+						},
+						adminId: organizer.id,
+						state: true,
+						messages: `You have been added to the team "${team.name}" in the tournament "${tournament.nameTournament}" organized by ${organizer.nickname}.`,
+					},
+				});
 			}
 		}
+
 		// Envío de correo al organizador del equipo
 		const mailOptionsOrganizer = MailTemplates.registeredTeam(
 			organizer.email,
@@ -136,9 +145,20 @@ export class TeamsService {
 
 		await this.mailService.sendMail(mailOptionsOrganizer); // Envía el correo al organizador del equipo
 
+		// Crear notificación para el organizador del equipo
+		await this.prisma.notification.create({
+			data: {
+				receivedNotification: {
+					connect: { id: organizer.id },
+				},
+				adminId: organizer.id,
+				state: true,
+				messages: `You have successfully created the team "${team.name}" for the tournament "${tournament.nameTournament}".`,
+			},
+		});
+
 		return team;
 	}
-
 	async updateTeam(updateTeamDto: any): Promise<Team> {
 		const team = await this.prisma.team.findUnique({
 			where: { id: updateTeamDto.id },
