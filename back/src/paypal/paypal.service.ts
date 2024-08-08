@@ -15,7 +15,12 @@ export class PayPalService {
 	);
 	private client = new paypal.core.PayPalHttpClient(this.environment);
 
-	async createOrder(tournaments: any) {
+	async createOrder(tourId: string) {
+		const tournament = await this.prisma.tournament.findUnique({
+			where: { id: tourId },
+			include: { teams: { include: { users: true } } },
+		});
+
 		const request = new paypal.orders.OrdersCreateRequest();
 		request.headers['Content-Type'] = 'application/json';
 		request.requestBody({
@@ -24,7 +29,7 @@ export class PayPalService {
 				{
 					amount: {
 						currency_code: 'USD',
-						value: tournaments.price,
+						value: tournament.price.toString(),
 					},
 				},
 			],
@@ -32,6 +37,7 @@ export class PayPalService {
 
 		try {
 			const response = await this.client.execute(request);
+			console.log("createOrder",response.result);
 			return response.result;
 		} catch (error) {
 			throw new Error('Failed to create PayPal order');
@@ -43,5 +49,9 @@ export class PayPalService {
 		request.headers['Content-Type'] = 'application/json';
 
 		const response = await this.client.execute(request);
+
+		console.log('captureOrder', response.result);
+
+		return response.result;
 	}
 }

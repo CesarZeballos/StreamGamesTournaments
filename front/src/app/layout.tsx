@@ -26,9 +26,9 @@ export default function RootLayout({
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Providers>
           <nav className="fixed top-0 left-0 w-full z-50">
-            <NavBar />
+              <NavBar />
           </nav>
-            <main className="flex-grow">
+            <main className="flex-grow mt-6">
               {children}
               <Toaster position="bottom-right"/>
             </main>

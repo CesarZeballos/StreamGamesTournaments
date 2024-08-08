@@ -1,18 +1,23 @@
-'use client';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { captureOrderSlice, createOrderSlice } from '@/redux/thunks/tournamentsSliceThunk';
-import { IAddTeamToTournament } from '@/interfaces/interfaceRedux';
+import { ITournamentPayment } from '@/interfaces/interfaceRedux';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { IAddTeam } from '@/interfaces/interfaceTournaments';
+import { toast } from 'sonner';
 
 interface PayPalButtonProps {
-  data: IAddTeamToTournament;
+  data: ITournamentPayment;
+  teamData: IAddTeam;
+  numberMembers: number;
   onSuccess: (orderId: string) => void;
 }
 
-const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
+const PayPalButton: React.FC<PayPalButtonProps> = ({ data, teamData, numberMembers, onSuccess }) => {
   const dispatch = useDispatch<AppDispatch>();
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+
+  const teamLength = teamData.users.length;
 
   if (!clientId) {
     console.error('PayPal client ID is missing');
@@ -24,17 +29,34 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
       <PayPalButtons
         createOrder={async () => {
           try {
-            const orderId = await dispatch(createOrderSlice(data)).unwrap();
-            return orderId; // Asegúrate de que esta acción devuelva el orderID
+            // if (teamLength < numberMembers) {
+            //     toast.error(`this tournaments require ${numberMembers} team members. Need ${numberMembers - teamLength} more`, {
+            //         position: 'top-right',
+            //         duration: 1500,
+            //     });
+            //     return ''; // Asegúrate de devolver un string vacío si hay un error
+            // } else if (teamLength > numberMembers) {
+            //     toast.error(`this tournaments require ${numberMembers} team members. Need ${teamLength - numberMembers} less`, {
+            //         position: 'top-right',
+            //         duration: 1500,
+            //     });
+            //     return ''; // Asegúrate de devolver un string vacío si hay un error
+            // } else {
+              const response = await dispatch(createOrderSlice(data)).unwrap();
+              const orderId = response.id
+
+              return orderId; // Devuelve el orderID obtenido de la acción
+            // }
           } catch (error) {
             console.error('Error creating order:', error);
-            return '';
+            return ''; // Asegúrate de devolver un string vacío en caso de error
           }
         }}
         onApprove={async (data: { orderID: string }) => {
           try {
+            console.log('Order approved entry:', data.orderID);
             await dispatch(captureOrderSlice(data.orderID)).unwrap();
-            onSuccess(data.orderID);
+            // onSuccess(data.orderID);
           } catch (error) {
             console.error('Error capturing order:', error);
           }
@@ -48,3 +70,4 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
 };
 
 export default PayPalButton;
+

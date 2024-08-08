@@ -12,13 +12,29 @@ export class preloadData {
 		private readonly prisma: PrismaClient,
 		private readonly teamService: TeamsService,
 		private readonly tournamentsService: TournamentsService,
-	) { }
+	) {}
 
 	async clearTables() {
 		await this.prisma.$transaction([
+			// Primero, eliminar registros en UserTeamRequest
+			this.prisma.userTeamRequest.deleteMany({}),
+
+			// Luego, eliminar registros en Team
 			this.prisma.team.deleteMany({}),
+
+			// Después, eliminar registros en Tournament
 			this.prisma.tournament.deleteMany({}),
+
+			// Luego, eliminar registros en los chats y solicitudes de amistad
+			this.prisma.privateChat.deleteMany({}),
+			this.prisma.userFriends.deleteMany({}),
+			this.prisma.friendRequest.deleteMany({}),
+			this.prisma.globalChat.deleteMany({}),
+
+			// Ahora, eliminar registros en User
 			this.prisma.user.deleteMany({}),
+
+			// Finalmente, eliminar registros en Game
 			this.prisma.game.deleteMany({}),
 		]);
 	}
@@ -142,8 +158,6 @@ export class preloadData {
 		}
 	}
 
-
-
 	async addTeamForTournament() {
 		const teams: Team[] = await this.prisma.team.findMany();
 		const tournaments: Tournament[] =
@@ -152,7 +166,6 @@ export class preloadData {
 		let teamIndex = 0;
 
 		for (const tournament of tournaments) {
-
 			for (let i = 0; i < 4 && teamIndex < teams.length; i++) {
 				await this.prisma.tournament.update({
 					where: { id: tournament.id },
@@ -163,8 +176,7 @@ export class preloadData {
 					},
 				});
 				teamIndex++;
-				this.addTeamsWithPlayers()
-
+				this.addTeamsWithPlayers();
 			}
 		}
 	}

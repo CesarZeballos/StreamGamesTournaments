@@ -1,3 +1,5 @@
+import { ITournament } from "./interfaceTournaments"
+
 export interface IUser {
     id: string
     email: string
@@ -8,12 +10,22 @@ export interface IUser {
     urlSteam: string
     role: string
     state: boolean
-    tournaments: ITournamentsregistered[]
+    tournaments: ITournament[]
     friends: IFriend[]
-    sentFriendRequests: []
+    receivedFriendRequests: IFriendRequest[]
     sentMessages: []
     receivedMessages: []
     globalChat: []
+}
+
+export interface IFriendRequest {
+    id: string
+    nickname: string
+}
+
+export interface IFriendRequestProps {
+    id: string
+    token: string
 }
 
 export interface IUserFilters {
@@ -23,38 +35,16 @@ export interface IUserFilters {
     state: string;
 }
 
-interface IFriend {
+export interface IFriend {
     id: string
-    email: string
     nickname: string
-    tokenFirebase: string
-    birthdate: string
-    urlProfile: string
-    urlSteam: string
-    role: string
-    state: boolean
-    tournaments: ITournamentsregistered[]
-    friends: []
-    sentFriendRequests: []
-    sentMessages: []
-    receivedMessages: []
-    globalChat: []
+    friendId: string
 }
 
 export interface ITeam {
     id: string
     name: string
     members: IUser[]
-}
-
-export interface ITeamForm {
-    name: string
-    members: ITeamMember[]
-}
-
-export interface ITeamError {
-    name?: string
-    members?: string
 }
 
 export interface ITournamentsregistered {
@@ -108,7 +98,6 @@ export interface IUserSelector {
     id: string
     label: string
     email: string
-<<<<<<< HEAD
     birthdate: string
     role: string
 }
@@ -119,16 +108,14 @@ export interface IAddFriendForm {
     token: string
 }
 
+export interface IFriendRequest {
+    requestId: string,
+    token: string
+}
+
 //ugrade user
 
 export interface IUpgradeUser {
     id: string
     token: string
 }
-=======
-    birthDate: string
-    role: string
-    teams: ITeam[]
-    tournaments: ITournamentsregistered[]
-}
->>>>>>> origin/cesar

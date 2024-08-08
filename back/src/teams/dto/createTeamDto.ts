@@ -1,5 +1,12 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsString, IsOptional, IsArray, ArrayNotEmpty, IsUUID, IsNotEmpty } from 'class-validator';
+import {
+	IsString,
+	IsOptional,
+	IsArray,
+	ArrayNotEmpty,
+	IsUUID,
+	IsNotEmpty,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTeamDto {
@@ -44,13 +51,6 @@ export class CreateTeamDto {
 	@ArrayNotEmpty()
 	@IsString({ each: true })
 	users: string[];
-
-	@ApiProperty({
-		description: 'Url of the paipal aprobed',
-		example: 'http://example.com/paypal'
-	})
-	@IsString()
-	paypal: string;
 }
 
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {
@@ -60,8 +60,7 @@ export class UpdateTeamDto extends PartialType(CreateTeamDto) {
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	id: string
-
+	id: string;
 }
 
 export class DeleteMemberForTeamDto {
@@ -71,7 +70,7 @@ export class DeleteMemberForTeamDto {
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	teamId: string
+	teamId: string;
 
 	@ApiProperty({
 		description: 'ID of the user',
@@ -79,5 +78,5 @@ export class DeleteMemberForTeamDto {
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	memberId: string
+	memberId: string;
 }
