@@ -12,10 +12,20 @@ export interface IUser {
     state: boolean
     tournaments: ITournament[]
     friends: IFriend[]
-    sentFriendRequests: []
+    revicedFriendRequests: IFriendRequest[]
     sentMessages: []
     receivedMessages: []
     globalChat: []
+}
+
+export interface IFriendRequest {
+    id: string
+    nickname: string
+}
+
+export interface IFriendRequestProps {
+    id: string
+    token: string
 }
 
 export interface IUserFilters {
@@ -107,6 +117,11 @@ export interface IUserSelector {
 export interface IAddFriendForm {
     userId: string
     friendId: string
+    token: string
+}
+
+export interface IFriendRequest {
+    requestId: string,
     token: string
 }
 

@@ -9,13 +9,13 @@ export const getTournamentsSlice = createAsyncThunk('tournaments/getTournaments'
         return response
 })
 
-export const createOrderSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: ITournamentPayment) => {
+export const createOrderSlice = createAsyncThunk('tournaments/createPaymentToTournament', async (data: ITournamentPayment) => {
         // mandar solo el token y el tournamentId
         const response = await fetchPaymentTournament(data)
         return response
 })
 
-export const captureOrderSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: string) => {
+export const captureOrderSlice = createAsyncThunk('tournaments/capturePaymentToTournament', async (data: string) => {
         // mandar solamente el orderId
         const response = await fetchCapturePaymentTournament(data)
         return response

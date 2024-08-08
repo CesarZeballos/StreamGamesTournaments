@@ -26,7 +26,7 @@ export const SearchBarDashboard: React.FC = () => {
             <div className="flex flex-col items-center gap-2">
                 <button className="buttonSecondary" onClick={() => handleViewClick("notifications")}>Notifications</button>
                 <button className="buttonSecondary" onClick={() => handleViewClick("tournaments")}>Tournaments</button>
-                <button className="buttonSecondary" onClick={() => handleViewClick("friends")}>Friends</button>
+                <button className="buttonSecondary" onClick={() => handleViewClick("friends")}>My friends</button>
                 <button className="buttonPrimary" onClick={() => handleViewClick("addFriend")}>Add friend</button>
             </div>
 

@@ -28,11 +28,11 @@ const paymentSlice = createSlice({
                 duration: 1500,
             })
         })
-        // .addCase(captureOrderSlice.fulfilled, (state) => {
-        //     //esto creo que no deberia hacer nada, porque no tiene nada que ver con el usuario
-        //     //o es al revez, este es el que tiene que disparar el toast y decir que el pago fue exitoso... 
-        //     state.status = 'idle'
-        // })
+        .addCase(captureOrderSlice.fulfilled, (state) => {
+            //esto creo que no deberia hacer nada, porque no tiene nada que ver con el usuario
+            //o es al revez, este es el que tiene que disparar el toast y decir que el pago fue exitoso... 
+            state.status = 'idle'
+        })
     }
 })
 
