@@ -28,6 +28,6 @@ export class FriendsController {
     @Delete('remove-friend/:id')
     async removeFriend(@Param('id', new ParseUUIDPipe()) id: string) {
 
-        await this.friendsService.removeFriend(id);
+        return await this.friendsService.removeFriend(id);
     }
 }
