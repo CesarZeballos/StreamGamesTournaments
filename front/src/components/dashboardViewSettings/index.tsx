@@ -1,10 +1,10 @@
 import { AppDispatch, RootState } from "@/redux/store";
-import { upgradeUserSlice } from "@/redux/thunks/userSliceThunk";
+import { upgradeRequestUserSlice } from "@/redux/thunks/userSliceThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 
-export const SettingsDashboardView = () => {
+export const DashboardViewSettings = () => {
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.user);
     const token = useSelector((state: RootState) => state.user.token);
@@ -12,11 +12,7 @@ export const SettingsDashboardView = () => {
     const stringDate = user?.birthdate.split('T')[0];
 
     const upgradeAcount = (event: React.MouseEvent<HTMLButtonElement>) => {
-        dispatch(upgradeUserSlice({id: user?.id!, token: token!}))
-        toast.success("Upgrade acount request successfully submitted", {
-            position: "top-right", 
-            duration: 1500 
-        })
+        dispatch(upgradeRequestUserSlice({id: user?.id!, token: token!}))
     }
 
     return (

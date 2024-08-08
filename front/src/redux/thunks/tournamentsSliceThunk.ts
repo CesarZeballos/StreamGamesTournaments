@@ -1,6 +1,6 @@
-import { IAddTeamToTournament } from "@/interfaces/interfaceRedux"
+import { ITournamentPayment } from "@/interfaces/interfaceRedux"
 import { IAddTeam } from "@/interfaces/interfaceTournaments"
-import { fetchAddTeamToTournament, fetchPaymentTournament, fetchTournaments } from "@/utils/fetchTournaments"
+import { fetchAddTeamToTournament, fetchCapturePaymentTournament, fetchPaymentTournament, fetchTournaments } from "@/utils/fetchTournaments"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "sonner"
 
@@ -9,31 +9,20 @@ export const getTournamentsSlice = createAsyncThunk('tournaments/getTournaments'
         return response
 })
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-export const postTeamToTournamentSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeamToTournament) => {
-        console.log("esto se ejecuta", data)
-        const response = await fetchPaymentTournament(data.teamData, data.token)
-=======
-export const addTeam = createAsyncThunk('tournaments/addTeam', async (data: IAddTeam) => {
-        const response = await addTeamFetch(data)
->>>>>>> origin/cesar
-=======
-export const createOrderSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeamToTournament) => {
-        console.log("esto se ejecuta", data)
+export const createOrderSlice = createAsyncThunk('tournaments/createPaymentToTournament', async (data: ITournamentPayment) => {
+        // mandar solo el token y el tournamentId
         const response = await fetchPaymentTournament(data)
         return response
 })
 
-export const captureOrderSlice = createAsyncThunk('tournaments/postTeamToTournament', async (orderId: string) => {
-        toast.success("Approved payment", {
-            position: 'top-right',
-            duration: 1500,
-        })
+export const captureOrderSlice = createAsyncThunk('tournaments/capturePaymentToTournament', async (data: string) => {
+        // mandar solamente el orderId
+        const response = await fetchCapturePaymentTournament(data)
+        return response
 })
 
-export const postTeamToTournamentSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeamToTournament) => {
+export const postTeamToTournamentSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeam) => {
+        // mandar solo el token y el tournamentId y la data del team
         const response = await fetchAddTeamToTournament(data)
->>>>>>> 0ca9e9fa8493106d791dbed223dd19219498c1ae
         return response
 })
