@@ -46,19 +46,17 @@ export async function fetchTournamentById(id: string) {
 
 //funcion para pagar la inscripcion al torneo:
 export const fetchPaymentTournament = async (data: ITournamentPayment) => {
-    const response = await fetch(`${apiUrl}/paypal/create-order`, {
+    const response = await fetch(`${apiUrl}/paypal/create-order/${data.tournamentId}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${data.token}`
-        },
-        body: JSON.stringify({
-            // tournamentId: data.tournamentId
-        })
+        }
     });
     
     const returnData = await response.json();
-    return returnData.id
+    console.log("API response:", returnData);
+    return returnData
 }
 
 export const fetchCapturePaymentTournament = async (data: string) => {

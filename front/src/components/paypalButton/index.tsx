@@ -42,7 +42,9 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, teamData, numberMembe
             //     });
             //     return ''; // Asegúrate de devolver un string vacío si hay un error
             // } else {
-              const orderId = await dispatch(createOrderSlice(data)).unwrap();
+              const response = await dispatch(createOrderSlice(data)).unwrap();
+              const orderId = response.id
+
               return orderId; // Devuelve el orderID obtenido de la acción
             // }
           } catch (error) {
@@ -52,8 +54,9 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, teamData, numberMembe
         }}
         onApprove={async (data: { orderID: string }) => {
           try {
+            console.log('Order approved entry:', data.orderID);
             await dispatch(captureOrderSlice(data.orderID)).unwrap();
-            onSuccess(data.orderID);
+            // onSuccess(data.orderID);
           } catch (error) {
             console.error('Error capturing order:', error);
           }
