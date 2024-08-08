@@ -38,14 +38,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		},
 	) {
 		const { senderId, receiverId, content } = message;
+		console.log('Sender ID:', senderId);
+		console.log('Receiver ID:', receiverId);
 
 		// Verificar que los usuarios existen
 		const sender = await this.prisma.user.findUnique({
-			where: { id: senderId },
+			where: { nickname: senderId },
 		});
 		const receiver = await this.prisma.user.findUnique({
-			where: { id: receiverId },
+			where: { nickname: receiverId },
 		});
+
+		const id = sender.id;
+
+		const identif = receiver.id;
 
 		if (!sender || !receiver) {
 			throw new Error('Sender or receiver does not exist');
@@ -54,8 +60,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		// Guardar mensaje en la base de datos
 		await this.prisma.privateChat.create({
 			data: {
-				senderId,
-				receiverId,
+				senderId: id,
+				receiverId: identif,
 				post: content,
 			},
 		});
