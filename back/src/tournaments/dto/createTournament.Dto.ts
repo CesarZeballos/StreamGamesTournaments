@@ -5,17 +5,11 @@ import {
 	IsOptional,
 	IsArray,
 	IsDateString,
-	IsInt,
 	IsUUID,
 } from 'class-validator';
 
 export class CreateTournamentDto {
-	@ApiProperty({
-		type: 'string',
-		format: 'binary',
-		description: 'Archivo de imagen para el torneo',
-	})
-	file: any;
+
 
 	@ApiProperty({ example: 'Nombre del Torneo' })
 	@IsString()

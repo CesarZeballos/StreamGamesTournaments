@@ -42,13 +42,13 @@ export class FriendsService {
     async removeFriend(id: string) {
 
         try {
-            const friend = await this.prisma.user.findUnique({ where: { id } });
+            const friend = await this.prisma.userFriends.findUnique({ where: { id } });
 
             if (!friend) {
                 throw new NotFoundException(`Amigo con id: ${friend.id}no encontrado`);
             }
 
-            await this.prisma.userFriends.delete({ where: { id } });
+            return await this.prisma.userFriends.delete({ where: { id } });
 
         } catch (error) {
             throw new InternalServerErrorException(
