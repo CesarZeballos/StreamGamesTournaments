@@ -1,4 +1,4 @@
-/* import {
+import {
 	WebSocketGateway,
 	WebSocketServer,
 	SubscribeMessage,
@@ -89,7 +89,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			data: {
 				nickname,
 				post: content,
-				id: user.id,
+
 				// Cambia el campo 'userId' a 'nickname' en la base de datos
 				// 'userId' no es un campo en 'GlobalChat' según el esquema proporcionado
 			},
@@ -99,4 +99,3 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.emit('globalMessage', { nickname, content, user });
 	}
 }
- */

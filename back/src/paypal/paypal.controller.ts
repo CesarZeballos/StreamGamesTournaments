@@ -6,8 +6,8 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('paypal')
 export class PayPalController {
 	constructor(private readonly payPalService: PayPalService) {}
-	@Post('create-order')
-	async createOrder(@Body() tournaments: any) {
+	@Post('create-order/:id')
+	async createOrder(@Param('id') tournaments: string) {
 		return this.payPalService.createOrder(tournaments);
 	}
 

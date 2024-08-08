@@ -15,7 +15,10 @@ export class PayPalService {
 	);
 	private client = new paypal.core.PayPalHttpClient(this.environment);
 
-	async createOrder(tournaments: any) {
+	async createOrder(id: string) {
+		const tournament = await this.prisma.tournament.findUnique({
+			where: { id: id },
+		});
 		const request = new paypal.orders.OrdersCreateRequest();
 		request.headers['Content-Type'] = 'application/json';
 		request.requestBody({
@@ -24,7 +27,7 @@ export class PayPalService {
 				{
 					amount: {
 						currency_code: 'USD',
-						value: tournaments.price,
+						value: tournament.price.toString(),
 					},
 				},
 			],
