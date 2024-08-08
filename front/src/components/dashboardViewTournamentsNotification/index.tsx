@@ -3,12 +3,12 @@ import { useState } from 'react';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { ITournament } from '@/interfaces/interfaceTournaments';
 export const DashboardViewTournamentsNotification: React.FC = () => {
-    const 
+    // const 
 
-    const check = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const {value} = event.currentTarget
-        console.log(value)
-    }
+    // const check = (event: React.MouseEvent<HTMLButtonElement>) => {
+    //     const {value} = event.currentTarget
+    //     console.log(value)
+    // }
 
     return (
         <div className="grid grid-cols-3">
@@ -21,7 +21,7 @@ export const DashboardViewTournamentsNotification: React.FC = () => {
                     <th className="text-center">Delete</th>
                 </thead>
                 <tbody className="tableBody flex flex-col gap-2">
-                    {newTournaments.map((tour: ITournament) => (
+                    {/* {newTournaments.map((tour: ITournament) => (
                         <tr key={tour.id} className="flex flex-row justify-around">
                             <td>{tour.nameTournament}</td>
                             <td className="text-center">
@@ -30,9 +30,8 @@ export const DashboardViewTournamentsNotification: React.FC = () => {
                                 </button>
                             </td>
                         </tr>
-                    ))}
-                </tbody>)
-            }
+                    ))} */}
+                </tbody>
             </table>
         </div>
     </div>
