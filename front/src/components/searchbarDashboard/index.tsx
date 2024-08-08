@@ -8,38 +8,25 @@ export const SearchBarDashboard: React.FC = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const userRol = useSelector((state: RootState) => state.user.user?.role);
-<<<<<<< HEAD
     const user = useSelector((state: RootState) => state.user.user);
-=======
->>>>>>> origin/cesar
-    const view = useSelector((state: RootState) => state.dashboard.view);
 
     const handleViewClick = (view: string) => {
         dispatch(setView(view))
     }
-<<<<<<< HEAD
-    const handleRoot = () => {
-        router.push("/postTournament")
-}
-=======
->>>>>>> origin/cesar
 
     const logout = () => {
         dispatch(logoutSlice())
-        setTimeout(() => {
-            router.push("/")
-        }, 1500);
+        router.push("/")
     }
     
     return (
-<<<<<<< HEAD
-        <div className="bg-BGdark rounded-3xl py-4 px-12 mr-9 h-full flex flex-col items-center gap-9 w-fit">
+        <div className="bg-BGdark rounded-3xl py-9 mr-9 h-full flex flex-col items-center gap-9 w-full">
             <h1 className="heading5 text-lightViolet">Hi {user?.nickname}!</h1>
 
             <div className="flex flex-col items-center gap-2">
                 <button className="buttonSecondary" onClick={() => handleViewClick("notifications")}>Notifications</button>
                 <button className="buttonSecondary" onClick={() => handleViewClick("tournaments")}>Tournaments</button>
-                <button className="buttonSecondary" onClick={() => handleViewClick("friends")}>Friends</button>
+                <button className="buttonSecondary" onClick={() => handleViewClick("friends")}>My friends</button>
                 <button className="buttonPrimary" onClick={() => handleViewClick("addFriend")}>Add friend</button>
             </div>
 
@@ -47,7 +34,7 @@ export const SearchBarDashboard: React.FC = () => {
             <div  className="flex flex-col items-center gap-2">
                 <h1 className="heading5 text-lightViolet">Organizer options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("myTournaments")}>Organized tournaments</button>
-                <button className="buttonPrimary" onClick={() => handleRoot()}>Create Tournament</button>
+                <button className="buttonPrimary" onClick={() => handleViewClick("createTournament")}>Create Tournament</button>
             </div>}
 
             {userRol === "admin" && 
@@ -55,28 +42,13 @@ export const SearchBarDashboard: React.FC = () => {
                 <h1 className="heading5 text-lightViolet">Admin options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("users")}>Users</button>
                 <button className="buttonSecondary" onClick={() => handleViewClick("torunamentsAdmin")}>Tournament graphs</button>
+                <button className="buttonPrimary" onClick={() => handleViewClick("createGame")}>Create game</button>
             </div>}
 
             <div className="flex flex-col items-center gap-2">
                 <button className="buttonSecondary" onClick={() => handleViewClick("settings")}>Settings</button>
                 <button className="buttonPrimary" onClick={logout}>Sign Out</button>
             </div>
-=======
-        <div className="bg-BGdark rounded-3xl py-4 px-12 mr-9 h-full flex flex-col items-center w-fit">
-                <button className="buttonSecondary" onClick={() => handleViewClick("data")}>Data</button>
-                <button className="buttonSecondary" onClick={() => handleViewClick("notifications")}>Notifications</button>
-                <button className="buttonSecondary" onClick={() => handleViewClick("friends")}>Friends</button>
-                <button className="buttonPrimary" onClick={() => handleViewClick("addFriend")}>Add friend</button>
-                <button className="buttonSecondary" onClick={() => handleViewClick("tournaments")}>Tournaments</button>
-                {userRol === "organizer" || userRol === "admin" && <div>
-                    <button className="buttonSecondary" onClick={() => handleViewClick("myTournaments")}>Organized tournaments</button>
-                    <button className="buttonSecondary" onClick={() => handleViewClick("createTournament")}>Create Tournament</button>
-                    </div>}
-                {userRol === "admin" && <div>
-                <button className="buttonSecondary" onClick={() => handleViewClick("users")}>Users</button>
-                </div>}
-                <button className="buttonPrimary" onClick={logout}>Sign Out</button>
->>>>>>> origin/cesar
         </div>
     )
 }

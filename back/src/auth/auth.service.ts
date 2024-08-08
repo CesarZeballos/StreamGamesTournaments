@@ -78,14 +78,25 @@ export class AuthService {
 	async signIn(signInDto: SignInDto) {
 		const { email, tokenFirebase } = signInDto;
 
-
 		this.logger.log(`Attempting to sign in user with email: ${email}`);
 
 		const userData = await this.prisma.user.findUnique({
 			where: { email },
 			include: {
-				friends: { include: { friend: { select: { id: true, nickname: true } } } },
-				receivedFriendRequests: { include: { sender: { select: { id: true, nickname: true } } } },
+				friends: {
+					include: {
+						friend: {
+							select: { id: true, nickname: true }
+						}
+					}
+				},
+				receivedFriendRequests: {
+					include: {
+						sender: {
+							select: { id: true, nickname: true }
+						}
+					}
+				},
 				sentMessages: true,
 				receivedMessages: true,
 				globalChat: true,
@@ -111,14 +122,12 @@ export class AuthService {
 			throw new BadRequestException(
 				`User with email: ${userData.email} is banned`,
 			);
-		if (userData.state === false) throw new BadRequestException(`User with email: ${userData.email} does no exists`)
-
+		if (userData.state === false) throw new BadRequestException(`User with email: ${userData.email} does not exist`);
 
 		const payload = { userId: userData.id, email: userData.email };
 		const token = await this.jwtService.sign(payload);
 
 		this.logger.log(`User signed in successfully with email: ${email}`);
-
 
 		const singlePlayerTournaments = userData.tournaments;
 		const teamsTournaments = userData.teams.map(
@@ -130,13 +139,29 @@ export class AuthService {
 			...teamsTournaments,
 		];
 
+		const friends = userData.friends.map(friend => ({
+			id: friend.id, // ID de la tabla intermedia
+			nickname: friend.friend.nickname,
+			friendId: friend.friend.id
+		}));
+
+		const receivedFriendRequests = userData.receivedFriendRequests.map(request => ({
+			id: request.id, // ID de la tabla intermedia
+			nickname: request.sender.nickname,
+		}));
+
 		const {
 			state,
 			tournaments,
 			isBanned,
 			...userNotData
 		} = userData;
-		const user = { ...userNotData, tournaments: userTournaments, friends: userData.friends }
+		const user = {
+			...userNotData,
+			tournaments: userTournaments,
+			friends,
+			receivedFriendRequests
+		};
 
 		return {
 			message: 'User logged in successfully',
@@ -144,4 +169,6 @@ export class AuthService {
 			token
 		};
 	}
+
+
 }

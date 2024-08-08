@@ -4,6 +4,7 @@ import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
 export interface ITournamentState {
   status: string;
   tournaments: ITournament[];
+  tournamentsActives: ITournament[]
   currentPage: number;
   tournamentsPerPage: number;
   filters: IFilters;
@@ -53,8 +54,19 @@ export interface IAuxiliarState {
   statusPayment: string
 }
 
-export interface IAddTeamToTournament {
-    teamData: IAddTeam
+export interface IPaymentState {
+  status: string
+  error: string | null
+}
+
+export interface ITournamentPayment {
+    tournamentId: string
     orderId?: string
     token: string
+}
+
+export interface IUserActionsState {
+  addFriendStatus: string
+  removeFriendStatus: string
+  error: string | null
 }

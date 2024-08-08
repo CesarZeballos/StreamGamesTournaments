@@ -6,13 +6,13 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('paypal')
 export class PayPalController {
 	constructor(private readonly payPalService: PayPalService) {}
-	@Post('create-order/:id')
-	async createOrder(@Param('id') tournaments: string) {
-		return this.payPalService.createOrder(tournaments);
+	@Post('create-order/:tourId')
+	async createOrder(@Param("tourId") tourId: string) {
+		return this.payPalService.createOrder(tourId);
 	}
 
 	@Post('capture-order/:orderId')
-	async captureOrder(@Param('orderId') orderId: string) {
+	async captureOrder(@Param("orderId") orderId: string) {
 		return this.payPalService.captureOrder(orderId);
 	}
 }

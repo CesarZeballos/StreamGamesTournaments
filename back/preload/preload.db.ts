@@ -12,7 +12,7 @@ export class preloadData {
 		private readonly prisma: PrismaClient,
 		private readonly teamService: TeamsService,
 		private readonly tournamentsService: TournamentsService,
-	) {}
+	) { }
 
 	async clearTables() {
 		await this.prisma.$transaction([
@@ -102,7 +102,6 @@ export class preloadData {
 				organizerId: userOrganizer.id,
 				gameId: game.id,
 				price: tournament.price.toString(),
-				file: null,
 			};
 
 			await this.tournamentsService.createTournament(tournamentData);
@@ -143,7 +142,7 @@ export class preloadData {
 		}
 	}
 
-	
+
 
 	async addTeamForTournament() {
 		const teams: Team[] = await this.prisma.team.findMany();
@@ -153,6 +152,7 @@ export class preloadData {
 		let teamIndex = 0;
 
 		for (const tournament of tournaments) {
+
 			for (let i = 0; i < 4 && teamIndex < teams.length; i++) {
 				await this.prisma.tournament.update({
 					where: { id: tournament.id },
@@ -163,6 +163,8 @@ export class preloadData {
 					},
 				});
 				teamIndex++;
+				this.addTeamsWithPlayers()
+
 			}
 		}
 	}
