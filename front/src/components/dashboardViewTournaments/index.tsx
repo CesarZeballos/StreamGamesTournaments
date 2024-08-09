@@ -4,44 +4,49 @@ import Link from "next/link"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react";
 import { ITournament, ITournamentsInscripted } from "@/interfaces/interfaceTournaments"
-import { TournamentViewInUserDashboard } from "../tournamentViewInUserDashboard"
 import CircleIcon from '@mui/icons-material/Circle';
+import { isoToDate } from "@/utils/formatDate";
+import { TournamentViewInUserDashboard } from "../tournamentViewInUserDashboard";
 
 export const DashboardViewTournaments = () => {
     const user = useSelector((state: RootState) => state.user.user)
     const [myTournaments, setMyTournaments] = useState<ITournamentsInscripted[]>([])
-    const [tourSelecter, setTourSelecter] = useState<ITournament>()
+    const [tourSelecter, setTourSelecter] = useState<string>("")
+    const tournaments = useSelector((state: RootState) => state.user.user?.notifications)
     
     useEffect(() => {
-        if (user?.tournaments) {
-            user.tournaments.map((tournament) => {
+            tournaments?.map((tournament) => {
                 const today = new Date();
-                const startDate = new Date(tournament.startDate);
+                const startDate = new Date(tournament.tournamentDate);
                 const incomingInDays = Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
                 if (today < startDate) {
                     setMyTournaments([...myTournaments, {
-                        id: tournament.id,
+                        id: tournament.tournamentId,
                         nameTournament: tournament.nameTournament,
-                        startDate: tournament.startDate,
+                        teamName: tournament.nameTeam,
+                        tournamentDate: tournament.tournamentDate,
                         status: `${incomingInDays} days`
                     }])
             } 
-            // else if (today > startDate) {
-            //     setMyTournaments([...myTournaments, {
-            //         id: tournament.id,
-            //         nameTournament: tournament.nameTournament,
-            //         startDate: tournament.startDate,
-            //         status: "Ended"
-            //     }])
-            // }
+            else if (today > startDate) {
+                setMyTournaments([...myTournaments, {
+                    id: tournament.tournamentId,
+                    nameTournament: tournament.nameTournament,
+                    teamName: tournament.nameTeam,
+                    tournamentDate: tournament.tournamentDate,
+                    status: "Ended"
+                }])
+            }
             })
-        }
-    }, [user, myTournaments])
+        }, [])
 
     const tournamentSelected = (id: string) => {
-        const tour = user?.tournaments.find((tour) => tour.id === id)
-        setTourSelecter(tour!)
+        if(tourSelecter === id) {
+            setTourSelecter("")
+        } else {
+            setTourSelecter(id)
+        }
     }
  
     return (
@@ -52,7 +57,8 @@ export const DashboardViewTournaments = () => {
                     <table className="mt-1 w-full">
                         <thead className="tableHeader flex flex-row justify-around">
                             <th className="text-center"></th>
-                            <th className="text-center">Name</th>
+                            <th className="text-center">Tournament</th>
+                            <th className="text-center">Team</th>
                             <th className="text-center">Date</th>
                             <th className="text-center">Incoming in</th>
                         </thead>
@@ -65,7 +71,7 @@ export const DashboardViewTournaments = () => {
                                     {myTournaments.map((tour) => (
                                         <tr className="flex flex-row justify-around" key={tour.id}>
                                             <td className="text-center">{
-                                                tour.id === tourSelecter?.id ? <CircleIcon className="text-lightViolet" /> : null
+                                                tour.id === tourSelecter ? <CircleIcon className="text-lightViolet" /> : null
                                                 }
                                             </td>
                                             <td className="text-center">
@@ -73,7 +79,8 @@ export const DashboardViewTournaments = () => {
                                                     {tour.nameTournament}
                                                 </button>
                                             </td>
-                                            <td className="text-center">{tour.startDate}</td>
+                                            <td className="text-center">{tour.teamName}</td>
+                                            <td className="text-center">{isoToDate(tour.tournamentDate)}</td>
                                             <td className="text-center">{tour.status}</td>
                                         </tr>
                                     ))}
@@ -81,7 +88,7 @@ export const DashboardViewTournaments = () => {
                             )}
                     </table>
                 </div>
-                {!tourSelecter || tourSelecter === undefined ? <div className="col-span-1"></div> : <TournamentViewInUserDashboard tour={tourSelecter} />}
+                {tourSelecter === "" ? <div className="col-span-1"></div> : <TournamentViewInUserDashboard id={tourSelecter} />}
 
             </div>
         </div>
