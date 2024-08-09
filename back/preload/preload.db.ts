@@ -54,6 +54,7 @@ export class preloadData {
 				create: {
 					name: game.name,
 					urlImage: game.urlImage,
+					decription: game.description,
 				},
 			});
 		}
