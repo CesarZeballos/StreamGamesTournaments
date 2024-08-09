@@ -106,3 +106,16 @@ export const fetchAddTeamToTournament = async (data: IAddTeam) => {
     return dataResponse
 }
 
+export const fetchUploadFile = async (file: File) => {
+    const response = await fetch(`${apiUrl}/upload`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            file
+        })
+    });
+    const dataResponse = await response.json();
+    return dataResponse.url
+}

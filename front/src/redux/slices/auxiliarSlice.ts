@@ -1,6 +1,6 @@
 import { IAuxiliarState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction, AnyAction  } from "@reduxjs/toolkit";
-import { getUsersSlice } from "../thunks/auxiliarSliceThunk";
+import { getUsersSlice, uploadFileSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
 import { postTeamToTournamentSlice } from "../thunks/tournamentsSliceThunk";
@@ -12,7 +12,8 @@ const initialState: IAuxiliarState = {
     users: [],
     status: 'idle',
     error: null,
-    statusPayment: 'idle'
+    statusPayment: 'idle',
+    urlFile: ""
 }
 
 const auxiliarSlice = createSlice({
@@ -91,6 +92,21 @@ const auxiliarSlice = createSlice({
             })
         })
         .addCase(rejectFriendSlice.rejected, (state) => {
+            toast.error("Something went wrong", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+
+        // UPLOAD FILE
+        .addCase(uploadFileSlice.fulfilled, (state, action) => {
+            state.urlFile = action.payload
+            toast.success("File uploaded", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+        .addCase(uploadFileSlice.rejected, (state) => {
             toast.error("Something went wrong", {
                 position: 'top-right',
                 duration: 1500,

@@ -2,7 +2,7 @@ import { IFiltersProp } from "@/interfaces/interfaceRedux"
 import { fetchUsers } from "@/utils/fetchUser"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { setRootFilters, setRunFilters } from "../slices/tournamentSlice"
-import { fetchGames } from "@/utils/fetchTournaments"
+import { fetchGames, fetchUploadFile } from "@/utils/fetchTournaments"
 import { IGame } from "@/interfaces/interfaceTournaments"
 
 
@@ -24,5 +24,11 @@ export const filtered = createAsyncThunk(
 export const getGamesActivesSlice = createAsyncThunk('tournaments/getGames', async () => {
     const response = await fetchGames()
     const games = response.filter((game: IGame) => game.state === true)
+    return response
+})
+
+// subida de archivos a la base de datos:
+export const uploadFileSlice = createAsyncThunk('auxiliar/uploadFile', async (data: File) => {
+    const response = await fetchUploadFile(data)
     return response
 })

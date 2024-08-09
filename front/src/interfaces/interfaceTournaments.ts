@@ -32,7 +32,7 @@ export interface ITournamentPost {
     membersNumber: number;
     maxTeam: number;
     price: number;
-    urlAvatar: File | string;
+    urlAvatar: string;
     award: string[];
     description: string;
 }
@@ -62,6 +62,7 @@ export interface IGame {
     name: string;
     urlImage: string;
     description?: string;
+    state: boolean
 }
 
 export interface IGamePost {
