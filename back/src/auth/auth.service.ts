@@ -88,6 +88,9 @@ export class AuthService {
 						friend: {
 							select: { id: true, nickname: true },
 						},
+						user: {
+							select: { id: true, nickname: true },
+						},
 					},
 				},
 				receivedFriendRequests: {
@@ -132,13 +135,15 @@ export class AuthService {
 			this.logger.warn(`User not found with email: ${email}`);
 			throw new UnauthorizedException('Invalid credentials');
 		}
+
 		if (userData.isBanned === true)
 			throw new BadRequestException(
-				`User with email: ${userData.email} is banned`,
+				`User with email: ${userData.email} is banned,`,
 			);
+
 		if (userData.state === false)
 			throw new BadRequestException(
-				`User with email: ${userData.email} does not exist`,
+				`User with email: ${userData.email} does not exist,`,
 			);
 
 		const payload = { userId: userData.id, email: userData.email };
@@ -156,11 +161,19 @@ export class AuthService {
 			...teamsTournaments,
 		];
 
-		const friends = userData.friends.map((friend) => ({
-			id: friend.id, // ID de la tabla intermedia
-			nickname: friend.friend.nickname,
-			friendId: friend.friend.id,
-		}));
+		const friends = userData.friends
+			.filter(
+				(friend) =>
+					friend.user.id === userData.id ||
+					friend.friend.id === userData.id,
+			)
+			.map((friend) => ({
+				id: friend.id, // ID de la tabla intermedia
+				userId: friend.user.id,
+				userNickname: friend.user.nickname,
+				friendId: friend.friend.id,
+				friendNickname: friend.friend.nickname,
+			}));
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(
 			(request) => ({
@@ -169,7 +182,6 @@ export class AuthService {
 			}),
 		);
 
-		// Mapear las notificaciones según el formato requerido
 		const notifications = userData.notifications.map((notification) => ({
 			tournamentId: notification.tournamentId,
 			nameTournament: notification.tournament.nameTournament,
@@ -180,7 +192,6 @@ export class AuthService {
 				)?.name || null,
 			state: notification.state,
 			id: notification.id,
-			tournamentDate: notification.tournament.startDate,
 		}));
 
 		const { state, tournaments, isBanned, ...userNotData } = userData;
