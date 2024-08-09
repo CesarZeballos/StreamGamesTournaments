@@ -180,6 +180,7 @@ export class AuthService {
 				)?.name || null,
 			state: notification.state,
 			id: notification.id,
+			tournamentDate: notification.tournament.startDate,
 		}));
 
 		const { state, tournaments, isBanned, ...userNotData } = userData;

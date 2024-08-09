@@ -19,16 +19,23 @@ export class NotificationsService {
 		});
 	}
 
-	async updateNotificationState(notificationId: string, state: boolean): Promise<Notification> {
-		const notification = await this.prisma.notification.findUnique({ where: { id: notificationId } });
-	
-		if (!notification) {
-		  throw new NotFoundException(`Notificación con id: ${notificationId} no encontrada`);
-		}
-	
-		return this.prisma.notification.update({
-		  where: { id: notificationId },
-		  data: { state },
+	async updateNotificationState(
+		notificationId: string,
+		state: boolean,
+	): Promise<Notification> {
+		const notification = await this.prisma.notification.findUnique({
+			where: { id: notificationId },
 		});
-	  }
+
+		if (!notification) {
+			throw new NotFoundException(
+				`Notificación con id: ${notificationId} no encontrada`,
+			);
+		}
+
+		return this.prisma.notification.update({
+			where: { id: notificationId },
+			data: { state },
+		});
+	}
 }

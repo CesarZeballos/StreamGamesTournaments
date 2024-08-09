@@ -7,8 +7,9 @@ export const DashboardView: React.FC = () => {
     const nickname = useSelector((state: RootState) => state.user.user?.nickname)
     const friendsRequests = useSelector((state: RootState) => state.user.user?.receivedFriendRequests);
 
-    const tournaments = useSelector((state: RootState) => state.user);
-
+    const tour = useSelector((state: RootState) => state.user.user?.notifications);
+    const notificationsTour = tour?.filter(notifications => notifications.state === true)
+    const tournaments = tour?.filter(notifications => notifications.tournamentDate > new Date().toISOString())
 
     return (
         <div className="grid grid-cols-3">
@@ -16,7 +17,8 @@ export const DashboardView: React.FC = () => {
                 <h1 className="heading5 text-lightViolet">{`Hi ${nickname}!`}</h1>
 
                 <div className="flex flex-col gap-2 m-4">
-                    {/* <p className="body text-white">{`you have ${tournaments.length} tournaments incoming`}</p> */}
+                    <p className="body text-white">{`you have ${tournaments?.length} tournaments incoming`}</p>
+                    <p className="body text-white">{`you are in ${notificationsTour?.length} new tournaments`}</p>
                     <p className="body text-white">{`you have ${friendsRequests?.length} unanswered friend requests`}</p>
                 </div>
 

@@ -59,7 +59,7 @@ export class GamesService {
 		}
 	}
 
-	async postNewGame(name: string, urlImage: string): Promise<CreateGameDto> {
+	async postNewGame(name: string, urlImage: string, description: string): Promise<CreateGameDto> {
 		try {
 			const existingGame = await this.prisma.game.findUnique({
 				where: { name },
@@ -75,6 +75,8 @@ export class GamesService {
 				data: {
 					name,
 					urlImage,
+					description,
+					state: true,
 				},
 			});
 

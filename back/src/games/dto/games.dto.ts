@@ -30,6 +30,10 @@ export class CreateGameDto {
 	@IsUrl()
 	@IsNotEmpty()
 	urlImage: string;
+
+	@IsString()
+	@IsNotEmpty()
+	description: string;
 }
 
 export class UpdateGameDto extends PartialType(CreateGameDto) { }

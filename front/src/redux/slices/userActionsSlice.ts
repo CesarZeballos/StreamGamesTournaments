@@ -1,6 +1,6 @@
 import { IUserActionsState } from "@/interfaces/interfaceRedux";
 import { createSlice } from "@reduxjs/toolkit";
-import { addfriendSlice, removefriendSlice } from "../thunks/userActionsSliceThunk";
+import { addfriendSlice, checkViewTournament, removefriendSlice } from "../thunks/userActionsSliceThunk";
 import { toast } from "sonner";
 import { loginSlice, reloadUserSlice } from "../thunks/userSliceThunk";
 
@@ -32,14 +32,14 @@ const userActionSlice = createSlice({
           })
 
         // ADD FRIEND
-        .addCase(addfriendSlice.fulfilled, (state, action) => {
+        .addCase(addfriendSlice.fulfilled, (state) => {
         state.addFriendStatus = 'succeeded'
         toast.success('friend request sent', {
             position: 'top-right',
             duration: 1500,
             })
         })
-        .addCase(addfriendSlice.rejected, (state, action) => {
+        .addCase(addfriendSlice.rejected, (state) => {
         state.addFriendStatus = 'failed'
         toast.error('friend request not sent', {
             position: 'top-right',
@@ -49,18 +49,32 @@ const userActionSlice = createSlice({
 
         // DELETE FRIEND
 
-        .addCase(removefriendSlice.fulfilled, (state, action) => {
+        .addCase(removefriendSlice.fulfilled, (state) => {
         state.removeFriendStatus = 'succeeded'
         toast.success('friend removed', {
             position: 'top-right',
             duration: 1500,
             })
         })
-        .addCase(removefriendSlice.rejected, (state, action) => {
+        .addCase(removefriendSlice.rejected, (state) => {
         state.removeFriendStatus = 'failed'
         toast.error(`something went wrong, we couldn't delete your friend. try again in a few minutes.`, {
             position: 'top-right',
             duration: 1500,
+            })
+        })
+
+        // CHECK VIEW TOURNAMENTS
+        .addCase(checkViewTournament.fulfilled, (state) => {
+            toast.success('viewed tournament', {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+        .addCase(checkViewTournament.rejected, (state) => {
+            toast.error(`something went wrong, we couldn't view your tournament. try again in a few minutes.`, {
+                position: 'top-right',
+                duration: 1500,
             })
         })
     }

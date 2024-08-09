@@ -23,7 +23,7 @@ export const TournamentContainer: React.FC = () => {
         const endIndex = startIndex + tournamentsPerPage;
         const tournaments = tournamentsFiltered.slice(startIndex, endIndex);
         setTournaments(tournaments);
-    }, [page, tournamentsFiltered])
+    }, [page, tournamentsFiltered, tournamentsPerPage]);
 
     return (
         <div className="col-span-3 mb-9 grid grid-cols-3 grid-rows-3 mt-8 gap-x-6 gap-y-8">
