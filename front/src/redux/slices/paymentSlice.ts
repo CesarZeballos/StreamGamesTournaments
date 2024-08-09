@@ -1,8 +1,9 @@
 import { IBasicDataToTournamentRegister, IPaymentState } from "@/interfaces/interfaceRedux";
-import { captureOrderSlice, createOrderSlice, getTournamentById } from "../thunks/tournamentsSliceThunk";
+import { captureOrderSlice, createOrderSlice, getTournamentById, postTeamToTournamentSlice } from "../thunks/tournamentsSliceThunk";
 import { toast } from "sonner";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
+import { isoToDate } from "@/utils/formatDate";
 
 
 const initialState: IPaymentState = {
@@ -60,6 +61,14 @@ const paymentSlice = createSlice({
                 duration: 1500,
         })
             state.status = 'idle'
+        })
+        .addCase(postTeamToTournamentSlice.fulfilled, (state) => {
+            toast.success(`CongraCongratulations! your team joined ${state.tournamentData.nameTournament}. good luck on ${isoToDate(state.tournamentData.startDate)}.`, {
+                position: 'top-right',
+                duration: 1500,
+            })
+            state.teamData = initialState.teamData
+            state.tournamentData = initialState.tournamentData
         })
 
     }

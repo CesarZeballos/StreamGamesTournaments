@@ -39,7 +39,7 @@ export const DashboardViewTournaments = () => {
                 }])
             }
             })
-        }, [])
+        }, [tournaments])
 
     const tournamentSelected = (id: string) => {
         if(tourSelecter === id) {
