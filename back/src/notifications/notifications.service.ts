@@ -19,25 +19,16 @@ export class NotificationsService {
 		});
 	}
 
-	// async removeNotifications(id: string) {
-
-	//     const notification = await this.prisma.notification.findUnique({ where: { id } });
-
-	//     if (!notification) {
-	//         throw new NotFoundException(`Notificación con id: ${notification.id} no encontrada`);
-	//     }
-
-	//     await this.prisma.notification.update({ where: { id } }, data: {status: false});
-	//     return { message: 'Notification eliminada con exito' };
-
-	// }
-
-	// async markNotificationAsViewed(
-	// 	notificationId: string,
-	// ): Promise<Notification> {
-	// 	return this.prisma.notification.update({
-	// 		where: { id: notificationId },
-	// 		data: { viewed: true },
-	// 	});
-	// }
+	async updateNotificationState(notificationId: string, state: boolean): Promise<Notification> {
+		const notification = await this.prisma.notification.findUnique({ where: { id: notificationId } });
+	
+		if (!notification) {
+		  throw new NotFoundException(`Notificación con id: ${notificationId} no encontrada`);
+		}
+	
+		return this.prisma.notification.update({
+		  where: { id: notificationId },
+		  data: { state },
+		});
+	  }
 }
