@@ -30,7 +30,7 @@ export const DashboardViewAddFriend: React.FC = () => {
     }, [dispatch])
     
     const findById = (id: string) => {
-        return userActive.user?.friends.find((user) => user.id === id);
+        return userActive.user?.friends.find((user) => user.friendId === id);
     }
 
     useEffect(() => {
