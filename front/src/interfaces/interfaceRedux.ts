@@ -57,6 +57,13 @@ export interface IAuxiliarState {
 export interface IPaymentState {
   status: string
   error: string | null
+  teamData: IAddTeam
+  tournamentData: ITournament
+}
+
+export interface IBasicDataToTournamentRegister {
+  organizerId: string
+  token: string
 }
 
 export interface ITournamentPayment {
