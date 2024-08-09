@@ -19,18 +19,18 @@ export class NotificationsService {
 		});
 	}
 
-	// async removeNotifications(id: string) {
+	async removeNotifications(id: string) {
 
-	//     const notification = await this.prisma.notification.findUnique({ where: { id } });
+	    const notification = await this.prisma.notification.findUnique({ where: { id } });
 
-	//     if (!notification) {
-	//         throw new NotFoundException(`Notificación con id: ${notification.id} no encontrada`);
-	//     }
+	    if (!notification) {
+	        throw new NotFoundException(`Notificación con id: ${notification.id} no encontrada`);
+	    }
 
-	//     await this.prisma.notification.update({ where: { id } }, data: {status: false});
-	//     return { message: 'Notification eliminada con exito' };
+	    await this.prisma.notification.update({ where: { id }, data: {state: false}});
+	    return { message: 'Notification eliminada con exito' };
 
-	// }
+	}
 
 	// async markNotificationAsViewed(
 	// 	notificationId: string,

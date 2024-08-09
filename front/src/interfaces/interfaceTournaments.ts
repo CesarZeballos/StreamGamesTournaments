@@ -89,6 +89,7 @@ export interface IAddTeam {
 export interface ITournamentsInscripted {
     id: string
     nameTournament: string
-    startDate: string
+    teamName: string
+    tournamentDate: string
     status: string
 }
