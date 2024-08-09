@@ -9,12 +9,18 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { Prisma, Team } from '@prisma/client';
 import { CreateTeamDto } from './dto/createTeamDto';
 import { PayPalService } from 'paypal/paypal.service';
+import { MailTemplates } from 'mail/mail-templates';
+import { MailService } from 'mail/mail.service';
+import { NotificationsService } from 'notifications/notifications.service';
+import { NotificationDto } from 'notifications/dto/notifications.dto';
 
 @Injectable()
 export class TeamsService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly paypalService: PayPalService,
+		private readonly mailService: MailService,
+		private readonly notificationService: NotificationsService,
 	) {}
 
 	async getAllTeams(page: number, limit: number): Promise<Team[]> {
@@ -57,6 +63,16 @@ export class TeamsService {
 			);
 		}
 
+		const organizer = await this.prisma.user.findUnique({
+			where: { id: createTeamDto.organizerId },
+		});
+
+		if (!organizer) {
+			throw new NotFoundException(
+				`Organizer with id: ${createTeamDto.organizerId} does not exist.`,
+			);
+		}
+
 		for (const team of tournament.teams) {
 			for (const userExistsInTournament of team.users) {
 				if (createTeamDto.users.includes(userExistsInTournament.id)) {
@@ -66,7 +82,7 @@ export class TeamsService {
 				}
 			}
 		}
-/* 
+		/* 
 		const orderResult = await this.paypalService.captureOrder(createTeamDto.paypal);
 
 		if (orderResult.status === !'COMPLETED') throw new ConflictException('Error al realizar el pago')
@@ -100,8 +116,34 @@ export class TeamsService {
 						nameTeam: team.id,
 					},
 				});
+				const notification: NotificationDto = {
+					userId: foundUser.id,
+					tournamentId: tournament.id,
+				};
+				await this.notificationService.createNotification(notification);
+
+				// Envío de correo a cada usuario del equipo
+				const mailOptions = MailTemplates.registeredUser(
+					foundUser.email,
+					foundUser.nickname,
+					tournament.nameTournament,
+					team.name,
+					organizer.nickname,
+				);
+
+				await this.mailService.sendMail(mailOptions); // Envía el correo
 			}
 		}
+
+		// Envío de correo al organizador del equipo
+		const mailOptionsOrganizer = MailTemplates.registeredTeam(
+			organizer.email,
+			organizer.nickname,
+			tournament.nameTournament,
+			team.name,
+		);
+
+		await this.mailService.sendMail(mailOptionsOrganizer); // Envía el correo al organizador del equipo
 
 		return team;
 	}

@@ -29,7 +29,18 @@ model User {
   teams                  UserTeams[]     @relation("UserTeams")
   tournaments            Tournament[]    @relation("UserTournaments")
   organizedTournaments   Tournament[]    @relation("OrganizedTournaments")
+  notifications          Notification[]  @relation("UserNotifications")
 }
+
+model Notification {
+  id                      String     @id @default(uuid())
+  userId                  String
+  receivedNotification    User? @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  state                   Boolean @default(true)
+  tournament              Tournament @relation("tournamentsNotificaions", fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournamentId            String
+}
+
 
 model FriendRequest {
   id         String   @id @default(uuid())
@@ -113,7 +124,9 @@ model Tournament {
   players        User[]     @relation("UserTournaments")
   organizer      User?      @relation("OrganizedTournaments", fields: [organizerId], references: [id])
   teams          Team[]     @relation("teams")
+  notifications  Notification[] @relation("tournamentsNotificaions")
 }
+
 
 model Game {
   id          String       @id @default(uuid())

@@ -11,7 +11,8 @@ import { AdminModule } from 'admin/admin.module';
 import { TeamsModule } from 'teams/teams.module';
 import { PayPalModule } from 'paypal/paypal.module';
 import { FriendsModule } from './friends/friends.module';
- import { ChatModule } from 'chat/chat.module'; 
+import { ChatModule } from 'chat/chat.module';
+import { NotificationsModule } from 'notifications/notifications.module';
 
 @Module({
 	imports: [
@@ -26,7 +27,8 @@ import { FriendsModule } from './friends/friends.module';
 		MailModule,
 		AdminModule,
 		FriendsModule,
-		 ChatModule, 
+		ChatModule,
+		NotificationsModule,
 	],
 })
 export class AppModule {}
