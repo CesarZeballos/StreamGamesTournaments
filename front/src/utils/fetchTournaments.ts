@@ -87,6 +87,8 @@ export const fetchAddTeamToTournament = async (data: IAddTeam) => {
     });
 
     const dataResponse = await response.json();
+
+    console.log("dataResponse", dataResponse)
     return dataResponse
 }
 
