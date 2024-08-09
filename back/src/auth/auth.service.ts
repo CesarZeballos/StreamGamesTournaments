@@ -19,7 +19,7 @@ export class AuthService {
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
 		private readonly mailService: MailService,
-	) {}
+	) { }
 
 	async signUp(createUserDto: CreateUserDto) {
 		const { email, nickname, tokenFirebase, birthdate } = createUserDto;
@@ -88,6 +88,7 @@ export class AuthService {
 						friend: {
 							select: { id: true, nickname: true },
 						},
+						user: { select: { id: true, nickname: true } }
 					},
 				},
 				receivedFriendRequests: {
@@ -156,20 +157,26 @@ export class AuthService {
 			...teamsTournaments,
 		];
 
-		const friends = userData.friends.map((friend) => ({
-			id: friend.id, // ID de la tabla intermedia
-			nickname: friend.friend.nickname,
-			friendId: friend.friend.id,
-		}));
+		const friends = userData.friends
+			.filter(
+				(friend) =>
+					friend.user.id === userData.id || friend.friendId === userData.id,
+			)
+			.map((friend) => ({
+				id: friend.id,
+				userId: friend.user.id,
+				userNickname: friend.user.nickname,
+				friendId: friend.friend.id,
+				friendNickname: friend.friend.nickname,
+			}));
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(
 			(request) => ({
-				id: request.id, // ID de la tabla intermedia
+				id: request.id,
 				nickname: request.sender.nickname,
 			}),
 		);
 
-		// Mapear las notificaciones según el formato requerido
 		const notifications = userData.notifications.map((notification) => ({
 			tournamentId: notification.tournamentId,
 			nameTournament: notification.tournament.nameTournament,
@@ -189,7 +196,7 @@ export class AuthService {
 			tournaments: userTournaments,
 			friends,
 			receivedFriendRequests,
-			notifications, // Incluimos las notificaciones en el objeto user
+			notifications,
 		};
 
 		return {
