@@ -8,33 +8,47 @@ datasource db {
 }
 
 model User {
-  id                   String          @id @default(uuid())
-  email                String          @unique @db.VarChar(80)
-  nickname             String          @unique
-  tokenFirebase        String
-  birthdate            DateTime
-  urlProfile           String?
-  urlStream            String?
-  role                 Role            @default(user)
-  createdAt            DateTime        @default(now())
-  state                Boolean         @default(true)
-  isBanned             Boolean         @default(false)
-  friends              UserFriends[]   @relation("UserFriendsUser")
-  friendRequests       UserFriends[]   @relation("UserFriendsFriend")
-  sentFriendRequests   FriendRequest[] @relation("SentFriendRequests")
-  sentMessages         PrivateChat[]   @relation("SentMessages")
-  receivedMessages     PrivateChat[]   @relation("ReceivedMessages")
-  globalChat           GlobalChat[]    @relation("GlobalChat")
-  teams                UserTeams[]     @relation("UserTeams")
-  tournaments          Tournament[]    @relation("UserTournaments")
-  organizedTournaments Tournament[]    @relation("OrganizedTournaments")
+  id                     String          @id @default(uuid())
+  email                  String          @unique @db.VarChar(80)
+  nickname               String          @unique
+  tokenFirebase          String
+  birthdate              DateTime
+  urlProfile             String?
+  urlStream              String?
+  role                   Role            @default(user)
+  createdAt              DateTime        @default(now())
+  state                  Boolean         @default(true)
+  isBanned               Boolean         @default(false)
+  friends                UserFriends[]   @relation("UserFriendsUser")
+  friendRequests         UserFriends[]   @relation("UserFriendsFriend")
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
+  sentMessages           PrivateChat[]   @relation("SentMessages")
+  receivedMessages       PrivateChat[]   @relation("ReceivedMessages")
+  globalChat             GlobalChat[]    @relation("GlobalChat")
+  teams                  UserTeams[]     @relation("UserTeams")
+  tournaments            Tournament[]    @relation("UserTournaments")
+  organizedTournaments   Tournament[]    @relation("OrganizedTournaments")
+  notifications          Notification[]  @relation("UserNotifications")
 }
 
+model Notification {
+  id                      String     @id @default(uuid())
+  userId                  String
+  receivedNotification    User? @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  state                   Boolean @default(true)
+  tournament              Tournament @relation("tournamentsNotificaions", fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournamentId            String
+}
+
+
 model FriendRequest {
-  id        String   @id @default(uuid())
-  nickname  String
-  createdAt DateTime @default(now())
-  sender    User?    @relation("SentFriendRequests", fields: [nickname], references: [nickname], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  createdAt  DateTime @default(now())
+  sender     User     @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
 model UserFriends {
@@ -85,10 +99,10 @@ model UserTeamRequest {
 
 model UserTeams {
   id       String @id @default(uuid())
-  nickname String
+  userId   String
   nameTeam String
   team     Team?  @relation("UserForTeams", fields: [nameTeam], references: [id], onDelete: Cascade)
-  user     User?  @relation("UserTeams", fields: [nickname], references: [nickname], onDelete: Cascade)
+  user     User?  @relation("UserTeams", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Tournament {
@@ -110,13 +124,16 @@ model Tournament {
   players        User[]     @relation("UserTournaments")
   organizer      User?      @relation("OrganizedTournaments", fields: [organizerId], references: [id])
   teams          Team[]     @relation("teams")
+  notifications  Notification[] @relation("tournamentsNotificaions")
 }
+
 
 model Game {
   id          String       @id @default(uuid())
   name        String       @unique @db.VarChar(80)
   urlImage    String
   state       Boolean      @default(true)
+  description String       @db.Text
   tournaments Tournament[]
 }
 

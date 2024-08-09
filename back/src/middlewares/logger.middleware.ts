@@ -20,8 +20,6 @@ export function LoggerGlobalMiddleware(
 	res: Response,
 	next: NextFunction,
 ) {
-	console.log(
-		`Ejecutando Middleware Global: método ${req.method} en la ruta ${req.url}`,
-	);
+	console.log(`Método ${req.method} en la ruta ${req.url}`);
 	next();
 }

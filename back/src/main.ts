@@ -7,19 +7,25 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TeamsService } from 'teams/teams.service';
 import { TournamentsService } from 'tournaments/tournaments.service';
 import { preloadData } from '../preload/preload.db';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
-async function PreloadData(
-	prismaService: PrismaService,
-	teamService: TeamsService,
-	tournamentsService: TournamentsService,
-) {
-	const preload = new preloadData(prismaService, teamService, tournamentsService);
-	await preload.clearTables();
-	await preload.addGames();
-	await preload.addUsers();
-	await preload.addTournaments();
-	await preload.addTeamForTournament();
-}
+// async function PreloadData(
+// 	prismaService: PrismaService,
+// 	teamService: TeamsService,
+// 	tournamentsService: TournamentsService,
+// ) {
+// 	const preload = new preloadData(
+// 		prismaService,
+// 		teamService,
+// 		tournamentsService,
+// 	);
+// 	await preload.clearTables();
+// 	await preload.addGames();
+// 	await preload.addUsers();
+// 	await preload.addTournaments();
+// 	await preload.addTeamsWithPlayers();
+// 	await preload.addTeamForTournament();
+// }
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -35,9 +41,9 @@ async function bootstrap() {
 		});
 
 		const options = new DocumentBuilder()
-			.setTitle('NestJs Api')
-			.setDescription('Stream Games Tournaments Api')
-			.setVersion('1.0.0')
+			.setTitle('Stream Games Tournaments Api')
+			.setDescription('Api para manejar Stream Games Tournaments')
+			.setVersion('1.0')
 			.addBearerAuth()
 			.build();
 
@@ -47,11 +53,11 @@ async function bootstrap() {
 		app.use(LoggerGlobalMiddleware);
 		app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-		await PreloadData(prismaService, teamService, tournamentService);
+		// await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 
 		const port = process.env.PORT || 3001;
-		await app.listen(port, () => {
+		await app.listen(port, '0.0.0.0', () => {
 			console.log(`App listening on port ${port}`);
 		});
 	} catch (error) {

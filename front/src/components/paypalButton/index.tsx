@@ -1,18 +1,20 @@
-'use client';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { captureOrderSlice, createOrderSlice } from '@/redux/thunks/tournamentsSliceThunk';
-import { IAddTeamToTournament } from '@/interfaces/interfaceRedux';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { toast } from 'sonner';
+import { useEffect, useState } from 'react';
 
 interface PayPalButtonProps {
-  data: IAddTeamToTournament;
+  tournamentId: string;
   onSuccess: (orderId: string) => void;
 }
 
-const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
+const PayPalButton: React.FC<PayPalButtonProps> = ({ tournamentId, onSuccess }) => {
   const dispatch = useDispatch<AppDispatch>();
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+
+  const token = useSelector((state: RootState) => state.user.token);
 
   if (!clientId) {
     console.error('PayPal client ID is missing');
@@ -24,15 +26,21 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
       <PayPalButtons
         createOrder={async () => {
           try {
-            const orderId = await dispatch(createOrderSlice(data)).unwrap();
-            return orderId; // Asegúrate de que esta acción devuelva el orderID
+            const response = await dispatch(createOrderSlice({
+              tournamentId: tournamentId,
+              token: token!
+            })).unwrap();
+            const orderId = response.id
+
+            return orderId; // Devuelve el orderID obtenido de la acción
           } catch (error) {
             console.error('Error creating order:', error);
-            return '';
+            return ''; // Asegúrate de devolver un string vacío en caso de error
           }
         }}
         onApprove={async (data: { orderID: string }) => {
           try {
+            console.log('Order approved entry:', data.orderID);
             await dispatch(captureOrderSlice(data.orderID)).unwrap();
             onSuccess(data.orderID);
           } catch (error) {
@@ -48,3 +56,4 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ data, onSuccess }) => {
 };
 
 export default PayPalButton;
+

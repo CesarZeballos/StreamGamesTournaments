@@ -45,7 +45,7 @@ export async function loginUser(data: ILoginDataBase) {
 
         return loginData;
     } catch (error) {
-        console.log("Error logging in user.", error)
+        return error
     }
 }
 
@@ -104,27 +104,6 @@ export const banUser = async (id: string) => {
     
     return response.json();
 };
-
-export const fetchAddUser = async (data: IAddFriendForm) => {
-    const {userId, friendId, token} = data
-    const response = await fetch(`${apiUrl}/users/add-friend`, {
-        method: "POST",
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            userId: userId, 
-            friendId: friendId
-        })
-    })
-
-    if (!response.ok) {
-        throw new Error(`Error adding friend: ${response.statusText}`);
-    }
-    const userData = await response.json();
-    return userData;
-} 
 
 export const fetchUgradeUser = async (data: IUpgradeUser) => {
     console.log("data", data)

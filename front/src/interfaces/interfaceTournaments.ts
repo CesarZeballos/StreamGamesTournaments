@@ -32,8 +32,22 @@ export interface ITournamentPost {
     membersNumber: number;
     maxTeam: number;
     price: number;
-    urlAvatar: ImageSource;
+    urlAvatar: File | string;
     award: string[];
+    description: string;
+}
+
+export interface ITournamentPostError {
+    nameTournament: string;
+    startDate: string;
+    category: string;
+    organizerId: string;
+    gameId: string;
+    membersNumber: string;
+    maxTeam: string;
+    price: string;
+    urlAvatar: string;
+    award: string;
     description: string;
 }
 
@@ -47,7 +61,19 @@ export interface IGame {
     id: string;
     name: string;
     urlImage: string;
-    state: boolean
+    description?: string;
+}
+
+export interface IGamePost {
+    name: string;
+    urlImage: File | string;
+    description: string;
+}
+
+export interface IGamePostError {
+    name: string;
+    urlImage: string;
+    description: string;
 }
 
 //interface para el form de agregar equipo
@@ -55,13 +81,15 @@ export interface IAddTeam {
     tournamentId: string
     name: string
     organizerId: string
+    token: string
     users: string[]
 }
 
 //interface para mostrar mis torneos en el dashboard user
-export interface IMyTournaments {
+export interface ITournamentsInscripted {
     id: string
     nameTournament: string
-    startDate: string
+    teamName: string
+    tournamentDate: string
     status: string
 }

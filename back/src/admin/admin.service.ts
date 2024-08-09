@@ -15,11 +15,21 @@ export class AdminService {
 		if (!user) {
 			throw new NotFoundException(`User with id: ${userId} does not exists`);
 		}
-		return this.prisma.user.update({
+
+		if (user.isBanned === true) {
+			return this.prisma.user.update({
+				where: { id: userId },
+				data: {
+					state: false,
+					isBanned: true
+				},
+			});
+
+		} else return this.prisma.user.update({
 			where: { id: userId },
 			data: {
-				state: false,
-				isBanned: true
+				state: true,
+				isBanned: false
 			},
 		});
 	}

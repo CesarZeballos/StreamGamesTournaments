@@ -1,3 +1,5 @@
+import { ITournament } from "./interfaceTournaments"
+
 export interface IUser {
     id: string
     email: string
@@ -8,12 +10,23 @@ export interface IUser {
     urlSteam: string
     role: string
     state: boolean
-    tournaments: ITournamentsregistered[]
+    tournaments: ITournament[]
     friends: IFriend[]
-    sentFriendRequests: []
+    receivedFriendRequests: IFriendRequest[]
     sentMessages: []
+    notifications: ITournamentsRegistered[]
     receivedMessages: []
     globalChat: []
+}
+
+export interface IFriendRequest {
+    id: string
+    nickname: string
+}
+
+export interface IFriendRequestProps {
+    id: string
+    token: string
 }
 
 export interface IUserFilters {
@@ -23,22 +36,10 @@ export interface IUserFilters {
     state: string;
 }
 
-interface IFriend {
+export interface IFriend {
     id: string
-    email: string
     nickname: string
-    tokenFirebase: string
-    birthdate: string
-    urlProfile: string
-    urlSteam: string
-    role: string
-    state: boolean
-    tournaments: ITournamentsregistered[]
-    friends: []
-    sentFriendRequests: []
-    sentMessages: []
-    receivedMessages: []
-    globalChat: []
+    friendId: string
 }
 
 export interface ITeam {
@@ -47,17 +48,15 @@ export interface ITeam {
     members: IUser[]
 }
 
-export interface ITournamentsregistered {
+export interface ITournamentsRegistered {
+    tournamentId: string
     id: string
     nameTournament: string
-    startDate: string
+    nameTeam: string
+    nameGame: string
+    tournamentDate: string
+    state: boolean
 }
-
-// export interface ITeamMember {
-//     id: string
-//     nickName: string
-// }
-
 
 //register
 export interface IRegisterForm {
@@ -105,6 +104,11 @@ export interface IUserSelector {
 export interface IAddFriendForm {
     userId: string
     friendId: string
+    token: string
+}
+
+export interface IFriendRequest {
+    requestId: string,
     token: string
 }
 

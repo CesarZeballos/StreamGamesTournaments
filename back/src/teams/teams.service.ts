@@ -6,16 +6,22 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
-import { Prisma, Team, User } from '@prisma/client';
-import { CreateTeamDto } from './createTeamDto';
+import { Prisma, Team } from '@prisma/client';
+import { CreateTeamDto } from './dto/createTeamDto';
 import { PayPalService } from 'paypal/paypal.service';
+import { MailTemplates } from 'mail/mail-templates';
+import { MailService } from 'mail/mail.service';
+import { NotificationsService } from 'notifications/notifications.service';
+import { NotificationDto } from 'notifications/dto/notifications.dto';
 
 @Injectable()
 export class TeamsService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly paypalService: PayPalService,
-	) { }
+		private readonly mailService: MailService,
+		private readonly notificationService: NotificationsService,
+	) {}
 
 	async getAllTeams(page: number, limit: number): Promise<Team[]> {
 		const skip = (page - 1) * limit;
@@ -44,8 +50,8 @@ export class TeamsService {
 
 		return team;
 	}
+
 	async createTeam(createTeamDto: CreateTeamDto): Promise<Team> {
-		console.log(createTeamDto);
 		const tournament = await this.prisma.tournament.findUnique({
 			where: { id: createTeamDto.tournamentId },
 			include: { teams: { include: { users: true } } },
@@ -57,18 +63,30 @@ export class TeamsService {
 			);
 		}
 
+		const organizer = await this.prisma.user.findUnique({
+			where: { id: createTeamDto.organizerId },
+		});
+
+		if (!organizer) {
+			throw new NotFoundException(
+				`Organizer with id: ${createTeamDto.organizerId} does not exist.`,
+			);
+		}
+
 		for (const team of tournament.teams) {
 			for (const userExistsInTournament of team.users) {
-				if (createTeamDto.users.some(user => user.id === userExistsInTournament.id)) {
+				if (createTeamDto.users.includes(userExistsInTournament.id)) {
 					throw new ConflictException(
 						`User with id: ${userExistsInTournament.id} already exists in the tournament.`,
 					);
 				}
 			}
 		}
+		/* 
+		const orderResult = await this.paypalService.captureOrder(createTeamDto.paypal);
 
-		await this.paypalService.captureOrder(createTeamDto.paypal);
-
+		if (orderResult.status === !'COMPLETED') throw new ConflictException('Error al realizar el pago')
+ */
 		const teamData: Prisma.TeamCreateInput = {
 			name: createTeamDto.name,
 			organizerId: createTeamDto.organizerId,
@@ -81,28 +99,54 @@ export class TeamsService {
 		const team = await this.prisma.team.create({ data: teamData });
 
 		if (createTeamDto.users && createTeamDto.users.length > 0) {
-			for (const user of createTeamDto.users) {
+			for (const userId of createTeamDto.users) {
 				const foundUser = await this.prisma.user.findUnique({
-					where: { id: user.id },
+					where: { id: userId },
 				});
+
 				if (!foundUser) {
-					throw new BadRequestException(`User with ID ${user.id} not found`);
+					throw new BadRequestException(
+						`User with ID ${userId} not found`,
+					);
 				}
 
 				await this.prisma.userTeams.create({
 					data: {
-						nickname: foundUser.nickname,
+						userId: foundUser.id,
 						nameTeam: team.id,
 					},
 				});
+				const notification: NotificationDto = {
+					userId: foundUser.id,
+					tournamentId: tournament.id,
+				};
+				await this.notificationService.createNotification(notification);
+
+				// Envío de correo a cada usuario del equipo
+				const mailOptions = MailTemplates.registeredUser(
+					foundUser.email,
+					foundUser.nickname,
+					tournament.nameTournament,
+					team.name,
+					organizer.nickname,
+				);
+
+				await this.mailService.sendMail(mailOptions); // Envía el correo
 			}
 		}
 
+		// Envío de correo al organizador del equipo
+		const mailOptionsOrganizer = MailTemplates.registeredTeam(
+			organizer.email,
+			organizer.nickname,
+			tournament.nameTournament,
+			team.name,
+		);
+
+		await this.mailService.sendMail(mailOptionsOrganizer); // Envía el correo al organizador del equipo
+
 		return team;
 	}
-
-
-
 
 	async updateTeam(updateTeamDto: any): Promise<Team> {
 		const team = await this.prisma.team.findUnique({
@@ -159,10 +203,10 @@ export class TeamsService {
 				: undefined,
 			users: updateTeamDto.userIds
 				? {
-					connect: updateTeamDto.userIds.map((userId) => ({
-						id: userId,
-					})),
-				}
+						connect: updateTeamDto.userIds.map((userId) => ({
+							id: userId,
+						})),
+					}
 				: undefined,
 		};
 
@@ -199,6 +243,9 @@ export class TeamsService {
 		});
 		if (!team) throw new NotFoundException('Team does not exist');
 
-		return await this.prisma.team.delete({ where: { id: teamId } });
+		return await this.prisma.team.update({
+			where: { id: teamId },
+			data: { state: false },
+		});
 	}
 }

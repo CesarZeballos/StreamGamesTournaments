@@ -7,7 +7,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
-} from '../tournaments/createTournament.Dto';
+} from './dto/createTournament.Dto';
 import { MailService } from 'mail/mail.service';
 import { MailTemplates } from 'mail/mail-templates';
 import { Categories } from '@prisma/client';
@@ -19,12 +19,10 @@ export class TournamentsService {
 		private readonly mailService: MailService,
 	) { }
 
-	async getAllTournaments(page: number, limit: number) {
-		const skip = (page - 1) * limit;
+	async getAllTournaments() {
+
 
 		const tournaments = await this.prisma.tournament.findMany({
-			take: limit,
-			skip: skip,
 			include: {
 				game: true,
 				players: true,
@@ -58,7 +56,11 @@ export class TournamentsService {
 	}
 
 	async createTournament(createTournamentDto: CreateTournamentDto) {
+		console.log('Received DTO:', createTournamentDto.awards);
 		const { organizerId, gameId, ...data } = createTournamentDto;
+		const numberTeams = Number(data.maxTeams)
+		const numberPrice = Number(data.price)
+		const numberMember = Number(data.membersNumber)
 
 		const organizerExists = await this.prisma.user.findUnique({
 			where: { id: organizerId },
@@ -84,6 +86,9 @@ export class TournamentsService {
 			const tournament = await this.prisma.tournament.create({
 				data: {
 					...data,
+					price: numberPrice,
+					membersNumber: numberMember,
+					maxTeams: numberTeams,
 					category: data.category as Categories,
 					awards: awardsAsStrings,
 					organizer: { connect: { id: organizerId } },

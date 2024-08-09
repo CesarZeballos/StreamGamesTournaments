@@ -1,10 +1,7 @@
-import {
-	ConflictException,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as paypal from '@paypal/checkout-server-sdk';
 import { PrismaService } from '../../prisma/prisma.service';
+import { error } from 'console';
 
 @Injectable()
 export class PayPalService {
@@ -18,27 +15,12 @@ export class PayPalService {
 	);
 	private client = new paypal.core.PayPalHttpClient(this.environment);
 
-	async createOrder(createTeamDto: any) {
+	async createOrder(tourId: string) {
 		const tournament = await this.prisma.tournament.findUnique({
-			where: { id: createTeamDto.tournamentId },
+			where: { id: tourId },
 			include: { teams: { include: { users: true } } },
 		});
 
-		if (!tournament)
-			throw new NotFoundException(
-				`Tournament with id: ${createTeamDto.tournamentId} does not exists,
-            `,
-			);
-
-		for (const team of tournament.teams) {
-			for (const userExistsInTournament of team.users) {
-				if (createTeamDto.users.includes(userExistsInTournament.id))
-					throw new ConflictException(
-						` User with id: ${userExistsInTournament.id} already exists in tournament,
-                    `,
-					);
-			}
-		}
 		const request = new paypal.orders.OrdersCreateRequest();
 		request.headers['Content-Type'] = 'application/json';
 		request.requestBody({
@@ -47,7 +29,7 @@ export class PayPalService {
 				{
 					amount: {
 						currency_code: 'USD',
-						value: '100.00',
+						value: tournament.price.toString(),
 					},
 				},
 			],
@@ -55,9 +37,9 @@ export class PayPalService {
 
 		try {
 			const response = await this.client.execute(request);
+			console.log("createOrder",response.result);
 			return response.result;
 		} catch (error) {
-			console.error('PayPal create order error:', error);
 			throw new Error('Failed to create PayPal order');
 		}
 	}
@@ -66,12 +48,10 @@ export class PayPalService {
 		const request = new paypal.orders.OrdersCaptureRequest(orderId);
 		request.headers['Content-Type'] = 'application/json';
 
-		try {
-			const response = await this.client.execute(request);
-			return response.result;
-		} catch (error) {
-			console.error('PayPal capture order error:', error);
-			throw new Error('Failed to capture PayPal order');
-		}
+		const response = await this.client.execute(request);
+
+		console.log('captureOrder', response.result);
+
+		return response.result;
 	}
 }

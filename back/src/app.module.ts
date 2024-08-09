@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { AuthModule } from './auth/auth.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
@@ -12,6 +10,9 @@ import { MailModule } from 'mail/mail.module';
 import { AdminModule } from 'admin/admin.module';
 import { TeamsModule } from 'teams/teams.module';
 import { PayPalModule } from 'paypal/paypal.module';
+import { FriendsModule } from './friends/friends.module';
+import { ChatModule } from 'chat/chat.module';
+import { NotificationsModule } from 'notifications/notifications.module';
 
 @Module({
 	imports: [
@@ -25,8 +26,9 @@ import { PayPalModule } from 'paypal/paypal.module';
 		PayPalModule,
 		MailModule,
 		AdminModule,
+		FriendsModule,
+		ChatModule,
+		NotificationsModule,
 	],
-	controllers: [AppController],
-	providers: [AppService],
 })
 export class AppModule {}
