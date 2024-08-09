@@ -16,28 +16,35 @@ export class preloadData {
 
 	async clearTables() {
 		await this.prisma.$transaction([
-			// Primero, eliminar registros en UserTeamRequest
-			this.prisma.userTeamRequest.deleteMany({}),
-
-			// Luego, eliminar registros en Team
-			this.prisma.team.deleteMany({}),
-
-			// Después, eliminar registros en Tournament
-			this.prisma.tournament.deleteMany({}),
-
-			// Luego, eliminar registros en los chats y solicitudes de amistad
-			this.prisma.privateChat.deleteMany({}),
-			this.prisma.userFriends.deleteMany({}),
-			this.prisma.friendRequest.deleteMany({}),
-			this.prisma.globalChat.deleteMany({}),
-
-			// Ahora, eliminar registros en User
-			this.prisma.user.deleteMany({}),
-
-			// Finalmente, eliminar registros en Game
-			this.prisma.game.deleteMany({}),
+		  // Primero, eliminar registros en UserTeamRequest
+		  this.prisma.userTeamRequest.deleteMany({}),
+	  
+		  // Luego, eliminar registros en UserTeams
+		  this.prisma.userTeams.deleteMany({}),
+	  
+		  // Después, eliminar registros en Team
+		  this.prisma.team.deleteMany({}),
+	  
+		  // Luego, eliminar registros en Tournament
+		  this.prisma.tournament.deleteMany({}),
+	  
+		  // Después, eliminar registros en Notifications
+		  this.prisma.notification.deleteMany({}),
+	  
+		  // Luego, eliminar registros en los chats y solicitudes de amistad
+		  this.prisma.privateChat.deleteMany({}),
+		  this.prisma.userFriends.deleteMany({}),
+		  this.prisma.friendRequest.deleteMany({}),
+		  this.prisma.globalChat.deleteMany({}),
+	  
+		  // Ahora, eliminar registros en User
+		  this.prisma.user.deleteMany({}),
+	  
+		  // Finalmente, eliminar registros en Game
+		  this.prisma.game.deleteMany({}),
 		]);
-	}
+	  }
+	  
 
 	async addGames() {
 		for (const game of gamesData) {
