@@ -1,11 +1,16 @@
 import { ITournamentPayment } from "@/interfaces/interfaceRedux"
 import { IAddTeam } from "@/interfaces/interfaceTournaments"
-import { fetchAddTeamToTournament, fetchCapturePaymentTournament, fetchPaymentTournament, fetchTournaments } from "@/utils/fetchTournaments"
+import { fetchAddTeamToTournament, fetchCapturePaymentTournament, fetchPaymentTournament, fetchTournamentById, fetchTournaments } from "@/utils/fetchTournaments"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { toast } from "sonner"
 
 export const getTournamentsSlice = createAsyncThunk('tournaments/getTournaments', async () => {
         const response = await fetchTournaments()
+        return response
+})
+
+export const getTournamentById = createAsyncThunk('tournaments/getTournamentById', async (data: string) => {
+        const response = await fetchTournamentById(data)
         return response
 })
 
