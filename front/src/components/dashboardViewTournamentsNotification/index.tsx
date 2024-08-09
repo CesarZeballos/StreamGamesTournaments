@@ -1,18 +1,26 @@
 
 import { useState } from 'react';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import { ITournamentsRegistered } from '@/interfaces/interfaceUser';
 import { isoToDate } from '@/utils/formatDate';
+import { checkViewTournament } from '@/redux/thunks/userActionsSliceThunk';
+import { reloadUserSlice } from '@/redux/thunks/userSliceThunk';
 export const DashboardViewTournamentsNotification: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const tournaments = useSelector((state: RootState) => state.user.user?.notifications);
+    const email = useSelector((state: RootState) => state.user.user?.email)
+    const tokenFirebase = useSelector((state: RootState) => state.user.user?.tokenFirebase)
+    const token = useSelector((state: RootState) => state.user?.token)
 
     const newTournaments = tournaments?.filter((tour: ITournamentsRegistered) => tour.state === true)
 
+
     const check = (event: React.MouseEvent<HTMLButtonElement>) => {
         const {value} = event.currentTarget
-        console.log(value)
+        dispatch(checkViewTournament({id: value, token: token!}))
+        dispatch(reloadUserSlice({email: email!, tokenFirebase: tokenFirebase!}))
     }
     
 
