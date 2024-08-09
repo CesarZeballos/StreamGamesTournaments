@@ -6,12 +6,22 @@ import { gameImages, categoryIcons, navigationIcons } from "@/utils/tournamentsD
 
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { getGamesActivesSlice } from "@/redux/thunks/auxiliarSliceThunk";
 
-import { banners } from "@/utils/GamesArray";
+// import { banners } from "@/utils/GamesArray";
 
 const LiveBanner: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [banner, setBanner] = useState<IGame[]>(banners);
+    const [banner, setBanner] = useState<IGame[]>([] as IGame[]);
+    const games = useSelector((state: RootState) => state.tournament.games);
+
+    useEffect(() => {
+        dispatch(getGamesActivesSlice())
+        setBanner(games)
+    }, [dispatch, games])
 
 
     const handleNext = () => {

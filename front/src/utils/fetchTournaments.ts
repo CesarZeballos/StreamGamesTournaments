@@ -18,11 +18,6 @@ export async function fetchTournaments(): Promise<ITournament[]> {
         if (!Array.isArray(allTournaments)) {
             throw new Error("API response is not an array.");
         }
-        // const formattedTournaments = allTournaments.map((tournament: ITournament) => ({
-        //     ...tournament,
-        //     startDate: format(new Date(tournament.startDate), "dd/MM")
-        // }));
-        // return formattedTournaments;
         return allTournaments;
 }
 
@@ -42,6 +37,25 @@ export async function fetchTournamentById(id: string) {
         console.log("Awards field:", tournament.award);
             return tournament;
         }
+}
+
+//funcion para traer los todos los juegos
+export async function fetchGames() {
+    const response = await fetch(`${apiUrl}/games`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+    if (!response.ok) {
+        throw new Error(`Error fetching games: ${response.statusText}`);
+    } else {
+        const allGames = await response.json();
+        if (!Array.isArray(allGames)) {
+            throw new Error("API response is not an array.");
+        }
+        return allGames;
+    }
 }
 
 //funcion para pagar la inscripcion al torneo:
