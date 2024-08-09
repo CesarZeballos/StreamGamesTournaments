@@ -11,6 +11,8 @@ import { CreateTeamDto } from './dto/createTeamDto';
 import { PayPalService } from 'paypal/paypal.service';
 import { MailTemplates } from 'mail/mail-templates';
 import { MailService } from 'mail/mail.service';
+import { NotificationsService } from 'notifications/notifications.service';
+import { NotificationDto } from 'notifications/dto/notifications.dto';
 
 @Injectable()
 export class TeamsService {
@@ -18,6 +20,7 @@ export class TeamsService {
 		private readonly prisma: PrismaService,
 		private readonly paypalService: PayPalService,
 		private readonly mailService: MailService,
+		private readonly notificationService: NotificationsService,
 	) {}
 
 	async getAllTeams(page: number, limit: number): Promise<Team[]> {
@@ -113,6 +116,11 @@ export class TeamsService {
 						nameTeam: team.id,
 					},
 				});
+				const notification: NotificationDto = {
+					userId: foundUser.id,
+					tournamentId: tournament.id,
+				};
+				await this.notificationService.createNotification(notification);
 
 				// Envío de correo a cada usuario del equipo
 				const mailOptions = MailTemplates.registeredUser(
@@ -126,6 +134,7 @@ export class TeamsService {
 				await this.mailService.sendMail(mailOptions); // Envía el correo
 			}
 		}
+
 		// Envío de correo al organizador del equipo
 		const mailOptionsOrganizer = MailTemplates.registeredTeam(
 			organizer.email,
