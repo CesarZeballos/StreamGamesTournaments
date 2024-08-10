@@ -13,6 +13,7 @@ import { PayPalModule } from 'paypal/paypal.module';
 import { FriendsModule } from './friends/friends.module';
 import { ChatModule } from 'chat/chat.module';
 import { NotificationsModule } from 'notifications/notifications.module';
+import { VersusModule } from './versus/versus.module';
 
 @Module({
 	imports: [
@@ -29,6 +30,7 @@ import { NotificationsModule } from 'notifications/notifications.module';
 		FriendsModule,
 		ChatModule,
 		NotificationsModule,
+		VersusModule,
 	],
 })
 export class AppModule {}
