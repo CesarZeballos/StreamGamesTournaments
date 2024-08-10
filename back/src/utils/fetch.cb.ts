@@ -276,7 +276,11 @@ export class Fetchs {
                 ...(id && { id }),
             },
             include: {
-                users: true,
+                users: {
+                    include: {
+                        user: true
+                    }
+                },
                 tournament: true,
                 versusPosition1: true,
                 versusPosition2: true,
