@@ -168,9 +168,13 @@ export class Fetchs {
         });
     }
 
-    async FindTournamentByUnique(id: string) {
+    async FindTournamentByUnique(parameter: TournamentIdentifier) {
+        const { nameTournament, id } = parameter
         return this.prisma.tournament.findUnique({
-            where: { id },
+            where: {
+                ...(nameTournament && { nameTournament }),
+                ...(id && { id })
+            },
             include: {
                 game: true,
                 players: {
