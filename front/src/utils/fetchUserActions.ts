@@ -75,3 +75,18 @@ export const fetchRejectFriend = async (data: IFriendRequestProps) => {
     }
     return await response.json()
 }
+
+export const fetchCheckViewTournament = async (data: IFriendRequestProps) => {
+    const response = await fetch(`${apiUrl}/notifications/delete/${data.id}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${data.token}`,
+        }
+    })
+    if (!response.ok) {
+        throw new Error(`Error adding friend: ${response.statusText}`);
+    }
+    const userData = await response.json();
+    return userData;
+}

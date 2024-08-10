@@ -54,6 +54,7 @@ export class preloadData {
 				create: {
 					name: game.name,
 					urlImage: game.urlImage,
+					description: game.description,
 				},
 			});
 		}
@@ -90,30 +91,13 @@ export class preloadData {
 
 		const games = await this.prisma.game.findMany();
 
-		if (games.length === 0) {
-			throw new Error('No games found');
-		}
+		let count = 0;
 
 		for (const tournament of tournaments) {
-			let gameName = '';
-
-			if (tournament.nameTournament.includes('Counter-Strike')) {
-				gameName = 'CounterStrike Go';
-			} else if (tournament.nameTournament.includes('Fortnite')) {
-				gameName = 'Fortnite';
-			} else if (
-				tournament.nameTournament.includes('League of Legends')
-			) {
-				gameName = 'League of Legends';
+			if (count >= 3) {
+				count = 0;
 			}
-
-			const game = games.find((g) => g.name === gameName);
-
-			if (!game) {
-				throw new Error(`Game ${gameName} not found`);
-			}
-
-			const tournamentData: CreateTournamentDto = {
+				const tournamentData: CreateTournamentDto = {
 				nameTournament: tournament.nameTournament,
 				startDate: tournament.startDate.toISOString(),
 				category: tournament.category,
@@ -123,12 +107,15 @@ export class preloadData {
 				membersNumber: tournament.membersNumber.toString(),
 				maxTeams: tournament.maxTeams.toString(),
 				organizerId: userOrganizer.id,
-				gameId: game.id,
+				gameId: games[count].id,
 				price: tournament.price.toString(),
 			};
 
 			await this.tournamentsService.createTournament(tournamentData);
+
+			count++;
 		}
+
 	}
 
 	async addTeamsWithPlayers() {

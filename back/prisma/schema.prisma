@@ -158,6 +158,7 @@ model Game {
   name        String       @unique @db.VarChar(80)
   urlImage    String
   state       Boolean      @default(true)
+  description String       @db.Text
   tournaments Tournament[]
 }
 

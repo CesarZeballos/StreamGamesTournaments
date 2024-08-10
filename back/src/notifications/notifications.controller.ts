@@ -21,8 +21,8 @@ export class NotificationsController {
 	// 	return this.notificationsService.getNotifications(userId);
 	// }
 
-	// @Post('delete/:id')
-	// async removeFriend(@Param('id', new ParseUUIDPipe()) id: string) {
-	// 	return await this.notificationsService.removeNotifications(id);
-	// }
+	@Post('delete/:id')
+	async removeFriend(@Param('id', new ParseUUIDPipe()) id: string) {
+		return await this.notificationsService.removeNotifications(id);
+	}
 }

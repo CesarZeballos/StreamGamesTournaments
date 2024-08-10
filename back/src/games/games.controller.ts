@@ -187,8 +187,8 @@ export class GamesController {
 	})
 	async postNewGame(@Body() game: CreateGameDto) {
 		try {
-			const { name, urlImage } = game;
-			return await this.gamesService.postNewGame(name, urlImage);
+			const { name, urlImage, description } = game;
+			return await this.gamesService.postNewGame(name, urlImage, description);
 		} catch (error) {
 			throw new HttpException(
 				error.message,

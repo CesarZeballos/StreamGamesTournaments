@@ -162,7 +162,7 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string}) => {
 
     return (
         <form>
-            <h1 className="heading1 text-white mb-16">Register to tournament</h1>
+            <h1 className="heading4 text-white mb-16">Register to tournament</h1>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
                     <FormContainer section="Tournament">
                         <h2 className="heading4 text-white">{tournamentData.nameTournament}</h2>
