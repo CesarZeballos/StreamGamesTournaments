@@ -12,6 +12,7 @@ import { TeamsModule } from 'teams/teams.module';
 import { PayPalModule } from 'paypal/paypal.module';
 import { FriendsModule } from './friends/friends.module';
 import { ChatModule } from 'chat/chat.module';
+import { ChatbotModule } from 'chatBOT/chatbot.module';
 
 @Module({
 	imports: [
@@ -27,6 +28,7 @@ import { ChatModule } from 'chat/chat.module';
 		AdminModule,
 		FriendsModule,
 		ChatModule,
+		ChatbotModule
 	],
 })
 export class AppModule {}
