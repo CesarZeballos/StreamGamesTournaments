@@ -9,6 +9,5 @@ import { NotificationsService } from 'notifications/notifications.service';
 	imports: [PayPalModule],
 	providers: [TeamsService, PrismaService, MailService, NotificationsService],
 	controllers: [TeamsController],
-	exports: [TeamsService],
 })
-export class TeamsModule {}
+export class TeamsModule { }
