@@ -21,7 +21,7 @@ export class Fetchs {
 
     async FindUserByUnique(parameter: UserIdentifier) {
         const { email, nickname, id } = parameter
-        await this.prisma.user.findUnique({
+        return await this.prisma.user.findUnique({
             where: {
                 ...(email && { email }),
                 ...(nickname && { nickname }),
