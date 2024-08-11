@@ -1,5 +1,5 @@
 import { IUser } from "./interfaceUser";
-import { IAddTeam, IGame, ITournament } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, IGame, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 export interface ITournamentState {
   status: string;
@@ -10,6 +10,7 @@ export interface ITournamentState {
   filters: IFilters;
   tournamentsFiltered: ITournament[];
   games: IGame[]
+  allGames: IGame[]
 }
 
 export interface IFilters {
@@ -53,7 +54,6 @@ export interface IAuxiliarState {
   status: string;
   error: string | null;
   statusPayment: string;
-  urlFile: string
 }
 
 export interface IPaymentState {
@@ -79,3 +79,35 @@ export interface IUserActionsState {
   removeFriendStatus: string
   error: string | null
 }
+
+export interface IOrganizerState {
+  step: string
+  tournament: ITournamentPost
+  token: string
+}
+
+export interface IBasicTournamentFormProps {
+  organizerId: string;
+  token: string;
+}
+
+export interface IFirstStep {
+  nameTournament: string;
+  startDate: string;
+  category: string;
+  gameId: string;
+  urlAvatar: string;
+}
+
+export interface ISecondStep {
+  membersNumber: number;
+  maxTeam: number;
+  price: number;
+  award: string[];
+  description: string;
+}
+
+export interface IThirdStep {
+  urlAvatar: string;
+}
+
