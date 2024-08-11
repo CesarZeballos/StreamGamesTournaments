@@ -31,20 +31,6 @@ export const FirstStepRegisterTeam = ({membersRequired, tournamentId}: {membersR
     // logica para si quiere modificar datos cuando este en payments y vuelva al step team.
     const teamData = useSelector((state: RootState) => state.payment.teamData);
 
-    useEffect(() => {
-        if (teamData) {
-            setData(teamData)
-            let members: string[] = []
-            for (let i = 0; i < teamData.users.length; i++) {
-                members.push(friends?.find(friend => friend.id === teamData.users[i])?.nickname!)
-                console.log("members", members)
-            }
-            setTeamMembers(members)
-            console.log("teamMembers", teamMembers)
-        }
-    }, [teamData, friends])
-
-
     // estados necesarios para el renderizado:
     const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
