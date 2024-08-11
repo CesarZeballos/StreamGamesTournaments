@@ -25,8 +25,6 @@ export const DashboardTournamentForm: React.FC = () => {
   const userId = useSelector((state: RootState) => state.user.user?.id);
   const token = useSelector((state: RootState) => state.user.token);
 
-
-
   // const games = useSelector((state: RootState) => state.auxiliar.games);
   // useEffect (() => {
   //   dispatch(getGamesSlice())
