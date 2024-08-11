@@ -13,7 +13,6 @@ const initialState: IAuxiliarState = {
     status: 'idle',
     error: null,
     statusPayment: 'idle',
-    urlFile: ""
 }
 
 const auxiliarSlice = createSlice({
@@ -98,20 +97,7 @@ const auxiliarSlice = createSlice({
             })
         })
 
-        // UPLOAD FILE
-        .addCase(uploadFileSlice.fulfilled, (state, action) => {
-            state.urlFile = action.payload
-            toast.success("File uploaded", {
-                position: 'top-right',
-                duration: 1500,
-            })
-        })
-        .addCase(uploadFileSlice.rejected, (state) => {
-            toast.error("Something went wrong", {
-                position: 'top-right',
-                duration: 1500,
-            })
-        })
+        
     }
 })
 

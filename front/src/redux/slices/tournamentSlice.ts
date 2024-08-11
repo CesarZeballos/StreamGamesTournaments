@@ -4,7 +4,7 @@ import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getTournamentsSlice } from "../thunks/tournamentsSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
-import { getGamesActivesSlice } from "../thunks/auxiliarSliceThunk";
+import { getAllGamesSlice, getGamesActivesSlice } from "../thunks/auxiliarSliceThunk";
 
 const initialState: ITournamentState = {
   status: "idle",
@@ -19,7 +19,8 @@ const initialState: ITournamentState = {
     date: ""
   },
   tournamentsFiltered: [],
-  games: []
+  games: [],
+  allGames: []
 };
 
 const tournamentSlice = createSlice({
@@ -137,6 +138,17 @@ const tournamentSlice = createSlice({
         state.games = action.payload
       })
       .addCase(getGamesActivesSlice.rejected, (state) => {
+        toast.error('Error in getting games', {
+          position: 'top-right',
+          duration: 1500,
+        });
+      })
+
+      // GET ALL GAMES
+      .addCase(getAllGamesSlice.fulfilled, (state, action: PayloadAction<IGame[]>) => {
+        state.allGames = action.payload
+      })
+      .addCase(getAllGamesSlice.rejected, (state) => {
         toast.error('Error in getting games', {
           position: 'top-right',
           duration: 1500,

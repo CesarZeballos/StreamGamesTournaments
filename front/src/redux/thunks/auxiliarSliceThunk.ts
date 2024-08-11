@@ -27,6 +27,12 @@ export const getGamesActivesSlice = createAsyncThunk('tournaments/getGames', asy
     return response
 })
 
+// solicitud de juegos activos:
+export const getAllGamesSlice = createAsyncThunk('tournaments/getAllGames', async () => {
+    const response = await fetchGames()
+    return response
+})
+
 // subida de archivos a la base de datos:
 export const uploadFileSlice = createAsyncThunk('auxiliar/uploadFile', async (data: File) => {
     const response = await fetchUploadFile(data)
