@@ -28,10 +28,10 @@ export class AuthService {
 
 		const userExists = await this.fetchs.FindUserByUnique({ email });
 		if (userExists) {
-			if (userExists.isBanned) {
+			if (userExists.isBanned === true) {
 				throw new BadRequestException(`User with email: ${userExists.email} is banned`);
 			}
-			if (userExists.state) {
+			if (userExists.state === false) {
 				throw new BadRequestException(`User with email: ${userExists.email} already exists`);
 			}
 		}
@@ -91,7 +91,7 @@ export class AuthService {
 			...userData.teams.map((team) => team.team.tournament),
 		];
 
-		const friends = userData.friends
+		const friendsData = userData.friends
 			.filter((friend) => friend.user.id === userData.id || friend.friendId === userData.id)
 			.map((friend) => ({
 				id: friend.id,
@@ -100,6 +100,12 @@ export class AuthService {
 				friendId: friend.friend.id,
 				friendNickname: friend.friend.nickname,
 			}));
+
+		const friends = {
+			id: friendsData.map(f => f.id),
+			nickname: friendsData.flatMap(f => [f.userNickname, f.friendNickname]),
+			friendId: friendsData.flatMap(f => [f.userId, f.friendId])
+		};
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(
 			(request) => ({
