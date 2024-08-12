@@ -17,7 +17,7 @@ const initialState: IOrganizerState = {
         membersNumber: 0,
         maxTeam: 0,
         price: 0,
-        award: [],
+        awards: [],
         description: "",
         organizerId: "",
     },
@@ -38,7 +38,7 @@ const organizeSlice = createSlice({
             state.tournament.nameTournament = action.payload.nameTournament
             state.tournament.category = action.payload.category
             state.tournament.gameId = action.payload.gameId
-            state.tournament.startDate = action.payload.startDate
+            state.tournament.startDate = new Date(action.payload.startDate).toISOString()
             state.tournament.urlAvatar = action.payload.urlAvatar
         },
         setSecondStep(state, action: PayloadAction<ISecondStep>) {
@@ -46,7 +46,7 @@ const organizeSlice = createSlice({
             state.tournament.membersNumber = action.payload.membersNumber
             state.tournament.maxTeam = action.payload.maxTeam
             state.tournament.price = action.payload.price
-            state.tournament.award = action.payload.award
+            state.tournament.awards = action.payload.awards
             state.tournament.description = action.payload.description
         },
         setThirdStep(state){

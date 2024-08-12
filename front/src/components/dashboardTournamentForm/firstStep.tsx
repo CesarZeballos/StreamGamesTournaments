@@ -97,8 +97,7 @@ export const FirstStep: React.FC = () => {
                         </option>
                     ))}
                     </select>
-                    <br />
-                    {/* aca iria un required con el validate... */}
+                    <br />{/* aca iria un required con el validate... */}
                 </div>
 
                 <div className="flex flex-col gap-2 w-fit">
@@ -116,13 +115,14 @@ export const FirstStep: React.FC = () => {
                         </option>
                     ))}
                     </select>
-                    <br/>
+                    <br/>{/* aca iria un required con el validate... */}
                 </div>
 
                 <div className="flex flex-col gap-2 w-fit">
                     <label className="body text-white">Start date</label>
                     <input
                     type="date"
+                    name="startDate"
                     value={data.startDate}
                     onChange={handleChange}
                     required

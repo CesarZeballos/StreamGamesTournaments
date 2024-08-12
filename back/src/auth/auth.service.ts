@@ -101,11 +101,13 @@ export class AuthService {
 				friendNickname: friend.friend.nickname,
 			}));
 
-		const friends = {
-			id: friendsData.map(f => f.id),
-			nickname: friendsData.flatMap(f => [f.userNickname, f.friendNickname]),
-			friendId: friendsData.flatMap(f => [f.userId, f.friendId])
-		};
+		const friends = friendsData.map((f) => {
+			return {
+				id: f.id,
+				nickname: f.userId === userData.id ? f.friendNickname : f.userNickname,
+				friendId: f.userId === userData.id ? f.friendId : f.userId
+			};
+			});
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(
 			(request) => ({
@@ -114,15 +116,20 @@ export class AuthService {
 			}),
 		);
 
-		const notifications = userData.notifications.map((notification) => ({
-			tournamentId: notification.tournamentId,
-			nameTournament: notification.tournament.nameTournament,
-			nameGame: notification.tournament.game.name,
-			nameTeam: notification.tournament.teams.find((team) => team.organizerId === userData.id)?.name || null,
-			state: notification.state,
-			id: notification.id,
-			tournamentDate: notification.tournament.startDate,
-		}));
+		const notifications = userData.notifications.map((notification) => {
+            const tournament = notification.tournament;
+            const team = tournament.teams.find(team => { team.users.map(user => user.id === userData.id) });
+
+            return {
+                tournamentId: tournament.id,
+                id: userData.id,
+                nameTournament: tournament.nameTournament,
+                nameTeam: team ? team.name : null,
+                nameGame: tournament.game ? tournament.game.name : null,
+                tournamentDate: tournament.startDate.toISOString(),
+                state: tournament.state,
+            };
+        });
 
 		const { state, tournaments, isBanned, ...userNotData } = userData;
 
