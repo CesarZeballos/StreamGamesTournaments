@@ -22,4 +22,18 @@ export const banners: IGame[] = [
         description: "Master the Rift in this fast-paced strategy game, where champions clash in a fight for supremacy, demanding keen strategy, flawless execution, and a deep knowledge of the game’s diverse characters and mechanics.",
 		state: true
 	},
+	{
+		id: 'game4-uuid',
+		name: 'PUBG',
+		urlImage: '',
+        description: "Come and watch a player versus player shooter game in which up to one hundred players fight in a battle royale, a type of large-scale last man standing deathmatch where players fight to remain the last alive.",
+		state: true
+	},
+	{
+		id: 'game5-uuid',
+		name: 'Valorant',
+		urlImage: '',
+        description: "Don't forget the great shooting game formed by two teams of five, where one team attacks and the other defends. Players control characters known as agents, who have different abilities to use to achieve victory in the game.",
+		state: true
+	},
 ]
