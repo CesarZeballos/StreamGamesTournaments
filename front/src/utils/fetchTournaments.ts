@@ -58,6 +58,21 @@ export async function fetchGames() {
     }
 }
 
+export async function fetchBanGame(id:string) {
+    const response = await fetch(`${apiUrl}/games/update/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+        
+        if (!response.ok) {
+        throw new Error('Failed to disable game');
+        }
+        
+        return response.json();
+}
+
 //funcion para pagar la inscripcion al torneo:
 export const fetchPaymentTournament = async (data: ITournamentPayment) => {
     const response = await fetch(`${apiUrl}/paypal/create-order/${data.tournamentId}`, {
