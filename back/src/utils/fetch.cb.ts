@@ -67,15 +67,17 @@ export class Fetchs {
                     include: {
                         team: {
                             include: {
-                                tournament: true,
+                                tournament: { include: { game: true } }
                             },
                         },
                     },
                 },
                 tournaments: {
                     include: {
+                        game: true,
                         teams: {
                             include: {
+                                tournament: true,
                                 users: true,
                             },
                         },
@@ -87,6 +89,7 @@ export class Fetchs {
                         tournament: {
                             include: {
                                 game: true,
+
                                 teams: {
                                     include: {
                                         users: true,
@@ -112,7 +115,7 @@ export class Fetchs {
                 include: {
                     game: true,
                     players: true,
-                    organizer: true,
+                    organizer: { include: { teams: { include: { user: true } } } },
                     teams: { include: { users: true } },
                     versus: true,
                     notifications: true,

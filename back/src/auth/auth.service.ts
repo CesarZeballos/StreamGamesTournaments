@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailTemplates } from 'mail/mail-templates';
 import { Fetchs } from 'utils/fetch.cb';
+import { Notification } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -86,10 +87,30 @@ export class AuthService {
 		const payload = { userId: userData.id, email: userData.email };
 		const token = this.jwtService.sign(payload);
 
-		const userTournaments = [
-			...userData.tournaments,
-			...userData.teams.map((team) => team.team.tournament),
-		];
+		const playerTournaments = userData.tournaments.map((tournament) => ({
+			tournamentId: tournament.id,
+			id: userData.id,
+			nameTournament: tournament.nameTournament,
+			nameTeam: null,
+			nameGame: tournament.game ? tournament.game.name : null,
+			tournamentDate: tournament.startDate.toISOString(),
+			state: tournament.state,
+		}));
+
+		const teamTournaments = userData.teams.map((team) => ({
+			tournamentId: team.team.id,
+			id: userData.id,
+			nameTournament: team.team.name,
+			nameTeam: team.nameTeam,
+			nameGame: team.team.tournament.game.name,
+			tournamentDate: team.team.tournament.startDate.toISOString(),
+			state: team.team.tournament.state,
+		}));
+
+		const combinedTournaments = [...playerTournaments, ...teamTournaments];
+
+
+
 
 		const friendsData = userData.friends
 			.filter((friend) => friend.user.id === userData.id || friend.friendId === userData.id)
@@ -114,21 +135,26 @@ export class AuthService {
 			}),
 		);
 
-		const notifications = userData.notifications.map((notification) => ({
-			tournamentId: notification.tournamentId,
-			nameTournament: notification.tournament.nameTournament,
-			nameGame: notification.tournament.game.name,
-			nameTeam: notification.tournament.teams.find((team) => team.organizerId === userData.id)?.name || null,
-			state: notification.state,
-			id: notification.id,
-			tournamentDate: notification.tournament.startDate,
-		}));
+		const notifications = userData.notifications.map((notification) => {
+			const tournament = notification.tournament;
+			const team = tournament.teams.find(team => { team.users.some(user => user.id === userData.id) });
+
+			return {
+				tournamentId: tournament.id,
+				id: userData.id,
+				nameTournament: tournament.nameTournament,
+				nameTeam: team ? team.name : null,
+				nameGame: tournament.game ? tournament.game.name : null,
+				tournamentDate: tournament.startDate.toISOString(),
+				state: tournament.state,
+			};
+		});
 
 		const { state, tournaments, isBanned, ...userNotData } = userData;
 
 		const user = {
 			...userNotData,
-			tournaments: userTournaments,
+			tournaments: combinedTournaments,
 			friends,
 			receivedFriendRequests,
 			notifications,
