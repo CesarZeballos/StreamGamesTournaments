@@ -103,7 +103,8 @@ export class AuthService {
 
 		const friends = {
 			id: friendsData.map(f => f.id),
-			friend: friendsData.flatMap(f => [f.userNickname, f.friendNickname])
+			nickname: friendsData.flatMap(f => [f.userNickname, f.friendNickname]),
+			friendId: friendsData.flatMap(f => [f.userId, f.friendId])
 		};
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(
