@@ -1,5 +1,5 @@
 import { ISecondStep } from "@/interfaces/interfaceRedux";
-import { ITournamentPostError } from "@/interfaces/interfaceTournaments";
+import { IAwardsInForm, ITournamentPostError } from "@/interfaces/interfaceTournaments";
 import { setSecondStep } from "@/redux/slices/organizerSlice";
 import { AppDispatch } from "@/redux/store";
 import { useState } from "react";
@@ -11,7 +11,7 @@ export const SecondStep: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [data, setData] = useState<ISecondStep>({} as ISecondStep)
     const [errorTournament, setErrorTournament] = useState<ITournamentPostError>({} as ITournamentPostError);
-    const [awards, setAwards] = useState<string[]>([]);
+    const [awards, setAwards] = useState<IAwardsInForm>({} as IAwardsInForm);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target
@@ -29,28 +29,34 @@ export const SecondStep: React.FC = () => {
         )
     }
 
-    const handleChangeAwards = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { value } = event.target
-        const updateAwards = [...awards]
-        updateAwards[index] = value
-        setAwards(updateAwards)
+    const handleChangeAwards = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value } = event.target
+        setAwards({
+            ...awards,
+            [name]: value
+        })
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        if (awards.length === 0) {
+        if (awards.first === "" || awards.first === undefined) {
             toast.info("Your tournament has no awards", {
                 position: 'top-right',
                 duration: 1500,
                 action: {
                     label: "ok",
-                    onClick: () => {dispatch(setSecondStep(data))},
+                    onClick: () => {
+                        setData({
+                            ...data,
+                            award: ["", "", ""]
+                        })
+                        dispatch(setSecondStep(data))},
                 }
             });    
         } else {
             setData({
                 ...data,
-                award: awards
+                award: [awards.first, awards.second, awards.third]
             })
             dispatch(setSecondStep(data))
         }
@@ -108,24 +114,28 @@ export const SecondStep: React.FC = () => {
                         <label className="body text-white">First position</label>
                         <input
                         type="text"
-                        value={awards[0]}
-                        onChange={event => handleChangeAwards(event, 0)}
+                        value={awards.first}
+                        onChange={handleChangeAwards}
                         className="input"
                         maxLength={100}/>
                         <label className="body text-white">Second position</label>
                         <input
                         type="text"
-                        value={awards[1]}
-                        onChange={event => handleChangeAwards(event, 1)}
+                        value={awards.second}
+                        onChange={handleChangeAwards}
                         className="input"
-                        maxLength={100}/>
+                        maxLength={100}
+                        disabled={!awards.first}
+                        />
                         <label className="body text-white">Third position</label>
                         <input
                         type="text"
-                        value={awards[2]}
-                        onChange={event => handleChangeAwards(event, 2)}
+                        value={awards.third}
+                        onChange={handleChangeAwards}
                         className="input"
-                        maxLength={100}/>
+                        maxLength={100}
+                        disabled={!awards.first || !awards.second}
+                        />
                     </div>
                 </div>
             </div>
