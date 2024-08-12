@@ -1,6 +1,7 @@
 import {
 	BadRequestException,
 	Injectable,
+	Logger,
 	NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -15,22 +16,22 @@ import { Fetchs } from 'utils/fetch.cb';
 
 @Injectable()
 export class TournamentsService {
+	private readonly logger = new Logger(TournamentsService.name);
+
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly mailService: MailService,
-		private readonly fetchs: Fetchs
+		private readonly fetchs: Fetchs,
 	) { }
 
 	async getAllTournaments() {
-
-
 		const tournaments = await this.prisma.tournament.findMany({
 			include: {
 				game: true,
 				players: true,
 				teams: true,
 				versus: true,
-				positionBattle: true
+				positionBattle: true,
 			},
 		});
 
@@ -38,35 +39,39 @@ export class TournamentsService {
 			return { message: 'No tournaments found' };
 		}
 
-		return tournaments;
+		return { message: 'Tournaments found', data: tournaments };
 	}
 
 	async getTournamentById(id: string) {
-		const tournament = await this.fetchs.FindTournamentByUnique({ id })
+		try {
+			const tournament = await this.fetchs.FindTournamentByUnique(id);
+			console.log("TournamentService", tournament);
 
-		if (!tournament) {
-			throw new NotFoundException(`Tournament with id ${id} not found`);
+			if (!tournament) {
+				throw new NotFoundException(`Tournament with id ${id} not found`);
+			}
+
+			return tournament;
+		} catch (error) {
+			this.logger.error(`Error fetching tournament with id ${id}: ${error.message}`);
+			throw error;
 		}
-
-		return tournament;
 	}
 
 	async createTournament(createTournamentDto: CreateTournamentDto) {
-
 		const { organizerId, gameId, ...data } = createTournamentDto;
 
-		const numberTeams = Number(data.maxTeams)
-		const numberPrice = Number(data.price)
-		const numberMember = Number(data.membersNumber)
+		const numberTeams = Number(data.maxTeams);
+		const numberPrice = Number(data.price);
+		const numberMember = Number(data.membersNumber);
 
-		const organizerExists = await this.fetchs.FindUserByUnique({ id: organizerId })
-		if (!organizerExists) throw new NotFoundException(`Organizer with id ${organizerId} not found`)
+		const organizerExists = await this.fetchs.FindUserByUnique({ id: organizerId });
+		if (!organizerExists) throw new NotFoundException(`Organizer with id ${organizerId} not found`);
 
-		const gameExists = await this.fetchs.FindGamesByUnique({ id: gameId })
+		const gameExists = await this.fetchs.FindGamesByUnique({ id: gameId });
 		if (!gameExists) throw new NotFoundException(`Game with id ${gameId} not found`);
 
 		const awardsAsStrings = data.awards.map((a) => a.toString());
-
 
 		const tournament = await this.prisma.tournament.create({
 			data: {
@@ -89,61 +94,43 @@ export class TournamentsService {
 
 		await this.mailService.sendMail(mailOptions);
 
-		return tournament;
+		return {
+			message: `Tournament successfully created`,
+			tournament
+		};
 	}
 
 	async updateTournament(updateTournamentDto: UpdateTournamentDto) {
-		const { id, organizerId, gameId, teams, players, ...data } =
-			updateTournamentDto;
+		const { id, teams, players, ...data } = updateTournamentDto;
 
-		const tournament = await this.fetchs.FindTournamentByUnique({ id })
+		const tournament = await this.fetchs.FindTournamentByUnique(id);
 		if (!tournament) throw new NotFoundException(`Tournament with id ${id} not found`);
-
-		const organizerExists = await this.fetchs.FindUserByUnique({ id: organizerId })
-		if (!organizerExists) throw new NotFoundException(`Organizer with id ${organizerId} not found`)
-
-		const gameExists = await this.fetchs.FindGamesByUnique({ id: gameId })
-		if (!gameExists) throw new NotFoundException(`Game with id ${gameId} not found`);
 
 		const awardsAsStrings = data.awards?.map((a) => a.toString());
 
-		const updateData: any = {
+		const updateData: Partial<UpdateTournamentDto> = {
 			...data,
 			awards: awardsAsStrings,
 		};
 
-		if (organizerId) updateData.organizer = {
-			connect: { id: organizerId }
-		}
-
-		if (gameId) updateData.game = {
-			connect: { id: gameId }
-		}
-
-		if (teams) updateData.teams = { connect: teams.map((teamId) => ({ id: teamId })), }
-
-		if (players) updateData.players = {
-			connect: players.map((userId) => ({ id: userId })),
-		};
-
-
 		const updatedTournament = await this.prisma.tournament.update({
 			where: { id },
-			data: updateData,
+			data: {
+				...updateData,
+				teams: { set: teams?.map((teamId) => ({ id: teamId })) },
+				players: { set: players?.map((playerId) => ({ id: playerId })) }
+			}
 		});
 
 		return updatedTournament;
 	}
 
 	async deleteTeam(tournamentId: string, teamId: string) {
-
 		if (!tournamentId || !teamId) {
-			throw new BadRequestException(
-				'Tournament ID and Team ID must be provided',
-			);
+			throw new BadRequestException('Tournament ID and Team ID must be provided');
 		}
 
-		const tournament = await this.fetchs.FindTournamentByUnique({ id: tournamentId })
+		const tournament = await this.fetchs.FindTournamentByUnique(tournamentId);
 		if (!tournament) throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
 
 		await this.prisma.tournament.update({
@@ -163,7 +150,7 @@ export class TournamentsService {
 			throw new BadRequestException('Tournament ID must be provided');
 		}
 
-		const tournament = await this.fetchs.FindTournamentByUnique({ id: tournamentId })
+		const tournament = await this.fetchs.FindTournamentByUnique(tournamentId);
 		if (!tournament) throw new NotFoundException(`Tournament with ID ${tournamentId} not found`);
 
 		await this.prisma.tournament.update({

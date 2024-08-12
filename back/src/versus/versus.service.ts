@@ -10,7 +10,7 @@ export class VersusService {
     ) { }
 
     async createVersus(tournamentId: string) {
-        const tournament = await this.fetchs.FindTournamentByUnique({ id: tournamentId })
+        const tournament = await this.fetchs.FindTournamentByUnique(tournamentId)
 
         if (!tournament) throw new BadRequestException('Tournament does not exist');
 

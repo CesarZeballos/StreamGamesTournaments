@@ -16,7 +16,6 @@ export class UsersService {
 	) { }
 
 	async getAllUsers(): Promise<User[]> {
-
 		const users = await this.prisma.user.findMany({
 			include: {
 				teams: true,
@@ -32,18 +31,13 @@ export class UsersService {
 		});
 
 		if (users.length === 0) throw new BadRequestException('No users found');
-
 		return users;
 	}
 
 	async getUserById(id: string): Promise<
-		Partial<User> & { tournaments: Tournament[] } & {
-			friends: UserFriends[];
-		}
+		Partial<User> & { tournaments: Tournament[] } & { friends: UserFriends[] }
 	> {
-
-		const userData = await this.fetchs.FindUserByUnique({ id })
-
+		const userData = await this.fetchs.FindUserByUnique({ id });
 		if (!userData) {
 			throw new NotFoundException(`No user found with id ${id}`);
 		}
@@ -58,57 +52,40 @@ export class UsersService {
 			...teamsTournaments,
 		];
 
-		const {
-			tokenFirebase,
-			state,
-			tournaments,
-			isBanned,
-			...userNotData
-		} = userData;
+		const { tokenFirebase, state, ...userNotData } = userData;
 
-		const user = {
+		return {
 			...userNotData,
 			tournaments: userTournaments,
 			friends: userData.friends
-		}
-
-		return user;
+		};
 	}
 
 	async getUserByEmail(email: string): Promise<User | null> {
-
-		const user = await this.fetchs.FindUserByUnique({ email })
-		if (!user) throw new NotFoundException(`No se ha encontrado ningún usuario con correo electrónico: ${email}`);
-
+		const user = await this.fetchs.FindUserByUnique({ email });
+		if (!user) throw new NotFoundException(`No user found with email: ${email}`);
 		return user;
 	}
 
 	async updateUser(id: string, data: UpdateUserDto): Promise<User> {
+		const userData = await this.fetchs.FindUserByUnique({ id });
+		if (!userData) throw new NotFoundException(`User does not exist`);
 
-		const userData = await this.fetchs.FindUserByUnique({ id })
-		if (!userData) throw new BadRequestException(`User does not exists`)
-
-		const user = await this.prisma.user.update({
+		return await this.prisma.user.update({
 			where: { id },
 			data,
 		});
-
-		return user;
-
 	}
 
 	async disableUser(id: string): Promise<User> {
+		const userData = await this.fetchs.FindUserByUnique({ id });
+		if (!userData) throw new NotFoundException(`User does not exist`);
 
-		const userData = await this.fetchs.FindUserByUnique({ id })
-		if (!userData) throw new BadRequestException(`User does not exists`)
-
-		const user = await this.prisma.user.update({
+		return await this.prisma.user.update({
 			where: { id },
 			data: {
 				state: false
 			}
 		});
-
-		return user;
 	}
 }
