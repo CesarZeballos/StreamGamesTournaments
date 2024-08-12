@@ -1,6 +1,5 @@
 import {
 	IsString,
-	IsEmail,
 	IsNotEmpty,
 	IsDateString,
 	IsOptional,
@@ -17,7 +16,7 @@ export class SignInDto {
 		example: 'user@example.com',
 	})
 	@IsNotEmpty()
-	@IsEmail()
+	@IsString()
 	email: string;
 
 	@ApiProperty({

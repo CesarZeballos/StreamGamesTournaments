@@ -20,7 +20,7 @@ import { Fetchs } from 'utils/fetch.cb';
 			}),
 			inject: [ConfigService],
 		}),
-		MailModule, // Asegúrate de incluir MailModule aquí
+		MailModule,
 	],
 	providers: [AuthService, PrismaService, Fetchs],
 	controllers: [AuthController],
