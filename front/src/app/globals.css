@@ -219,6 +219,15 @@ body {
   focus:shadow-lightViolet
 }
 
+.inputMax {
+  @apply bg-white ml-2 rounded-sm px-3 py-3 font-Roboto text-BGdark w-96 h-24 
+  focus:border-solid focus:border-lightViolet focus:shadow-md focus:shadow-lightViolet
+  leading-normal placeholder:text-base placeholder:leading-normal resize-none;
+}
+
+
+
+
 .inputMUI {
   @apply bg-white rounded-md font-Roboto text-BGdark
   focus:border-solid

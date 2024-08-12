@@ -1,5 +1,5 @@
 import { ITournamentPayment } from "@/interfaces/interfaceRedux";
-import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -107,15 +107,32 @@ export const fetchAddTeamToTournament = async (data: IAddTeam) => {
 }
 
 export const fetchUploadFile = async (file: File) => {
-    const response = await fetch(`${apiUrl}/upload`, {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${apiUrl}/uploadfile`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            file
-        })
+        body: formData
     });
     const dataResponse = await response.json();
+    console.log("dataResponse", dataResponse)
     return dataResponse.url
+}
+
+
+export const fetchPostTournemnt = async (data: {data: ITournamentPost, token: string}) => {
+    const response = await fetch(`${apiUrl}/tournaments/add`, {
+        method: "POST",
+        headers: {
+            'content-Type': 'application/json',
+            'Authorization': `Bearer ${data.token}`
+        },
+        body: JSON.stringify(data.data)
+    })
+
+    const dataResponse = await response.json();
+    return dataResponse
 }

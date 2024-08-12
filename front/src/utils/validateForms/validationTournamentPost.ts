@@ -1,6 +1,7 @@
+import { IFirstStep } from "@/interfaces/interfaceRedux";
 import { ITournamentPost, ITournamentPostError } from "@/interfaces/interfaceTournaments";
 
-export function validateTournament(values: ITournamentPost): ITournamentPostError {
+export function validateTournament(values: any): ITournamentPostError {
     let errors: ITournamentPostError = {} as ITournamentPostError;
 
     const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format

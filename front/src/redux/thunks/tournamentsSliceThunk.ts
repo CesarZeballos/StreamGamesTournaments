@@ -1,6 +1,6 @@
 import { ITournamentPayment } from "@/interfaces/interfaceRedux"
-import { IAddTeam } from "@/interfaces/interfaceTournaments"
-import { fetchAddTeamToTournament, fetchCapturePaymentTournament, fetchPaymentTournament, fetchTournamentById, fetchTournaments } from "@/utils/fetchTournaments"
+import { IAddTeam, ITournamentPost } from "@/interfaces/interfaceTournaments"
+import { fetchAddTeamToTournament, fetchCapturePaymentTournament, fetchPaymentTournament, fetchPostTournemnt, fetchTournamentById, fetchTournaments } from "@/utils/fetchTournaments"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { useDispatch } from "react-redux"
 import { toast } from "sonner"
@@ -29,5 +29,10 @@ export const captureOrderSlice = createAsyncThunk('tournaments/capturePaymentToT
 
 export const postTeamToTournamentSlice = createAsyncThunk('tournaments/postTeamToTournament', async (data: IAddTeam) => {
         const response = await fetchAddTeamToTournament(data)
+        return response
+})
+
+export const postTournamentSlice = createAsyncThunk('tournaments/post', async (data: {data: ITournamentPost, token: string}) => {
+        const response = await fetchPostTournemnt(data)
         return response
 })
