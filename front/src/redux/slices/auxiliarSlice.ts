@@ -1,6 +1,6 @@
 import { IAuxiliarState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction, AnyAction  } from "@reduxjs/toolkit";
-import { getUsersSlice } from "../thunks/auxiliarSliceThunk";
+import { getUsersSlice, uploadFileSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
 import { postTeamToTournamentSlice } from "../thunks/tournamentsSliceThunk";
@@ -12,7 +12,7 @@ const initialState: IAuxiliarState = {
     users: [],
     status: 'idle',
     error: null,
-    statusPayment: 'idle'
+    statusPayment: 'idle',
 }
 
 const auxiliarSlice = createSlice({
@@ -96,6 +96,8 @@ const auxiliarSlice = createSlice({
                 duration: 1500,
             })
         })
+
+        
     }
 })
 

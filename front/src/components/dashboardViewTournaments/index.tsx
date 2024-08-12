@@ -15,30 +15,33 @@ export const DashboardViewTournaments = () => {
     const tournaments = useSelector((state: RootState) => state.user.user?.notifications)
     
     useEffect(() => {
-            tournaments?.map((tournament) => {
-                const today = new Date();
-                const startDate = new Date(tournament.tournamentDate);
-                const incomingInDays = Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        let tourAux = []
+        for (let i = 0; i < tournaments?.length!; i++) {   
+            const today = new Date();
+            const startDate = new Date(tournaments![i].tournamentDate);
+            const incomingInDays = Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+            const { tournamentId, nameTournament, nameTeam, tournamentDate } = tournaments![i]
 
-                if (today < startDate) {
-                    setMyTournaments([...myTournaments, {
-                        id: tournament.tournamentId,
-                        nameTournament: tournament.nameTournament,
-                        teamName: tournament.nameTeam,
-                        tournamentDate: tournament.tournamentDate,
-                        status: `${incomingInDays} days`
-                    }])
+            if (today < startDate) {
+                tourAux.push( {
+                    id: tournamentId,
+                    nameTournament: nameTournament,
+                    teamName: nameTeam,
+                    tournamentDate: tournamentDate,
+                    status: `${incomingInDays} days`
+                })
             } 
             else if (today > startDate) {
-                setMyTournaments([...myTournaments, {
-                    id: tournament.tournamentId,
-                    nameTournament: tournament.nameTournament,
-                    teamName: tournament.nameTeam,
-                    tournamentDate: tournament.tournamentDate,
+                tourAux.push( {
+                    id: tournamentId,
+                    nameTournament: nameTournament,
+                    teamName: nameTeam,
+                    tournamentDate: tournamentDate,
                     status: "Ended"
-                }])
+                })
             }
-            })
+        }
+        setMyTournaments(tourAux)
         }, [tournaments])
 
     const tournamentSelected = (id: string) => {

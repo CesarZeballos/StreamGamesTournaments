@@ -1,5 +1,5 @@
 import { IUser } from "./interfaceUser";
-import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, IGame, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 export interface ITournamentState {
   status: string;
@@ -9,6 +9,8 @@ export interface ITournamentState {
   tournamentsPerPage: number;
   filters: IFilters;
   tournamentsFiltered: ITournament[];
+  games: IGame[]
+  allGames: IGame[]
 }
 
 export interface IFilters {
@@ -51,12 +53,13 @@ export interface IAuxiliarState {
   users: IUser[];
   status: string;
   error: string | null;
-  statusPayment: string
+  statusPayment: string;
 }
 
 export interface IPaymentState {
   status: string
   error: string | null
+  step: string
   teamData: IAddTeam
   tournamentData: ITournament
 }
@@ -64,6 +67,11 @@ export interface IPaymentState {
 export interface IBasicDataToTournamentRegister {
   organizerId: string
   token: string
+}
+
+export interface ITeamDataToTournamentRegister {
+  name: string
+  users: string[]
 }
 
 export interface ITournamentPayment {
@@ -77,3 +85,35 @@ export interface IUserActionsState {
   removeFriendStatus: string
   error: string | null
 }
+
+export interface IOrganizerState {
+  step: string
+  tournament: ITournamentPost
+  token: string
+}
+
+export interface IBasicTournamentFormProps {
+  organizerId: string;
+  token: string;
+}
+
+export interface IFirstStep {
+  nameTournament: string;
+  startDate: string;
+  category: string;
+  gameId: string;
+  urlAvatar: string;
+}
+
+export interface ISecondStep {
+  membersNumber: number;
+  maxTeam: number;
+  price: number;
+  award: string[];
+  description: string;
+}
+
+export interface IThirdStep {
+  urlAvatar: string;
+}
+
