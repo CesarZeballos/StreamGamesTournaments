@@ -1,5 +1,5 @@
 import { ITournamentPayment } from "@/interfaces/interfaceRedux";
-import { IAddTeam, ITournament } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,11 +18,6 @@ export async function fetchTournaments(): Promise<ITournament[]> {
         if (!Array.isArray(allTournaments)) {
             throw new Error("API response is not an array.");
         }
-        // const formattedTournaments = allTournaments.map((tournament: ITournament) => ({
-        //     ...tournament,
-        //     startDate: format(new Date(tournament.startDate), "dd/MM")
-        // }));
-        // return formattedTournaments;
         return allTournaments;
 }
 
@@ -42,6 +37,25 @@ export async function fetchTournamentById(id: string) {
         console.log("Awards field:", tournament.award);
             return tournament;
         }
+}
+
+//funcion para traer los todos los juegos
+export async function fetchGames() {
+    const response = await fetch(`${apiUrl}/games`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+    if (!response.ok) {
+        throw new Error(`Error fetching games: ${response.statusText}`);
+    } else {
+        const allGames = await response.json();
+        if (!Array.isArray(allGames)) {
+            throw new Error("API response is not an array.");
+        }
+        return allGames;
+    }
 }
 
 //funcion para pagar la inscripcion al torneo:
@@ -92,3 +106,33 @@ export const fetchAddTeamToTournament = async (data: IAddTeam) => {
     return dataResponse
 }
 
+export const fetchUploadFile = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${apiUrl}/uploadfile`, {
+        method: "POST",
+        body: formData
+    });
+    const dataResponse = await response.json();
+    console.log("dataResponse", dataResponse)
+    return dataResponse.url
+}
+
+
+export const fetchPostTournemnt = async (data: {data: ITournamentPost, token: string}) => {
+    console.log('data', data)
+    const response = await fetch(`${apiUrl}/tournaments/add`, {
+        method: "POST",
+        headers: {
+            'content-Type': 'application/json',
+            'Authorization': `Bearer ${data.token}`
+        },
+        body: JSON.stringify(data.data)
+    })
+
+
+
+    const dataResponse = await response.json();
+    return dataResponse
+}

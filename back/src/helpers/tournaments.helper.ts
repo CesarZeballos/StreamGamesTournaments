@@ -13,9 +13,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 5000,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-2',
@@ -29,9 +35,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1500,
-    organizerId: 'user2-uuid',
-    gameId: 'game1-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-3',
@@ -45,9 +57,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 550,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-4',
@@ -61,9 +79,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 2500,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-5',
@@ -77,9 +101,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 950,
-    organizerId: 'user2-uuid',
-    gameId: 'game1-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-6',
@@ -93,9 +123,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1050,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-7',
@@ -109,9 +145,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 250,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-8',
@@ -125,9 +167,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 550,
-    organizerId: 'user2-uuid',
-    gameId: 'game1-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-9',
@@ -141,9 +189,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1350,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-10',
@@ -157,9 +211,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 750,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-11',
@@ -173,9 +233,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1550,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-12',
@@ -189,9 +255,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1550,
-    organizerId: 'user2-uuid',
-    gameId: 'game1-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-13',
@@ -205,9 +277,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1050,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-14',
@@ -221,9 +299,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1250,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-15',
@@ -237,9 +321,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1850,
-    organizerId: 'user2-uuid',
-    gameId: 'game1-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-16',
@@ -253,9 +343,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1750,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-17',
@@ -269,9 +365,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 950,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-18',
@@ -285,9 +387,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1450,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-19',
@@ -301,9 +409,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1350,
-    organizerId: 'user2-uuid',
-    gameId: 'game1-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-20',
@@ -317,9 +431,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1650,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-21',
@@ -333,9 +453,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1050,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-22',
@@ -349,9 +475,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1450,
-    organizerId: 'user2-uuid',
-    gameId: 'game1-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-23',
@@ -365,9 +497,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1850,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-24',
@@ -381,9 +519,15 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1250,
-    organizerId: 'user2-uuid',
-    gameId: 'game2-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
   {
     id: 'uuid-25',
@@ -397,8 +541,14 @@ export const tournaments = [
     membersNumber: 5,
     maxTeams: 4,
     price: 1550,
-    organizerId: 'user2-uuid',
-    gameId: 'game3-uuid',
-    teams: ['team1-uuid', 'team2-uuid', 'team4-uuid', 'team3-uuid'],
+    organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
+    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    teams: [
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "b2c3d4e5-6789-01bc-def2-34567890abcd",
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+    ]
+
   },
 ];

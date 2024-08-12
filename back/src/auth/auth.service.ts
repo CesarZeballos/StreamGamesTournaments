@@ -10,6 +10,7 @@ import { MailService } from 'mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailTemplates } from 'mail/mail-templates';
+import { Fetchs } from 'utils/fetch.cb';
 
 @Injectable()
 export class AuthService {
@@ -19,53 +20,41 @@ export class AuthService {
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
 		private readonly mailService: MailService,
+		private readonly fetchs: Fetchs
 	) { }
 
 	async signUp(createUserDto: CreateUserDto) {
 		const { email, nickname, tokenFirebase, birthdate } = createUserDto;
 
-		const userExists = await this.prisma.user.findUnique({
-			where: {
-				email,
-			},
-		});
+		const userExists = await this.fetchs.FindUserByUnique({ email });
 		if (userExists) {
-			if (userExists.isBanned === true)
-				throw new BadRequestException(
-					`User with email: ${userExists.email} is banned`,
-				);
-			if (userExists.state === true && userExists.isBanned === false)
-				throw new BadRequestException(
-					`User with email: ${userExists.email} already exists`,
-				);
+			if (userExists.isBanned === true) {
+				throw new BadRequestException(`User with email: ${userExists.email} is banned`);
+			}
+			if (userExists.state === false) {
+				throw new BadRequestException(`User with email: ${userExists.email} already exists`);
+			}
 		}
-
-		const parsedBirthDate = new Date(birthdate);
 
 		const user = await this.prisma.user.create({
 			data: {
 				email,
 				nickname,
 				tokenFirebase,
-				birthdate: parsedBirthDate.toISOString(),
+				birthdate: new Date(birthdate).toISOString(),
 			},
 		});
 
 		const payload = { userId: user.id, email: user.email };
-		const token = await this.jwtService.sign(payload);
+		const token = this.jwtService.sign(payload);
 
 		const mailOptions = MailTemplates.welcomeEmail(email, nickname);
 		try {
 			await this.mailService.sendMail(mailOptions);
 			this.logger.log(`Welcome email sent to ${email}`);
 		} catch (error) {
-			this.logger.error(
-				`Failed to send welcome email to ${email}`,
-				error.stack,
-			);
-			throw new InternalServerErrorException(
-				'Error sending welcome email',
-			);
+			this.logger.error(`Failed to send welcome email to ${email}`, error.stack);
+			throw new InternalServerErrorException('Error sending welcome email');
 		}
 
 		return {
@@ -78,90 +67,32 @@ export class AuthService {
 	async signIn(signInDto: SignInDto) {
 		const { email, tokenFirebase } = signInDto;
 
-		this.logger.log(`Attempting to sign in user with email: ${email}`);
+		if (!email || !tokenFirebase) {
+			throw new BadRequestException('Email and tokenFirebase are required');
+		}
 
-		const userData = await this.prisma.user.findUnique({
-			where: { email },
-			include: {
-				friends: {
-					include: {
-						friend: {
-							select: { id: true, nickname: true },
-						},
-						user: { select: { id: true, nickname: true } }
-					},
-				},
-				receivedFriendRequests: {
-					include: {
-						sender: {
-							select: { id: true, nickname: true },
-						},
-					},
-				},
-				sentMessages: true,
-				receivedMessages: true,
-				globalChat: true,
-				tournaments: true,
-				organizedTournaments: true,
-				teams: {
-					include: {
-						team: {
-							include: {
-								tournament: {
-									include: {
-										game: true,
-									},
-								},
-							},
-						},
-					},
-				},
-				notifications: {
-					include: {
-						tournament: {
-							include: {
-								game: true,
-								teams: true,
-							},
-						},
-					},
-				},
-			},
-		});
-
+		const userData = await this.fetchs.FindUserByUnique({ email });
 		if (!userData) {
-			this.logger.warn(`User not found with email: ${email}`);
 			throw new UnauthorizedException('Invalid credentials');
 		}
-		if (userData.isBanned === true)
-			throw new BadRequestException(
-				`User with email: ${userData.email} is banned`,
-			);
-		if (userData.state === false)
-			throw new BadRequestException(
-				`User with email: ${userData.email} does not exist`,
-			);
+
+		if (userData.isBanned) {
+			throw new BadRequestException(`User with email: ${userData.email} is banned`);
+		}
+		if (!userData.state) {
+			throw new BadRequestException(`User with email: ${userData.email} does not exist`);
+		}
 
 		const payload = { userId: userData.id, email: userData.email };
-		const token = await this.jwtService.sign(payload);
-
-		this.logger.log(`User signed in successfully with email: ${email}`);
-
-		const singlePlayerTournaments = userData.tournaments;
-		const teamsTournaments = userData.teams.map(
-			(team) => team.team.tournament,
-		);
+		const token = this.jwtService.sign(payload);
 
 		const userTournaments = [
-			...singlePlayerTournaments,
-			...teamsTournaments,
+			...userData.tournaments,
+			...userData.teams.map((team) => team.team.tournament),
 		];
 
-		const friends = userData.friends
-			.filter(
-				(friend) =>
-					friend.user.id === userData.id || friend.friendId === userData.id,
-			)
+		const friendsData = userData.friends
+			.filter((friend) => friend.user.id === userData.id || friend.friendId === userData.id)
 			.map((friend) => ({
 				id: friend.id,
 				userId: friend.user.id,
@@ -169,6 +100,11 @@ export class AuthService {
 				friendId: friend.friend.id,
 				friendNickname: friend.friend.nickname,
 			}));
+
+		const friends = {
+			id: friendsData.map(f => f.id),
+			friend: friendsData.flatMap(f => [f.userNickname, f.friendNickname])
+		};
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(
 			(request) => ({
@@ -181,10 +117,7 @@ export class AuthService {
 			tournamentId: notification.tournamentId,
 			nameTournament: notification.tournament.nameTournament,
 			nameGame: notification.tournament.game.name,
-			nameTeam:
-				notification.tournament.teams.find(
-					(team) => team.organizerId === userData.id,
-				)?.name || null,
+			nameTeam: notification.tournament.teams.find((team) => team.organizerId === userData.id)?.name || null,
 			state: notification.state,
 			id: notification.id,
 			tournamentDate: notification.tournament.startDate,

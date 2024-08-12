@@ -4,10 +4,11 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from 'mail/mail.service';
 import { TournamentsController } from './tournaments.controller';
 import { FileUploadService } from 'file-upload/file-upload.service';
+import { Fetchs } from 'utils/fetch.cb';
 
 @Module({
 	imports: [],
-	providers: [TournamentsService, PrismaService, MailService, FileUploadService],
+	providers: [TournamentsService, PrismaService, MailService, FileUploadService, Fetchs],
 	controllers: [TournamentsController],
 	exports: [MailService],
 })
