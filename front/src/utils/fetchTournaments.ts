@@ -121,6 +121,7 @@ export const fetchUploadFile = async (file: File) => {
 
 
 export const fetchPostTournemnt = async (data: {data: ITournamentPost, token: string}) => {
+    console.log('data', data)
     const response = await fetch(`${apiUrl}/tournaments/add`, {
         method: "POST",
         headers: {
@@ -129,6 +130,8 @@ export const fetchPostTournemnt = async (data: {data: ITournamentPost, token: st
         },
         body: JSON.stringify(data.data)
     })
+
+
 
     const dataResponse = await response.json();
     return dataResponse

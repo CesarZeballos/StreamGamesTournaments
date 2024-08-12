@@ -26,7 +26,7 @@ export const FinishStepRegisterTeam = () => {
         setTimeout(() => {
             dispatch(setCancelRegisterToTournament())
             router.push("/")
-        }, 4000)
+        }, 8000)
     }, [dispatch, router, user])
     
     const handleFinish = () => {
