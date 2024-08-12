@@ -30,15 +30,15 @@ const SideBar: React.FC = () => {
       <div className="flex flex-col gap-2">
         <h1 className="heading5 text-lightViolet">Competition Difficulty</h1>
         <div className="flex flex-col gap-1">
-          <button className={`buttonFilter ${category === "beginner" && "buttonFilterActive"}`} name="category" value={"beginner"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${category === "Beginner" && "buttonFilterActive"}`} name="category" value={"Beginner"} onClick={handleFilterClick}>
             <PiMedalMilitary />
             <p>Beginner</p>
           </button>
-          <button className={`buttonFilter ${category === "advanced" && "buttonFilterActive"}`} name="category" value={"advanced"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${category === "Advanced" && "buttonFilterActive"}`} name="category" value={"Advanced"} onClick={handleFilterClick}>
             <PiMedalMilitaryFill />
             <p>Advanced</p>
           </button>
-          <button className={`buttonFilter ${category === "expert" && "buttonFilterActive"}`} name="category" value={"expert"} onClick={handleFilterClick}>
+          <button className={`buttonFilter ${category === "Expert" && "buttonFilterActive"}`} name="category" value={"Expert"} onClick={handleFilterClick}>
             <TbMilitaryAward />
             <p>Expert</p>
           </button>
