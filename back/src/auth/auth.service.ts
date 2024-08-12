@@ -101,11 +101,13 @@ export class AuthService {
 				friendNickname: friend.friend.nickname,
 			}));
 
-		const friends = {
-			id: friendsData.map(f => f.id),
-			nickname: friendsData.flatMap(f => [f.userNickname, f.friendNickname]),
-			friendId: friendsData.flatMap(f => [f.userId, f.friendId])
-		};
+		const friends = friendsData.map((f) => {
+			return {
+				id: f.id,
+				nickname: f.userId === userData.id ? f.friendNickname : f.userNickname,
+				friendId: f.userId === userData.id ? f.friendId : f.userId
+			};
+			});
 
 		const receivedFriendRequests = userData.receivedFriendRequests.map(
 			(request) => ({
