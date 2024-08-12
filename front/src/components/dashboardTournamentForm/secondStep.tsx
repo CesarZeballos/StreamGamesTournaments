@@ -48,17 +48,26 @@ export const SecondStep: React.FC = () => {
                     onClick: () => {
                         setData({
                             ...data,
-                            award: ["", "", ""]
+                            awards: []
                         })
                         dispatch(setSecondStep(data))},
                 }
             });    
         } else {
-            setData({
-                ...data,
-                award: [awards.first, awards.second, awards.third]
-            })
-            dispatch(setSecondStep(data))
+            const awardArray = []
+            awardArray.push(awards.first)
+            awardArray.push(awards.second)
+            awardArray.push(awards.third)
+            console.log(awardArray)
+            console.log(awards)
+
+            dispatch(setSecondStep({
+                membersNumber: data.membersNumber,
+                maxTeam: data.maxTeam,
+                price: data.price,
+                awards: awardArray,
+                description: data.description
+            }))
         }
     }
 
@@ -114,6 +123,7 @@ export const SecondStep: React.FC = () => {
                         <label className="body text-white">First position</label>
                         <input
                         type="text"
+                        name="first"
                         value={awards.first}
                         onChange={handleChangeAwards}
                         className="input"
@@ -121,20 +131,22 @@ export const SecondStep: React.FC = () => {
                         <label className="body text-white">Second position</label>
                         <input
                         type="text"
+                        name="second"
                         value={awards.second}
                         onChange={handleChangeAwards}
                         className="input"
                         maxLength={100}
-                        disabled={!awards.first}
+                        // disabled={awards.first === "" || awards.first === undefined}
                         />
                         <label className="body text-white">Third position</label>
                         <input
                         type="text"
+                        name="third"
                         value={awards.third}
                         onChange={handleChangeAwards}
                         className="input"
                         maxLength={100}
-                        disabled={!awards.first || !awards.second}
+                        // disabled={awards.second === "" || awards.second === undefined}
                         />
                     </div>
                 </div>

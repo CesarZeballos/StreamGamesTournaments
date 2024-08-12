@@ -109,7 +109,7 @@ export interface ISecondStep {
   membersNumber: number;
   maxTeam: number;
   price: number;
-  award: string[];
+  awards: string[];
   description: string;
 }
 
