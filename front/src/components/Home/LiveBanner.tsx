@@ -19,9 +19,11 @@ const LiveBanner: React.FC = () => {
     const games = useSelector((state: RootState) => state.tournament.games);
 
     useEffect(() => {
-        dispatch(getGamesActivesSlice())
-        setBanner(games)
-    }, [dispatch, games])
+        if (banner.length === 0) {
+            dispatch(getGamesActivesSlice())
+            setBanner(games)
+        }
+    }, [dispatch, games, banner])
 
 
     const handleNext = () => {

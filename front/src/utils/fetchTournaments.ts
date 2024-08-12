@@ -112,9 +112,6 @@ export const fetchUploadFile = async (file: File) => {
 
     const response = await fetch(`${apiUrl}/uploadfile`, {
         method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
         body: formData
     });
     const dataResponse = await response.json();
