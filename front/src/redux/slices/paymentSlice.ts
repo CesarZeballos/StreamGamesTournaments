@@ -31,6 +31,7 @@ const paymentSlice = createSlice({
         setTeamData(state, action: PayloadAction<ITeamDataToTournamentRegister>) {
             state.teamData.name = action.payload.name
             state.teamData.users = action.payload.users
+            state.teamData.users.push(state.teamData.organizerId)
             state.step = "payment"
         },
         setStepPayment(state, action: PayloadAction<string>) {

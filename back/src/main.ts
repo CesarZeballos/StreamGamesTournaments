@@ -25,6 +25,21 @@ import * as bodyParser from 'body-parser';
 // 	await preload.addUsers();
 // 	await preload.addTournaments();
 // }
+// async function PreloadData(
+// 	prismaService: PrismaService,
+// 	teamService: TeamsService,
+// 	tournamentsService: TournamentsService,
+// ) {
+// 	const preload = new preloadData(
+// 		prismaService,
+// 		teamService,
+// 		tournamentsService,
+// 	);
+// 	await preload.clearTables();
+// 	await preload.addGames();
+// 	await preload.addUsers();
+// 	await preload.addTournaments();
+// }
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);

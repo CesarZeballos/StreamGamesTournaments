@@ -4,7 +4,6 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function postUser(data:IRegisterForm) {
     const dataFetch = JSON.stringify(data)
-    console.log("dataFetch", dataFetch)
     try {
         const response = await fetch(`${apiUrl}/auth/signup`, {
             method: "POST",
@@ -14,6 +13,7 @@ export async function postUser(data:IRegisterForm) {
             body: dataFetch
         })
         const loginData = await response.json()
+        console.log("loginData", loginData)
 
         return loginData
     } catch (error) {
