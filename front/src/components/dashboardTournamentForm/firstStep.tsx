@@ -7,7 +7,7 @@ import { validateTournament } from "@/utils/validateForms/validationTournamentPo
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-const categories = ["beginner", "advanced", "expert"]
+const categories = ["Beginner", "Advanced", "Expert"]
 
 export const FirstStep: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
