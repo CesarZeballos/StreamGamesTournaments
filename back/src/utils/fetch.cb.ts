@@ -1,3 +1,4 @@
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 
 type UserIdentifier = {
@@ -12,7 +13,7 @@ type GameTeamIdentifier = {
 };
 
 
-
+@Injectable()
 export class Fetchs {
     constructor(private readonly prisma: PrismaService) { }
 

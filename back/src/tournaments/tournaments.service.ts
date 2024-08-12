@@ -39,7 +39,7 @@ export class TournamentsService {
 			return { message: 'No tournaments found' };
 		}
 
-		return { message: 'Tournaments found', data: tournaments };
+		return tournaments;
 	}
 
 	async getTournamentById(id: string) {
