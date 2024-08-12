@@ -10,23 +10,21 @@ import { preloadData } from '../preload/preload.db';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as bodyParser from 'body-parser';
 
-// async function PreloadData(
-// 	prismaService: PrismaService,
-// 	teamService: TeamsService,
-// 	tournamentsService: TournamentsService,
-// ) {
-// 	const preload = new preloadData(
-// 		prismaService,
-// 		teamService,
-// 		tournamentsService,
-// 	);
-// 	await preload.clearTables();
-// 	await preload.addGames();
-// 	await preload.addUsers();
-// 	await preload.addTournaments();
-// 	await preload.addTeamsWithPlayers();
-// 	await preload.addTeamForTournament();
-// }
+async function PreloadData(
+	prismaService: PrismaService,
+	teamService: TeamsService,
+	tournamentsService: TournamentsService,
+) {
+	const preload = new preloadData(
+		prismaService,
+		teamService,
+		tournamentsService,
+	);
+	await preload.clearTables();
+	await preload.addGames();
+	await preload.addUsers();
+	await preload.addTournaments();
+}
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -58,7 +56,7 @@ async function bootstrap() {
 		app.use(LoggerGlobalMiddleware);
 		app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-		// await PreloadData(prismaService, teamService, tournamentService);
+		await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 
 		const port = process.env.PORT || 3001;

@@ -11,17 +11,18 @@ type GameTeamIdentifier = {
     id?: string;
 };
 
-type TournamentIdentifier = {
-    nameTournament?: string;
-    id?: string;
-};
+
 
 export class Fetchs {
     constructor(private readonly prisma: PrismaService) { }
 
     async FindUserByUnique(parameter: UserIdentifier) {
         const { email, nickname, id } = parameter
-        await this.prisma.user.findUnique({
+        if (!email && !nickname && !id) {
+            throw new Error('At least one identifier must be provided');
+        }
+
+        return await this.prisma.user.findUnique({
             where: {
                 ...(email && { email }),
                 ...(nickname && { nickname }),
@@ -30,90 +31,34 @@ export class Fetchs {
             include: {
                 friends: {
                     include: {
-                        friend: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
-                        user: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
+                        friend: true,
+                        user: true,
                     },
                 },
                 friendRequests: {
                     include: {
-                        user: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
-                        friend: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
+                        user: true,
+                        friend: true,
                     },
                 },
                 sentFriendRequests: {
                     include: {
-                        receiver: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
+                        receiver: true,
                     },
                 },
                 receivedFriendRequests: {
                     include: {
-                        sender: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
+                        sender: true,
                     },
                 },
                 sentMessages: {
                     include: {
-                        receiver: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
+                        receiver: true,
                     },
                 },
                 receivedMessages: {
                     include: {
-                        sender: {
-                            select: {
-                                id: true,
-                                nickname: true,
-                                email: true,
-                                urlProfile: true,
-                            },
-                        },
+                        sender: true,
                     },
                 },
                 globalChat: true,
@@ -121,18 +66,13 @@ export class Fetchs {
                     include: {
                         team: {
                             include: {
-                                tournament: {
-                                    include: {
-                                        game: true,
-                                    },
-                                },
+                                tournament: true,
                             },
                         },
                     },
                 },
                 tournaments: {
                     include: {
-                        game: true,
                         teams: {
                             include: {
                                 users: true,
@@ -140,16 +80,7 @@ export class Fetchs {
                         },
                     },
                 },
-                organizedTournaments: {
-                    include: {
-                        game: true,
-                        teams: {
-                            include: {
-                                users: true,
-                            },
-                        },
-                    },
-                },
+                organizedTournaments: true,
                 notifications: {
                     include: {
                         tournament: {
@@ -166,95 +97,48 @@ export class Fetchs {
                 },
             },
         });
+
     }
 
     async FindTournamentByUnique(id: string) {
-        return this.prisma.tournament.findUnique({
-            where: { id },
-            include: {
-                game: true,
-                players: {
-                    include: {
-                        friends: true,
-                        friendRequests: true,
-                        sentFriendRequests: true,
-                        receivedFriendRequests: true,
-                        sentMessages: true,
-                        receivedMessages: true,
-                        globalChat: true,
-                        teams: {
-                            include: {
-                                team: {
-                                    include: {
-                                        users: true,
-                                        tournament: true,
-                                        versusPosition1: true,
-                                        versusPosition2: true,
-                                    },
-                                },
-                            },
-                        },
-                        tournaments: true,
-                        organizedTournaments: true,
-                        notifications: true,
-                    },
+        if (!id) {
+            throw new Error('Tournament ID must be provided');
+        }
+
+        try {
+            const tournament = await this.prisma.tournament.findUnique({
+                where: { id },
+                include: {
+                    game: true,
+                    players: true,
+                    organizer: true,
+                    teams: { include: { users: true } },
+                    versus: true,
+                    notifications: true,
+                    positionBattle: true,
                 },
-                organizer: true,
-                teams: {
-                    include: {
-                        users: {
-                            include: {
-                                user: true,
-                            },
-                        },
-                        versusPosition1: {
-                            include: {
-                                team2: true,
-                                tournament: true,
-                            },
-                        },
-                        versusPosition2: {
-                            include: {
-                                team1: true,
-                                tournament: true,
-                            },
-                        },
-                    },
-                },
-                versus: {
-                    include: {
-                        team1: true,
-                        team2: true,
-                        positionBattle: {
-                            include: {
-                                tournament: true,
-                                versus: true,
-                            },
-                        },
-                    },
-                },
-                notifications: {
-                    include: {
-                        receivedNotification: true,
-                    },
-                },
-                positionBattle: {
-                    include: {
-                        versus: {
-                            include: {
-                                team1: true,
-                                team2: true,
-                                tournament: true,
-                            },
-                        },
-                    },
-                },
-            },
-        });
+            });
+
+
+            if (!tournament) {
+                throw new Error('Tournament not found');
+            }
+
+            return tournament;
+        } catch (error) {
+            throw error;
+        }
     }
+
+
+
 
     async FindGamesByUnique(parameter: GameTeamIdentifier) {
         const { name, id } = parameter;
+        if (!name && !id) {
+            throw new Error('At least one identifier must be provided');
+        }
+
         return this.prisma.game.findUnique({
             where: {
                 ...(name && { name }),
@@ -265,14 +149,23 @@ export class Fetchs {
 
 
     async FindTeamByUnique(parameter: GameTeamIdentifier) {
+
         const { name, id } = parameter
+        if (!name && !id) {
+            throw new Error('At least one identifier must be provided');
+        }
+
         return this.prisma.team.findUnique({
             where: {
                 ...(name && { name }),
                 ...(id && { id }),
             },
             include: {
-                users: true,
+                users: {
+                    include: {
+                        user: true
+                    }
+                },
                 tournament: true,
                 versusPosition1: true,
                 versusPosition2: true,
