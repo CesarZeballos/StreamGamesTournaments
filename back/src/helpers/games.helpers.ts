@@ -22,14 +22,12 @@ export const gamesData = [
 		name: 'PUBG',
 		urlImage: 'http://res.cloudinary.com/dofwlsemg/image/upload/v1723486437/cdlwukaenaiotcixrzlf.jpg',
         description: "Come and watch a player versus player shooter game in which up to one hundred players fight in a battle royale, a type of large-scale last man standing deathmatch where players fight to remain the last alive.",
-		state: true
 	},
 	{
 		id: 'c9a3b1f5-8b73-4e2a-b2f2-dc8e5c9c6e81',
 		name: 'Valorant',
 		urlImage: 'http://res.cloudinary.com/dofwlsemg/image/upload/v1723486470/hk0lbe1atqfmpxc2ejkj.jpg',
         description: "Don't forget the great shooting game formed by two teams of five, where one team attacks and the other defends. Players control characters known as agents, who have different abilities to use to achieve victory in the game.",
-		state: true
 	},
 ];
 

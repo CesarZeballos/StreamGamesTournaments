@@ -67,7 +67,7 @@ export interface IGame {
 
 export interface IGamesFilters {
     name: string;
-    state: string
+    state: 'all' | 'active' | 'inactive';
 }
 
 export interface IGamePost {

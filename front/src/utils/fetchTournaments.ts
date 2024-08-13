@@ -53,23 +53,23 @@ export async function fetchGames() {
         if (!Array.isArray(allGames)) {
             throw new Error("API response is not an array.");
         }
+        console.log(allGames)
         return allGames;
     }
 }
 
-export async function fetchBanGame(id:string) {
-    const response = await fetch(`${apiUrl}/games/update/${id}`, {
+export const banGame = async (id:string) => {
+    const response = await fetch(`${apiUrl}/games/delete/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
-        });
-        
-        if (!response.ok) {
+    });
+    
+    if (!response.ok) {
         throw new Error('Failed to disable game');
-        }
-        
-        return response.json();
+    }
+    return response.json();
 }
 
 //funcion para pagar la inscripcion al torneo:

@@ -101,7 +101,6 @@ export const banUser = async (id: string) => {
     if (!response.ok) {
     throw new Error('Failed to disable user');
     }
-    
     return response.json();
 };
 

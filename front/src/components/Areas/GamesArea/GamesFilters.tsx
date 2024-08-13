@@ -7,11 +7,19 @@ interface GamesFiltersProps {
 }
 
 const GamesFilters: React.FC<GamesFiltersProps> = ({ onFilter }) => {
-  const [filters, setFilters] = useState<IGamesFilters>({ name: '', state: '' });
+  const [filters, setFilters] = useState<IGamesFilters>({ name: '', state: 'all' });
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const filterValue = name === 'state' || name === 'name' ? value : value;
+
+    // Ajusta el valor de estado para 'active' y 'inactive'
+    const filterValue = name === 'state'
+      ? value === 'active'
+        ? 'active'
+        : value === 'inactive'
+          ? 'inactive'
+          : 'all' // 'all' para mostrar todos los juegos
+      : value;
 
     const updatedFilters = {
       ...filters,
@@ -33,9 +41,9 @@ const GamesFilters: React.FC<GamesFiltersProps> = ({ onFilter }) => {
       </td>
       <td className='text-center w-36'>
         <select name="state" value={filters.state} className='filter' onChange={handleFilterChange}>
-          <option value="">All Games</option>
-          <option value="true">Active</option>
-          <option value="false">Inactive</option>
+          <option value="all">All Games</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
         </select>
       </td>
       <td className='text-center text-white w-36'>Ban</td>
