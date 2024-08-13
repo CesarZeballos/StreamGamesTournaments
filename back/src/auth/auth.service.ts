@@ -143,12 +143,12 @@ export class AuthService {
 
 			return {
 				tournamentId: tournament.id,
-				id: userData.id,
+				id: notification.id,
 				nameTournament: tournament.nameTournament,
 				nameTeam: team ? team.name : null,
 				nameGame: tournament.game ? tournament.game.name : null,
 				tournamentDate: tournament.startDate.toISOString(),
-				state: tournament.state,
+				state: notification.state,
 			};
 		});
 

@@ -30,7 +30,7 @@ const NavBar: React.FC = () => {
     const [not, setNot] = useState(0)
     useEffect(() => {
         if (user) {
-            setNot(user?.receivedFriendRequests.length + user.tournaments.filter(tournament => tournament.state === true).length)
+            setNot(user?.receivedFriendRequests.length + user.notifications.filter(tournament => tournament.state === true).length)
         }
     }, [user])
 
