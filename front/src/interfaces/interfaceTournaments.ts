@@ -30,10 +30,10 @@ export interface ITournamentPost {
     organizerId: string;
     gameId: string;
     membersNumber: number;
-    maxTeam: number;
+    maxTeams: number;
     price: number;
     urlAvatar: string;
-    award: string[];
+    awards: string[];
     description: string;
 }
 
@@ -93,4 +93,10 @@ export interface ITournamentsInscripted {
     teamName: string
     tournamentDate: string
     status: string
+}
+
+export interface IAwardsInForm {
+    first: string
+    second: string
+    third: string
 }

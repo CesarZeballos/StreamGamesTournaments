@@ -56,13 +56,8 @@ export class TournamentsController {
 	})
 	async createTournament(
 		@Body() createTournamentDto: CreateTournamentDto,
-		//@UploadedFile() file: Express.Multer.File,
 	) {
-		/* if (!file) {
-			throw new BadRequestException('File is required');
-		} */
-		//const uploadResult = await this.fileUploadService.uploadFile(file);
-		//createTournamentDto.urlAvatar = uploadResult.secure_url;
+		console.log('createTournamentDto', createTournamentDto);
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 
