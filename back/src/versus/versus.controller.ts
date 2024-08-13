@@ -7,12 +7,14 @@ import { ApiTags } from '@nestjs/swagger';
 export class VersusController {
     constructor(private readonly versusService: VersusService) { }
 
-    @Post()
+    @Post(':tournamentId')
     async createVersus(@Param('tournamentId', new ParseUUIDPipe()) tournamentId: string) {
+        console.log(tournamentId);
+        
         return await this.versusService.createVersus(tournamentId)
     }
 
-    @Put()
+    @Put(':winnerId/:versusId')
     async updateWinnerRound(
         @Param('winnerId', new ParseUUIDPipe()) winnerId: string,
         @Param('versusId', new ParseUUIDPipe()) versusId: string

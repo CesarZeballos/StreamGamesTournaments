@@ -117,7 +117,7 @@ export class Fetchs {
                     players: true,
                     organizer: { include: { teams: { include: { user: true } } } },
                     teams: { include: { users: true } },
-                    versus: true,
+                    versus: {include:{team1:true,team2:true}},
                     notifications: true,
                     positionBattle: true,
                 },

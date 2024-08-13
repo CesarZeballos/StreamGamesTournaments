@@ -10,6 +10,8 @@ export class VersusService {
     ) { }
 
     async createVersus(tournamentId: string) {
+        console.log(tournamentId);
+        
         const tournament = await this.fetchs.FindTournamentByUnique(tournamentId)
 
         if (!tournament) throw new BadRequestException('Tournament does not exist');
@@ -29,17 +31,21 @@ export class VersusService {
         const firstRound = this.determineRoundName(tournament.maxTeams);
 
 
-        let positionId: string | null = tournament.positionBattle.id || null;
+        let positionId: string | null = null;
 
-        if (!positionId) {
-            const position = await this.prisma.positionsBattle.create({
-                data: {
-                    round: firstRound,
-                    tournament: { connect: { id: tournament.id } },
-                },
-            });
-            positionId = position.id;
-        }
+if (tournament.positionBattle && tournament.positionBattle.id) {
+    positionId = tournament.positionBattle.id;
+}
+
+if (!positionId) {
+    const position = await this.prisma.positionsBattle.create({
+        data: {
+            round: firstRound,
+            tournament: { connect: { id: tournament.id } },
+        },
+    });
+    positionId = position.id;
+}
 
         for (let i = 0; i < teams.length; i += 2) {
             await this.prisma.versus.create({
