@@ -5,14 +5,19 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import SendIcon from '@mui/icons-material/Send';
 import { toast } from "sonner"
-import io from "socket.io-client"
+import io, { Socket } from "socket.io-client"
 import { IMessage } from "@/interfaces/interfaceRedux"
 import { ChatMessage } from "../chatMessage"
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL
+let socket: Socket | null = null;
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+if (!socket) {
+    socket = io(`${apiUrl}`);
+}
 
 export const ChatBoxPrivate = () => {
-    const socket = io(`${apiUrl}`);
     const [historialChat, setHistorialChat] = useState<IMessage[]>([])
     const [receiverChat, setRecibedChat] = useState<IFriend>({} as IFriend)
     const [messageInput, setMessageInput] = useState("")
@@ -23,14 +28,29 @@ export const ChatBoxPrivate = () => {
     const globalChat = useSelector((state: RootState) => state.chat.globalChat)
 
     // SOCKET CONFIG
-    // escuchanndo mensajes
+    // inicia el chat con el "amigo"
     useEffect(() => {
-        // Escuchar mensajes privados
-        socket.on('privateMessage', (message) => {
-            console.log('Private message received:', message);
-            // Actualizar la interfaz de usuario
+        if (user && recibed) {
+            // Emitir el evento 'joinChat' cuando se selecciona un usuario para chatear
+            socket.emit('joinChat', {
+                user1Id: user.id,  // Asegúrate de usar el ID del usuario
+                user2Id: recibed.friendId,  // Asegúrate de usar el ID del receptor
+            });
+            console.log("entra al socketEmit, user1Id y user2Id", user.id, recibed.friendId)
+        }
+    }, [recibed, user]);
+    // seteando el historial de chat
+    useEffect(() => {
+        socket.on('loadPreviousMessages', (messages: IMessage[]) => {
+            setHistorialChat(messages);
+            console.log("entra al socketOn")
+            console.log('Loaded previous messages:', messages);
         });
-    }, [socket])
+    
+        return () => {
+            socket.off('loadPreviousMessages');
+        }
+    }, [recibed]);
 
     useEffect(() => {
         setRecibedChat(recibed)
@@ -39,6 +59,7 @@ export const ChatBoxPrivate = () => {
     // Enviar mensaje privado
     const sendPrivateMessage = (senderId: string, receiverId: string, content: string) => {
         socket.emit('sendPrivateMessage', { senderId, receiverId, content });
+        console.log("entra al socketEmit")
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,11 +75,19 @@ export const ChatBoxPrivate = () => {
                 duration: 1500
             })
         } else if (user) {
-                const senderId = user.nickname
+                const senderId = user.id
                 const content = messageInput
-                    const receiverId = receiverChat.nickname
-                    sendPrivateMessage(senderId, receiverId, content)
-                console.log("estas chateando con", receiverChat, "y el mensaje es", messageInput)
+                const receiverId = receiverChat.friendId
+                sendPrivateMessage(senderId, receiverId, content)
+
+                setHistorialChat(prevMessages => [...prevMessages, {
+                    id: Date.now().toString(),  // Temporal
+                    nickname: user.nickname,
+                    post: content,
+                    createdAt: new Date().toISOString(),  // Temporal
+                }]);
+
+                
                 setMessageInput("")
             }
     }
@@ -69,7 +98,7 @@ export const ChatBoxPrivate = () => {
                 <h1 className="heading5 text-white">conversation with {receiverChat.nickname}</h1>
                 <div className="flex flex-col gap-2 w-full h-full">
                     {historialChat.map((message) => (
-                        <ChatMessage key={message.content} nickname={message.nickname} content={message.content} date={message.date}/>
+                        <ChatMessage key={message.id} id={message.id} nickname={message.nickname} post={message.post} createdAt={message.createdAt}/>
                     ))}
                 </div>
                 <form className="flex flex-row gap-2" onSubmit={handleSubmit}>

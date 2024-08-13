@@ -5,14 +5,19 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import SendIcon from '@mui/icons-material/Send';
 import { toast } from "sonner"
-import io from "socket.io-client"
+import io, { Socket } from "socket.io-client"
 import { IMessage } from "@/interfaces/interfaceRedux"
 import { ChatMessage } from "../chatMessage"
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL
+let socket: Socket | null = null;
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+if (!socket) {
+    socket = io(`${apiUrl}`);
+}
 
 export const ChatBoxGlobal = () => {
-    const socket = io(`${apiUrl}`);
     const [historialChat, setHistorialChat] = useState<IMessage[]>([])
     const [messageInput, setMessageInput] = useState("")
 
@@ -25,9 +30,13 @@ export const ChatBoxGlobal = () => {
     useEffect(() => {
         socket.on('globalMessage', (message) => {
             console.log('Global message received:', message);
-            setHistorialChat((prevMessages) => [...prevMessages, message])
+            setHistorialChat((prevMessages) => [...prevMessages, message]);
         });
-    }, [socket])
+
+        return () => {
+            socket.off('globalMessage');
+        };
+    }, []);
     
     const sendGlobalMessage = (nickname: string, content: string) => {
         socket.emit('sendGlobalMessage', { nickname, content });
