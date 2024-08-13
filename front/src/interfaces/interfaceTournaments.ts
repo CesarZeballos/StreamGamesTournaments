@@ -1,5 +1,5 @@
 import { StaticImageData } from "next/image";
-import { IUser } from "./interfaceUser";
+import { ITeam, IUser } from "./interfaceUser";
 
 type ImageSource = StaticImageData | string;
 
@@ -55,6 +55,19 @@ export interface ITournamentState {
     tournaments: ITournament[];
     filter: string;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
+}
+
+export interface IVersus {
+    id: string;
+  tournamentId: string;
+  team1Id: string;
+  team1: ITeam;
+  team2Id: string;
+  team2: ITeam;
+  round: string;
+  winnerId?: string;
+  positionId?: string;
+  createdAt: string;
 }
 
 export interface IGame {

@@ -1,5 +1,5 @@
 import { IUser } from "./interfaceUser";
-import { IAddTeam, IGame, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
+import { IAddTeam, IGame, ITournament, ITournamentPost, IVersus } from "@/interfaces/interfaceTournaments";
 
 export interface ITournamentState {
   status: string;
@@ -11,6 +11,7 @@ export interface ITournamentState {
   tournamentsFiltered: ITournament[];
   games: IGame[]
   allGames: IGame[]
+  versus: IVersus[]
 }
 
 export interface IFilters {

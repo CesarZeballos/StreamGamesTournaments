@@ -20,7 +20,8 @@ const initialState: ITournamentState = {
   },
   tournamentsFiltered: [],
   games: [],
-  allGames: []
+  allGames: [],
+  versus:[]
 };
 
 const tournamentSlice = createSlice({
