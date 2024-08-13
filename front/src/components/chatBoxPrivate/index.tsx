@@ -11,14 +11,14 @@ import { ChatMessage } from "../chatMessage"
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
-export const ChatBox = () => {
+export const ChatBoxPrivate = () => {
     const socket = io(`${apiUrl}`);
     const [historialChat, setHistorialChat] = useState<IMessage[]>([])
     const [receiverChat, setRecibedChat] = useState<IFriend>({} as IFriend)
     const [messageInput, setMessageInput] = useState("")
 
     const recibed = useSelector((state: RootState) => state.chat.recibed)
-    const chat = useSelector((state: RootState) => state.chat.chat)
+    // const chat = useSelector((state: RootState) => state.chat.chat)
     const user = useSelector((state: RootState) => state.user.user)
     const globalChat = useSelector((state: RootState) => state.chat.globalChat)
 
@@ -30,20 +30,13 @@ export const ChatBox = () => {
             console.log('Private message received:', message);
             // Actualizar la interfaz de usuario
         });
-        
-        // Escuchar mensajes globales
-        socket.on('globalMessage', (message) => {
-            console.log('Global message received:', message);
-            setHistorialChat((prevMessages) => [...prevMessages, message])
-        });
     }, [socket])
+
+    useEffect(() => {
+        setRecibedChat(recibed)
+    }, [recibed])
     
     // Enviar mensaje privado
-    const sendGlobalMessage = (nickname: string, content: string) => {
-        socket.emit('sendGlobalMessage', { nickname, content });
-    };
-
-    // Enviar mensaje global
     const sendPrivateMessage = (senderId: string, receiverId: string, content: string) => {
         socket.emit('sendPrivateMessage', { senderId, receiverId, content });
     };
@@ -61,15 +54,10 @@ export const ChatBox = () => {
                 duration: 1500
             })
         } else if (user) {
-                const nickname = user.nickname
                 const senderId = user.nickname
                 const content = messageInput
-                if(globalChat === "Global chat") {
-                    sendGlobalMessage(nickname, content)
-                } else {
                     const receiverId = receiverChat.nickname
                     sendPrivateMessage(senderId, receiverId, content)
-                }
                 console.log("estas chateando con", receiverChat, "y el mensaje es", messageInput)
                 setMessageInput("")
             }
@@ -78,14 +66,10 @@ export const ChatBox = () => {
     return (
         <div className="col-span-3 grid grid-cols-3">
             <div className="col-span-2 flex flex-col items-center">
-                {globalChat === "Global chat" ? 
-                    <h1 className="heading5 text-white">Global Chat</h1> 
-                    : 
-                    <h1 className="heading5 text-white">conversation with {receiverChat.nickname}</h1>
-                }
+                <h1 className="heading5 text-white">conversation with {receiverChat.nickname}</h1>
                 <div className="flex flex-col gap-2 w-full h-full">
                     {historialChat.map((message) => (
-                        <ChatMessage key={message.content} nickname={message.nickname} content={message.content}/>
+                        <ChatMessage key={message.content} nickname={message.nickname} content={message.content} date={message.date}/>
                     ))}
                 </div>
                 <form className="flex flex-row gap-2" onSubmit={handleSubmit}>

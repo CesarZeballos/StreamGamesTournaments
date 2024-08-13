@@ -129,4 +129,5 @@ export interface IChatState {
 export interface IMessage {
   nickname: string;
   content: string
+  date: string
 }
