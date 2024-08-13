@@ -10,6 +10,7 @@ import { preloadData } from '../preload/preload.db';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as bodyParser from 'body-parser';
 
+
 // async function PreloadData(
 // 	prismaService: PrismaService,
 // 	teamService: TeamsService,
@@ -32,11 +33,11 @@ async function bootstrap() {
 	const teamService = app.get(TeamsService);
 	const tournamentService = app.get(TournamentsService);
 
-	
+
 	try {
 		app.use(bodyParser.json({ limit: '10mb' }));
 		app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-		
+
 		app.enableCors({
 			origin: '*',
 			methods: 'GET,POST,PUT,DELETE,PATCH',

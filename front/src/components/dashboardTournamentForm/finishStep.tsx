@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const FinishStep: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { nameTournament, description, startDate, category, membersNumber, maxTeam, price, award } = useSelector((state: RootState) => state.organizer.tournament);
+    const { nameTournament, description, startDate, category, membersNumber, maxTeams, price, awards } = useSelector((state: RootState) => state.organizer.tournament);
     const data = useSelector((state: RootState) => state.organizer.tournament)
     const { token, user } = useSelector((state: RootState) => state.user);
 
@@ -33,11 +33,11 @@ export const FinishStep: React.FC = () => {
             <p className="body text-white">Members number:</p>
             <p className="body text-white">{membersNumber} members</p>
             <p className="body text-white">Max team:</p>
-            <p className="body text-white">{maxTeam} teams</p>
+            <p className="body text-white">{maxTeams} teams</p>
             <p className="body text-white">Price:</p>
             <p className="body text-white">${price}</p>
             <p className="body text-white">Award:</p>
-            <p className="body text-white">{award}</p>
+            <p className="body text-white">{awards}</p>
             <button className="buttonPrimary" type="submit">Finish</button>
         </form>
     )    

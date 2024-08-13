@@ -63,7 +63,7 @@ export const SecondStep: React.FC = () => {
 
             dispatch(setSecondStep({
                 membersNumber: data.membersNumber,
-                maxTeam: data.maxTeam,
+                maxTeams: data.maxTeams,
                 price: data.price,
                 awards: awardArray,
                 description: data.description
@@ -92,8 +92,8 @@ export const SecondStep: React.FC = () => {
                     <label className="body text-white">Maximum teams</label>
                     <input
                     type="number"
-                    name="maxTeam"
-                    value={data.maxTeam}
+                    name="maxTeams"
+                    value={data.maxTeams}
                     onChange={handleChange}
                     required
                     className="inputFit"

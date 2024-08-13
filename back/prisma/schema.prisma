@@ -169,9 +169,9 @@ enum Role {
 }
 
 enum Categories {
-  beginner
-  advanced
-  expert
+  Beginner
+  Advanced
+  Expert
 }
 
 enum Round {
