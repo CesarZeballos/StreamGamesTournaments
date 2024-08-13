@@ -7,7 +7,7 @@ import { filtered, getGamesActivesSlice } from "@/redux/thunks/auxiliarSliceThun
 import { IGame } from "@/interfaces/interfaceTournaments";
 
 // Icons import
-import { SiLeagueoflegends, SiCounterstrike } from "react-icons/si";
+import { SiLeagueoflegends, SiCounterstrike, SiPubg, SiValorant } from "react-icons/si";
 import { TbBrandFortnite } from "react-icons/tb";
 
 // Icon mapping
@@ -15,6 +15,8 @@ const iconMap: { [key: string]: JSX.Element } = {
   "League of Legends": <SiLeagueoflegends />,
   "CounterStrike Go": <SiCounterstrike />,
   "Fortnite": <TbBrandFortnite />,
+  "PUBG": <SiPubg />,
+  "Valorant": <SiValorant />,
 };
 
 const SearchBar: React.FC = () => {

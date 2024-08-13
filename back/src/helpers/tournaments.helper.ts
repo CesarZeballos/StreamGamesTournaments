@@ -36,7 +36,7 @@ export const tournaments = [
     maxTeams: 4,
     price: 1500,
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
-    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    gameId: 'e2c4a4d2-8f7b-4f23-8b6f-3d0a6cfec4b3',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
@@ -168,7 +168,7 @@ export const tournaments = [
     maxTeams: 4,
     price: 550,
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
-    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    gameId: 'e2c4a4d2-8f7b-4f23-8b6f-3d0a6cfec4b3',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
@@ -256,7 +256,7 @@ export const tournaments = [
     maxTeams: 4,
     price: 1550,
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
-    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    gameId: 'e2c4a4d2-8f7b-4f23-8b6f-3d0a6cfec4b3',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
@@ -322,7 +322,7 @@ export const tournaments = [
     maxTeams: 4,
     price: 1850,
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
-    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    gameId: 'e2c4a4d2-8f7b-4f23-8b6f-3d0a6cfec4b3',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
@@ -410,7 +410,7 @@ export const tournaments = [
     maxTeams: 4,
     price: 1350,
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
-    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    gameId: 'e2c4a4d2-8f7b-4f23-8b6f-3d0a6cfec4b3',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
@@ -476,7 +476,7 @@ export const tournaments = [
     maxTeams: 4,
     price: 1450,
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
-    gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
+    gameId: 'e2c4a4d2-8f7b-4f23-8b6f-3d0a6cfec4b3',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
