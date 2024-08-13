@@ -28,12 +28,12 @@ export class CreateTournamentDto {
 	category: string;
 
 	@ApiProperty({ example: 'uuid-del-organizador' })
-	@IsUUID()
+	@IsString()
 	@IsOptional()
 	organizerId?: string;
 
 	@ApiProperty({ example: 'uuid-del-juego' })
-	@IsUUID()
+	@IsString()
 	@IsNotEmpty()
 	gameId: string;
 
@@ -58,7 +58,7 @@ export class CreateTournamentDto {
 	urlAvatar?: string;
 
 	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
-	@IsString({ each: true })
+	@IsString()
 	@IsNotEmpty()
 	awards: string[];
 

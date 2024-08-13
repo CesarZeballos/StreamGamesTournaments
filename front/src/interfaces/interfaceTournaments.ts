@@ -30,7 +30,7 @@ export interface ITournamentPost {
     organizerId: string;
     gameId: string;
     membersNumber: number;
-    maxTeam: number;
+    maxTeams: number;
     price: number;
     urlAvatar: string;
     awards: string[];

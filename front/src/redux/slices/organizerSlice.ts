@@ -15,7 +15,7 @@ const initialState: IOrganizerState = {
         startDate: "",
         urlAvatar: "https://res.cloudinary.com/dofwlsemg/image/upload/v1723001828/niyic87vymj5vqitz7my.jpg",
         membersNumber: 0,
-        maxTeam: 0,
+        maxTeams: 0,
         price: 0,
         awards: [],
         description: "",
@@ -44,7 +44,7 @@ const organizeSlice = createSlice({
         setSecondStep(state, action: PayloadAction<ISecondStep>) {
             state.step = "thirdStep"
             state.tournament.membersNumber = action.payload.membersNumber
-            state.tournament.maxTeam = action.payload.maxTeam
+            state.tournament.maxTeams = action.payload.maxTeams
             state.tournament.price = action.payload.price
             state.tournament.awards = action.payload.awards
             state.tournament.description = action.payload.description
