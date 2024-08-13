@@ -34,7 +34,6 @@ export async function fetchTournamentById(id: string) {
         } else {
             const tournament = await response.json();
             console.log("Raw API response:", tournament);
-        console.log("Awards field:", tournament.award);
             return tournament;
         }
 }
@@ -84,7 +83,6 @@ export const fetchPaymentTournament = async (data: ITournamentPayment) => {
     });
     
     const returnData = await response.json();
-    console.log("API response:", returnData);
     return returnData
 }
 
@@ -117,7 +115,6 @@ export const fetchAddTeamToTournament = async (data: IAddTeam) => {
 
     const dataResponse = await response.json();
 
-    console.log("dataResponse", dataResponse)
     return dataResponse
 }
 

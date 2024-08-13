@@ -21,6 +21,7 @@ export const SecondStepRegisterTeam = (tourId: {tourId: string}) => {
     const onSuccess = (orderId: string) => {
         try {
             dispatch(postTeamToTournamentSlice(teamData))
+            
             if (user) {
             dispatch(reloadUserSlice({
                 email: user.email!,

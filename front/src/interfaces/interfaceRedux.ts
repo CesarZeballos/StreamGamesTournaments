@@ -107,9 +107,9 @@ export interface IFirstStep {
 
 export interface ISecondStep {
   membersNumber: number;
-  maxTeam: number;
+  maxTeams: number;
   price: number;
-  award: string[];
+  awards: string[];
   description: string;
 }
 

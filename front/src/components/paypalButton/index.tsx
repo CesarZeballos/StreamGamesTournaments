@@ -2,8 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { captureOrderSlice, createOrderSlice } from '@/redux/thunks/tournamentsSliceThunk';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { toast } from 'sonner';
-import { useEffect, useState } from 'react';
 
 interface PayPalButtonProps {
   tournamentId: string;
@@ -40,7 +38,6 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ tournamentId, onSuccess }) 
         }}
         onApprove={async (data: { orderID: string }) => {
           try {
-            console.log('Order approved entry:', data.orderID);
             await dispatch(captureOrderSlice(data.orderID)).unwrap();
             onSuccess(data.orderID);
           } catch (error) {
