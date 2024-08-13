@@ -28,6 +28,70 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		console.log(`Client disconnected: ${client.id}`);
 	}
 
+	@SubscribeMessage('joinChat')
+	async handleJoinChat(
+		client: Socket,
+		@MessageBody() data: { user1Id: string; user2Id: string },
+	) {
+		const { user1Id, user2Id } = data;
+
+		console.log('Client:', client);
+
+		if (!client) {
+			console.error('Client is undefined');
+			return;
+		}
+
+		// Verificar que los usuarios existen
+		const user1 = await this.prisma.user.findUnique({
+			where: { id: user1Id },
+		});
+		const user2 = await this.prisma.user.findUnique({
+			where: { id: user2Id },
+		});
+
+		if (!user1 || !user2) {
+			throw new Error('One or both users do not exist');
+		}
+
+		// Unir a los usuarios a una sala común
+		const room = this.getRoomName(user1Id, user2Id);
+		client.join(room);
+
+		// Cargar los últimos 50 mensajes de la conversación
+		const lastMessages = await this.prisma.privateChat.findMany({
+			where: {
+				OR: [
+					{ senderId: user1Id, receiverId: user2Id },
+					{ senderId: user2Id, receiverId: user1Id },
+				],
+			},
+			orderBy: { createdAt: 'desc' },
+			take: 50,
+			select: {
+				id: true,
+				post: true,
+				createdAt: true,
+				sender: {
+					select: {
+						nickname: true,
+					},
+				},
+			},
+		});
+
+		// Mapear los mensajes en la estructura deseada
+		const formattedMessages = lastMessages.map((message) => ({
+			id: message.id,
+			nickname: message.sender.nickname,
+			post: message.post,
+			createdAt: message.createdAt,
+		}));
+
+		// Enviar los mensajes al cliente que se conectó
+		client.emit('loadPreviousMessages', formattedMessages);
+	}
+
 	@SubscribeMessage('sendPrivateMessage')
 	async handlePrivateMessage(
 		@MessageBody()
