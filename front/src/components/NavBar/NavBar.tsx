@@ -30,7 +30,7 @@ const NavBar: React.FC = () => {
     const [not, setNot] = useState(0)
     useEffect(() => {
         if (user) {
-            setNot(user?.receivedFriendRequests.length + user.tournaments.filter(tournament => tournament.state === true).length)
+            setNot(user?.receivedFriendRequests.length + user.notifications.filter(tournament => tournament.state === true).length)
         }
     }, [user])
 
@@ -44,8 +44,9 @@ const NavBar: React.FC = () => {
             <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
             {user ? 
             <div className="flex gap-x-1 justify-end">
+                <Link className="buttonNavbar" href="/chat">{`Chat's`}</Link>
                 <button className="buttonNavbar flex gap-2" onClick={routerToDashboard}><SportsEsportsIcon/>{`${user?.nickname}`}</button>
-                {not > 0 && <p className="number text-white flex flex-row justify-end gap-1">{not} <NotificationsIcon/></p>}
+                {/* {not > 0 && <p className="number text-white flex flex-row justify-end gap-1">{not} <NotificationsIcon/></p>} */}
             </div>
             :
             <div className="flex gap-x-8">

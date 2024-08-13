@@ -1,10 +1,9 @@
 import { IAuxiliarState } from "@/interfaces/interfaceRedux";
 import { createSlice, PayloadAction, AnyAction  } from "@reduxjs/toolkit";
-import { getUsersSlice, uploadFileSlice } from "../thunks/auxiliarSliceThunk";
+import { getUsersSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
 import { postTeamToTournamentSlice } from "../thunks/tournamentsSliceThunk";
-import { ITournament } from "@/interfaces/interfaceTournaments";
 import { aceptFriendSlice, rejectFriendSlice } from "../thunks/userActionsSliceThunk";
 
 

@@ -8,6 +8,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 import paymentSlice from './slices/paymentSlice';
 import organizerSlice from './slices/organizerSlice';
+import chatSlice from './slices/chatSlice';
 
 //configuracion de la persistencia:
 const persistConfig = {
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   auxiliar: auxiliarSlice,
   actions: userActionSlice,
   payment: paymentSlice,
-  organizer: organizerSlice
+  organizer: organizerSlice,
+  chat: chatSlice
 });
 
 export default rootReducer;

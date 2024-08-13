@@ -1,4 +1,4 @@
-import { IUser } from "./interfaceUser";
+import { IFriend, IUser } from "./interfaceUser";
 import { IAddTeam, IGame, ITournament, ITournamentPost, IVersus } from "@/interfaces/interfaceTournaments";
 
 export interface ITournamentState {
@@ -118,3 +118,18 @@ export interface IThirdStep {
   urlAvatar: string;
 }
 
+
+// CHAT
+
+export interface IChatState {
+  chat: IMessage[];
+  recibed: IFriend;
+  globalChat: string;
+}
+
+export interface IMessage {
+  id: string;
+  nickname: string;
+  post: string;
+  createdAt: string;
+}

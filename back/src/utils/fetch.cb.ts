@@ -83,7 +83,19 @@ export class Fetchs {
                         },
                     },
                 },
-                organizedTournaments: true,
+                organizedTournaments: {
+                    include: {
+                        game: {
+                            select: {
+                                name: true}},
+                        teams: {
+                            include: {
+                                tournament: true,
+                                users: true,
+                            },
+                        },
+                    },
+                },
                 notifications: {
                     include: {
                         tournament: {
