@@ -4,6 +4,7 @@ import { uploadFileSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
 import { IBasicTournamentFormProps, IFirstStep, IOrganizerState, ISecondStep } from "@/interfaces/interfaceRedux";
 import { postTournamentSlice } from "../thunks/tournamentsSliceThunk";
+import { deleteTournament } from "../thunks/userActionsSliceThunk";
 
 
 const initialState: IOrganizerState = {
@@ -79,6 +80,20 @@ const organizeSlice = createSlice({
             })
         })
         .addCase(postTournamentSlice.rejected, (state) => {
+            toast.error("Something went wrong", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+
+        // DELETE TOURNAMENT
+        .addCase(deleteTournament.fulfilled, (state) => {
+            toast.success("Tournament deleted", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+        .addCase(deleteTournament.rejected, (state) => {
             toast.error("Something went wrong", {
                 position: 'top-right',
                 duration: 1500,

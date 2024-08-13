@@ -23,6 +23,18 @@ export interface ITournament {
     organizer: IUser;
 }
 
+export interface IOrganizerTournament {
+    id: string;
+    nameTournament: string;
+    startDate: string;
+    category: string;
+    maxTeams: number;
+    urlAvatar: string;
+    state: boolean;
+    gameName: string;
+    teams: [];
+}
+
 export interface ITournamentPost {
     nameTournament: string;
     startDate: string;

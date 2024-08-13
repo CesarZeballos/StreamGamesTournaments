@@ -1,5 +1,6 @@
 import { ITournamentPayment } from "@/interfaces/interfaceRedux";
 import { IAddTeam, ITournament, ITournamentPost } from "@/interfaces/interfaceTournaments";
+import { IDeletetournament } from "@/interfaces/interfaceUser";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -130,6 +131,17 @@ export const fetchPostTournemnt = async (data: {data: ITournamentPost, token: st
 
 
 
+    const dataResponse = await response.json();
+    return dataResponse
+}
+
+export const fetchDeleteTournaments = async (data: IDeletetournament) => {
+    const response = await fetch(`${apiUrl}/tournaments/deleteTournament/${data.id}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
     const dataResponse = await response.json();
     return dataResponse
 }
