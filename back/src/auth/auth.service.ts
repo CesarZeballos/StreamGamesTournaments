@@ -10,6 +10,8 @@ import { MailService } from 'mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailTemplates } from 'mail/mail-templates';
+import { Fetchs } from 'utils/fetch.cb';
+import { Notification } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -19,53 +21,41 @@ export class AuthService {
 		private readonly prisma: PrismaService,
 		private readonly jwtService: JwtService,
 		private readonly mailService: MailService,
-	) {}
+		private readonly fetchs: Fetchs
+	) { }
 
 	async signUp(createUserDto: CreateUserDto) {
 		const { email, nickname, tokenFirebase, birthdate } = createUserDto;
 
-		const userExists = await this.prisma.user.findUnique({
-			where: {
-				email,
-			},
-		});
+		const userExists = await this.fetchs.FindUserByUnique({ email });
 		if (userExists) {
-			if (userExists.isBanned === true)
-				throw new BadRequestException(
-					`User with email: ${userExists.email} is banned`,
-				);
-			if (userExists.state === true && userExists.isBanned === false)
-				throw new BadRequestException(
-					`User with email: ${userExists.email} already exists`,
-				);
+			if (userExists.isBanned === true) {
+				throw new BadRequestException(`User with email: ${userExists.email} is banned`);
+			}
+			if (userExists.state === false) {
+				throw new BadRequestException(`User with email: ${userExists.email} already exists`);
+			}
 		}
-
-		const parsedBirthDate = new Date(birthdate);
 
 		const user = await this.prisma.user.create({
 			data: {
 				email,
 				nickname,
 				tokenFirebase,
-				birthdate: parsedBirthDate.toISOString(),
+				birthdate: new Date(birthdate).toISOString(),
 			},
 		});
 
 		const payload = { userId: user.id, email: user.email };
-		const token = await this.jwtService.sign(payload);
+		const token = this.jwtService.sign(payload);
 
 		const mailOptions = MailTemplates.welcomeEmail(email, nickname);
 		try {
 			await this.mailService.sendMail(mailOptions);
 			this.logger.log(`Welcome email sent to ${email}`);
 		} catch (error) {
-			this.logger.error(
-				`Failed to send welcome email to ${email}`,
-				error.stack,
-			);
-			throw new InternalServerErrorException(
-				'Error sending welcome email',
-			);
+			this.logger.error(`Failed to send welcome email to ${email}`, error.stack);
+			throw new InternalServerErrorException('Error sending welcome email');
 		}
 
 		return {
@@ -78,59 +68,116 @@ export class AuthService {
 	async signIn(signInDto: SignInDto) {
 		const { email, tokenFirebase } = signInDto;
 
-		try {
-			this.logger.log(`Attempting to sign in user with email: ${email}`);
+		if (!email || !tokenFirebase) {
+			throw new BadRequestException('Email and tokenFirebase are required');
+		}
 
-			const user = await this.prisma.user.findUnique({
-				where: { email },
-				include: {
-					friends: {
-						include: {
-							friend: true,
-						},
-					},
-					tournaments: true,
-					organizedTournaments: true,
-				},
-			});
+		const userData = await this.fetchs.FindUserByUnique({ email });
+		if (!userData) {
+			throw new UnauthorizedException('Invalid credentials');
+		}
 
-			if (user) {
-				if (user.isBanned === true)
-					throw new BadRequestException(
-						`User with email: ${user.email} is banned`,
-					);
-			}
-			if (!user) {
-				this.logger.warn(`User not found with email: ${email}`);
-				throw new UnauthorizedException('Invalid credentials');
-			}
+		if (userData.isBanned) {
+			throw new BadRequestException(`User with email: ${userData.email} is banned`);
+		}
+		if (!userData.state) {
+			throw new BadRequestException(`User with email: ${userData.email} does not exist`);
+		}
 
-			const payload = { userId: user.id, email: user.email };
-			const token = await this.jwtService.sign(payload);
+		const payload = { userId: userData.id, email: userData.email };
+		const token = this.jwtService.sign(payload);
 
-			this.logger.log(`User signed in successfully with email: ${email}`);
+		const playerTournaments = userData.tournaments.map((tournament) => ({
+			tournamentId: tournament.id,
+			id: userData.id,
+			nameTournament: tournament.nameTournament,
+			nameTeam: null,
+			nameGame: tournament.game ? tournament.game.name : null,
+			tournamentDate: tournament.startDate.toISOString(),
+			state: tournament.state,
+		}));
 
-			const friends = user.friends.map((friendship) => friendship.friend);
+		const teamTournaments = userData.teams.map((team) => ({
+			tournamentId: team.team.id,
+			id: userData.id,
+			nameTournament: team.team.name,
+			nameTeam: team.nameTeam,
+			nameGame: team.team.tournament.game.name,
+			tournamentDate: team.team.tournament.startDate.toISOString(),
+			state: team.team.tournament.state,
+		}));
+
+		const combinedTournaments = [...playerTournaments, ...teamTournaments];
+
+		const friendsData = userData.friends
+			.filter((friend) => friend.user.id === userData.id || friend.friendId === userData.id)
+			.map((friend) => ({
+				id: friend.id,
+				userId: friend.user.id,
+				userNickname: friend.user.nickname,
+				friendId: friend.friend.id,
+				friendNickname: friend.friend.nickname,
+			}));
+
+		const friends = friendsData.map((f) => {
+			return {
+				id: f.id,
+				nickname: f.userId === userData.id ? f.friendNickname : f.userNickname,
+				friendId: f.userId === userData.id ? f.friendId : f.userId
+			};
+		});
+
+		const receivedFriendRequests = userData.receivedFriendRequests.map(
+			(request) => ({
+				id: request.id,
+				nickname: request.sender.nickname,
+			}),
+		);
+
+		const notifications = userData.notifications.map((notification) => {
+			const tournament = notification.tournament;
+			const team = tournament.teams.find(team => { team.users.map(user => user.id === userData.id) });
 
 			return {
-				message: 'User logged in successfully',
-				token,
-				user: {
-					...user,
-					friends,
-				},
+				tournamentId: tournament.id,
+				id: notification.id,
+				nameTournament: tournament.nameTournament,
+				nameTeam: team ? team.name : null,
+				nameGame: tournament.game ? tournament.game.name : null,
+				tournamentDate: tournament.startDate.toISOString(),
+				state: notification.state,
 			};
-		} catch (error) {
-			if (error instanceof UnauthorizedException) {
-				throw error;
-			}
-			this.logger.error(
-				`Error during sign-in process for email: ${email}`,
-				error.stack,
-			);
-			throw new InternalServerErrorException(
-				'An error occurred during sign-in',
-			);
-		}
+		});
+
+		const { state, tournaments, isBanned, ...userNotData } = userData;
+		
+		const organizerTournaments = userData.organizedTournaments.map(tournament => ({
+			id: tournament.id,
+			nameTournament: tournament.nameTournament,
+			startDate: tournament.startDate.toISOString(),
+			category: tournament.category,
+			maxTeams: tournament.maxTeams,
+			urlAvatar: tournament.urlAvatar || '',
+			state: tournament.state,
+			gameName: tournament.game.name,
+			teams: tournament.teams.map(team => ({
+			  id: team.id,
+			  name: team.name,
+			})),
+		  }));
+
+		const user = {
+			...userNotData,
+			tournaments: combinedTournaments, // esto no sirve al front
+			friends,
+			receivedFriendRequests,
+			notifications,
+			organizerTournaments,
+		};
+		return {
+			message: 'User logged in successfully',
+			user,
+			token,
+		};
 	}
 }

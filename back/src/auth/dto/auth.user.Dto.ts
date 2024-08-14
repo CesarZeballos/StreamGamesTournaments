@@ -1,6 +1,5 @@
 import {
 	IsString,
-	IsEmail,
 	IsNotEmpty,
 	IsDateString,
 	IsOptional,
@@ -17,7 +16,7 @@ export class SignInDto {
 		example: 'user@example.com',
 	})
 	@IsNotEmpty()
-	@IsEmail()
+	@IsString()
 	email: string;
 
 	@ApiProperty({
@@ -48,13 +47,6 @@ export class CreateUserDto extends SignInDto {
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-	@ApiProperty({
-		description: 'ID del usuario',
-		example: '123e4567-e89b-12d3-a456-426614174000',
-	})
-	@IsUUID()
-	@IsNotEmpty()
-	id: string;
 
 	@ApiPropertyOptional({
 		description: 'URL del stream del usuario',

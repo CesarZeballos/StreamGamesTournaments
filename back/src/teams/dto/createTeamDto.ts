@@ -1,6 +1,14 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsString, IsOptional, IsArray, ArrayNotEmpty, IsUUID, IsNotEmpty } from 'class-validator';
+import {
+	IsString,
+	IsOptional,
+	IsArray,
+	ArrayNotEmpty,
+	IsUUID,
+	IsNotEmpty,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Categories } from '@prisma/client';
 
 export class CreateTeamDto {
 	@ApiProperty({
@@ -45,12 +53,7 @@ export class CreateTeamDto {
 	@IsString({ each: true })
 	users: string[];
 
-	@ApiProperty({
-		description: 'Url of the paipal aprobed',
-		example: 'http://example.com/paypal'
-	})
-	@IsString()
-	paypal: string;
+	category: Categories
 }
 
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {
@@ -60,8 +63,7 @@ export class UpdateTeamDto extends PartialType(CreateTeamDto) {
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	id: string
-
+	id: string;
 }
 
 export class DeleteMemberForTeamDto {
@@ -71,7 +73,7 @@ export class DeleteMemberForTeamDto {
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	teamId: string
+	teamId: string;
 
 	@ApiProperty({
 		description: 'ID of the user',
@@ -79,5 +81,5 @@ export class DeleteMemberForTeamDto {
 	})
 	@IsUUID()
 	@IsNotEmpty()
-	memberId: string
+	memberId: string;
 }

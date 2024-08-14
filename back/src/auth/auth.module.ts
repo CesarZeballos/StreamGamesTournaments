@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailModule } from '../mail/mail.module'; // Importa el MailModule
+import { Fetchs } from 'utils/fetch.cb';
 
 @Module({
 	imports: [
@@ -19,9 +20,9 @@ import { MailModule } from '../mail/mail.module'; // Importa el MailModule
 			}),
 			inject: [ConfigService],
 		}),
-		MailModule, // Asegúrate de incluir MailModule aquí
+		MailModule,
 	],
-	providers: [AuthService, PrismaService],
+	providers: [AuthService, PrismaService, Fetchs],
 	controllers: [AuthController],
 })
-export class AuthModule {}
+export class AuthModule { }

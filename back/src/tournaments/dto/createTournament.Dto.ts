@@ -1,15 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Categories } from '@prisma/client';
 import {
 	IsString,
 	IsNotEmpty,
 	IsOptional,
 	IsArray,
 	IsDateString,
-	IsInt,
 	IsUUID,
 } from 'class-validator';
 
 export class CreateTournamentDto {
+
+
 	@ApiProperty({ example: 'Nombre del Torneo' })
 	@IsString()
 	@IsNotEmpty()
@@ -26,38 +28,37 @@ export class CreateTournamentDto {
 	category: string;
 
 	@ApiProperty({ example: 'uuid-del-organizador' })
-	@IsUUID()
+	@IsString()
 	@IsOptional()
 	organizerId?: string;
 
 	@ApiProperty({ example: 'uuid-del-juego' })
-	@IsUUID()
+	@IsString()
 	@IsNotEmpty()
 	gameId: string;
 
 	@ApiProperty({ example: 10 })
-	@IsInt()
+	@IsString()
 	@IsNotEmpty()
-	membersNumber: number;
+	membersNumber: string;
 
 	@ApiProperty({ example: 20 })
-	@IsInt()
+	@IsString()
 	@IsNotEmpty()
-	maxTeams: number;
+	maxTeams: string;
 
 	@ApiProperty({ example: 100 })
-	@IsInt()
+	@IsString()
 	@IsNotEmpty()
-	price: number;
+	price: string;
 
 	@ApiProperty({ example: 'https://example.com/avatar.png' })
 	@IsString()
 	@IsNotEmpty()
-	urlAvatar: string;
+	urlAvatar?: string;
 
 	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
 	@IsArray()
-	@IsString({ each: true })
 	@IsNotEmpty()
 	awards: string[];
 
@@ -67,11 +68,11 @@ export class CreateTournamentDto {
 	description: string;
 }
 
-export class UpdateTournamentDto extends CreateTournamentDto {
+export class UpdateTournamentDto {
 	@ApiProperty({ example: 'uuid-del-torneo' })
 	@IsUUID()
 	@IsNotEmpty()
-	id: string;
+	id?: string;
 
 	@ApiProperty({ example: ['uuid-del-jugador1', 'uuid-del-jugador2'] })
 	@IsArray()
@@ -84,4 +85,24 @@ export class UpdateTournamentDto extends CreateTournamentDto {
 	@IsUUID('4', { each: true })
 	@IsOptional()
 	teams?: string[];
+
+	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
+	@IsString({ each: true })
+	@IsNotEmpty()
+	awards?: string[];
+
+	@ApiProperty({ example: 'https://example.com/avatar.png' })
+	@IsString()
+	@IsNotEmpty()
+	urlAvatar?: string;
+
+	@ApiProperty({ example: 'beginner' })
+	@IsString()
+	@IsNotEmpty()
+	category?: Categories;
+
+	@ApiProperty({ example: 'Descripción del torneo' })
+	@IsString()
+	@IsNotEmpty()
+	description?: string;
 }

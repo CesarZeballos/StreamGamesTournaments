@@ -12,9 +12,9 @@ export const CategoryIcon = ({category}: {category : string}) => {
 
     return (
         <>
-            {category === "beginner" && (<PiMedalMilitary className="text-lightViolet"/>)}
-            {category === "advanced" && (<PiMedalMilitaryFill className="text-lightViolet"/>)}
-            {category === "expert" && (<TbMilitaryAward className="text-lightViolet"/>)}
+            {category === "Beginner" && (<PiMedalMilitary className="text-lightViolet"/>)}
+            {category === "Advanced" && (<PiMedalMilitaryFill className="text-lightViolet"/>)}
+            {category === "Expert" && (<TbMilitaryAward className="text-lightViolet"/>)}
         </>
     )
 }
