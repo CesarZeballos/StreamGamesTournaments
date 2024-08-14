@@ -8,6 +8,7 @@ import {
 	IsNotEmpty,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Categories } from '@prisma/client';
 
 export class CreateTeamDto {
 	@ApiProperty({
@@ -51,6 +52,8 @@ export class CreateTeamDto {
 	@ArrayNotEmpty()
 	@IsString({ each: true })
 	users: string[];
+
+	category: Categories
 }
 
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {

@@ -8,17 +8,15 @@ import {
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateGameDto, UpdateGameDto } from './dto/games.dto';
 import { Game } from '@prisma/client';
+import { Fetchs } from 'utils/fetch.cb';
 
-export interface GameWithTournamentId {
-	id: string;
-	name: string;
-	urlImage: string;
-	tournamentId?: string;
-}
 
 @Injectable()
 export class GamesService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly fetchs: Fetchs
+	) { }
 
 	async getAllGames(page: number, limit: number): Promise<Game[]> {
 		try {
@@ -61,11 +59,10 @@ export class GamesService {
 
 	async postNewGame(name: string, urlImage: string, description: string): Promise<CreateGameDto> {
 		try {
-			const existingGame = await this.prisma.game.findUnique({
-				where: { name },
-			});
+			const gameData = await this.fetchs.FindGamesByUnique({ name })
 
-			if (existingGame) {
+
+			if (gameData) {
 				throw new ConflictException(
 					`¡Juego con nombre: ${name} ya existe!`,
 				);

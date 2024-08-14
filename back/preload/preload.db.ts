@@ -4,7 +4,6 @@ import { teams } from 'helpers/teams.helpers';
 import { tournaments } from 'helpers/tournaments.helper';
 import { users } from 'helpers/users.helper';
 import { TeamsService } from 'teams/teams.service';
-import { CreateTournamentDto } from 'tournaments/dto/createTournament.Dto';
 import { TournamentsService } from 'tournaments/tournaments.service';
 
 export class preloadData {
@@ -12,67 +11,59 @@ export class preloadData {
 		private readonly prisma: PrismaClient,
 		private readonly teamService: TeamsService,
 		private readonly tournamentsService: TournamentsService,
-	) {}
+	) { }
 
 	async clearTables() {
 		await this.prisma.$transaction([
-		  // Primero, eliminar registros en UserTeamRequest
-		  this.prisma.userTeamRequest.deleteMany({}),
-	  
-		  // Luego, eliminar registros en UserTeams
-		  this.prisma.userTeams.deleteMany({}),
-	  
-		  // Después, eliminar registros en Team
-		  this.prisma.team.deleteMany({}),
-	  
-		  // Luego, eliminar registros en Tournament
-		  this.prisma.tournament.deleteMany({}),
-	  
-		  // Después, eliminar registros en Notifications
-		  this.prisma.notification.deleteMany({}),
-	  
-		  // Luego, eliminar registros en los chats y solicitudes de amistad
-		  this.prisma.privateChat.deleteMany({}),
-		  this.prisma.userFriends.deleteMany({}),
-		  this.prisma.friendRequest.deleteMany({}),
-		  this.prisma.globalChat.deleteMany({}),
-	  
-		  // Ahora, eliminar registros en User
-		  this.prisma.user.deleteMany({}),
-	  
-		  // Finalmente, eliminar registros en Game
-		  this.prisma.game.deleteMany({}),
+			// Primero, eliminar registros en UserTeamRequest
+			this.prisma.userTeamRequest.deleteMany({}),
+
+			// Luego, eliminar registros en UserTeams
+			this.prisma.userTeams.deleteMany({}),
+
+			// Después, eliminar registros en Team
+			this.prisma.team.deleteMany({}),
+
+			// Luego, eliminar registros en Tournament
+			this.prisma.tournament.deleteMany({}),
+
+			// Después, eliminar registros en Notifications
+			this.prisma.notification.deleteMany({}),
+
+			// Luego, eliminar registros en los chats y solicitudes de amistad
+			this.prisma.privateChat.deleteMany({}),
+			this.prisma.userFriends.deleteMany({}),
+			this.prisma.friendRequest.deleteMany({}),
+			this.prisma.globalChat.deleteMany({}),
+
+			// Ahora, eliminar registros en User
+			this.prisma.user.deleteMany({}),
+
+			// Finalmente, eliminar registros en Game
+			this.prisma.game.deleteMany({}),
 		]);
-	  }
-	  
+	}
+
 
 	async addGames() {
 		for (const game of gamesData) {
-			await this.prisma.game.upsert({
-				where: { id: game.id },
-				update: {},
-				create: {
-					name: game.name,
-					urlImage: game.urlImage,
-					description: game.description,
-				},
+			await this.prisma.game.create({
+				data: game,
 			});
 		}
 	}
 
 	async addUsers() {
 		for (const user of users) {
-			await this.prisma.user.upsert({
-				where: { id: user.id },
-				update: {},
-				create: {
+			await this.prisma.user.create({
+				data: {
+					id: user.id,
 					email: user.email,
 					nickname: user.nickName,
 					tokenFirebase: user.tokenFirebase,
 					birthdate: new Date(user.birthDate),
 					role: user.role,
 					urlProfile: user.urlSelfie,
-					createdAt: new Date(user.createdAt),
 				},
 			});
 		}
@@ -89,89 +80,43 @@ export class preloadData {
 			throw new Error('No organizer found');
 		}
 
-		const games = await this.prisma.game.findMany();
-
-		let count = 0;
-
 		for (const tournament of tournaments) {
-			if (count >= 3) {
-				count = 0;
-			}
-				const tournamentData: CreateTournamentDto = {
+			const tournamentData = {
 				nameTournament: tournament.nameTournament,
-				startDate: tournament.startDate.toISOString(),
+				startDate: tournament.startDate,
 				category: tournament.category,
 				awards: tournament.awards,
 				description: tournament.description,
 				urlAvatar: tournament.urlAvatar,
-				membersNumber: tournament.membersNumber.toString(),
-				maxTeams: tournament.maxTeams.toString(),
+				membersNumber: tournament.membersNumber,
+				maxTeams: tournament.maxTeams,
 				organizerId: userOrganizer.id,
-				gameId: games[count].id,
-				price: tournament.price.toString(),
+				gameId: tournament.gameId,
+				price: tournament.price,
 			};
-
-			await this.tournamentsService.createTournament(tournamentData);
-
-			count++;
-		}
-
-	}
-
-	async addTeamsWithPlayers() {
-		const usersorganizer: User[] = await this.prisma.user.findMany({
-			take: 4,
-		});
-		const userTable: User[] = await this.prisma.user.findMany();
-		let counter: number = 0;
-		let userPosition: number = 4;
-
-		for (const user of usersorganizer) {
-			const urlAvatar: string = teams[counter].urlAvatar;
-			const createdTeam = await this.prisma.team.create({
-				data: {
-					name: `Team ${counter + 1}`,
-					organizerId: user.id,
-					urlAvatar: urlAvatar,
-					state: true,
-				},
+			const newTournament = await this.prisma.tournament.create({
+				data: tournamentData,
 			});
 
-			for (let i = 0; i < 4 && userPosition < userTable.length; i++) {
-				const selectedUser = userTable[userPosition];
-				await this.prisma.userTeams.create({
+			for (const team of teams) {
+				await this.prisma.team.create({
 					data: {
-						userId: selectedUser.id,
-						nameTeam: createdTeam.id,
-					},
-				});
-				userPosition++;
-			}
-
-			counter++;
-		}
-	}
-
-	async addTeamForTournament() {
-		const teams: Team[] = await this.prisma.team.findMany();
-		const tournaments: Tournament[] =
-			await this.prisma.tournament.findMany();
-
-		let teamIndex = 0;
-
-		for (const tournament of tournaments) {
-			for (let i = 0; i < 4 && teamIndex < teams.length; i++) {
-				await this.prisma.tournament.update({
-					where: { id: tournament.id },
-					data: {
-						teams: {
-							connect: { id: teams[teamIndex].id },
+						name: team.name,
+						urlAvatar: team.urlAvatar,
+						state: team.state,
+						organizerId: userOrganizer.id,
+						tournamentId: newTournament.id,
+						users: {
+							create: team.users?.map(userId => ({
+								user: {
+									connect: { id: userId },
+								},
+							})),
 						},
 					},
 				});
-				teamIndex++;
-				this.addTeamsWithPlayers();
 			}
 		}
 	}
+
 }
