@@ -93,6 +93,7 @@ export const fetchCheckViewTournament = async (data: IFriendRequestProps) => {
 }
 
 export const fetchChatBot = async (data: string) => {
+    console.log("fetchChatBot", data)
     try {
         const response = await fetch(`${apiUrl}/chatbot/message`, {
             method: "POST",
@@ -102,14 +103,15 @@ export const fetchChatBot = async (data: string) => {
             body: JSON.stringify({
                 message: data
             })
-            
         })
     
         if (!response.ok) {
             throw new Error(`${response.statusText}`);
         }
-        const userData = await response.json();
-        return userData;
+
+        const userData = await response.json()
+        console.log("userData", userData.fulfillmentText)
+        return userData.fulfillmentText;
     } catch (error) {
         toast.error(`${error}`, {
             position: "top-right",
