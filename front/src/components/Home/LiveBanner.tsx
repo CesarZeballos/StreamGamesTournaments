@@ -49,8 +49,8 @@ const LiveBanner: React.FC = () => {
                 <button className="iconButton ml-8" onClick={handlePrev}><ArrowBackIosRoundedIcon /></button>
                 <div className="relative flex flex-row justify-center h-96 rounded-3xl overflow-hidden mx-16">
                     <Image
-                        src={`${currentTournament.urlImage}`}
-                        alt={"imagen??"}
+                        src={currentTournament.urlImage}
+                        alt={"banner"}
                         width={1440}
                         height={500}
                         className="mr-96 object-cover"
