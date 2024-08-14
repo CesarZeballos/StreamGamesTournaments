@@ -97,7 +97,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				post: content,
 
 				// Cambia el campo 'userId' a 'nickname' en la base de datos
-				// 'userId' no es un campo en 'GlobalChat' según el esquema proporcionado
 			},
 		});
 

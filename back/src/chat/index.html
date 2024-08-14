@@ -6,87 +6,6 @@
 		<title>Socket.IO Chat</title>
 		<script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
 		<style>
-			#messages {
-				width: 40%;
-				height: 300px;
-				overflow-y: scroll;
-				background-color: rgb(223, 215, 231);
-
-				border-radius: 2px;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>Socket.IO Chat</h1>
-		<textarea id="messages" rows="10" cols="50" readonly></textarea><br />
-		<input type="text" id="messageInput" placeholder="Type a message" />
-		<button id="sendPrivateButton">Send Private Message</button>
-		<button id="sendGlobalButton">Send Global Message</button>
-
-		<script>
-			// Conectar al servidor Socket.IO
-			const socket = io('http://localhost:3001');
-			console.log('Connecting to Socket.IO server...');
-
-			const messages = document.getElementById('messages');
-			const messageInput = document.getElementById('messageInput');
-			const sendPrivateButton =
-				document.getElementById('sendPrivateButton');
-			const sendGlobalButton =
-				document.getElementById('sendGlobalButton');
-
-			// Evento de conexión
-			socket.on('connect', () => {
-				console.log('Socket.IO connection established');
-				messages.value += `Connected to server\n`;
-			});
-
-			// Evento para recibir mensajes privados
-			socket.on('privateMessage', (message) => {
-				messages.value += `Private Message from ${message.senderId}: ${message.content}\n`;
-			});
-
-			// Evento para recibir mensajes globales
-			socket.on('globalMessage', (message, nickname) => {
-				messages.value += `Global Message from ${message.nickname}: ${message.content}\n`;
-			});
-
-			sendPrivateButton.addEventListener('click', () => {
-				const message = messageInput.value;
-				const senderId = 'user13';
-				const receiverId = 'user14';
-				socket.emit('sendPrivateMessage', {
-					senderId,
-					receiverId,
-					content: message,
-				});
-				messages.value += `You (private): ${message}\n`;
-				messageInput.value = '';
-			});
-
-			sendGlobalButton.addEventListener('click', () => {
-				const message = messageInput.value;
-				const nickname = 'user4';
-				socket.emit('sendGlobalMessage', {
-					nickname,
-					content: message,
-				});
-				messages.value += `You (global): ${message}\n`;
-				messageInput.value = '';
-			});
-		</script>
-	</body>
-</html>
- -->
-
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Socket.IO Chat</title>
-		<script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
-		<style>
 			body {
 				font-family: Arial, sans-serif;
 				background-color: #f5f5f5;
@@ -168,6 +87,166 @@
 	</head>
 	<body>
 		<div id="chatContainer">
+			<div class="chatBox">
+				<h2>Private Chat</h2>
+				<div class="messagesContainer">
+					<textarea id="privateMessages" readonly></textarea>
+				</div>
+				<div class="messageInputContainer">
+					<input
+						type="text"
+						id="privateMessageInput"
+						placeholder="Type a private message"
+					/>
+					<button id="sendPrivateButton" class="sendButton">
+						Send Private Message
+					</button>
+				</div>
+			</div>
+
+			<div class="chatBox">
+				<h2>Global Chat</h2>
+				<div class="messagesContainer">
+					<textarea id="globalMessages" readonly></textarea>
+				</div>
+				<div class="messageInputContainer">
+					<input
+						type="text"
+						id="globalMessageInput"
+						placeholder="Type a global message"
+					/>
+					<button id="sendGlobalButton" class="sendButton">
+						Send Global Message
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<script>
+
+			const socket = io('http://localhost:3001');
+			console.log('Connecting to Socket.IO server...');
+
+			const privateMessages = document.getElementById('privateMessages');
+			const globalMessages = document.getElementById('globalMessages');
+			const privateMessageInput = document.getElementById(
+				'privateMessageInput',
+			);
+			const globalMessageInput =
+				document.getElementById('globalMessageInput');
+			const sendPrivateButton =
+				document.getElementById('sendPrivateButton');
+			const sendGlobalButton =
+				document.getElementById('sendGlobalButton');
+
+
+			socket.on('connect', () => {
+				console.log('Socket.IO connection established');
+			});
+
+
+			socket.on('privateMessage', (message) => {
+				privateMessages.value += `Private Message from ${message.senderId}: ${message.content}\n`;
+				privateMessages.scrollTop = privateMessages.scrollHeight;
+			});
+
+			socket.on('globalMessage', (message) => {
+				globalMessages.value += `Global Message from ${message.nickname}: ${message.content}\n`;
+				globalMessages.scrollTop = globalMessages.scrollHeight; /
+			});
+
+			function sendMessage(isPrivate) {
+				const message = isPrivate
+					? privateMessageInput.value
+					: globalMessageInput.value;
+				if (isPrivate) {
+					const senderId = 'user13';
+					const receiverId = 'user14';
+					socket.emit('sendPrivateMessage', {
+						senderId,
+						receiverId,
+						content: message,
+					});
+					privateMessages.value += `You (private): ${message}\n`;
+					privateMessages.scrollTop = privateMessages.scrollHeight;
+					privateMessageInput.value = '';
+				} else {
+					const nickname = 'user4';
+					socket.emit('sendGlobalMessage', {
+						nickname,
+						content: message,
+					});
+					globalMessages.value += `You (global): ${message}\n`;
+					globalMessages.scrollTop = globalMessages.scrollHeight;
+					globalMessageInput.value = '';
+				}
+			}
+
+			sendPrivateButton.addEventListener('click', () =>
+				sendMessage(true),
+			);
+			sendGlobalButton.addEventListener('click', () =>
+				sendMessage(false),
+			);
+
+			privateMessageInput.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					sendMessage(true);
+				}
+			});
+
+			globalMessageInput.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					sendMessage(false);
+				}
+			});
+		</script>
+	</body>
+</html> -->
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Socket.IO Chat</title>
+		<script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+		<style>
+			/* Estilos básicos */
+			#chatContainer {
+				display: flex;
+				justify-content: space-between;
+			}
+			.chatBox {
+				width: 48%;
+				padding: 10px;
+				border: 1px solid #ccc;
+				margin: 5px;
+			}
+			.messagesContainer {
+				height: 300px;
+				overflow-y: auto;
+				border: 1px solid #ddd;
+				margin-bottom: 10px;
+			}
+			.messageInputContainer {
+				display: flex;
+				justify-content: space-between;
+			}
+			.messageInputContainer input {
+				width: 80%;
+				padding: 5px;
+			}
+			.messageInputContainer button {
+				width: 18%;
+				padding: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="chatContainer">
 			<!-- Private Chat Box -->
 			<div class="chatBox">
 				<h2>Private Chat</h2>
@@ -206,9 +285,7 @@
 		</div>
 
 		<script>
-			// Conectar al servidor Socket.IO
-			const socket = io('http://localhost:3001');
-			console.log('Connecting to Socket.IO server...');
+			const socket = io('http://localhost:3001'); // Cambia esto a tu URL de Socket.IO
 
 			const privateMessages = document.getElementById('privateMessages');
 			const globalMessages = document.getElementById('globalMessages');
@@ -222,46 +299,84 @@
 			const sendGlobalButton =
 				document.getElementById('sendGlobalButton');
 
-			// Evento de conexión
+			async function loadMessages() {
+				const senderId = 'user13'; // Cambia esto según sea necesario
+				const receiverId = 'user14'; // Cambia esto según sea necesario
+
+				// Recuperar mensajes privados
+				const privateResponse = await fetch(
+					`/historial/privateMessages?senderId=${senderId}&receiverId=${receiverId}`,
+				);
+				const privateMessagesData = await privateResponse.json();
+				privateMessagesData.forEach((msg) => {
+					privateMessages.value += `Message from ${msg.senderId}: ${msg.content}\n`;
+				});
+				privateMessages.scrollTop = privateMessages.scrollHeight;
+
+				// Recuperar mensajes globales
+				const globalResponse = await fetch(`/historial/globalMessages`);
+				const globalMessagesData = await globalResponse.json();
+				globalMessagesData.forEach((msg) => {
+					globalMessages.value += `Global Message from ${msg.nickname}: ${msg.content}\n`;
+				});
+				globalMessages.scrollTop = globalMessages.scrollHeight;
+			}
+
+			window.onload = () => {
+				loadMessages(); // Cargar mensajes al iniciar
+			};
+
 			socket.on('connect', () => {
 				console.log('Socket.IO connection established');
 			});
 
-			// Evento para recibir mensajes privados
 			socket.on('privateMessage', (message) => {
 				privateMessages.value += `Private Message from ${message.senderId}: ${message.content}\n`;
 				privateMessages.scrollTop = privateMessages.scrollHeight; // Desplazarse hacia abajo
 			});
 
-			// Evento para recibir mensajes globales
 			socket.on('globalMessage', (message) => {
 				globalMessages.value += `Global Message from ${message.nickname}: ${message.content}\n`;
 				globalMessages.scrollTop = globalMessages.scrollHeight; // Desplazarse hacia abajo
 			});
 
-			function sendMessage(isPrivate) {
+			async function sendMessage(isPrivate) {
 				const message = isPrivate
 					? privateMessageInput.value
 					: globalMessageInput.value;
 				if (isPrivate) {
-					const senderId = 'user13';
-					const receiverId = 'user14';
+					const senderId = 'user13'; // Cambia esto según sea necesario
+					const receiverId = 'user14'; // Cambia esto según sea necesario
 					socket.emit('sendPrivateMessage', {
 						senderId,
 						receiverId,
 						content: message,
 					});
+					await fetch('/messages/sendPrivate', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							senderId,
+							receiverId,
+							content: message,
+						}),
+					});
 					privateMessages.value += `You (private): ${message}\n`;
-					privateMessages.scrollTop = privateMessages.scrollHeight; // Desplazarse hacia abajo
+					privateMessages.scrollTop = privateMessages.scrollHeight;
 					privateMessageInput.value = '';
 				} else {
-					const nickname = 'user4';
+					const nickname = 'user4'; // Cambia esto según sea necesario
 					socket.emit('sendGlobalMessage', {
 						nickname,
 						content: message,
 					});
+					await fetch('/messages/sendGlobal', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ nickname, content: message }),
+					});
 					globalMessages.value += `You (global): ${message}\n`;
-					globalMessages.scrollTop = globalMessages.scrollHeight; // Desplazarse hacia abajo
+					globalMessages.scrollTop = globalMessages.scrollHeight;
 					globalMessageInput.value = '';
 				}
 			}
@@ -275,14 +390,14 @@
 
 			privateMessageInput.addEventListener('keydown', (event) => {
 				if (event.key === 'Enter') {
-					event.preventDefault(); // Evita el salto de línea en el campo de texto
+					event.preventDefault();
 					sendMessage(true);
 				}
 			});
 
 			globalMessageInput.addEventListener('keydown', (event) => {
 				if (event.key === 'Enter') {
-					event.preventDefault(); // Evita el salto de línea en el campo de texto
+					event.preventDefault();
 					sendMessage(false);
 				}
 			});

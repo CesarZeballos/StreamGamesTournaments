@@ -7,7 +7,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TeamsService } from 'teams/teams.service';
 import { TournamentsService } from 'tournaments/tournaments.service';
 import { preloadData } from '../preload/preload.db';
-import { IoAdapter } from '@nestjs/platform-socket.io';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function PreloadData(
 	prismaService: PrismaService,
@@ -56,7 +57,7 @@ async function bootstrap() {
 		await PreloadData(prismaService, teamService, tournamentService);
 		console.log('Data preloaded successfully');
 
-		const port = process.env.PORT  || 3001;
+		const port = process.env.PORT || 3001;
 		await app.listen(port, '0.0.0.0', () => {
 			console.log(`App listening on port ${port}`);
 		});
