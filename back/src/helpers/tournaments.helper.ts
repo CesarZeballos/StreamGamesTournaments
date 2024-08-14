@@ -4,7 +4,7 @@ export const tournaments = [
   {
     id: 'uuid-1',
     nameTournament: 'Strike Showdown',
-    startDate: new Date('2024-08-01T14:23:11.438Z'),
+    startDate: new Date('2024-08-25T14:23:11.438Z'),
     createdAt: new Date('2023-01-05T08:21:45.438Z'),
     category: Categories.Beginner,
     awards: ['$500', '$400', '$200'],
@@ -17,9 +17,7 @@ export const tournaments = [
     gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -38,10 +36,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -61,9 +56,7 @@ export const tournaments = [
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -83,9 +76,7 @@ export const tournaments = [
     gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -106,7 +97,6 @@ export const tournaments = [
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
       "d4e5f6g7-8901-23de-fg45-567890abcdef"
     ]
 
@@ -127,9 +117,7 @@ export const tournaments = [
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -149,9 +137,7 @@ export const tournaments = [
     gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -171,9 +157,7 @@ export const tournaments = [
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -193,9 +177,7 @@ export const tournaments = [
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -216,8 +198,7 @@ export const tournaments = [
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde"
     ]
 
   },
@@ -236,10 +217,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -258,10 +236,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -281,9 +256,7 @@ export const tournaments = [
     gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -303,9 +276,7 @@ export const tournaments = [
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
@@ -324,10 +295,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -346,10 +314,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -368,10 +333,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -390,10 +352,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -411,12 +370,7 @@ export const tournaments = [
     price: 1350,
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
-    teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
-    ]
+    teams: []
 
   },
   {
@@ -434,10 +388,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -458,8 +409,7 @@ export const tournaments = [
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde"
     ]
 
   },
@@ -480,8 +430,7 @@ export const tournaments = [
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
       "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "c3d4e5f6-7890-12cd-ef34-4567890abcde"
     ]
 
   },
@@ -500,10 +449,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -522,10 +468,7 @@ export const tournaments = [
     organizerId: "b1c9e5d4-5f94-41b3-9e40-4d42b6a4b382",
     gameId: '7e84c4b2-5b2d-4f88-9a6d-6f6b19c88d3e',
     teams: [
-      "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "a1b2c3d4-5678-90ab-cdef-1234567890ab"
     ]
 
   },
@@ -545,9 +488,7 @@ export const tournaments = [
     gameId: 'f4b9a5d2-0a9c-4c89-96b1-3d0e7f6a1e8b',
     teams: [
       "a1b2c3d4-5678-90ab-cdef-1234567890ab",
-      "b2c3d4e5-6789-01bc-def2-34567890abcd",
-      "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-      "d4e5f6g7-8901-23de-fg45-567890abcdef"
+      "b2c3d4e5-6789-01bc-def2-34567890abcd"
     ]
 
   },
