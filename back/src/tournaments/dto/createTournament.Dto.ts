@@ -58,7 +58,7 @@ export class CreateTournamentDto {
 	urlAvatar?: string;
 
 	@ApiProperty({ example: ['Premio 1', 'Premio 2'] })
-	@IsString()
+	@IsArray()
 	@IsNotEmpty()
 	awards: string[];
 

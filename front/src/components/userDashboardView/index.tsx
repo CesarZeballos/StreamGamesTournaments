@@ -11,6 +11,7 @@ import UsersArea from "../Areas/UsersArea";
 import TournamentsArea from "../Areas/TournamentsArea";
 import { DashboardViewGameForm } from "../dashboardViewGameForm";
 import { DashboardViewNotification } from "../dashboardViewNotifications";
+import { DashboardViewOrganizerTournaments } from "../dashboardViewOrganizerTournaments";
 
 export const DashboardSelector: React.FC = () => {
     const section = useSelector((state: RootState) => state.dashboard.view);
@@ -25,7 +26,7 @@ export const DashboardSelector: React.FC = () => {
 
                 {section === 'settings' && <DashboardViewSettings/>}
 
-                {/* {section === 'myTournaments' && <DashboardViewOrganizerTournaments />} */}
+                {section === 'myTournaments' && <DashboardViewOrganizerTournaments />}
                 {section === 'createTournament' && <DashboardTournamentForm />}
 
                 {section === 'users' && <UsersArea/>}

@@ -109,9 +109,6 @@ export class AuthService {
 
 		const combinedTournaments = [...playerTournaments, ...teamTournaments];
 
-
-
-
 		const friendsData = userData.friends
 			.filter((friend) => friend.user.id === userData.id || friend.friendId === userData.id)
 			.map((friend) => ({
@@ -143,25 +140,40 @@ export class AuthService {
 
 			return {
 				tournamentId: tournament.id,
-				id: userData.id,
+				id: notification.id,
 				nameTournament: tournament.nameTournament,
 				nameTeam: team ? team.name : null,
 				nameGame: tournament.game ? tournament.game.name : null,
 				tournamentDate: tournament.startDate.toISOString(),
-				state: tournament.state,
+				state: notification.state,
 			};
 		});
 
 		const { state, tournaments, isBanned, ...userNotData } = userData;
+		
+		const organizerTournaments = userData.organizedTournaments.map(tournament => ({
+			id: tournament.id,
+			nameTournament: tournament.nameTournament,
+			startDate: tournament.startDate.toISOString(),
+			category: tournament.category,
+			maxTeams: tournament.maxTeams,
+			urlAvatar: tournament.urlAvatar || '',
+			state: tournament.state,
+			gameName: tournament.game.name,
+			teams: tournament.teams.map(team => ({
+			  id: team.id,
+			  name: team.name,
+			})),
+		  }));
 
 		const user = {
 			...userNotData,
-			tournaments: combinedTournaments,
+			tournaments: combinedTournaments, // esto no sirve al front
 			friends,
 			receivedFriendRequests,
 			notifications,
+			organizerTournaments,
 		};
-
 		return {
 			message: 'User logged in successfully',
 			user,

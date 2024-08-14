@@ -7,7 +7,7 @@ import { RootState } from "@/redux/store"
 
 
 export const TournamentViewInUserDashboard = ({id}: {id: string}) => {
-    const tournaments = useSelector((state: RootState) => state.user.user?.tournaments)
+    const tournaments = useSelector((state: RootState) => state.tournament.tournaments)
 
     const tour = tournaments?.find((tour: ITournament) => tour.id === id)
     const { nameTournament, urlAvatar, startDate, description, price, game, category } = tour || {
