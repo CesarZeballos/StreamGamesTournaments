@@ -24,10 +24,6 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params
     return <div>Tournament not found</div>;
   }
 
-  const gameImage = gameImages[tournament.game.name];
-  const gameIcon = gameIcons[tournament.game.name];
-  const categoryIcon = categoryIcons[tournament.category];
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     if(token) {
@@ -51,7 +47,7 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params
     <>
     <div className='w-full h-96 overflow-hidden'>
       <Image
-          src={gameImage}
+          src={tournament.urlAvatar}
           alt={tournament.nameTournament}
           className="object-cover"
         />
