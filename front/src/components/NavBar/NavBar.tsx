@@ -28,13 +28,6 @@ const NavBar: React.FC = () => {
         }))
     }
 
-    const [not, setNot] = useState(0)
-    useEffect(() => {
-        if (user) {
-            setNot(user?.receivedFriendRequests.length + user.notifications.filter(tournament => tournament.state === true).length)
-        }
-    }, [user])
-
     return (
         <div className="bg-BGlight grid grid-cols-4 px-large pt-4 pb-4 overflow-hidden">
         <div className="w-full flex justify-center">
