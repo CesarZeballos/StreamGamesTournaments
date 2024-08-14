@@ -11,6 +11,7 @@ import { RootState } from '@/redux/store';
 import { toast } from 'sonner';
 import { CategoryIcon, GameIcon, PriceIcon } from '@/components/Tournaments/type';
 import { isoToDate } from '@/utils/formatDate';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params }) => {
   const router = useRouter();
@@ -43,6 +44,9 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params
     }
   }
 
+  const capacity = tournament.maxTeams
+  const teams = tournament.teams.length
+
   return (
     <>
     <div className='w-full h-96 overflow-hidden'>
@@ -69,6 +73,10 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params
             <div className="flex flex-row items-center gap-4">
               <PriceIcon price={tournament.price} />
               <p className='body text-white text-2xl'>U$S {tournament.price}</p>
+            </div>
+            <div className="flex flex-row items-center gap-4">
+              <GroupsIcon className='text-lightViolet'/>
+              <p className='body text-white text-2xl'>{teams} / {capacity}</p>
             </div>
             </div>
 
