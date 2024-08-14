@@ -222,6 +222,15 @@ body {
   focus:shadow-lightViolet
 }
 
+.inputMiddle {
+
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-60
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
 .inputMax {
   @apply bg-white ml-2 rounded-sm px-3 py-3 font-Roboto text-BGdark w-96 h-24 
   focus:border-solid focus:border-lightViolet focus:shadow-md focus:shadow-lightViolet
