@@ -15,7 +15,7 @@ export const ChatBotButton: React.FC = () =>  {
         setOpenChat(false);
       };
   return (
-    <div className="fixed bottom-9 right-9 z-40">
+    <div className="fixed bottom-9 right-20 z-20">
         {!openChat && 
             <Fab size="medium" color="info" onClick={handleChange}>
                 <SmartToyIcon sx={{ mr: 0 }} />
