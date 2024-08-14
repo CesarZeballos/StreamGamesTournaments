@@ -71,8 +71,11 @@ html, body {
 }
 
 .buttonNavbar {
-  @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap
+  @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap gap-2
   focus:text-lightViolet hover:text-lightViolet
+}
+.buttonNavbarActive {
+  @apply flex items-center font-Raleway font-bold text-base px-9 py-2 w-fit h-fit whitespace-nowrap text-lightViolet gap-2
 }
 
 .buttonSecondary {
