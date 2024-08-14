@@ -85,7 +85,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 
 		// Guardar mensaje en la base de datos
-		await this.prisma.globalChat.create({
+		const savedMessage = await this.prisma.globalChat.create({
 			data: {
 				nickname,
 				post: content,
@@ -96,6 +96,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		});
 
 		// Emitir mensaje a todos los clientes conectados
-		this.server.emit('globalMessage', { nickname, content, user });
+		this.server.emit('globalMessage', { 
+			id: savedMessage.id,
+			nickname, 
+			content,
+			createdAt: savedMessage.createdAt});
 	}
 }

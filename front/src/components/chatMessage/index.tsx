@@ -7,6 +7,7 @@ export const ChatMessage = (data: IMessage) => {
             <div className="flex justify-start gap-1">
                 <p className="text-lightViolet">{data.nickname}:</p>
                 <p className="text-white">{data.content}</p>
+                <p className="text-lightViolet">{data.createdAt}</p>
             </div>
         </div>
     )
