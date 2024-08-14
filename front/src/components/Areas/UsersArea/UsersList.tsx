@@ -23,8 +23,8 @@ const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeact
     )
     .filter(user => 
       filters.tournaments === '' || 
-      (filters.tournaments === 'true' ? user.tournaments.length > 0 : 
-      filters.tournaments === 'false' ? user.tournaments.length === 0 : 
+      (filters.tournaments === 'true' ? user.notifications.length > 0 : 
+      filters.tournaments === 'false' ? user.notifications.length === 0 : 
       true)
     );
 
@@ -53,7 +53,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeact
             <tr className="flex flex-row justify-around" key={user.id}>
               <td className='text-center w-36'>{user.nickname}</td>
               <td className='text-center w-36'>{user.role}</td>
-              <td className='text-center w-36'>{user.tournaments.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>
+              <td className='text-center w-36'>{user.notifications.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>
               <td className='text-center w-36'>{user.state ? 'Active' : 'Inactive'}</td>
               <td className='text-center w-36'>
                 <button className='iconButton' onClick={() => onDeactivateUser(user.id)}><BlockIcon />  </button>

@@ -78,7 +78,7 @@ export const fetchRejectFriend = async (data: IFriendRequestProps) => {
 
 export const fetchCheckViewTournament = async (data: IFriendRequestProps) => {
     const response = await fetch(`${apiUrl}/notifications/delete/${data.id}`, {
-        method: "POST",
+        method: "PUT",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${data.token}`,
