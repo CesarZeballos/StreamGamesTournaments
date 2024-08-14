@@ -1,9 +1,10 @@
 import { IFilters, IFiltersProp, ITournamentState } from "@/interfaces/interfaceRedux";
-import { ITournament } from "@/interfaces/interfaceTournaments";
+import { IGame, ITournament } from "@/interfaces/interfaceTournaments";
 import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getTournamentsSlice } from "../thunks/tournamentsSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
+import { getAllGamesSlice, getGamesActivesSlice } from "../thunks/auxiliarSliceThunk";
 
 const initialState: ITournamentState = {
   status: "idle",
@@ -17,7 +18,9 @@ const initialState: ITournamentState = {
     price: "",
     date: ""
   },
-  tournamentsFiltered: []
+  tournamentsFiltered: [],
+  games: [],
+  allGames: []
 };
 
 const tournamentSlice = createSlice({
@@ -128,7 +131,29 @@ const tournamentSlice = createSlice({
         state.tournaments = action.payload
         state.tournamentsActives = action.payload.filter((tour) => new Date(tour.startDate) > today)
         state.tournamentsFiltered = action.payload
-      });
+      })
+
+      // GAMES IN Tournaments
+      .addCase(getGamesActivesSlice.fulfilled, (state, action: PayloadAction<IGame[]>) => {
+        state.games = action.payload
+      })
+      .addCase(getGamesActivesSlice.rejected, (state) => {
+        toast.error('Error in getting games', {
+          position: 'top-right',
+          duration: 1500,
+        });
+      })
+
+      // GET ALL GAMES
+      .addCase(getAllGamesSlice.fulfilled, (state, action: PayloadAction<IGame[]>) => {
+        state.allGames = action.payload
+      })
+      .addCase(getAllGamesSlice.rejected, (state) => {
+        toast.error('Error in getting games', {
+          position: 'top-right',
+          duration: 1500,
+        });
+      })
   },
 });
 

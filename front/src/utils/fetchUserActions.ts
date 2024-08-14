@@ -25,7 +25,6 @@ export const fetchAddUser = async (data: IAddFriendForm) => {
 
 export const fetchDeleteFriend = async (data: IFriendRequestProps) => {
     const {id, token} = data
-    console.log("data", data)
     const response = await fetch(`${apiUrl}/users/remove-friend/${id}`, {
         method: "DELETE",
         headers: {
@@ -36,11 +35,12 @@ export const fetchDeleteFriend = async (data: IFriendRequestProps) => {
 
     if (!response.ok) {
         throw new Error(`Error adding friend: ${response.statusText}`);
+    } else {
+        const userData = true
+        console.log("response fetch", userData)
+        console.log("userData", response)
+        return userData;
     }
-    const userData = await response.json();
-    console.log("response fetch", userData)
-    console.log("userData", response)
-    return userData;
 } 
 
 export const fetchAceptFriend = async (data: IFriendRequestProps) => {
@@ -74,4 +74,19 @@ export const fetchRejectFriend = async (data: IFriendRequestProps) => {
         throw new Error(`Error adding friend: ${response.statusText}`);
     }
     return await response.json()
+}
+
+export const fetchCheckViewTournament = async (data: IFriendRequestProps) => {
+    const response = await fetch(`${apiUrl}/notifications/delete/${data.id}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${data.token}`,
+        }
+    })
+    if (!response.ok) {
+        throw new Error(`Error adding friend: ${response.statusText}`);
+    }
+    const userData = await response.json();
+    return userData;
 }

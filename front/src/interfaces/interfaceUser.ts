@@ -1,4 +1,4 @@
-import { ITournament } from "./interfaceTournaments"
+import { IOrganizerTournament, ITournament } from "./interfaceTournaments"
 
 export interface IUser {
     id: string
@@ -10,10 +10,11 @@ export interface IUser {
     urlSteam: string
     role: string
     state: boolean
-    tournaments: ITournament[]
+    organizerTournaments: IOrganizerTournament[]
     friends: IFriend[]
     receivedFriendRequests: IFriendRequest[]
     sentMessages: []
+    notifications: ITournamentsRegistered[]
     receivedMessages: []
     globalChat: []
 }
@@ -47,17 +48,15 @@ export interface ITeam {
     members: IUser[]
 }
 
-export interface ITournamentsregistered {
+export interface ITournamentsRegistered {
+    tournamentId: string
     id: string
     nameTournament: string
-    startDate: string
+    nameTeam: string
+    nameGame: string
+    tournamentDate: string
+    state: boolean
 }
-
-// export interface ITeamMember {
-//     id: string
-//     nickName: string
-// }
-
 
 //register
 export interface IRegisterForm {
@@ -116,6 +115,11 @@ export interface IFriendRequest {
 //ugrade user
 
 export interface IUpgradeUser {
+    id: string
+    token: string
+}
+
+export interface IDeletetournament {
     id: string
     token: string
 }

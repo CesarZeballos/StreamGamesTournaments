@@ -1,5 +1,6 @@
-import { IAddFriendForm, IFriendRequestProps } from "@/interfaces/interfaceUser"
-import { fetchAceptFriend, fetchAddUser, fetchDeleteFriend, fetchRejectFriend } from "@/utils/fetchUserActions"
+import { IAddFriendForm, IDeletetournament, IFriendRequestProps } from "@/interfaces/interfaceUser"
+import { fetchDeleteTournaments } from "@/utils/fetchTournaments"
+import { fetchAceptFriend, fetchAddUser, fetchCheckViewTournament, fetchDeleteFriend, fetchRejectFriend } from "@/utils/fetchUserActions"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 
@@ -21,6 +22,16 @@ export const aceptFriendSlice = createAsyncThunk('user/aceptFriend', async (data
 
 export const rejectFriendSlice = createAsyncThunk('user/rejectFriend', async (data: IFriendRequestProps) => {
     const response = await fetchRejectFriend(data)
+    return response
+})
+
+export const checkViewTournament = createAsyncThunk('user/checkViewTournament', async (data: IFriendRequestProps) => {
+    const response = await fetchCheckViewTournament(data)
+    return response 
+})
+
+export const deleteTournament = createAsyncThunk('user/deleteTournament', async (data: IDeletetournament) => {
+    const response = await fetchDeleteTournaments(data)
     return response
 })
 

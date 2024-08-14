@@ -12,7 +12,7 @@ export interface ITournament {
     organizerId: string;
     gameId: string;
     membersNumber: number;
-    maxTeam: number;
+    maxTeams: number;
     price: number;
     urlAvatar: string;
     awards: string[];
@@ -21,6 +21,19 @@ export interface ITournament {
     game: IGame;
     players: [];
     organizer: IUser;
+    teams: [];
+}
+
+export interface IOrganizerTournament {
+    id: string;
+    nameTournament: string;
+    startDate: string;
+    category: string;
+    maxTeams: number;
+    urlAvatar: string;
+    state: boolean;
+    gameName: string;
+    teams: [];
 }
 
 export interface ITournamentPost {
@@ -30,10 +43,10 @@ export interface ITournamentPost {
     organizerId: string;
     gameId: string;
     membersNumber: number;
-    maxTeam: number;
+    maxTeams: number;
     price: number;
-    urlAvatar: File | string;
-    award: string[];
+    urlAvatar: string;
+    awards: string[];
     description: string;
 }
 
@@ -62,6 +75,7 @@ export interface IGame {
     name: string;
     urlImage: string;
     description?: string;
+    state: boolean
 }
 
 export interface IGamePost {
@@ -89,6 +103,13 @@ export interface IAddTeam {
 export interface ITournamentsInscripted {
     id: string
     nameTournament: string
-    startDate: string
+    teamName: string
+    tournamentDate: string
     status: string
+}
+
+export interface IAwardsInForm {
+    first: string
+    second: string
+    third: string
 }
