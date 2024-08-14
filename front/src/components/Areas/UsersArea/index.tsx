@@ -86,8 +86,8 @@ const UsersArea: React.FC = () => {
 
   const activeUsers = users.filter(user => user.state).length;
   const inactiveUsers = users.filter(user => !user.state).length;
-  const usersInTournament = users.filter(user => user.tournaments.length > 0).length;
-  const usersOutTournament = users.filter(user => user.tournaments.length === 0).length;
+  const usersInTournament = users.filter(user => user.notifications.length > 0).length;
+  const usersOutTournament = users.filter(user => user.notifications.length === 0).length;
 
   const handleChangeView = (view: string) => {
     setView(view);
