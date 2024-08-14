@@ -30,17 +30,15 @@ model User {
   tournaments            Tournament[]    @relation("UserTournaments")
   organizedTournaments   Tournament[]    @relation("OrganizedTournaments")
   notifications          Notification[]  @relation("UserNotifications")
-  sendNotification       Notification[]  @relation("adminNotification")
 }
 
 model Notification {
-  id                      String     @id @default(uuid())
-  receivedNotification    User[] @relation("UserNotifications")
-  adminId String 
-  sendNotification User? @relation("adminNotification",fields: [adminId], references: [id])
-  state Boolean
-  messages String @db.Text
-  viewed Boolean @default(false)
+  id                   String     @id @default(uuid())
+  userId               String
+  receivedNotification User?      @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  state                Boolean    @default(true)
+  tournament           Tournament @relation("tournamentsNotificaions", fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournamentId         String
 }
 
 model FriendRequest {
