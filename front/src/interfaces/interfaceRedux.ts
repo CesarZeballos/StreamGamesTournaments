@@ -128,6 +128,7 @@ export interface IChatState {
 
 export interface IMessage {
   id: string;
+  id: string;
   nickname: string;
   content: string;
   createdAt: string;
