@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import GamesList from './GamesList';
 import { IGame, IGamesFilters } from '@/interfaces/interfaceTournaments';
-import { fetchGames, banGame } from '@/utils/fetchTournaments';
+import { fetchGames, banGame, reactivateGame } from '@/utils/fetchGames';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import { toast } from 'sonner';
 
@@ -10,7 +10,9 @@ const GamesArea: React.FC = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [filters, setFilters] = useState<IGamesFilters>({ name: '', state: 'all' });
   const [gameToBan, setGameToBan] = useState<string | null>(null);
+  const [gameToReactivate, setGameToReactivate] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [action, setAction] = useState<string>('');
 
   const loadGames = useCallback(async () => {
     try {
@@ -52,8 +54,9 @@ const GamesArea: React.FC = () => {
 
   const handleBanGame = (id: string) => {
     setGameToBan(id);
+    setAction('ban');
     setShowConfirmModal(true);
-};
+  };
 
 const confirmBanGame = async () => {
   if (gameToBan) {
@@ -78,11 +81,45 @@ const confirmBanGame = async () => {
   }
 };
 
+const handleReactiveGame = (id: string) => {
+  setGameToReactivate(id);
+  setAction('reactivate');
+  setShowConfirmModal(true);
+};
+
+const confirmReactiveGame = async () => {
+  if (gameToReactivate) {
+    console.log("Reactivating game with ID:", gameToReactivate);
+      try {
+          await reactivateGame(gameToReactivate); // Envia el id del juego
+          toast.success("Game Reactivated Successfully", {
+              position: "top-right",
+              duration: 1500,
+          });
+          setGames(games.map(game => game.id === gameToReactivate ? { ...game, state: true } : game));
+      } catch (error) {
+          toast.error("Failed to reactivate game", {
+              position: "top-right",
+              duration: 1500,
+          });
+          console.error("Error reactivating game:", error);
+      } finally {
+          setShowConfirmModal(false);
+          setGameToReactivate(null);
+      }
+  }
+};
+
   const [view, setView] = useState<string>('table');
 
   const cancelBanGame = () => {
     setShowConfirmModal(false);
     setGameToBan(null);
+  };
+
+  const cancelReactivateGame = () => {
+    setShowConfirmModal(false);
+    setGameToReactivate(null);
   };
 
   const handleChangeView = (view: string) => {
@@ -105,15 +142,16 @@ const confirmBanGame = async () => {
               filters={filters}
               onFilter={handleFilter}
               onDeactivateGame={handleBanGame}
+              onReactivateGame={handleReactiveGame}
             />
           </div>
         )}
       </div>
       <ConfirmModal
-        show={showConfirmModal}
-        message="Are you sure you want to ban this Game?"
-        onConfirm={confirmBanGame}
-        onCancel={cancelBanGame}
+      show={showConfirmModal}
+      message={action === 'ban' ? "Are you sure you want to ban this Game?" : "Are you sure you want to reactivate this Game?"}
+      onConfirm={action === 'ban' ? confirmBanGame : confirmReactiveGame}
+      onCancel={cancelBanGame}
       />
     </>
   );

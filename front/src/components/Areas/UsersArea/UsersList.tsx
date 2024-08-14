@@ -3,21 +3,24 @@ import React from 'react';
 import UserFilters from './UserFilters';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
 import BlockIcon from '@mui/icons-material/Block';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 interface UsersListProps {
   users: IUser[];
   filters: IUserFilters;
   onFilter: (filters: IUserFilters) => void;
   onDeactivateUser: (id: string) => void;
+  onReactivateUser: (id: string) => void;
 }
 
-const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeactivateUser }) => {
-  const filteredUsers = users
-    .filter(user => 
-      filters.state === '' || 
-      filters.state === undefined || 
-      user.state === (filters.state === 'true')
-    )
+const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeactivateUser, onReactivateUser }) => {
+  const filteredUsers = users.filter((user) => {
+    const stateMatch =
+      filters.state === "all" || // Muestra todos los users
+      (filters.state === "active" && user.state) || // Muestra solo users activos
+      (filters.state === "inactive" && !user.state); // Muestra solo users inactivos
+    return stateMatch;
+    })
     .filter(user => 
       filters.role === '' || user.role === filters.role
     )
@@ -53,10 +56,23 @@ const UsersList: React.FC<UsersListProps> = ({ users, filters, onFilter, onDeact
             <tr className="flex flex-row justify-around" key={user.id}>
               <td className='text-center w-36'>{user.nickname}</td>
               <td className='text-center w-36'>{user.role}</td>
-              <td className='text-center w-36'>{user.notifications.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>
-              <td className='text-center w-36'>{user.state ? 'Active' : 'Inactive'}</td>
-              <td className='text-center w-36'>
-                <button className='iconButton' onClick={() => onDeactivateUser(user.id)}><BlockIcon />  </button>
+              <td className='text-center w-36'>{user.notifications?.length > 0 ? 'In Tournament' : 'Out Tournament'}</td>              <td className='text-center w-36'>{user.state ? 'Active' : 'Inactive'}</td>
+              <td className="text-center w-36">
+                {user.state ? (
+                  <button
+                    className="iconButton"
+                    onClick={() => onDeactivateUser(user.id)}
+                  >
+                    <BlockIcon />
+                  </button>
+                ) : (
+                  <button
+                    className="iconButton"
+                    onClick={() => onReactivateUser(user.id)}
+                  >
+                    <CheckCircleIcon />
+                  </button>
+                )}
               </td>
             </tr>
           ))}

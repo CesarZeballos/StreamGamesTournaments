@@ -2,17 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import UsersList from './UsersList';
 import { IUser, IUserFilters } from '@/interfaces/interfaceUser';
-import { fetchUsers, banUser } from '@/utils/fetchUser';
+import { fetchUsers, banUser, reactivateUser } from '@/utils/fetchUser';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import UsersPie from './UsersPie';
 import { toast } from 'sonner';
 
 const UsersArea: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([]);
-  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: '' });
+  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: 'all' });
   const [userToBan, setUserToBan] = useState<string | null>(null);
+  const [userToReactivate, setUserToReactivate] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  
+  const [action, setAction] = useState<string>('');
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -20,12 +21,18 @@ const UsersArea: React.FC = () => {
         const allUsers = await fetchUsers();
         const filteredUsers = allUsers
           .filter((user: { role: string; }) => user.role !== 'admin')
+          .filter((user: { state: string; }) => {
+            const stateMatch =
+              filters.state === "all" || // Muestra todos los users
+              (filters.state === "active" && user.state) || // Muestra solo users activos
+              (filters.state === "inactive" && !user.state); // Muestra solo users inactivos
+            return stateMatch;
+            })
           .filter((user: { role: string; tournaments: string[]; state: boolean; }) => 
             (filters.role === '' || user.role === filters.role) &&
             (filters.tournaments === '' || 
               (filters.tournaments === 'true' ? user.tournaments.length > 0 : 
-                filters.tournaments === 'false' ? user.tournaments.length === 0 : true)) &&
-            (filters.state === '' || user.state === (filters.state === 'true'))
+                filters.tournaments === 'false' ? user.tournaments.length === 0 : true))
           )
           .sort((a: { nickname: string; }, b: { nickname: string; }) => {
             if (filters.nickname === 'asc') {
@@ -52,6 +59,7 @@ const UsersArea: React.FC = () => {
 
   const handleBanUser = (id: string) => {
     setUserToBan(id);
+    setAction('ban');
     setShowConfirmModal(true);
   };
 
@@ -77,6 +85,35 @@ const UsersArea: React.FC = () => {
     }
   };
 
+  const handleReactiveUser = (id: string) => {
+    setUserToReactivate(id);
+    setAction('reactivate');
+    setShowConfirmModal(true);
+  };
+  
+  const confirmReactivateUser = async () => {
+    if (userToReactivate) {
+      console.log("Reactivating user with ID:", userToReactivate);
+        try {
+            await reactivateUser(userToReactivate); // Envia el id del user
+            toast.success("User Reactivated Successfully", {
+                position: "top-right",
+                duration: 1500,
+            });
+            setUsers(users.map(user => user.id === userToReactivate ? { ...user, state: true } : user));
+        } catch (error) {
+            toast.error("Failed to reactivate user", {
+                position: "top-right",
+                duration: 1500,
+            });
+            console.error("Error reactivating user:", error);
+        } finally {
+            setShowConfirmModal(false);
+            setUserToReactivate(null);
+        }
+    }
+  };
+
   const [view, setView] = useState<string>('table');
 
   const cancelBanUser = () => {
@@ -86,14 +123,12 @@ const UsersArea: React.FC = () => {
 
   const activeUsers = users.filter(user => user.state).length;
   const inactiveUsers = users.filter(user => !user.state).length;
-  const usersInTournament = users.filter(user => user.notifications.length > 0).length;
-  const usersOutTournament = users.filter(user => user.notifications.length === 0).length;
+  const usersInTournament = users.filter(user => user.notifications && user.notifications.length > 0).length;
+  const usersOutTournament = users.filter(user => !user.notifications || user.notifications.length === 0).length;
 
   const handleChangeView = (view: string) => {
     setView(view);
   };
-
-
 
   return (
     <>
@@ -112,6 +147,7 @@ const UsersArea: React.FC = () => {
               filters={filters}
               onFilter={handleFilter}
               onDeactivateUser={handleBanUser}
+              onReactivateUser={handleReactiveUser}
             />
           </div>
           )}
@@ -129,10 +165,10 @@ const UsersArea: React.FC = () => {
 
 
       <ConfirmModal
-        show={showConfirmModal}
-        message="Are you sure you want to ban this user?"
-        onConfirm={confirmBanUser}
-        onCancel={cancelBanUser}
+      show={showConfirmModal}
+      message={action === 'ban' ? "Are you sure you want to ban this User?" : "Are you sure you want to reactivate this User?"}
+      onConfirm={action === 'ban' ? confirmBanUser : confirmReactivateUser}
+      onCancel={cancelBanUser}
       />
     </>
   );

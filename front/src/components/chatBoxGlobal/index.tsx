@@ -6,6 +6,7 @@ import { IMessage } from "@/interfaces/interfaceRedux";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import SendIcon from '@mui/icons-material/Send';
 
 // Definir la URL aquí para evitar errores en el código JSX
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -89,7 +90,7 @@ export const ChatBoxglobal = () => {
                         value={messageInput}
                         onChange={handleChange}
                     />
-                    <button className="iconButton w-fit">send</button>
+                    <button className="iconButton w-fit"><SendIcon /></button>
                 </form>
             </div>
         </div>

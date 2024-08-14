@@ -33,7 +33,7 @@ export interface IUserFilters {
     nickname: string;
     role: string;
     tournaments: string;
-    state: string;
+    state: 'all' | 'active' | 'inactive';
 }
 
 export interface IFriend {

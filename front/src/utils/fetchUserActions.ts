@@ -1,4 +1,5 @@
 import { IAddFriendForm, IFriendRequest, IFriendRequestProps } from "@/interfaces/interfaceUser";
+import { toast } from "sonner";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -89,4 +90,32 @@ export const fetchCheckViewTournament = async (data: IFriendRequestProps) => {
     }
     const userData = await response.json();
     return userData;
+}
+
+export const fetchChatBot = async (data: string) => {
+    console.log("fetchChatBot", data)
+    try {
+        const response = await fetch(`${apiUrl}/chatbot/message`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: data
+            })
+        })
+    
+        if (!response.ok) {
+            throw new Error(`${response.statusText}`);
+        }
+
+        const userData = await response.json()
+        console.log("userData", userData.fulfillmentText)
+        return userData.fulfillmentText;
+    } catch (error) {
+        toast.error(`${error}`, {
+            position: "top-right",
+            duration: 1500
+        });
+    }
 }

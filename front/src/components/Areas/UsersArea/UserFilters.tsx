@@ -7,17 +7,21 @@ interface UserFiltersProps {
 }
 
 const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
-  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: '' });
+  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: 'all' });
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const filterValue = name === 'state' || name === 'tournaments' ? value : value;
-
+    const filterValue = name === 'state'
+    ? value === 'active'
+      ? 'active'
+      : value === 'inactive'
+        ? 'inactive'
+        : 'all'
+    : value;
     const updatedFilters = {
       ...filters,
       [name]: filterValue
     };
-
     setFilters(updatedFilters);
     onFilter(updatedFilters);
   };
@@ -47,12 +51,12 @@ const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
       </td>
       <td className='text-center w-36'>
         <select name="state" value={filters.state} className='filter' onChange={handleFilterChange}>
-          <option value="">All Users</option>
-          <option value="true">Active</option>
-          <option value="false">Inactive</option>
+          <option value="all">All Users</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
         </select>
       </td>
-      <td className='text-center text-white w-36'>Ban</td>
+      <td className='text-center text-white w-36'>Ban / Reactivate</td>
     </tr>
   );
 };

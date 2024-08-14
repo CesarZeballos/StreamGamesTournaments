@@ -27,32 +27,32 @@ export const teams = [
 			"b0a1d2d8-765f-4e57-84c9-fb33e6f23d7e"
 		]
 	},
-	{
-		id: "c3d4e5f6-7890-12cd-ef34-4567890abcde",
-		name: 'Team Charlie',
-		urlAvatar: 'https://example.com/team3-avatar',
-		state: true,
-		organizerId: "1f4c7b7e-fc43-4c87-9f21-fc9e76f982bc",
-		users: [
-			"1f4c7b7e-fc43-4c87-9f21-fc9e76f982bc",
-			"89e9cfba-44db-4e70-9088-41e8f5959bcb",
-			"a3a77a4e-f1e4-4e40-ae71-84f9d1c4356e",
-			"f0b27c3d-3eb4-4426-bd70-b3ad2348d1e4",
-			"ff94e7f7-cb73-41b1-8e8d-78cdd6cb0f66"
-		],
-	},
-	{
-		id: "d4e5f6g7-8901-23de-fg45-567890abcdef",
-		name: 'Team Delta',
-		urlAvatar: 'https://example.com/team4-avatar',
-		state: true,
-		organizerId: "d9b2d63d-7f6b-45d1-8d78-490d1d639e2b",
-		users: [
-			"d9b2d63d-7f6b-45d1-8d78-490d1d639e2b",
-			"bce16f7a-cbb5-4a38-9bfb-e4772829ad80",
-			"27e2b28a-4073-4a3e-88f8-08d378b0b0b3",
-			"e4dbb0dc-64a7-4f40-927d-8263e2c95b83",
-			"b4d50f7b-8e14-4c4b-937b-3b43e1c7d1a2"
-		],
-	},
+// 	{
+// 		id: "c3d4e5f6-7890-12cd-ef34-4567890abcde",
+// 		name: 'Team Charlie',
+// 		urlAvatar: 'https://example.com/team3-avatar',
+// 		state: true,
+// 		organizerId: "1f4c7b7e-fc43-4c87-9f21-fc9e76f982bc",
+// 		users: [
+// 			"1f4c7b7e-fc43-4c87-9f21-fc9e76f982bc",
+// 			"89e9cfba-44db-4e70-9088-41e8f5959bcb",
+// 			"a3a77a4e-f1e4-4e40-ae71-84f9d1c4356e",
+// 			"f0b27c3d-3eb4-4426-bd70-b3ad2348d1e4",
+// 			"ff94e7f7-cb73-41b1-8e8d-78cdd6cb0f66"
+// 		],
+// 	},
+// 	{
+// 		id: "d4e5f6g7-8901-23de-fg45-567890abcdef",
+// 		name: 'Team Delta',
+// 		urlAvatar: 'https://example.com/team4-avatar',
+// 		state: true,
+// 		organizerId: "d9b2d63d-7f6b-45d1-8d78-490d1d639e2b",
+// 		users: [
+// 			"d9b2d63d-7f6b-45d1-8d78-490d1d639e2b",
+// 			"bce16f7a-cbb5-4a38-9bfb-e4772829ad80",
+// 			"27e2b28a-4073-4a3e-88f8-08d378b0b0b3",
+// 			"e4dbb0dc-64a7-4f40-927d-8263e2c95b83",
+// 			"b4d50f7b-8e14-4c4b-937b-3b43e1c7d1a2"
+// 		],
+// 	},
 ];
