@@ -99,7 +99,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server.emit('globalMessage', { 
 			id: savedMessage.id,
 			nickname, 
-			content,
+			post: content,
 			createdAt: savedMessage.createdAt});
 	}
+
+	@SubscribeMessage('getChatHistory')
+	async handleGetChatHistory(client: Socket) {
+    // Obtener el historial de mensajes del chat global desde la base de datos, ordenado por fecha
+    const chatHistory = await this.prisma.globalChat.findMany({
+        orderBy: {
+            createdAt: 'asc',  // Ordena por la fecha de creación en orden ascendente (del más antiguo al más reciente)
+        },
+    });
+
+	console.log('Emitiendo chatHistory', chatHistory);
+
+    // Emitir el historial al cliente que hizo la solicitud
+    client.emit('chatHistory', chatHistory);
+}
 }

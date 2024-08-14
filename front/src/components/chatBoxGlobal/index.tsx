@@ -14,15 +14,28 @@ export const ChatBoxglobal = () => {
     const [socket, setSocket] = useState<any>(null);
     const [historialChat, setHistorialChat] = useState<IMessage[]>([]);
     const [messageInput, setMessageInput] = useState("");
+    const [catchhistory, setCatchhistory] = useState(false);
 
     const user = useSelector((state: RootState) => state.user.user);
 
+    // SETEO DEL HISTORIAL DE MENSAJES
     useEffect(() => {
         // Crear una instancia de Socket.IO solo una vez
         const socketIo = io(`${apiUrl}`);
         setSocket(socketIo);
 
-        // Escuchar mensajes globales
+        console.log('Socket conectado', socketIo);
+
+        // Emitir evento para obtener el historial del chat
+        socketIo.emit('getChatHistory');
+
+        // Escuchar el evento para recibir el historial del chat
+        socketIo.on('chatHistory', (chatHistory) => {
+            console.log('Chat history received:', chatHistory);
+            setHistorialChat(chatHistory);
+        });
+
+        // Escuchar mensajes globales en tiempo real
         socketIo.on('globalMessage', (message) => {
             console.log('Global message received:', message);
             setHistorialChat((prevMessages) => [...prevMessages, message]);
@@ -32,7 +45,7 @@ export const ChatBoxglobal = () => {
         return () => {
             socketIo.disconnect();
         };
-    }, []);
+    }, [apiUrl]);
 
     const sendGlobalMessage = (nickname: string, content: string) => {
         if (socket) {
@@ -65,7 +78,7 @@ export const ChatBoxglobal = () => {
                 <h1 className="heading5 text-white">Global Chat</h1>
                 <div className="flex flex-col gap-2 w-full h-full">
                     {historialChat.map((message) => (
-                        <ChatMessage key={message.id} id={message.id} nickname={message.nickname} content={message.content} createdAt={message.createdAt} />
+                        <ChatMessage key={message.id} id={message.id} nickname={message.nickname} post={message.post} createdAt={message.createdAt} />
                     ))}
                 </div>
                 <form className="flex flex-row gap-2" onSubmit={handleSubmit}>
