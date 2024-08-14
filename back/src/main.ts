@@ -10,7 +10,6 @@ import { preloadData } from '../preload/preload.db';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as bodyParser from 'body-parser';
 
-
 async function PreloadData(
 	prismaService: PrismaService,
 	teamService: TeamsService,
