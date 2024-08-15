@@ -321,6 +321,7 @@ body {
 .tableBody {
   @apply font-Roboto text-sm text-white px-6
 }
+  
 
 @media (max-width: 992px) {
   .father-container {
