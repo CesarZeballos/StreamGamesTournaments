@@ -60,7 +60,7 @@ export const upgradeRequestUserSlice = createAsyncThunk('user/upgradeUser', asyn
         return response
 })
 
-export const updateUserSlice = createAsyncThunk('user/updateUser', async ({ id, nickname, birthdate }: { id: string, nickname: string, birthdate: string }) => {
-    const response = await changeData(id, birthdate, nickname);
+export const updateUserSlice = createAsyncThunk('user/updateUser', async (data: { id: string, nickname?: string, birthdate?: string }) => {
+    const response = await changeData(data.id, data.birthdate, data.nickname);
     return response;
 });

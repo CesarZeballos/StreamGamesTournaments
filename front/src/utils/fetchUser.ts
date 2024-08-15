@@ -124,20 +124,21 @@ export const reactivateUser = async (id: string) => {
     return response.json();
 };
 
-export const changeData = async (id: string, birthdate: string, nickname: string) => {
+export const changeData = async (id: string, birthdate?: string, nickname?: string) => {
+    const bodyData: any = {};
+    if (birthdate) bodyData.birthdate = birthdate;
+    if (nickname) bodyData.nickname = nickname;
+
     const response = await fetch(`${apiUrl}/users/update?id=${id}`, {
-    method: 'PUT',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        birthdate: birthdate,
-        nickname: nickname,
-    })
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyData)
     });
     
     if (!response.ok) {
-    throw new Error('Failed to disable user');
+        throw new Error('Failed to update user data');
     }
     return response.json();
 };

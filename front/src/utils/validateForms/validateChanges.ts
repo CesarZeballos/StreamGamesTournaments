@@ -1,24 +1,26 @@
 import { IChangesErrors } from "@/interfaces/interfaceUser";
 
-export function validateChanges(values: IChangesErrors): IChangesErrors {
+export function validateChanges(values: Partial<IChangesErrors>): IChangesErrors {
     let errors: IChangesErrors = {};
-
     const today = new Date();
     const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-
     const nicknameRegex = /^[a-zA-Z0-9]+$/;
-
-    if (!values.birthdate) {
-        errors.birthdate = "Birthdate is required.";
-    } else if (new Date(values.birthdate) > eighteenYearsAgo) {
+    // Validar birthdate solo si está presente
+    if (values.birthdate) {
+        const birthdate = new Date(values.birthdate);
+        if (birthdate > eighteenYearsAgo) {
             errors.birthdate = 'You must be 18 or older to register.';
+        }
+    } else {
+        errors.birthdate = ""; // No marcar error si birthdate no está presente
     }
-    
-    if (!values.nickname) {
-        errors.nickname = "Nickname is required.";
-    }else if (!nicknameRegex.test(values.nickname)) {
-        errors.nickname = "Nickname invalid.";
+    // Validar nickname solo si está presente
+    if (values.nickname) {
+        if (!nicknameRegex.test(values.nickname)) {
+            errors.nickname = "Nickname invalid.";
+        }
+    } else {
+        errors.nickname = ""; // No marcar error si nickname no está presente
     }
-    
-    return errors
+    return errors;
 }
