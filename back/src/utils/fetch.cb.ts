@@ -120,9 +120,8 @@ export class Fetchs {
 						include: { teams: { include: { user: true } } },
 					},
 					teams: { include: { users: true } },
-					versus: true,
+
 					notifications: true,
-					positionBattle: true,
 				},
 			});
 
