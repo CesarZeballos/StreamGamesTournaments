@@ -4,40 +4,19 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggerGlobalMiddleware } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { TeamsService } from 'teams/teams.service';
-import { TournamentsService } from 'tournaments/tournaments.service';
 import { preloadData } from '../preload/preload.db';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as bodyParser from 'body-parser';
 
-async function PreloadData(
-	prismaService: PrismaService,
-	teamService: TeamsService,
-	tournamentsService: TournamentsService,
-) {
-	const preload = new preloadData(
-		prismaService,
-		teamService,
-		tournamentsService,
-	);
-	await preload.clearTables();
-	await preload.addGames();
-	await preload.addUsers();
-	await preload.addTournaments();
-}
-
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-	
-	const prismaService = app.get(PrismaService);
-	const teamService = app.get(TeamsService);
-	const tournamentService = app.get(TournamentsService);
 
+	const prismaService = app.get(PrismaService);
 
 	try {
 		app.use(bodyParser.json({ limit: '10mb' }));
 		app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-		
+
 		app.useWebSocketAdapter(new IoAdapter(app));
 
 		app.enableCors({
@@ -59,13 +38,21 @@ async function bootstrap() {
 		app.use(LoggerGlobalMiddleware);
 		app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-		await PreloadData(prismaService, teamService, tournamentService);
-		console.log('Data preloaded successfully');
-
 		const port = process.env.PORT || 3001;
 		await app.listen(port, '0.0.0.0', () => {
 			console.log(`App listening on port ${port}`);
 		});
+
+		async function PreloadData(prismaService: PrismaService) {
+			const preload = new preloadData(prismaService);
+			await preload.clearTables();
+			await preload.addGames();
+			await preload.addUsers();
+			await preload.addTournaments();
+		}
+
+		await PreloadData(prismaService);
+		console.log('Data preloaded successfully');
 	} catch (error) {
 		console.error('Error preloading data:', error);
 	} finally {

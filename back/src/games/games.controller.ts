@@ -21,19 +21,12 @@ import {
 } from '@nestjs/swagger';
 import { GamesService } from './games.service';
 import { CreateGameDto, UpdateGameDto } from './dto/games.dto';
-/* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
-import { RolesGuard } from 'auth/roles.guard';
-import { Roles } from 'auth/roles.decorator';
-import { Role } from '@prisma/client'; */
 
 @ApiTags('Games')
 @Controller('games')
 export class GamesController {
-	constructor(private readonly gamesService: GamesService) { }
+	constructor(private readonly gamesService: GamesService) {}
 
-	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.admin)
-	@Roles(Role.organizer) */
 	@Get()
 	@ApiOperation({ summary: 'Obtener todos los juegos' })
 	@ApiResponse({
@@ -95,9 +88,6 @@ export class GamesController {
 		}
 	}
 
-	/* @UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.admin)
-	@Roles(Role.organizer) */
 	@Get(':id')
 	@ApiOperation({ summary: 'Obtener un juego por ID' })
 	@ApiParam({
@@ -153,8 +143,6 @@ export class GamesController {
 		}
 	}
 
-	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.admin) */
 	@Post('create')
 	@ApiOperation({ summary: 'Crear un nuevo juego' })
 	@ApiBody({ type: CreateGameDto })
@@ -188,7 +176,11 @@ export class GamesController {
 	async postNewGame(@Body() game: CreateGameDto) {
 		try {
 			const { name, urlImage, description } = game;
-			return await this.gamesService.postNewGame(name, urlImage, description);
+			return await this.gamesService.postNewGame(
+				name,
+				urlImage,
+				description,
+			);
 		} catch (error) {
 			throw new HttpException(
 				error.message,
@@ -197,8 +189,6 @@ export class GamesController {
 		}
 	}
 
-	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.admin) */
 	@Put('update/:id')
 	@ApiOperation({ summary: 'Actualizar un juego' })
 	@ApiBody({
@@ -222,8 +212,6 @@ export class GamesController {
 		return await this.gamesService.updateGame(id, game);
 	}
 
-	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.admin) */
 	@Put('delete/:id')
 	@ApiOperation({ summary: 'Eliminar un juego' })
 	@ApiParam({

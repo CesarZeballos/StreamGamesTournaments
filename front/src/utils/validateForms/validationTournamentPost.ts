@@ -1,8 +1,8 @@
 import { IFirstStep } from "@/interfaces/interfaceRedux";
-import { ITournamentPost, ITournamentPostError } from "@/interfaces/interfaceTournaments";
+import { IFirstStepError, ISecondStepError, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
-export function validateTournament(values: any): ITournamentPostError {
-    let errors: ITournamentPostError = {} as ITournamentPostError;
+export function validateTournamentFirstStep(values: any): IFirstStepError {
+    let errors: IFirstStepError = {} as IFirstStepError;
 
     const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
 
@@ -13,12 +13,26 @@ export function validateTournament(values: any): ITournamentPostError {
     } else if (values.nameTournament.length > 25) {
         errors.nameTournament = "Tournament name must be no more than 25 characters.";
     }
-
+    
     if (!values.startDate) {
         errors.startDate = "Start date is required.";
     } else if (values.startDate < today) {
         errors.startDate = "Start date cannot be earlier than today.";
     }
+
+    if (!values.category) {
+        errors.category = "Category is required.";
+    }
+
+    if (!values.gameId) {
+        errors.gameId = "Game is required.";
+    }
+
+    return errors;
+}
+
+export function validateTournamentSecondStep(values: any): ISecondStepError {
+    let errors: ISecondStepError = {} as ISecondStepError;
 
     if (!values.membersNumber) {
         errors.membersNumber = "Members number is required.";
@@ -28,10 +42,12 @@ export function validateTournament(values: any): ITournamentPostError {
         errors.membersNumber = "Members number cannot be more than 10.";
     }
 
-    if (!values.maxTeam) {
+    if (!values.maxTeams) { // Cambié de maxTeam a maxTeams para que coincida con tu código
         errors.maxTeam = "Max team number is required.";
-    } else if (Number(values.maxTeam) < 2) {
+    } else if (Number(values.maxTeams) < 2) {
         errors.maxTeam = "Max team number cannot be less than 2.";
+    } else if (Number(values.maxTeams) % 2 !== 0) {
+        errors.maxTeam = "Max team number cannot be an odd number.";
     }
 
     if (values.price && Number(values.price) < 0) {
@@ -48,3 +64,20 @@ export function validateTournament(values: any): ITournamentPostError {
 
     return errors;
 }
+
+
+
+
+
+
+
+
+// export function validateTournament(values: any): ITournamentPostError {
+//     let errors: ITournamentPostError = {} as ITournamentPostError;
+
+
+
+
+
+//     return errors;
+// }

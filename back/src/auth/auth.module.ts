@@ -5,7 +5,7 @@ import { PrismaModule } from '../../prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../prisma/prisma.service';
-import { MailModule } from '../mail/mail.module'; // Importa el MailModule
+import { MailModule } from '../mail/mail.module';
 import { Fetchs } from 'utils/fetch.cb';
 
 @Module({
@@ -25,4 +25,4 @@ import { Fetchs } from 'utils/fetch.cb';
 	providers: [AuthService, PrismaService, Fetchs],
 	controllers: [AuthController],
 })
-export class AuthModule { }
+export class AuthModule {}

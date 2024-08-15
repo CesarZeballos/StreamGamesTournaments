@@ -25,7 +25,7 @@ export const filtered = createAsyncThunk(
 export const getGamesActivesSlice = createAsyncThunk('tournaments/getGames', async () => {
     const response = await fetchGames()
     const games = response.filter((game: IGame) => game.state === true)
-    return response
+    return games
 })
 
 // solicitud de juegos activos:

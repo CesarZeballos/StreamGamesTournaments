@@ -17,14 +17,14 @@ export class HistorialController {
 					{ senderId: receiverId, receiverId: senderId },
 				],
 			},
-			orderBy: { createdAt: 'asc' }, // Ordenar por fecha
+			orderBy: { createdAt: 'asc' },
 		});
 	}
 
 	@Get('globalMessages')
 	async getGlobalMessages() {
 		return this.prisma.globalChat.findMany({
-			orderBy: { createdAt: 'asc' }, // Ordenar por fecha
+			orderBy: { createdAt: 'asc' },
 		});
 	}
 }

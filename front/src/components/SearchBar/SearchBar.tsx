@@ -29,7 +29,7 @@ const SearchBar: React.FC = () => {
     if (games.length === 0) {
       dispatch(getGamesActivesSlice());
     }
-  }, [dispatch, games.length]);
+  }, []);
 
   useEffect(() => {
     setBanner(games);

@@ -7,7 +7,6 @@ export class NotificationsService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async createNotification(notificationDto: NotificationDto) {
-		// Crea la notificación en la base de datos
 		const notification = await this.prisma.notification.create({
 			data: {
 				receivedNotification: {
@@ -19,14 +18,20 @@ export class NotificationsService {
 	}
 
 	async removeNotifications(id: string) {
-		const notification = await this.prisma.notification.findUnique({ where: { id } });
-	
+		const notification = await this.prisma.notification.findUnique({
+			where: { id },
+		});
+
 		if (!notification) {
-			throw new NotFoundException(`Notificación con id: ${id} no encontrada`);
+			throw new NotFoundException(
+				`Notificación con id: ${id} no encontrada`,
+			);
 		}
-	
-		await this.prisma.notification.update({ where: { id: notification.id }, data: { state: false } });
+
+		await this.prisma.notification.update({
+			where: { id: notification.id },
+			data: { state: false },
+		});
 		return { message: 'Notificación eliminada con éxito' };
 	}
-	
 }

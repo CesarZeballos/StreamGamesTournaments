@@ -10,19 +10,13 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
-import {
-	ApiOperation,
-	ApiResponse,
-	ApiConsumes,
-	ApiBody,
-	ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiConsumes, ApiBody, ApiTags } from '@nestjs/swagger';
 import { FileUploadService } from './file-upload.service';
 
 @ApiTags('File-Upload')
 @Controller('uploadfile')
 export class FileUploadController {
-	constructor(private readonly fileUploadService: FileUploadService) { }
+	constructor(private readonly fileUploadService: FileUploadService) {}
 
 	@Post()
 	@ApiOperation({ summary: 'Subir un archivo' })

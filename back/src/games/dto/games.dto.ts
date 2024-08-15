@@ -1,14 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
-import {
-	IsBoolean,
-	IsNotEmpty,
-	IsOptional,
-	IsString,
-	IsUrl,
-	IsUUID,
-	Length,
-} from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsUrl, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateGameDto {
 	@ApiProperty({

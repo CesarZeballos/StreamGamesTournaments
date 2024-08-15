@@ -135,3 +135,8 @@ export interface IChangesErrors {
     nickname?: string
 }
 
+
+export interface IRoleSelectorDashboard {
+    id: number
+    name: string
+}

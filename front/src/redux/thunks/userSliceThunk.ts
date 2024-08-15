@@ -29,11 +29,8 @@ export const loginSlice = createAsyncThunk('user/postLogin', async (data: ILogin
             tokenFirebase: responseFirebase
         })
 
-        console.log("response", response)
-
         return response
     } catch (error) {
-        console.log("error", error)
         return error
     }
         

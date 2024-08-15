@@ -1,15 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import {
-	IsString,
-	IsOptional,
-	IsArray,
-	ArrayNotEmpty,
-	IsUUID,
-	IsNotEmpty,
-	IsBoolean,
-} from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { UUID } from 'crypto';
+import { IsString } from 'class-validator';
 
 export class NotificationDto {
 	@IsString()

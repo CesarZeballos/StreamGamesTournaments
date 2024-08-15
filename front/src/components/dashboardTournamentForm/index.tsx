@@ -2,10 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 // import { postTournament } from "@/utils/fetchTournaments";
-import { IGame, ITournamentPost, ITournamentPostError } from "@/interfaces/interfaceTournaments";
+import { IGame, ITournamentPost } from "@/interfaces/interfaceTournaments";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import Image, { StaticImageData } from "next/image";
-import { validateTournament } from "@/utils/validateForms/validationTournamentPost";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { banners } from "@/utils/GamesArray";
@@ -16,6 +15,10 @@ import { FirstStep } from "./firstStep";
 import { SecondStep } from "./secondStep";
 import { ThirdStep } from "./thirdStep";
 import { FinishStep } from "./finishStep";
+import LooksOneIcon from '@mui/icons-material/LooksOne';
+import LooksTwoIcon from '@mui/icons-material/LooksTwo';
+import Looks3Icon from '@mui/icons-material/Looks3';
+import Looks4Icon from '@mui/icons-material/Looks4';
 
 
 type ImageSource = StaticImageData | string;
@@ -37,32 +40,8 @@ export const DashboardTournamentForm: React.FC = () => {
     dispatch(setBasicData({organizerId: userId!, token: token!}))
   }, [dispatch, userId, token])
 
-  // estados para el control de errores
-  const [errorTournament, setErrorTournament] = useState<ITournamentPostError>({} as ITournamentPostError);
-
   // SECOND STEP
   const [second, setSecond] = useState<ISecondStep>({} as ISecondStep)
-
-  const handleChangeSecondStep = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    const error = validateTournament(tournamentPost)
-    if (error.membersNumber || error.maxTeam || error.price || error.award || error.description) {
-      setErrorTournament(error)
-    } else {
-      setErrorTournament({} as ITournamentPostError)
-    }
-    setSecond(
-      {
-        ...second,
-        [name]: value
-      }
-    )
-  }
-
-  const handleSubmitSecondStep = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    dispatch(setSecondStep(second))
-  }
 
   // RENDERIZADO DE LA IMAGEN
   const image = useSelector((state: RootState) => state.organizer.tournament.urlAvatar);
@@ -71,11 +50,11 @@ export const DashboardTournamentForm: React.FC = () => {
 
   return (
     <>
-      <div className="grid grid-cols-4 mb-6">
-        <h1 className={step === "firstStep" ? "text-lightViolet" : "text-white"}>First step</h1>
-        <h1 className={step === "secondStep" ? "text-lightViolet" : "text-white"}>Second step</h1>
-        <h1 className={step === "thirdStep" ? "text-lightViolet" : "text-white"}>Third step</h1>
-        <h1 className={step === "finishStep" ? "text-lightViolet" : "text-white"}>Finish</h1>
+      <div className="grid grid-cols-4 mb-8 w-fit">
+        <h1 className={step === "firstStep" ? "stepActive" : "step"}><LooksOneIcon /> First step</h1>
+        <h1 className={step === "secondStep" ? "stepActive" : "step"}><LooksTwoIcon /> Second step</h1>
+        <h1 className={step === "thirdStep" ? "stepActive" : "step"}><Looks3Icon /> Third step</h1>
+        <h1 className={step === "finishStep" ? "stepActive" : "step"}><Looks4Icon />  Finish</h1>
       </div>
 
     <div className="grid grid-cols-3">

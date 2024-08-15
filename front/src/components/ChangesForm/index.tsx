@@ -66,7 +66,7 @@ export const ChangesForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2">
+            <div className="flex flex-row gap-16">
                 <div className="flex flex-col gap-2 w-fit">
                     <label className="body text-white">Birthdate</label>
                     <input 
@@ -74,7 +74,7 @@ export const ChangesForm: React.FC = () => {
                         name="birthdate"
                         value={data.birthdate}
                         onChange={handleChange}
-                        className="input"
+                        className="inputFit"
                     />
                     {errorChanges.birthdate && <p className="errorForm">{errorChanges.birthdate}</p>}
                 </div>

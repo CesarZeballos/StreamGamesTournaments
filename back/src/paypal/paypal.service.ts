@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as paypal from '@paypal/checkout-server-sdk';
 import { PrismaService } from '../../prisma/prisma.service';
-import { error } from 'console';
 
 @Injectable()
 export class PayPalService {
@@ -37,7 +36,7 @@ export class PayPalService {
 
 		try {
 			const response = await this.client.execute(request);
-			console.log("createOrder",response.result);
+			console.log('createOrder', response.result);
 			return response.result;
 		} catch (error) {
 			throw new Error('Failed to create PayPal order');

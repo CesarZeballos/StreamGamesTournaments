@@ -14,12 +14,30 @@ export const DashboardView: React.FC = () => {
     return (
         <div className="grid grid-cols-3">
             <div className="col-span-2">
-                <h1 className="heading5 text-lightViolet">{`Hi ${nickname}!`}</h1>
+                <h1 className="heading3 text-lightViolet mb-8">{`Hi ${nickname}!`}</h1>
 
-                <div className="flex flex-col gap-2 m-4">
-                    <p className="body text-white">{`you have ${tournaments?.length} tournaments incoming`}</p>
-                    <p className="body text-white">{`you are in ${notificationsTour?.length} new tournaments`}</p>
-                    <p className="body text-white">{`you have ${friendsRequests?.length} unanswered friend requests`}</p>
+                <div className="grid grid-rors-3 gap-4 w-80">   
+                    <div className="flex flex-col gap-2 p-4 bg-BGdark rounded-2xl">
+                        {tournaments?.length === 0 ? 
+                        <p className="heading5 text-lightViolet">{`You dont't have tournaments`}</p> : 
+                        <h1 className="heading5 text-lightViolet">{tournaments?.length} tournaments</h1>
+                        }
+                        <p className="body text-white text-end">upcoming</p>
+                    </div>
+                    <div className="flex flex-col gap-2 p-4 bg-BGdark rounded-2xl">
+                        {notificationsTour?.length === 0 ? 
+                        <p className="heading5 text-lightViolet">{`You dont't have new tournaments`}</p> : 
+                        <h1 className="heading5 text-lightViolet">{notificationsTour?.length} new tournaments</h1>
+                        }
+                        <p className="body text-white text-end">notifications</p>
+                    </div>
+                    <div className="flex flex-col gap-2 p-4 bg-BGdark rounded-2xl">
+                        {friendsRequests?.length === 0 ? 
+                        <p className="heading5 text-lightViolet">{`You dont't have friends requests`}</p> : 
+                        <h1 className="heading5 text-lightViolet">{friendsRequests?.length} requests</h1>
+                        }
+                        <p className="body text-white text-end">new friends</p>
+                    </div>
                 </div>
 
             </div>
