@@ -78,6 +78,11 @@ export interface IGame {
     state: boolean
 }
 
+export interface IGamesFilters {
+    name: string;
+    state: 'all' | 'active' | 'inactive';
+}
+
 export interface IGamePost {
     name: string;
     urlImage: File | string;

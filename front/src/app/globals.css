@@ -91,17 +91,25 @@ html, body {
 }
 
 .buttonFilter {
-  @apply flex flex-row items-center font-Roboto font-medium text-base text-white pl-4 pr-6 py-1 rounded-full gap-4
+  @apply flex flex-row items-center justify-center font-Roboto font-medium text-base text-white pl-4 pr-6 py-1 rounded-full gap-4 w-fit
   hover:bg-lightViolet
 }
 
 .buttonFilterActive{
-  @apply flex flex-row items-center font-Roboto font-medium text-base text-white pl-4 pr-6 py-1 rounded-full gap-4 bg-lightViolet
+  @apply flex flex-row items-center font-Roboto font-medium text-base text-white pl-4 pr-6 py-1 rounded-full gap-4 bg-lightViolet w-fit
+}
+
+.step {
+  @apply flex flex-row items-center justify-center font-Roboto font-medium text-base text-white pl-4 pr-6 py-1 rounded-full gap-4 w-fit
+}
+
+.stepActive{
+  @apply flex flex-row items-center font-Roboto font-medium text-base text-white pl-4 pr-6 py-1 rounded-full gap-4 bg-lightViolet w-fit
 }
 
 .linkButton {
-  @apply font-Roboto font-light text-sm text-white w-fit
-  hover:text-lightViolet
+  @apply font-Roboto font-light text-sm text-lightViolet w-fit
+  hover:text-white
 }
 
 .infoTorunaments {
@@ -122,6 +130,14 @@ html, body {
   hover:shadow-lightViolet
   hover:text-BGdark
   hover:bg-lightViolet
+}
+
+.buttonChat {
+  @apply text-white text-base p-3 pr-9 rounded-l-full bg-lightViolet  bottom-9
+  hover:shadow-md 
+  hover:shadow-white
+  hover:text-BGdark
+  hover:bg-white
 }
 
 .iconButtonActive {

@@ -3,13 +3,11 @@ import { DashboardViewTournamentsNotification } from '../dashboardViewTournament
 import { DashboardViewFriendRequests } from '../dashboardViewFriendRequests';
 
 export const DashboardViewNotification: React.FC = () => {
-    const [notifications, setNotifications] = useState("");
+    const [notifications, setNotifications] = useState("friends");
 
     return (
-        <div className='grid grid-cols-3'>
-            <div className='col-span-2'>
-                <h1 className="heading5 text-lightViolet">Your notifications</h1>
-                <div className="flex flex-row w-full items-center justify-around mt-4">
+            <div>
+                <div className="flex flex-row items-center gap-4 mt-4">
                     <button 
                     className={`buttonFilter ${notifications === "friends" && "buttonFilterActive"}`} 
                     onClick={() => setNotifications("friends")}
@@ -27,6 +25,5 @@ export const DashboardViewNotification: React.FC = () => {
                 {notifications === "friends" && <DashboardViewFriendRequests/>}
                 {notifications === "tournaments" && <DashboardViewTournamentsNotification/>}
             </div>
-        </div>
     )
 }

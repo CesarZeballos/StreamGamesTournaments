@@ -1,6 +1,7 @@
 import { IOrganizerTournament, ITournament } from "./interfaceTournaments"
 
 export interface IUser {
+    tournaments: []
     id: string
     email: string
     nickname: string
@@ -33,7 +34,7 @@ export interface IUserFilters {
     nickname: string;
     role: string;
     tournaments: string;
-    state: string;
+    state: 'all' | 'active' | 'inactive';
 }
 
 export interface IFriend {
@@ -122,4 +123,20 @@ export interface IUpgradeUser {
 export interface IDeletetournament {
     id: string
     token: string
+}
+
+export interface IChangesData {
+    birthdate: string
+    nickname: string
+}
+
+export interface IChangesErrors {
+    birthdate?: string
+    nickname?: string
+}
+
+
+export interface IRoleSelectorDashboard {
+    id: number
+    name: string
 }

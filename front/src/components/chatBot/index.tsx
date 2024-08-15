@@ -43,7 +43,7 @@ export const ChatBot: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <div ref={chatRef} className="fixed bottom-0 right-0 z-50 m-6 w-80 h-96 bg-BGdarkness shadow-lg rounded-lg flex flex-col">
+    <div ref={chatRef} className="fixed bottom-0 right-0 z-50 m-6 mr-24 w-80 h-96 bg-BGdarkness shadow-lg rounded-lg flex flex-col">
       <div className="flex-grow p-4 overflow-y-auto">
         {messages.map((message, index) => (
           <div key={index} className="mb-2 p-2 bg-BGdark rounded text-white body">

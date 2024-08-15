@@ -2,7 +2,7 @@ import { IUserState } from "@/interfaces/interfaceRedux";
 import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
-import { forgotPasswordSlice, loginSlice, registerSlice, reloadUserSlice, upgradeRequestUserSlice } from "../thunks/userSliceThunk";
+import { forgotPasswordSlice, loginSlice, registerSlice, reloadUserSlice, updateUserSlice, upgradeRequestUserSlice } from "../thunks/userSliceThunk";
 
 const initialState: IUserState = {
   user: null,
@@ -38,20 +38,20 @@ const userSlice = createSlice({
     }, extraReducers: (builder) => {
         builder
         // REHYDRATE
-        // .addCase(REHYDRATE as any, (state, action: AnyAction) => {
-        //   if (action.payload) {
-        //     const rehydratedState = action.payload.user;
-        //     if (rehydratedState) {
-        //       state.user = rehydratedState.user;
-        //       state.status = rehydratedState.status;
-        //       state.statusRegister = rehydratedState.statusRegister;
-        //       state.statusAddFriend = rehydratedState.statusAddFriend;
-        //       state.error = rehydratedState.error;
-        //       state.token = rehydratedState.token;
-        //       state.statusForgotPassword = rehydratedState.statusForgotPassword;
-        //     }
-        //   }
-        // })
+        .addCase(REHYDRATE as any, (state, action: AnyAction) => {
+          if (action.payload) {
+            const rehydratedState = action.payload.user;
+            if (rehydratedState) {
+              state.user = rehydratedState.user;
+              state.status = rehydratedState.status;
+              state.statusRegister = rehydratedState.statusRegister;
+              state.statusAddFriend = rehydratedState.statusAddFriend;
+              state.error = rehydratedState.error;
+              state.token = rehydratedState.token;
+              state.statusForgotPassword = rehydratedState.statusForgotPassword;
+            }
+          }
+        })
 
         // REGISTER
         .addCase(registerSlice.fulfilled, (state, action) => {
@@ -144,6 +144,20 @@ const userSlice = createSlice({
               duration: 1500,
               })
           })
+
+        // UPGRADE DATA
+        .addCase(updateUserSlice.fulfilled, (state, action) => {
+          toast.success('Data Updated.', {
+              position: 'top-right',
+              duration: 1500,
+          });
+          if (action.payload.user) {
+              state.user = {
+                  ...state.user,  // Mantén los datos anteriores
+                  ...action.payload.user  // Sobrescribe solo los campos que se actualizaron
+              };
+          }
+      })
     }
 })
 

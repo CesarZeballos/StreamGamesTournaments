@@ -16,6 +16,10 @@ import { FirstStep } from "./firstStep";
 import { SecondStep } from "./secondStep";
 import { ThirdStep } from "./thirdStep";
 import { FinishStep } from "./finishStep";
+import LooksOneIcon from '@mui/icons-material/LooksOne';
+import LooksTwoIcon from '@mui/icons-material/LooksTwo';
+import Looks3Icon from '@mui/icons-material/Looks3';
+import Looks4Icon from '@mui/icons-material/Looks4';
 
 
 type ImageSource = StaticImageData | string;
@@ -71,11 +75,11 @@ export const DashboardTournamentForm: React.FC = () => {
 
   return (
     <>
-      <div className="grid grid-cols-4 mb-6">
-        <h1 className={step === "firstStep" ? "text-lightViolet" : "text-white"}>First step</h1>
-        <h1 className={step === "secondStep" ? "text-lightViolet" : "text-white"}>Second step</h1>
-        <h1 className={step === "thirdStep" ? "text-lightViolet" : "text-white"}>Third step</h1>
-        <h1 className={step === "finishStep" ? "text-lightViolet" : "text-white"}>Finish</h1>
+      <div className="grid grid-cols-4 mb-8 w-fit">
+        <h1 className={step === "firstStep" ? "stepActive" : "step"}><LooksOneIcon /> First step</h1>
+        <h1 className={step === "secondStep" ? "stepActive" : "step"}><LooksTwoIcon /> Second step</h1>
+        <h1 className={step === "thirdStep" ? "stepActive" : "step"}><Looks3Icon /> Third step</h1>
+        <h1 className={step === "finishStep" ? "stepActive" : "step"}><Looks4Icon />  Finish</h1>
       </div>
 
     <div className="grid grid-cols-3">
