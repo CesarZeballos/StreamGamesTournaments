@@ -2,7 +2,8 @@ import { IFiltersProp } from "@/interfaces/interfaceRedux"
 import { fetchUsers } from "@/utils/fetchUser"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { setRootFilters, setRunFilters } from "../slices/tournamentSlice"
-import { fetchGames, fetchUploadFile } from "@/utils/fetchTournaments"
+import { fetchUploadFile } from "@/utils/fetchTournaments"
+import { fetchGames} from "@/utils/fetchGames";
 import { IGame } from "@/interfaces/interfaceTournaments"
 
 
@@ -24,7 +25,7 @@ export const filtered = createAsyncThunk(
 export const getGamesActivesSlice = createAsyncThunk('tournaments/getGames', async () => {
     const response = await fetchGames()
     const games = response.filter((game: IGame) => game.state === true)
-    return response
+    return games
 })
 
 // solicitud de juegos activos:

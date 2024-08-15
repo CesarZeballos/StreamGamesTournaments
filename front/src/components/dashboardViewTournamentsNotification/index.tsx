@@ -27,13 +27,12 @@ export const DashboardViewTournamentsNotification: React.FC = () => {
     return (
         <div className="grid grid-cols-3">
         <div className="col-span-2">
-            <h1 className="heading5 text-lightViolet">Your friends</h1>
             <table className="mt-1 w-full">
                 <thead className="tableHeader flex flex-row justify-around">
                     <th className="text-center">Tournament</th>
                     <th className="text-center">Team</th>
                     <th className="text-center">Date</th>
-                    <th className="text-center"></th>
+                    <th className="text-center">Action</th>
                 </thead>
                 <tbody className="tableBody flex flex-col gap-2">
                     {newTournaments?.map((tour: ITournamentsRegistered) => (
@@ -50,6 +49,10 @@ export const DashboardViewTournamentsNotification: React.FC = () => {
                     ))}
                 </tbody>
             </table>
+                    {newTournaments!.length === 0 && (
+                                <div className="flex flex-col w-full items-center justify-center gap-6 mt-10">
+                                    <p className="body text-white">{"You don't have any new tournaments"}</p>
+                                </div>)}
         </div>
     </div>
     )

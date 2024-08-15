@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { Suspense, useEffect, useState } from "react";
 import { IGame } from "@/interfaces/interfaceTournaments";
-import { gameImages, categoryIcons, navigationIcons } from "@/utils/tournamentsData";
+import { gameImages} from "@/utils/tournamentsData";
 
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
