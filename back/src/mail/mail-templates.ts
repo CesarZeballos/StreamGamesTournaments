@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 
 const BASE_URL =
-	'https://stream-games-tournaments-git-main-cesarzeballos-projects.vercel.app/';
+	'https://stream-games-tournaments.vercel.app/';
 const LOGO_URL =
 	'https://res.cloudinary.com/dofwlsemg/image/upload/v1723488558/sin_fondo_mkqskb.png';
 const HEADER_COLOR = '#261039';
