@@ -93,7 +93,6 @@ export const fetchCheckViewTournament = async (data: IFriendRequestProps) => {
 }
 
 export const fetchChatBot = async (data: string) => {
-    console.log("fetchChatBot", data)
     try {
         const response = await fetch(`${apiUrl}/chatbot/message`, {
             method: "POST",
@@ -104,6 +103,8 @@ export const fetchChatBot = async (data: string) => {
                 message: data
             })
         })
+
+        console.log("response", response)
     
         if (!response.ok) {
             throw new Error(`${response.statusText}`);

@@ -27,7 +27,7 @@ export const SearchBarDashboard: React.FC = () => {
         if (userRol === "admin") {
             setRole([{id: 1, name: "Player"}, {id: 2, name: "Organizer"}, {id: 3, name: "Admin"}])
         } else if (userRol === "organizer") {
-            setRole([{id: 1, name: "Player"}, {id: 2, name: "Arganizer"}])
+            setRole([{id: 1, name: "Player"}, {id: 2, name: "Organizer"}])
         } 
     }, [userRol])
 
