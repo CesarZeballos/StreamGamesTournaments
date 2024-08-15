@@ -56,7 +56,6 @@ export const DashboardViewFriends = () => {
     return (
         <div className="grid grid-cols-3">
             <div className="col-span-2">
-                <h1 className="heading5 text-lightViolet">Your friends</h1>
                 <table className="mt-1 w-full">
                     <thead className="tableHeader flex flex-row justify-around">
                         <th className="text-center">Nickname</th>
