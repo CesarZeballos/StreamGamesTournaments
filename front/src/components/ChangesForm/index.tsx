@@ -66,21 +66,9 @@ export const ChangesForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="flex flex-row gap-16">
-                <div className="flex flex-col gap-2 w-fit">
-                    <label className="body text-white">Birthdate</label>
-                    <input 
-                        type="date"
-                        name="birthdate"
-                        value={data.birthdate}
-                        onChange={handleChange}
-                        className="inputFit"
-                    />
-                    {errorChanges.birthdate && <p className="errorForm">{errorChanges.birthdate}</p>}
-                </div>
-
                 <div className="flex flex-col gap-2 w-fit">
                     <label className="body text-white">Nickname</label>
+            <div className="flex flex-row items-center gap-16">
                     <input 
                         type="text"
                         name="nickname"
@@ -88,11 +76,10 @@ export const ChangesForm: React.FC = () => {
                         onChange={handleChange}
                         className="input"
                     />
-                    {errorChanges.nickname && <p className="errorForm">{errorChanges.nickname}</p>}
+                    <button type="submit" className="buttonPrimary">Change Data</button>
                 </div>
-            </div>
-            <div className="mt-10 mb-4 flex justify-center">
-                <button type="submit" className="buttonPrimary">Change Data</button>
+                    {errorChanges.nickname && <p className="errorForm">{errorChanges.nickname}</p>}
+
             </div>
         </form>
     );

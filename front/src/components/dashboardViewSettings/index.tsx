@@ -28,34 +28,30 @@ export const DashboardViewSettings = () => {
         dispatch(upgradeRequestUserSlice({id: user?.id!, token: token!}))
     }
 
-
     return (
         <div className="flex flex-col gap-9">
-            <div>
-                <h2 className="heading5 text-lightViolet">Here you can see your data</h2>
                 <div className="flex flex-col mt-4 ml-12 gap-2">
                     <p className="body text-white">Nickname: {user?.nickname}</p>
                     <p className="body text-white">Email: {user?.email}</p>
                     <p className="body text-white">Role: {user?.role}</p>
                     <p className="body text-white">Birthdate: {stringDate}</p>
                 </div>
-            </div>
 
             <div>
                 <h1 className="heading5 text-lightViolet">Settings</h1>
                 <div className="flex flex-col mt-4 ml-4 gap-2">
             <button className="buttonSecondary" onClick={toggleFormVisibility}>
-                {isFormVisible ? "Hide my data" : "Edit my data"}
+                {isFormVisible ? "Maybe later" : "Change nickname"}
             </button>
             
 
             {isFormVisible && <ChangesForm />}
         </div>
-            {user?.role === "user" && (
+            {/* {user?.role === "user" && (
                 <button className="buttonPrimary mt-4" onClick={upgradeAcount}>
                     Upgrade to organizer
                 </button>
-            )}
+            )} */}
             </div>
         </div>
     )
