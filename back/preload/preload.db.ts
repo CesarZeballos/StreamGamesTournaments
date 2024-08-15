@@ -3,15 +3,9 @@ import { gamesData } from 'helpers/games.helpers';
 import { teams } from 'helpers/teams.helpers';
 import { tournaments } from 'helpers/tournaments.helper';
 import { users } from 'helpers/users.helper';
-import { TeamsService } from 'teams/teams.service';
-import { TournamentsService } from 'tournaments/tournaments.service';
 
 export class preloadData {
-	constructor(
-		private readonly prisma: PrismaClient,
-		private readonly teamService: TeamsService,
-		private readonly tournamentsService: TournamentsService,
-	) { }
+	constructor(private readonly prisma: PrismaClient) {}
 
 	async clearTables() {
 		await this.prisma.$transaction([
@@ -43,7 +37,6 @@ export class preloadData {
 			this.prisma.game.deleteMany({}),
 		]);
 	}
-
 
 	async addGames() {
 		for (const game of gamesData) {
@@ -107,7 +100,7 @@ export class preloadData {
 						organizerId: userOrganizer.id,
 						tournamentId: newTournament.id,
 						users: {
-							create: team.users?.map(userId => ({
+							create: team.users?.map((userId) => ({
 								user: {
 									connect: { id: userId },
 								},
@@ -118,5 +111,4 @@ export class preloadData {
 			}
 		}
 	}
-
 }
