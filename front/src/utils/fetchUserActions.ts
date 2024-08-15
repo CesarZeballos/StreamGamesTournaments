@@ -110,7 +110,6 @@ export const fetchChatBot = async (data: string) => {
         }
 
         const userData = await response.json()
-        console.log("userData", userData.fulfillmentText)
         return userData.fulfillmentText;
     } catch (error) {
         toast.error(`${error}`, {
