@@ -71,8 +71,11 @@ html, body {
 }
 
 .buttonNavbar {
-  @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap
+  @apply flex items-center font-Raleway font-bold text-base text-white px-9 py-2 w-fit h-fit whitespace-nowrap gap-2
   focus:text-lightViolet hover:text-lightViolet
+}
+.buttonNavbarActive {
+  @apply flex items-center font-Raleway font-bold text-base px-9 py-2 w-fit h-fit whitespace-nowrap text-lightViolet gap-2
 }
 
 .buttonSecondary {
@@ -115,6 +118,14 @@ html, body {
 
 .iconButton {
   @apply p-1 text-white rounded-full
+  hover:shadow-md 
+  hover:shadow-lightViolet
+  hover:text-BGdark
+  hover:bg-lightViolet
+}
+
+.buttonChat {
+  @apply text-BGdark text-lg p-2 pr-9 rounded-l-full bg-white  bottom-9
   hover:shadow-md 
   hover:shadow-lightViolet
   hover:text-BGdark
@@ -218,6 +229,24 @@ body {
   focus:shadow-md
   focus:shadow-lightViolet
 }
+
+.inputMiddle {
+
+  @apply bg-white ml-2 rounded-sm px-3 py-1 font-Roboto text-BGdark w-60
+  focus:border-solid
+  focus:border-lightViolet
+  focus:shadow-md
+  focus:shadow-lightViolet
+}
+
+.inputMax {
+  @apply bg-white ml-2 rounded-sm px-3 py-3 font-Roboto text-BGdark w-96 h-24 
+  focus:border-solid focus:border-lightViolet focus:shadow-md focus:shadow-lightViolet
+  leading-normal placeholder:text-base placeholder:leading-normal resize-none;
+}
+
+
+
 
 .inputMUI {
   @apply bg-white rounded-md font-Roboto text-BGdark

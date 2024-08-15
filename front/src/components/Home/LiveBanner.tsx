@@ -6,12 +6,24 @@ import { gameImages, categoryIcons, navigationIcons } from "@/utils/tournamentsD
 
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { getGamesActivesSlice } from "@/redux/thunks/auxiliarSliceThunk";
 
-import { banners } from "@/utils/GamesArray";
+// import { banners } from "@/utils/GamesArray";
 
 const LiveBanner: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [banner, setBanner] = useState<IGame[]>(banners);
+    const [banner, setBanner] = useState<IGame[]>([] as IGame[]);
+    const games = useSelector((state: RootState) => state.tournament.games);
+
+    useEffect(() => {
+        if (banner.length === 0) {
+            dispatch(getGamesActivesSlice())
+            setBanner(games)
+        }
+    }, [dispatch, games, banner])
 
 
     const handleNext = () => {
@@ -37,8 +49,8 @@ const LiveBanner: React.FC = () => {
                 <button className="iconButton ml-8" onClick={handlePrev}><ArrowBackIosRoundedIcon /></button>
                 <div className="relative flex flex-row justify-center h-96 rounded-3xl overflow-hidden mx-16">
                     <Image
-                        src={`${currentTournament.urlImage}`}
-                        alt={"imagen??"}
+                        src={currentTournament.urlImage}
+                        alt={"banner"}
                         width={1440}
                         height={500}
                         className="mr-96 object-cover"

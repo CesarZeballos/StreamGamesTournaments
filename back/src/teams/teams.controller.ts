@@ -28,7 +28,7 @@ import {
 @ApiTags('Teams')
 @Controller('teams')
 export class TeamsController {
-	constructor(private readonly teamsService: TeamsService) {}
+	constructor(private readonly teamsService: TeamsService) { }
 
 	@Get()
 	async getAllTeams(
