@@ -1,13 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import {
-	IsBoolean,
-	IsNotEmpty,
-	IsOptional,
-	IsString,
-	IsUrl,
-	IsUUID,
-	Length,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, Length } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateGameDto {
@@ -36,4 +28,4 @@ export class CreateGameDto {
 	description: string;
 }
 
-export class UpdateGameDto extends PartialType(CreateGameDto) { }
+export class UpdateGameDto extends PartialType(CreateGameDto) {}

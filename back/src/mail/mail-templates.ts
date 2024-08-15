@@ -1,5 +1,3 @@
-import { Subject } from 'rxjs';
-
 const BASE_URL =
 	'https://stream-games-tournaments-git-main-cesarzeballos-projects.vercel.app/';
 const LOGO_URL =

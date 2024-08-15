@@ -28,16 +28,15 @@ async function PreloadData(
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-	
+
 	const prismaService = app.get(PrismaService);
 	const teamService = app.get(TeamsService);
 	const tournamentService = app.get(TournamentsService);
 
-
 	try {
 		app.use(bodyParser.json({ limit: '10mb' }));
 		app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-		
+
 		app.useWebSocketAdapter(new IoAdapter(app));
 
 		app.enableCors({

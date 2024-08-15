@@ -8,31 +8,23 @@ import {
 	Put,
 	Delete,
 	BadRequestException,
-	Query,
 	UseGuards,
-	UseInterceptors,
-	UploadedFile,
 } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
-/* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
-import { RolesGuard } from 'auth/roles.guard';
-import { Roles } from 'auth/roles.decorator';
-import { Role } from '@prisma/client'; */
+import { JwtAuthGuard } from 'auth/guard/jwt-auth.guard';
+import { RolesGuard } from 'auth/guard/roles.guard';
+import { Roles } from 'auth/decorator/roles.decorator';
+import { Role } from '@prisma/client';
 import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
 } from './dto/createTournament.Dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { FileUploadService } from 'file-upload/file-upload.service';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
 export class TournamentsController {
-	constructor(
-		private readonly tournamentsService: TournamentsService,
-		private readonly fileUploadService: FileUploadService,
-	) {}
+	constructor(private readonly tournamentsService: TournamentsService) {}
 
 	@Get()
 	async getAllTournaments() {
@@ -44,34 +36,31 @@ export class TournamentsController {
 		return this.tournamentsService.getTournamentById(id);
 	}
 
-	/* @UseGuards(JwtAuthGuard, RolesGuard)
+	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer) */
+	@Roles(Role.organizer)
 	@Post('add')
-	@UseInterceptors(FileInterceptor('file'))
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({
 		description: 'Crear torneo con archivo de imagen',
 		type: CreateTournamentDto,
 	})
-	async createTournament(
-		@Body() createTournamentDto: CreateTournamentDto,
-	) {
+	async createTournament(@Body() createTournamentDto: CreateTournamentDto) {
 		console.log('createTournamentDto', createTournamentDto);
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 
-	/* @UseGuards(JwtAuthGuard, RolesGuard)
+	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer) */
+	@Roles(Role.organizer)
 	@Put('update/:id')
 	async updateATournament(@Body() updateTournamentDto: UpdateTournamentDto) {
 		return this.tournamentsService.updateTournament(updateTournamentDto);
 	}
-	/* 
+
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer) */
+	@Roles(Role.organizer)
 	@Delete('delete/team')
 	async deleteTeam(@Body() body: { tournamentId: string; teamId: string }) {
 		const { tournamentId, teamId } = body;
@@ -85,9 +74,9 @@ export class TournamentsController {
 		return this.tournamentsService.deleteTeam(tournamentId, teamId);
 	}
 
-	/* @UseGuards(JwtAuthGuard)
+	@UseGuards(JwtAuthGuard)
 	@Roles(Role.admin)
-	@Roles(Role.organizer) */
+	@Roles(Role.organizer)
 	@Put('deleteTournament/:id')
 	async deleteTournament(@Param('id', new ParseUUIDPipe()) id: string) {
 		return this.tournamentsService.deleteTournament(id);
