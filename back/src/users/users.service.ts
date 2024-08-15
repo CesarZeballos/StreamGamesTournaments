@@ -15,24 +15,69 @@ export class UsersService {
 		private readonly fetchs: Fetchs
 	) { }
 
-	async getAllUsers(): Promise<User[]> {
-		const users = await this.prisma.user.findMany({
-			include: {
-				teams: true,
-				tournaments: true,
-				organizedTournaments: true,
-				friends: true,
-				sentFriendRequests: true,
-				receivedFriendRequests: true,
-				sentMessages: true,
-				receivedMessages: true,
-				globalChat: true,
+	async getAllUsers(): Promise<any[]> { // Cambié el tipo de retorno a any[] para reflejar la nueva estructura
+		const usersData = await this.prisma.user.findMany({
+		  include: {
+			teams: {
+			  include: {
+				team: {
+				  include: {
+					tournament: {
+					  include: {
+						game: true,
+					  },
+					},
+				  },
+				},
+			  },
 			},
+			tournaments: true,
+			
+		  },
 		});
-
-		if (users.length === 0) throw new BadRequestException('No users found');
-		return users;
-	}
+	  
+		if (usersData.length === 0) {
+		  throw new BadRequestException('No users found');
+		}
+	  
+		const result = usersData.map(user => {
+		  const playerTournaments = user.tournaments.map(tournament => ({
+			tournamentId: tournament.id,
+			id: user.id,
+			nameTournament: tournament.nameTournament,
+			nameTeam: null,
+			tournamentDate: tournament.startDate.toISOString(),
+			state: tournament.state,
+		  }));
+	  
+		  const teamTournaments = user.teams.map(team => ({
+			tournamentId: team.team.tournament.id,
+			id: user.id,
+			nameTournament: team.team.tournament.nameTournament,
+			nameTeam: team.nameTeam,
+			tournamentDate: team.team.tournament.startDate.toISOString(),
+			state: team.team.tournament.state,
+		  }));
+	  
+		  const combinedTournaments = [...playerTournaments, ...teamTournaments];
+	  
+		  return {
+			id: user.id,
+			email: user.email,
+			nickname: user.nickname,
+			tokenFirebase: user.tokenFirebase,
+			birthdate: user.birthdate.toISOString(),
+			urlProfile: user.urlProfile,
+			urlStream: user.urlStream,
+			role: user.role,
+			createdAt: user.createdAt.toISOString(),
+			state: user.state,
+			tournaments: combinedTournaments,
+		  };
+		});
+	  
+		return result;
+	  }
 
 	async getUserById(id: string): Promise<
 		Partial<User> & { tournaments: Tournament[] } & { friends: UserFriends[] }

@@ -39,25 +39,6 @@ export async function fetchTournamentById(id: string) {
         }
 }
 
-//funcion para traer los todos los juegos
-export async function fetchGames() {
-    const response = await fetch(`${apiUrl}/games`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
-    if (!response.ok) {
-        throw new Error(`Error fetching games: ${response.statusText}`);
-    } else {
-        const allGames = await response.json();
-        if (!Array.isArray(allGames)) {
-            throw new Error("API response is not an array.");
-        }
-        return allGames;
-    }
-}
-
 //funcion para pagar la inscripcion al torneo:
 export const fetchPaymentTournament = async (data: ITournamentPayment) => {
     const response = await fetch(`${apiUrl}/paypal/create-order/${data.tournamentId}`, {

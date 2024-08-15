@@ -1,22 +1,46 @@
 "use client";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
+import { IGame } from "@/interfaces/interfaceTournaments";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
-
-//icons import
-import { MdGames } from "react-icons/md";
-import { SiLeagueoflegends } from "react-icons/si";
-import { SiCounterstrike } from "react-icons/si";
-import { TbBrandFortnite } from "react-icons/tb";
-import { filterEmun } from "@/interfaces/interfaceRedux";
-import { filtered } from "@/redux/thunks/auxiliarSliceThunk";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { filtered, getGamesActivesSlice } from "@/redux/thunks/auxiliarSliceThunk";
+import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 
+// Icons import
+import { MdGames } from "react-icons/md";
+import { SiLeagueoflegends, SiCounterstrike } from "react-icons/si";
+import { SiValorant } from "react-icons/si";
+import { SiPubg } from "react-icons/si";
+import { TbBrandFortnite } from "react-icons/tb";
+import { filterEmun } from "@/interfaces/interfaceRedux";
+
+// Icon mapping
+const iconMap: { [key: string]: JSX.Element } = {
+  "League of Legends": <SiLeagueoflegends />,
+  "CounterStrike Go": <SiCounterstrike />,
+  "Fortnite": <TbBrandFortnite />,
+  "PUBG": <SiPubg />,
+  "Valorant": <SiValorant />,
+};
 
 export const FindBanner: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const [banner, setBanner] = useState<IGame[]>([]);
+  const games = useSelector((state: RootState) => state.tournament.games);
+
+  useEffect(() => {
+      // Dispatch to get active games only if games array is empty
+      if (games.length === 0) {
+          dispatch(getGamesActivesSlice());
+      }
+  }, [dispatch, games.length]);
+
+  useEffect(() => {
+      // Update banner state whenever games change
+      setBanner(games);
+  }, [games]);
 
   const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { name, value } = event.currentTarget;
@@ -27,34 +51,31 @@ export const FindBanner: React.FC = () => {
     })), 400);
   };
 
-    return (
-        <Suspense fallback={<div className="loading">Loading banner...</div>}>
-            <div className="my-36 bodyContainer">
-                <h1 className="heading2 text-left mb-12 text-white">Find your tournament:</h1>
-                <div className="flex flex-row justify-around gap-6">
-                    <Link className="buttonSection" href="/tournaments">
-                        <MdGames />
-                        <p className="textButton">All Tournaments</p>
-                    </Link>
-
-                    <button className="buttonSection" name="game" value="CounterStrike Go" onClick={handleFilterClick}>
-                        <SiCounterstrike/>
-                        <p className="textButton">CS: GO</p>
-                    </button>
-
-                    <button className="buttonSection" name="game" value="Fortnite" onClick={handleFilterClick} >
-                        <TbBrandFortnite />
-                        <p className="textButton">Fortnite</p>
-                    </button>
-                    
-                    <button className="buttonSection" name="game" value="League of Legends" onClick={handleFilterClick} >
-                        <SiLeagueoflegends />
-                        <p className="textButton">League of Legends</p>
-                    </button>
-                </div>
-            </div>
-        </Suspense>
-    )
-}
+  return (
+    <Suspense fallback={<div className="loading">Loading banner...</div>}>
+      <div className="bodyContainer">
+        <h1 className="heading2 text-left mb-12 text-white">Find your tournament:</h1>
+        <div className="grid grid-cols-2 gap-6">
+          <Link className="buttonSection" href="/tournaments">
+            <MdGames />
+            <p className="textButton">All Tournaments</p>
+          </Link>
+          {banner.map(game => (
+            <button
+              key={game.id}
+              className="buttonSection"
+              name="game"
+              value={game.name}
+              onClick={handleFilterClick}
+            >
+              {iconMap[game.name] || <MdGames />}  {/* Default icon if no match */}
+              <p className="textButton">{game.name}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+    </Suspense>
+  );
+};
 
 export default FindBanner;

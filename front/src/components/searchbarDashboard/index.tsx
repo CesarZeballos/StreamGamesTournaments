@@ -86,6 +86,7 @@ export const SearchBarDashboard: React.FC = () => {
             (<div className="flex flex-col items-center gap-2">
                 <button className={`buttonFilter ${view === "users" && "buttonFilterActive"}`} onClick={() => handleViewClick("users")}><GroupIcon/>Users</button>
                 <button className={`buttonFilter ${view === "torunamentsAdmin" && "buttonFilterActive"}`} onClick={() => handleViewClick("torunamentsAdmin")}><VideogameAssetIcon/>Tournament graphs</button>
+                <button className="buttonSecondary" onClick={() => handleViewClick("games")}>Games</button>
             </div>)
             }
 
