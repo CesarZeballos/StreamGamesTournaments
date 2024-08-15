@@ -127,12 +127,12 @@ export const FirstStepRegisterTeam = ({membersRequired, tournamentId}: {membersR
 
                 <p className="body text-white mt-4">Members</p>
 
-                    {!friends || friends.length === 0 ? <div className="flex flex-row items-center">
+                    {!friends || friends.length === 0 ? <div className="flex flex-row items-center gap-1 my-2">
                         <p className="body text-white">No friends yet. add them</p>
-                        <button className="buttonSecondary" onClick={addFriend}>Here</button>  
+                        <button className="linkButton" onClick={addFriend}>Here</button>  
                         </div>
                         : 
-                        <div>
+                        <div className="my-2">
 
                         <FormControl sx={{ m: 1, width: 320 }}>
                             <Select

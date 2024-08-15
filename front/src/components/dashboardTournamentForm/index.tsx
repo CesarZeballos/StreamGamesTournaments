@@ -75,7 +75,7 @@ export const DashboardTournamentForm: React.FC = () => {
 
   return (
     <>
-      <div className="grid grid-cols-4 mb-6">
+      <div className="grid grid-cols-4 mb-8 w-fit">
         <h1 className={step === "firstStep" ? "stepActive" : "step"}><LooksOneIcon /> First step</h1>
         <h1 className={step === "secondStep" ? "stepActive" : "step"}><LooksTwoIcon /> Second step</h1>
         <h1 className={step === "thirdStep" ? "stepActive" : "step"}><Looks3Icon /> Third step</h1>

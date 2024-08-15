@@ -108,8 +108,8 @@ html, body {
 }
 
 .linkButton {
-  @apply font-Roboto font-light text-sm text-white w-fit
-  hover:text-lightViolet
+  @apply font-Roboto font-light text-sm text-lightViolet w-fit
+  hover:text-white
 }
 
 .infoTorunaments {
