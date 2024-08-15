@@ -56,7 +56,6 @@ export const DashboardViewTournaments = () => {
         <div>
             <div className="grid grid-cols-3 gap-6">
                 <div className="col-span-2">
-                    <h1 className="heading5 text-lightViolet">Your tournaments</h1>
                     <table className="mt-1 w-full">
                         <thead className="tableHeader flex flex-row justify-around">
                             <th className="text-center"></th>
@@ -65,14 +64,9 @@ export const DashboardViewTournaments = () => {
                             <th className="text-center">Date</th>
                             <th className="text-center">Incoming in</th>
                         </thead>
-                        {myTournaments.length === 0 ? (
-                            <div className="flex flex-col w-full items-center justify-center gap-6 mt-10">
-                                <p className="body text-white">{"You don't have any tournament yet"}</p>
-                                <Link className="buttonPrimary" href="/tournaments">here</Link>
-                            </div>) : (
                                 <tbody className="tableBody flex flex-col gap-2">
                                     {myTournaments.map((tour) => (
-                                        <tr className="flex flex-row justify-around" key={tour.id}>
+                                        <tr className="flex flex-row justify-around items-center" key={tour.id}>
                                             <td className="text-center">{
                                                 tour.id === tourSelecter ? <CircleIcon className="text-lightViolet" /> : null
                                                 }
@@ -88,8 +82,12 @@ export const DashboardViewTournaments = () => {
                                         </tr>
                                     ))}
                                 </tbody>
-                            )}
                     </table>
+                {myTournaments.length === 0 && (
+                <div className="flex flex-col w-full items-center justify-center gap-6 mt-10">
+                    <p className="body text-white">{"You don't have any tournament yet"}</p>
+                    <Link className="buttonPrimary" href="/tournaments">here</Link>
+                </div>)}
                 </div>
                 {tourSelecter === "" ? <div className="col-span-1"></div> : <TournamentViewInUserDashboard id={tourSelecter} />}
 

@@ -1,9 +1,9 @@
 import { IFirstStep } from "@/interfaces/interfaceRedux"
-import { ITournamentPostError } from "@/interfaces/interfaceTournaments"
+import { IFirstStepError } from "@/interfaces/interfaceTournaments"
 import { setFirstStep } from "@/redux/slices/organizerSlice"
 import { AppDispatch, RootState } from "@/redux/store"
 import { getGamesActivesSlice } from "@/redux/thunks/auxiliarSliceThunk"
-import { validateTournament } from "@/utils/validateForms/validationTournamentPost"
+import { validateTournamentFirstStep } from "@/utils/validateForms/validationTournamentPost"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -12,7 +12,7 @@ const categories = ["Beginner", "Advanced", "Expert"]
 export const FirstStep: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [data, setData] = useState<IFirstStep>({} as IFirstStep)
-    const [errorTournament, setErrorTournament] = useState<ITournamentPostError>({} as ITournamentPostError);
+    const [errorTournament, setErrorTournament] = useState<IFirstStepError>({} as IFirstStepError);
     const games = useSelector((state: RootState) => state.tournament.games);
     
     //seteo de la informacion
@@ -25,12 +25,12 @@ export const FirstStep: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
-        // const error = validateTournament(data)
-        // if (error.nameTournament || error.startDate || error.category) {
-        //   setErrorTournament(error)
-        // } else {
-        //   setErrorTournament({} as ITournamentPostError)
-        // }
+        const error = validateTournamentFirstStep(data)
+        if (error.nameTournament || error.startDate || error.category) {
+          setErrorTournament(error)
+        } else {
+          setErrorTournament({} as IFirstStepError)
+        }
         setData(
         {
             ...data,
@@ -41,6 +41,12 @@ export const FirstStep: React.FC = () => {
 
     const handleChangeCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = event.target
+        const error = validateTournamentFirstStep(data)
+        if (error.nameTournament || error.startDate || error.category) {
+          setErrorTournament(error)
+        } else {
+          setErrorTournament({} as IFirstStepError)
+        }
         setData(
         {
             ...data,
@@ -97,7 +103,7 @@ export const FirstStep: React.FC = () => {
                         </option>
                     ))}
                     </select>
-                    <br />{/* aca iria un required con el validate... */}
+                    {errorTournament.category ? (<p className="errorForm">{errorTournament.category}</p>) : (<p className="errorForm"><br/></p>)}
                 </div>
 
                 <div className="flex flex-col gap-2 w-fit">
@@ -115,7 +121,7 @@ export const FirstStep: React.FC = () => {
                         </option>
                     ))}
                     </select>
-                    <br/>{/* aca iria un required con el validate... */}
+                    {errorTournament.gameId ? (<p className="errorForm">{errorTournament.gameId}</p>) : (<p className="errorForm"><br/></p>)}
                 </div>
 
                 <div className="flex flex-col gap-2 w-fit">

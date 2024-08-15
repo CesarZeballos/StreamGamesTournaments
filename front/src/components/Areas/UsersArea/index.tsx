@@ -132,14 +132,12 @@ const UsersArea: React.FC = () => {
   return (
     <>
       <div>
-        <h1 className="heading5 text-lightViolet">Users</h1>
-        <div className="flex flex-row w-full items-center justify-around mt-4">
-          <button className='buttonFilter' onClick={() => handleChangeView('table')}>Table</button>
-          <button className='buttonFilter' onClick={() => handleChangeView('pie')}>Graphs</button>
+        <div className="flex flex-row items-center gap-4 mt-4">
+          <button className={`buttonFilter ${view === "table" && "buttonFilterActive"}`} onClick={() => handleChangeView('table')}>Table</button>
+          <button className={`buttonFilter ${view === "pie" && "buttonFilterActive"}`} onClick={() => handleChangeView('pie')}>Graphs</button>
         </div>
         {view === 'table' && (
           <div className='col-span-3'>
-            <h1 className='label text-start text-lightViolet mb-small'>Users table</h1>
             <UsersList
               users={users}
               filters={filters}

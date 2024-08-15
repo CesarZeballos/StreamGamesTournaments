@@ -106,8 +106,7 @@ const UsersPie: React.FC<UserPieProps> = ({ activeUsers, inactiveUsers, usersInT
 
   return (
   <>
-      <h1 className='heading5 text-start text-lightViolet mb-small'>Users Graphs</h1>
-    <div className="bg-white rounded-lg w-full flex justify-center">
+    <div className="bg-white rounded-lg w-full flex justify-center mt-4">
       {/* <div className="overflow-hidden"> */}
         <ApexCharts options={options} series={series} type="pie" width={550}/>
       {/* </div> */}
