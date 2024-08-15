@@ -1,4 +1,4 @@
-import { PrismaClient, Team, Tournament, User } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { gamesData } from 'helpers/games.helpers';
 import { teams } from 'helpers/teams.helpers';
 import { tournaments } from 'helpers/tournaments.helper';
