@@ -51,5 +51,9 @@ export const DashboardViewFriendRequests: React.FC = () => {
                         ))}
                     </tbody>
                 </table>
+                        {friendRequests!.length === 0 && (
+                                <div className="flex flex-col w-full items-center justify-center gap-6 mt-10">
+                                    <p className="body text-white">{"You don't have any friend requests yet"}</p>
+                                </div>)}
             </div>
 )}
