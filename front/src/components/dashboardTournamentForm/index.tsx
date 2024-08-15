@@ -2,10 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 // import { postTournament } from "@/utils/fetchTournaments";
-import { IGame, ITournamentPost, ITournamentPostError } from "@/interfaces/interfaceTournaments";
+import { IGame, ITournamentPost } from "@/interfaces/interfaceTournaments";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import Image, { StaticImageData } from "next/image";
-import { validateTournament } from "@/utils/validateForms/validationTournamentPost";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { banners } from "@/utils/GamesArray";
@@ -41,32 +40,8 @@ export const DashboardTournamentForm: React.FC = () => {
     dispatch(setBasicData({organizerId: userId!, token: token!}))
   }, [dispatch, userId, token])
 
-  // estados para el control de errores
-  const [errorTournament, setErrorTournament] = useState<ITournamentPostError>({} as ITournamentPostError);
-
   // SECOND STEP
   const [second, setSecond] = useState<ISecondStep>({} as ISecondStep)
-
-  const handleChangeSecondStep = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    const error = validateTournament(tournamentPost)
-    if (error.membersNumber || error.maxTeam || error.price || error.award || error.description) {
-      setErrorTournament(error)
-    } else {
-      setErrorTournament({} as ITournamentPostError)
-    }
-    setSecond(
-      {
-        ...second,
-        [name]: value
-      }
-    )
-  }
-
-  const handleSubmitSecondStep = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    dispatch(setSecondStep(second))
-  }
 
   // RENDERIZADO DE LA IMAGEN
   const image = useSelector((state: RootState) => state.organizer.tournament.urlAvatar);
