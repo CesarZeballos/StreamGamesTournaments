@@ -55,7 +55,7 @@ export const FindBanner: React.FC = () => {
     <Suspense fallback={<div className="loading">Loading banner...</div>}>
       <div className="bodyContainer">
         <h1 className="heading2 text-left mb-12 text-white">Find your tournament:</h1>
-        <div className="grid grid-cols-2 gap-6">
+        <div className="flex flex-row gap-6">
           <Link className="buttonSection" href="/tournaments">
             <MdGames />
             <p className="textButton">All Tournaments</p>
