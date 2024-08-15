@@ -4,14 +4,14 @@ import { getUsersSlice } from "../thunks/auxiliarSliceThunk";
 import { toast } from "sonner";
 import { REHYDRATE } from "redux-persist";
 import { postTeamToTournamentSlice } from "../thunks/tournamentsSliceThunk";
-import { ITournament } from "@/interfaces/interfaceTournaments";
+import { aceptFriendSlice, rejectFriendSlice } from "../thunks/userActionsSliceThunk";
 
 
 const initialState: IAuxiliarState = {
     users: [],
     status: 'idle',
     error: null,
-    statusPayment: 'idle'
+    statusPayment: 'idle',
 }
 
 const auxiliarSlice = createSlice({
@@ -48,6 +48,7 @@ const auxiliarSlice = createSlice({
                 duration: 1500,
             })
         })
+
         // ADD TEAM TO TOURNAMENT
         .addCase(postTeamToTournamentSlice.pending, (state) => {
           state.statusPayment = 'loading'
@@ -66,6 +67,36 @@ const auxiliarSlice = createSlice({
               duration: 1500,
             })
         })
+
+        //aceptar solicitud
+        .addCase(aceptFriendSlice.fulfilled, (state) => {
+            toast.success("Friend Accepted", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+        .addCase(aceptFriendSlice.rejected, (state) => {
+            toast.error("Something went wrong", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+        
+        //rechazar solicitud
+        .addCase(rejectFriendSlice.fulfilled, (state) => {
+            toast.success("Friend Rejected", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+        .addCase(rejectFriendSlice.rejected, (state) => {
+            toast.error("Something went wrong", {
+                position: 'top-right',
+                duration: 1500,
+            })
+        })
+
+        
     }
 })
 

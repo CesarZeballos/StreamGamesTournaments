@@ -2,12 +2,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../public/logo.svg";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { usePathname, useRouter } from "next/navigation";
+import { setView } from "@/redux/slices/dashboardSlice";
+import { reloadUserSlice } from "@/redux/thunks/userSliceThunk";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useEffect, useState } from "react";
 
 const NavBar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
+    const pathname = usePathname();
+
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+    
+
+    const routerToDashboard = (event: React.MouseEvent<HTMLButtonElement>) => {
+        router.push("/dashboard");
+        dispatch(setView("dashboard"));
+        dispatch(reloadUserSlice({
+            email: user?.email!,
+            tokenFirebase: user?.tokenFirebase
+        }))
+    }
 
     return (
         <div className="bg-BGlight grid grid-cols-4 px-large pt-4 pb-4 overflow-hidden">
@@ -15,15 +34,15 @@ const NavBar: React.FC = () => {
         <Image src={logo} alt="Logo" className="flex justify-start items-center w-fit h-16"/>
         </div>
         <div className="col-span-3 flex justify-end">
-            <Link className="buttonNavbar" href="/">Home</Link>
-            <Link className="buttonNavbar" href="/tournaments">Tournaments</Link>
+            <Link className={`${pathname === '/' ? 'buttonNavbarActive' : 'buttonNavbar'}`} href="/">Home</Link>
+            <Link className={`${pathname === '/tournaments' ? 'buttonNavbarActive' : 'buttonNavbar'}`} href="/tournaments">Tournaments</Link>
             {user ? 
-            <div className="flex gap-x-8">
-                <Link className="buttonNavbar flex gap-2" href="/dashboard"><SportsEsportsIcon/>{`${user?.nickname}`}</Link>
+            <div className="flex gap-x-1 justify-end">
+                <button className={`${pathname === '/dashboard' ? 'buttonNavbarActive' : 'buttonNavbar'}`} onClick={routerToDashboard}><SportsEsportsIcon/>{`${user?.nickname}`}</button>
             </div>
             :
             <div className="flex gap-x-8">
-                <Link className="buttonNavbar" href="/login">Sign In</Link>
+                <Link className={`${pathname === '/login' ? 'buttonNavbarActive' : 'buttonNavbar'}`} href="/login">Sign In</Link>
                 <Link className="buttonPrimary text-base" href="/register">Sign Up</Link>
             </div>
             }

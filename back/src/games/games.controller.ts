@@ -29,7 +29,7 @@ import { Role } from '@prisma/client'; */
 @ApiTags('Games')
 @Controller('games')
 export class GamesController {
-	constructor(private readonly gamesService: GamesService) {}
+	constructor(private readonly gamesService: GamesService) { }
 
 	/* 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Roles(Role.admin)
@@ -187,8 +187,8 @@ export class GamesController {
 	})
 	async postNewGame(@Body() game: CreateGameDto) {
 		try {
-			const { name, urlImage } = game;
-			return await this.gamesService.postNewGame(name, urlImage);
+			const { name, urlImage, description } = game;
+			return await this.gamesService.postNewGame(name, urlImage, description);
 		} catch (error) {
 			throw new HttpException(
 				error.message,
@@ -201,12 +201,6 @@ export class GamesController {
 	@Roles(Role.admin) */
 	@Put('update/:id')
 	@ApiOperation({ summary: 'Actualizar un juego' })
-	@ApiParam({
-		name: 'id',
-		required: true,
-		description: 'ID del juego a actualizar',
-		example: 'af3842f8-4daf-4626-81fb-13feb94b9dfe',
-	})
 	@ApiBody({
 		type: UpdateGameDto,
 		description: 'En el body pueden modificar la propiedad que prefieran',

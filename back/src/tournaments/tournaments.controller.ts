@@ -10,15 +10,10 @@ import {
 	BadRequestException,
 	Query,
 	UseGuards,
+	UseInterceptors,
+	UploadedFile,
 } from '@nestjs/common';
-import {
-	ApiTags,
-	ApiResponse,
-	ApiQuery,
-	ApiParam,
-	ApiBody,
-	ApiOperation,
-} from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { TournamentsService } from './tournaments.service';
 /* import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { RolesGuard } from 'auth/roles.guard';
@@ -28,24 +23,20 @@ import {
 	CreateTournamentDto,
 	UpdateTournamentDto,
 } from './dto/createTournament.Dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileUploadService } from 'file-upload/file-upload.service';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
 export class TournamentsController {
-	constructor(private readonly tournamentsService: TournamentsService) {}
+	constructor(
+		private readonly tournamentsService: TournamentsService,
+		private readonly fileUploadService: FileUploadService,
+	) {}
 
 	@Get()
-	async getAllTournaments(
-		@Query('page') page?: string,
-		@Query('limit') limit?: string,
-	) {
-		const pageNumber = page ? Number(page) : 1;
-		const limitNumber = limit ? Number(limit) : 9;
-
-		return this.tournamentsService.getAllTournaments(
-			pageNumber,
-			limitNumber,
-		);
+	async getAllTournaments() {
+		return this.tournamentsService.getAllTournaments();
 	}
 
 	@Get(':id')
@@ -57,7 +48,16 @@ export class TournamentsController {
 	@Roles(Role.admin)
 	@Roles(Role.organizer) */
 	@Post('add')
-	async createTournament(@Body() createTournamentDto: CreateTournamentDto) {
+	@UseInterceptors(FileInterceptor('file'))
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({
+		description: 'Crear torneo con archivo de imagen',
+		type: CreateTournamentDto,
+	})
+	async createTournament(
+		@Body() createTournamentDto: CreateTournamentDto,
+	) {
+		console.log('createTournamentDto', createTournamentDto);
 		return this.tournamentsService.createTournament(createTournamentDto);
 	}
 

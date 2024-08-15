@@ -10,6 +10,11 @@ import { MailModule } from 'mail/mail.module';
 import { AdminModule } from 'admin/admin.module';
 import { TeamsModule } from 'teams/teams.module';
 import { PayPalModule } from 'paypal/paypal.module';
+import { FriendsModule } from './friends/friends.module';
+import { ChatModule } from 'chat/chat.module';
+import { NotificationsModule } from 'notifications/notifications.module';
+import { VersusModule } from './versus/versus.module';
+import { ChatbotModule } from 'chatBOT/chatbot.module';
 
 @Module({
 	imports: [
@@ -23,6 +28,11 @@ import { PayPalModule } from 'paypal/paypal.module';
 		PayPalModule,
 		MailModule,
 		AdminModule,
+		FriendsModule,
+		ChatModule,
+		NotificationsModule,
+		VersusModule,
+		ChatbotModule,
 	],
 })
 export class AppModule {}

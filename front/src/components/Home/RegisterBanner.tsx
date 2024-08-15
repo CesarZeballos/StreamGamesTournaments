@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { Suspense} from "react";
 import bannImage from "../../app/assets/images/banners/regBanner.jpg"
+import Link from "next/link";
 
 const RegisterBanner: React.FC = () => {
 
@@ -10,7 +11,7 @@ const RegisterBanner: React.FC = () => {
         <div className="grid grid-cols-10 my-36 bodyContainer">
             <div className="col-span-3 flex flex-col justify-center gap-8">
                 <h1 className="heading2 text-left text-white">Subscribe and take part in the best tournaments!</h1>
-                <button className="buttonPrimary">Subscribe</button>
+                <Link className="buttonPrimary" href="/register">Subscribe</Link>
             </div>
 
             <div className="col-span-7 relative flex flex-row justify-center rounded-xl">

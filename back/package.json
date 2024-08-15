@@ -20,6 +20,7 @@
 		"test:e2e": "jest --config ./test/jest-e2e.json"
 	},
 	"dependencies": {
+		"@google-cloud/dialogflow": "^6.8.0",
 		"@nestjs/common": "^10.0.0",
 		"@nestjs/config": "^3.2.3",
 		"@nestjs/core": "^10.0.0",
@@ -27,16 +28,22 @@
 		"@nestjs/mapped-types": "^2.0.5",
 		"@nestjs/passport": "^10.0.3",
 		"@nestjs/platform-express": "^10.3.10",
+		"@nestjs/platform-socket.io": "^10.3.10",
 		"@nestjs/swagger": "^7.4.0",
+		"@nestjs/websockets": "^10.3.10",
 		"@paypal/checkout-server-sdk": "^1.0.3",
 		"@prisma/client": "^5.17.0",
 		"bcrypt": "^5.1.1",
+		"body-parser": "^1.20.2",
 		"buffer-to-stream": "^1.0.0",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.1",
 		"cloudinary": "^1.41.3",
 		"cors": "^2.8.5",
+		"dialogflow": "^4.0.3",
+		"dialogflow-fulfillment": "^0.6.1",
 		"dotenv": "^16.4.5",
+		"google-auth-library": "^9.13.0",
 		"multer": "^1.4.5-lts.1",
 		"multer-storage-cloudinary": "^4.0.0",
 		"nodemailer": "^6.9.14",
@@ -46,7 +53,10 @@
 		"pg": "^8.12.0",
 		"reflect-metadata": "^0.2.0",
 		"rxjs": "^7.8.1",
-		"swagger-ui-express": "^5.0.1"
+		"socket.io": "^4.7.5",
+		"socket.io-client": "^4.7.5",
+		"swagger-ui-express": "^5.0.1",
+		"uuid": "^10.0.0"
 	},
 	"devDependencies": {
 		"@nestjs/cli": "^10.0.0",
