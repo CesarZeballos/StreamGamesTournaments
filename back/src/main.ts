@@ -45,6 +45,7 @@ async function bootstrap() {
 
 		async function PreloadData(prismaService: PrismaService) {
 			const preload = new preloadData(prismaService);
+			await preload.clearTables();
 			await preload.addGames();
 			await preload.addUsers();
 			await preload.addTournaments();
