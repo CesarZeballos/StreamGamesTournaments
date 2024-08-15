@@ -121,7 +121,6 @@ export const MailTemplates = {
         <p style="${commonStyles.footer}">Terms of Service | Privacy Policy | Website</p>
       </div>`,
 	}),
-
 	registeredTeam: (
 		organizerEmail: string,
 		organizerName: string,
