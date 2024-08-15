@@ -123,3 +123,14 @@ export interface IDeletetournament {
     id: string
     token: string
 }
+
+export interface IChangesData {
+    birthdate: string
+    nickname: string
+}
+
+export interface IChangesErrors {
+    birthdate?: string
+    nickname?: string
+}
+

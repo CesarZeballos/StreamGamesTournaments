@@ -1,6 +1,6 @@
 import { IRegisterFormSlice } from "@/interfaces/interfaceRedux"
-import { ILoginDataBase, ILoginForm, IUpgradeUser } from "@/interfaces/interfaceUser"
-import { fetchUgradeUser, loginUser, passwordRecovery, postUser } from "@/utils/fetchUser"
+import { IChangesData, ILoginDataBase, ILoginForm, IUpgradeUser } from "@/interfaces/interfaceUser"
+import { fetchUgradeUser, loginUser, passwordRecovery, postUser, changeData } from "@/utils/fetchUser"
 import { singInFirebaseWithEmailAndPassword, singUpFirebaseWithEmailAndPassword } from "@/utils/firebase/auth"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
@@ -59,3 +59,8 @@ export const upgradeRequestUserSlice = createAsyncThunk('user/upgradeUser', asyn
         const response = await fetchUgradeUser(data)
         return response
 })
+
+export const updateUserSlice = createAsyncThunk('user/updateUser', async ({ id, nickname, birthdate }: { id: string, nickname: string, birthdate: string }) => {
+    const response = await changeData(id, birthdate, nickname);
+    return response;
+});
