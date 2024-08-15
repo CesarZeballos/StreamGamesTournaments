@@ -50,12 +50,14 @@ export interface ITournamentPost {
     description: string;
 }
 
-export interface ITournamentPostError {
-    nameTournament: string;
-    startDate: string;
-    category: string;
-    organizerId: string;
-    gameId: string;
+export interface IFirstStepError {
+    nameTournament?: string;
+    category?: string;
+    startDate?: string;
+    gameId?: string;
+}
+
+export interface ISecondStepError {
     membersNumber: string;
     maxTeam: string;
     price: string;
