@@ -66,7 +66,7 @@ export const DashboardViewTournaments = () => {
                         </thead>
                                 <tbody className="tableBody flex flex-col gap-2">
                                     {myTournaments.map((tour) => (
-                                        <tr className="flex flex-row justify-around" key={tour.id}>
+                                        <tr className="flex flex-row justify-around items-center" key={tour.id}>
                                             <td className="text-center">{
                                                 tour.id === tourSelecter ? <CircleIcon className="text-lightViolet" /> : null
                                                 }

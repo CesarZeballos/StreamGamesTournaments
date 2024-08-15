@@ -47,9 +47,8 @@ export const DashboardViewOrganizerTournaments = () => {
  
     return (
         <div className="">
-            <table className="mt-1 w-full">
+            <table className="mt-1">
                 <thead className="tableHeader flex flex-row justify-around">
-                    <th className="text-center">Banner</th>
                     <th className="text-center">Tournament</th>
                     <th className="text-center">Date</th>
                     <th className="text-center">Game</th>
@@ -60,7 +59,7 @@ export const DashboardViewOrganizerTournaments = () => {
                 </thead>
                         <tbody className="tableBody flex flex-col gap-2">
                             {tournaments.map((tour) => (
-                                <tr className="flex flex-row justify-around" key={tour.id}>
+                                <tr className="flex flex-row justify-around items-center" key={tour.id}>
                                     <td className="text-center">{tour.nameTournament}</td>
                                     <td className="text-center">{isoToDate(tour.startDate)}</td>
                                     <td className="text-center">{tour.gameName}</td>

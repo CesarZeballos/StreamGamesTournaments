@@ -64,8 +64,8 @@ export const DashboardViewFriends = () => {
                     </thead>
                     <tbody className="tableBody flex flex-col gap-2">
                         {friendList.map((user) => (
-                            <tr key={user.id} className="flex flex-row justify-around">
-                                <td>{user.nickname}</td>
+                            <tr key={user.id} className="flex flex-row justify-around items-center">
+                                <td className="text-center">{user.nickname}</td>
                                 {/* <td className="text-center">
                                     <button className="iconButton" value={user.id} name={user.nickname} onClick={newChat}>
                                     <ChatIcon />

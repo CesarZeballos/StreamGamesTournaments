@@ -44,7 +44,7 @@ export const DashboardViewTournamentsNotification: React.FC = () => {
                 </thead>
                 <tbody className="tableBody flex flex-col gap-2">
                     {data?.map((tour: ITournamentsRegistered) => (
-                        <tr key={tour.id} className="flex flex-row justify-around">
+                        <tr key={tour.id} className="flex flex-row justify-around items-center">
                             <td className='text-center'>{tour.nameTournament}</td>
                             <td className='text-center'>{tour.nameTeam}</td>
                             <td className='text-center'>{isoToDate(tour.tournamentDate)}</td>

@@ -50,7 +50,7 @@ export const DashboardViewFriendRequests: React.FC = () => {
                         {request!.map((req) => (
                             <tr key={req.id} className="flex flex-row justify-around">
                                 <td className="text-center">{req.nickname}</td>
-                                <td className="flex flex-row gap-2">
+                                <td className="flex flex-row gap-2 items-center justify-center">
                                     <button className="iconButton" value={req.id} name={req.nickname} onClick={acceptFriend}>
                                         <PersonAddIcon />
                                     </button>
