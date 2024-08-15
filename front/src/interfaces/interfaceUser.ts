@@ -123,3 +123,8 @@ export interface IDeletetournament {
     id: string
     token: string
 }
+
+export interface IRoleSelectorDashboard {
+    id: number
+    name: string
+}
