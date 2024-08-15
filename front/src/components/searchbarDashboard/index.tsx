@@ -38,6 +38,9 @@ export const SearchBarDashboard: React.FC = () => {
     const handleChangeRole = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = event.target
         setRoleActive(value)
+        if (value === "Player") {dispatch(setView("dashboard"))}
+        if (value === "Organizer") {dispatch(setView("myTournaments"))}
+        if (value === "Admin") {dispatch(setView("users"))}
     }
 
     const logout = () => {
@@ -47,21 +50,20 @@ export const SearchBarDashboard: React.FC = () => {
     
     return (
         <div className="bg-BGdark rounded-3xl py-9 mr-9 h-full flex flex-col items-center gap-9 w-full">
-            <h1 className="heading4 text-lightViolet">{user?.nickname}!</h1>
+            <div className="flex flex-col items-center gap-2">
+                <h1 className="heading4 text-lightViolet">{user?.nickname}!</h1>
 
-            <div>
-            <select
-                    value={roleActive}
-                    onChange={handleChangeRole}
-                    required
-                    className="inputFit"
-                    >
-                    {role.map((option) => (
-                        <option key={option.id} value={option.name}>
-                        {option.name}
-                        </option>
-                    ))}
-                    </select>
+                <select
+                        value={roleActive}
+                        onChange={handleChangeRole}
+                        className="bg-BGdark text-white w-fit px-4 gap-1 flex flex-col"
+                        >
+                        {role.map((option) => (
+                            <option className="text-white my-1" key={option.id} value={option.name}>
+                            {option.name}
+                            </option>
+                        ))}
+                        </select>
             </div>
 
             { roleActive === "Player" &&
