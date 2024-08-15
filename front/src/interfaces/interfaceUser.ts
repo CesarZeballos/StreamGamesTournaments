@@ -1,6 +1,7 @@
 import { IOrganizerTournament, ITournament } from "./interfaceTournaments"
 
 export interface IUser {
+    tournaments: []
     id: string
     email: string
     nickname: string

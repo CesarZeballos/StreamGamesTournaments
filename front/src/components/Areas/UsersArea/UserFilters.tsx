@@ -7,17 +7,25 @@ interface UserFiltersProps {
 }
 
 const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
-  const [filters, setFilters] = useState<IUserFilters>({ nickname: '', tournaments: '', role: '', state: 'all' });
+  const [filters, setFilters] = useState<IUserFilters>({ 
+    nickname: '', 
+    tournaments: 'all', // Ajusta el valor predeterminado 
+    role: '', 
+    state: 'all' 
+  });
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     const filterValue = name === 'state'
-    ? value === 'active'
-      ? 'active'
-      : value === 'inactive'
-        ? 'inactive'
-        : 'all'
-    : value;
+      ? value === 'active'
+        ? 'active'
+        : value === 'inactive'
+          ? 'inactive'
+          : 'all'
+      : name === 'tournaments'
+      ? value
+      : value;
+  
     const updatedFilters = {
       ...filters,
       [name]: filterValue
@@ -45,8 +53,8 @@ const UserFilters: React.FC<UserFiltersProps> = ({ onFilter }) => {
       <td className='text-center w-36'>
         <select name="tournaments" value={filters.tournaments} className='filter' onChange={handleFilterChange}>
           <option value="">All Users</option>
-          <option value="true">In Tournament</option>
-          <option value="false">Without Tournament</option>
+          <option value="inTournament">In Tournament</option>
+          <option value="outTournament">Out Tournament</option>
         </select>
       </td>
       <td className='text-center w-36'>

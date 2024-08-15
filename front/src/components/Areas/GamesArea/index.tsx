@@ -130,10 +130,10 @@ const confirmReactiveGame = async () => {
     <>
       <div>
         <h1 className="heading5 text-lightViolet">Games</h1>
-        <div className="flex flex-row w-full items-center justify-around mt-4">
+        {/* <div className="flex flex-row w-full items-center justify-around mt-4">
           <button className='buttonFilter' onClick={() => handleChangeView('table')}>Table</button>
           <button className='buttonFilter' onClick={() => handleChangeView('pie')}>Graphs</button>
-        </div>
+        </div> */}
         {view === 'table' && (
           <div className='col-span-3'>
             <h1 className='label text-start text-lightViolet mb-small'>Games table</h1>

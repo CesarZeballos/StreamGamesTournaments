@@ -21,18 +21,18 @@ const UsersArea: React.FC = () => {
         const allUsers = await fetchUsers();
         const filteredUsers = allUsers
           .filter((user: { role: string; }) => user.role !== 'admin')
-          .filter((user: { state: string; }) => {
+          .filter((user: { state: boolean; }) => {
             const stateMatch =
-              filters.state === "all" || // Muestra todos los users
-              (filters.state === "active" && user.state) || // Muestra solo users activos
-              (filters.state === "inactive" && !user.state); // Muestra solo users inactivos
+              filters.state === 'all' || // Muestra todos los usuarios
+              (filters.state === 'active' && user.state) || // Muestra solo usuarios activos
+              (filters.state === 'inactive' && !user.state); // Muestra solo usuarios inactivos
             return stateMatch;
-            })
-          .filter((user: { role: string; tournaments: string[]; state: boolean; }) => 
+          })
+          .filter((user: { role: string; tournaments: string[]; }) => 
             (filters.role === '' || user.role === filters.role) &&
             (filters.tournaments === '' || 
-              (filters.tournaments === 'true' ? user.tournaments.length > 0 : 
-                filters.tournaments === 'false' ? user.tournaments.length === 0 : true))
+              (filters.tournaments === 'inTournament' ? user.tournaments.length > 0 : 
+                filters.tournaments === 'outTournament' ? user.tournaments.length === 0 : true))
           )
           .sort((a: { nickname: string; }, b: { nickname: string; }) => {
             if (filters.nickname === 'asc') {
@@ -93,24 +93,23 @@ const UsersArea: React.FC = () => {
   
   const confirmReactivateUser = async () => {
     if (userToReactivate) {
-      console.log("Reactivating user with ID:", userToReactivate);
-        try {
-            await reactivateUser(userToReactivate); // Envia el id del user
-            toast.success("User Reactivated Successfully", {
-                position: "top-right",
-                duration: 1500,
-            });
-            setUsers(users.map(user => user.id === userToReactivate ? { ...user, state: true } : user));
-        } catch (error) {
-            toast.error("Failed to reactivate user", {
-                position: "top-right",
-                duration: 1500,
-            });
-            console.error("Error reactivating user:", error);
-        } finally {
-            setShowConfirmModal(false);
-            setUserToReactivate(null);
-        }
+      try {
+        await reactivateUser(userToReactivate); // Envia el id del user
+        toast.success("User Reactivated Successfully", {
+          position: "top-right",
+          duration: 1500,
+        });
+        setUsers(users.map(user => user.id === userToReactivate ? { ...user, state: true } : user));
+      } catch (error) {
+        toast.error("Failed to reactivate user", {
+          position: "top-right",
+          duration: 1500,
+        });
+        console.error("Error reactivating user:", error);
+      } finally {
+        setShowConfirmModal(false);
+        setUserToReactivate(null);
+      }
     }
   };
 
@@ -123,8 +122,8 @@ const UsersArea: React.FC = () => {
 
   const activeUsers = users.filter(user => user.state).length;
   const inactiveUsers = users.filter(user => !user.state).length;
-  const usersInTournament = users.filter(user => user.notifications && user.notifications.length > 0).length;
-  const usersOutTournament = users.filter(user => !user.notifications || user.notifications.length === 0).length;
+  const usersInTournament = users.filter(user => user.tournaments.length > 0).length;
+  const usersOutTournament = users.filter(user => user.tournaments.length === 0).length;
 
   const handleChangeView = (view: string) => {
     setView(view);
@@ -134,10 +133,9 @@ const UsersArea: React.FC = () => {
     <>
       <div>
         <h1 className="heading5 text-lightViolet">Users</h1>
-            <div className="flex flex-row w-full items-center justify-around mt-4">
+        <div className="flex flex-row w-full items-center justify-around mt-4">
           <button className='buttonFilter' onClick={() => handleChangeView('table')}>Table</button>
           <button className='buttonFilter' onClick={() => handleChangeView('pie')}>Graphs</button>
-
         </div>
         {view === 'table' && (
           <div className='col-span-3'>
@@ -150,8 +148,8 @@ const UsersArea: React.FC = () => {
               onReactivateUser={handleReactiveUser}
             />
           </div>
-          )}
-          {view === 'pie' && (
+        )}
+        {view === 'pie' && (
           <div className='col-span-3'>
             <UsersPie
               activeUsers={activeUsers}
@@ -160,15 +158,14 @@ const UsersArea: React.FC = () => {
               usersOutTournament={usersOutTournament}
             />
           </div>
-          )}
+        )}
       </div>
 
-
       <ConfirmModal
-      show={showConfirmModal}
-      message={action === 'ban' ? "Are you sure you want to ban this User?" : "Are you sure you want to reactivate this User?"}
-      onConfirm={action === 'ban' ? confirmBanUser : confirmReactivateUser}
-      onCancel={cancelBanUser}
+        show={showConfirmModal}
+        message={action === 'ban' ? "Are you sure you want to ban this User?" : "Are you sure you want to reactivate this User?"}
+        onConfirm={action === 'ban' ? confirmBanUser : confirmReactivateUser}
+        onCancel={cancelBanUser}
       />
     </>
   );
