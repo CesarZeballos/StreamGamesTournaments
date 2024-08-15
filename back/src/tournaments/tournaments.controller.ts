@@ -36,9 +36,9 @@ export class TournamentsController {
 		return this.tournamentsService.getTournamentById(id);
 	}
 
-	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.admin)
-	@Roles(Role.organizer)
+	// @UseGuards(JwtAuthGuard, RolesGuard)
+	// @Roles(Role.admin)
+	// @Roles(Role.organizer)
 	@Post('add')
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({
