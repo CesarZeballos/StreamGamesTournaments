@@ -27,7 +27,6 @@ import { Role } from '@prisma/client';
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
-	@UseGuards(JwtAuthGuard)
 	@Get()
 	@ApiOperation({ summary: 'Obtener todos los usuarios' })
 	@ApiResponse({
@@ -71,7 +70,6 @@ export class UsersController {
 		return this.usersService.getAllUsers();
 	}
 
-	@UseGuards(JwtAuthGuard)
 	@Get('search')
 	@ApiOperation({ summary: 'Buscar un usuario por correo electrónico' })
 	@ApiQuery({
@@ -111,7 +109,6 @@ export class UsersController {
 		return this.usersService.getUserByEmail(email);
 	}
 
-	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	@ApiOperation({ summary: 'Obtener un usuario por ID' })
 	@ApiParam({
@@ -155,7 +152,6 @@ export class UsersController {
 		return this.usersService.getUserById(id);
 	}
 
-	@UseGuards(JwtAuthGuard)
 	@Put('update')
 	@ApiOperation({ summary: 'Actualizar un usuario' })
 	@ApiQuery({
@@ -189,8 +185,6 @@ export class UsersController {
 		return this.usersService.updateUser(id, data);
 	}
 
-	@UseGuards(JwtAuthGuard, RolesGuard)
-	@Roles(Role.admin)
 	@Put('delete')
 	@ApiOperation({ summary: 'Eliminar un usuario' })
 	@ApiQuery({
