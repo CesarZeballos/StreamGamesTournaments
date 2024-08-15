@@ -38,9 +38,7 @@ const NavBar: React.FC = () => {
             <Link className={`${pathname === '/tournaments' ? 'buttonNavbarActive' : 'buttonNavbar'}`} href="/tournaments">Tournaments</Link>
             {user ? 
             <div className="flex gap-x-1 justify-end">
-                <Link className={`${pathname === '/chat' ? 'buttonNavbarActive' : 'buttonNavbar'}`} href="/chat">{`Chat's`}</Link>
                 <button className={`${pathname === '/dashboard' ? 'buttonNavbarActive' : 'buttonNavbar'}`} onClick={routerToDashboard}><SportsEsportsIcon/>{`${user?.nickname}`}</button>
-                {/* {not > 0 && <p className="number text-white flex flex-row justify-end gap-1">{not} <NotificationsIcon/></p>} */}
             </div>
             :
             <div className="flex gap-x-8">
