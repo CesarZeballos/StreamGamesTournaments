@@ -59,9 +59,9 @@ export const TournamentRegisterForm = ({ tourId }: { tourId: string}) => {
         <div>
             <h1 className="heading4 text-white mb-4">Register to {tournamentData.nameTournament}</h1>
             <div className="grid grid-cols-3 mb-6 mx-16">
-                <h1 className={step === "team" ? "text-lightViolet" : "text-white"}>First step</h1>
-                <h1 className={step === "payment" ? "text-lightViolet" : "text-white"}>Second step</h1>
-                <h1 className={step === "finish" ? "text-lightViolet" : "text-white"}>Finish</h1>
+                <h1 className={step === "team" ? "stepActive" : "step"}>First step</h1>
+                <h1 className={step === "payment" ? "stepActive" : "step"}>Second step</h1>
+                <h1 className={step === "finish" ? "stepActive" : "step"}>Finish</h1>
             </div>
             <FourColumsContainer imagen="registerTournament" URLimagen="/registerTournament.jpg">
 

@@ -52,22 +52,25 @@ export const SearchBarDashboard: React.FC = () => {
         <div className="bg-BGdark rounded-3xl py-9 mr-9 h-full flex flex-col items-center gap-9 w-full">
             <div className="flex flex-col items-center gap-2">
                 <h1 className="heading4 text-lightViolet">{user?.nickname}!</h1>
+                <div className="flex flex-row items-center">
+                    <p className="body text-white">Role:</p>
+                    <select
+                            value={roleActive}
+                            onChange={handleChangeRole}
+                            className="bg-BGdark text-white w-fit px-4 gap-1 flex flex-col"
+                            >
+                            {role.map((option) => (
+                                <option className="text-white my-1" key={option.id} value={option.name}>
+                                {option.name}
+                                </option>
+                            ))}
+                            </select>
+                </div>
 
-                <select
-                        value={roleActive}
-                        onChange={handleChangeRole}
-                        className="bg-BGdark text-white w-fit px-4 gap-1 flex flex-col"
-                        >
-                        {role.map((option) => (
-                            <option className="text-white my-1" key={option.id} value={option.name}>
-                            {option.name}
-                            </option>
-                        ))}
-                        </select>
             </div>
 
             { roleActive === "Player" &&
-            (<div className="flex flex-col items-center gap-2">
+            (<div className="flex flex-col items-start gap-2">
                 <button className={`buttonFilter ${view === "notifications" && "buttonFilterActive"}`} onClick={() => handleViewClick("notifications")}><NotificationsIcon/>Notifications</button>
                 <button className={`buttonFilter ${view === "tournaments" && "buttonFilterActive"}`} onClick={() => handleViewClick("tournaments")}><VideogameAssetIcon/>Tournaments</button>
                 <button className={`buttonFilter ${view === "friends" && "buttonFilterActive"}`} onClick={() => handleViewClick("friends")}><GroupIcon/>My friends</button>
@@ -76,21 +79,21 @@ export const SearchBarDashboard: React.FC = () => {
             }
 
             { roleActive === "Organizer" && (userRol === "organizer" || userRol === "admin") && 
-            (<div  className="flex flex-col items-center gap-2">
+            (<div  className="flex flex-col items-start gap-2">
                 <button className={`buttonFilter ${view === "myTournaments" && "buttonFilterActive"}`} onClick={() => handleViewClick("myTournaments")}><VideogameAssetIcon/>Organized tournaments</button>
                 <button className={`buttonFilter ${view === "createTournament" && "buttonFilterActive"}`} onClick={() => handleViewClick("createTournament")}><GamesIcon/>Create Tournament</button>
             </div>)
             }
 
             { roleActive === "Admin" && (userRol === "admin") &&
-            (<div className="flex flex-col items-center gap-2">
+            (<div className="flex flex-col items-start gap-2">
                 <button className={`buttonFilter ${view === "users" && "buttonFilterActive"}`} onClick={() => handleViewClick("users")}><GroupIcon/>Users</button>
                 <button className={`buttonFilter ${view === "torunamentsAdmin" && "buttonFilterActive"}`} onClick={() => handleViewClick("torunamentsAdmin")}><VideogameAssetIcon/>Tournament graphs</button>
-                <button className="buttonSecondary" onClick={() => handleViewClick("games")}>Games</button>
+                <button className={`buttonFilter ${view === "games" && "buttonFilterActive"}`} onClick={() => handleViewClick("games")}><GamesIcon/>Games</button>
             </div>)
             }
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-start gap-2">
                 <button className={`buttonFilter ${view === "settings" && "buttonFilterActive"}`} onClick={() => handleViewClick("settings")}><SettingsIcon/>Settings</button>
                 <button className="buttonPrimary" onClick={logout}>Sign Out</button>
             </div>

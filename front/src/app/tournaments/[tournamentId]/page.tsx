@@ -49,6 +49,8 @@ const TournamentPage: React.FC<{ params: { tournamentId: string } }> = ({ params
       <Image
           src={tournament.urlAvatar}
           alt={tournament.nameTournament}
+          width={1920}
+          height={500}
           className="object-cover"
         />
     </div>
