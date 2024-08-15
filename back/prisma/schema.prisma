@@ -86,17 +86,12 @@ model Team {
   tournamentId    String?
   urlAvatar       String?
   state           Boolean           @default(true)
-  userTeamRequest UserTeamRequest[] @relation("userTeamRequest")
   users           UserTeams[]       @relation("UserForTeams")
   tournament      Tournament?       @relation("teams", fields: [tournamentId], references: [id])
   versusPosition1 Versus[]          @relation("Team1")
   versusPosition2 Versus[]          @relation("Team2")
 }
 
-model UserTeamRequest {
-  id              String @id @default(uuid())
-  userTeamRequest Team?  @relation("userTeamRequest", fields: [id], references: [id], onDelete: Cascade)
-}
 
 model UserTeams {
   id       String @id @default(uuid())
