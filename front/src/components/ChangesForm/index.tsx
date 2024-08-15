@@ -1,19 +1,15 @@
 'use client'
-import { useEffect, useState } from "react"
-import { FourColumsContainer } from "../fourColumsContainer"
-import { FormContainer } from "../formContainer"
-import { IChangesData, IChangesErrors } from "@/interfaces/interfaceUser"
-import { useDispatch, useSelector } from "react-redux"
-import { validateChanges } from "@/utils/validateForms/validateChanges"
-import { updateUserSlice } from "@/redux/thunks/userSliceThunk"
-import { AppDispatch, RootState } from "@/redux/store"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-
+import { useState } from "react";
+import { IChangesData, IChangesErrors } from "@/interfaces/interfaceUser";
+import { useDispatch, useSelector } from "react-redux";
+import { validateChanges } from "@/utils/validateForms/validateChanges";
+import { reloadUserSlice, updateUserSlice } from "@/redux/thunks/userSliceThunk";
+import { AppDispatch, RootState } from "@/redux/store";
+import { toast } from "sonner";
 
 export const ChangesForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
+    const user = useSelector((state: RootState) => state.user.user);
     const userId = useSelector((state: RootState) => state.user.user?.id);
 
     const [data, setData] = useState<IChangesData>({
@@ -28,72 +24,76 @@ export const ChangesForm: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        const errors = validateChanges({ ...data, [name]: value });
+        const newData = { ...data, [name]: value };
+        const errors = validateChanges(newData);
 
         setErrorsChange(errors);
-        setData({
-            ...data,
-            [name]: value
-        });
+        setData(newData);
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        // Verificar si userId está definido y no hay errores antes de despachar
-        if (userId && !errorChanges.birthdate && !errorChanges.nickname) {
-            dispatch(updateUserSlice({ id: userId, ...data }));
+        if (userId) {
+            const updatedData: Partial<IChangesData> = {};
+            if (data.birthdate) updatedData.birthdate = new Date(data.birthdate).toISOString().split('T')[0];
+            if (data.nickname) updatedData.nickname = data.nickname;
+            if (Object.keys(updatedData).length > 0) {
+                dispatch(updateUserSlice({ id: userId, ...updatedData })).then((result) => {
+                    if (updateUserSlice.fulfilled.match(result)) {
+                        setData({
+                            birthdate: "",
+                            nickname: ""
+                        });
+                    }
+                    dispatch(reloadUserSlice({
+                        email: user?.email!,
+                        tokenFirebase: user?.tokenFirebase
+                    }));
+                });
+            } else {
+                toast.error('No data to update', {
+                    position: 'top-right',
+                    duration: 1500,
+                });
+            }
         } else {
-            toast.error('There are errors in the form or user ID is missing', {
+            toast.error('User ID is missing', {
                 position: 'top-right',
                 duration: 1500,
             });
         }
     };
 
-    // Ruteo automático después del éxito en la actualización
-    const changesStatus = useSelector((state: RootState) => state.user.status);
-    useEffect(() => {
-        if (changesStatus === "succeeded") {
-            setTimeout(() => {
-                router.push("/");
-            }, 2000);
-        }
-    }, [changesStatus, router]);
-
     return (
-        <form onSubmit={handleSubmit} className="mt-9">
-            <FourColumsContainer imagen="login" URLimagen={"/login.jpg"}>
-                <FormContainer section={"Change Data"}>
-                    <div className="flex flex-col gap-2 w-fit">
-                        <label className="body text-white">Birthdate</label>
-                        <input type="text"
-                            name="birthdate"
-                            value={data.birthdate}
-                            onChange={handleChange}
-                            className="input"
-                            required
-                        />
-                        {errorChanges.birthdate ? (<p className="errorForm">{errorChanges.birthdate}</p>) : (<p className="errorForm"><br /></p>)}
-                    </div>
+        <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2">
+                <div className="flex flex-col gap-2 w-fit">
+                    <label className="body text-white">Birthdate</label>
+                    <input 
+                        type="date"
+                        name="birthdate"
+                        value={data.birthdate}
+                        onChange={handleChange}
+                        className="input"
+                    />
+                    {errorChanges.birthdate && <p className="errorForm">{errorChanges.birthdate}</p>}
+                </div>
 
-                    <div className="flex flex-col gap-2 w-fit">
-                        <label className="body text-white">Nickname</label>
-                        <input type="text"
-                            name="nickname"
-                            value={data.nickname}
-                            onChange={handleChange}
-                            className="input"
-                            required
-                        />
-                        {errorChanges.nickname ? (<p className="errorForm">{errorChanges.nickname}</p>) : (<p className="errorForm"><br /></p>)}
-                    </div>
-
-                    <div className="mt-4 flex flex-row gap-2">
-                        <button type="submit" className="buttonPrimary">Change Data</button>
-                    </div>
-                </FormContainer>
-            </FourColumsContainer>
+                <div className="flex flex-col gap-2 w-fit">
+                    <label className="body text-white">Nickname</label>
+                    <input 
+                        type="text"
+                        name="nickname"
+                        value={data.nickname}
+                        onChange={handleChange}
+                        className="input"
+                    />
+                    {errorChanges.nickname && <p className="errorForm">{errorChanges.nickname}</p>}
+                </div>
+            </div>
+            <div className="mt-10 mb-4 flex justify-center">
+                <button type="submit" className="buttonPrimary">Change Data</button>
+            </div>
         </form>
     );
 };
