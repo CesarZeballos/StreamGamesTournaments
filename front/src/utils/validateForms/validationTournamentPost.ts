@@ -1,5 +1,5 @@
 import { IFirstStep } from "@/interfaces/interfaceRedux";
-import { IFirstStepError, ITournamentPost } from "@/interfaces/interfaceTournaments";
+import { IFirstStepError, ISecondStepError, ITournamentPost } from "@/interfaces/interfaceTournaments";
 
 export function validateTournamentFirstStep(values: any): IFirstStepError {
     let errors: IFirstStepError = {} as IFirstStepError;
@@ -31,6 +31,40 @@ export function validateTournamentFirstStep(values: any): IFirstStepError {
     return errors;
 }
 
+export function validateTournamentSecondStep(values: any): ISecondStepError {
+    let errors: ISecondStepError = {} as ISecondStepError;
+
+    if (!values.membersNumber) {
+        errors.membersNumber = "Members number is required.";
+    } else if (Number(values.membersNumber) < 0) {
+        errors.membersNumber = "Members number cannot be less than 0.";
+    } else if (Number(values.membersNumber) > 10) {
+        errors.membersNumber = "Members number cannot be more than 10.";
+    }
+
+    if (!values.maxTeams) { // Cambié de maxTeam a maxTeams para que coincida con tu código
+        errors.maxTeam = "Max team number is required.";
+    } else if (Number(values.maxTeams) < 2) {
+        errors.maxTeam = "Max team number cannot be less than 2.";
+    } else if (Number(values.maxTeams) % 2 !== 0) {
+        errors.maxTeam = "Max team number cannot be an odd number.";
+    }
+
+    if (values.price && Number(values.price) < 0) {
+        errors.price = "Price cannot be less than 0.";
+    }
+
+    if (!values.description) {
+        errors.description = "Description is required.";
+    } else if (values.description.length < 100) {
+        errors.description = "Description must be at least 100 characters.";
+    } else if (values.description.length > 500) {
+        errors.description = "Description must be no more than 500 characters.";
+    }
+
+    return errors;
+}
+
 
 
 
@@ -44,31 +78,6 @@ export function validateTournamentFirstStep(values: any): IFirstStepError {
 
 
 
-//     if (!values.membersNumber) {
-//         errors.membersNumber = "Members number is required.";
-//     } else if (Number(values.membersNumber) < 0) {
-//         errors.membersNumber = "Members number cannot be less than 0.";
-//     } else if (Number(values.membersNumber) > 10) {
-//         errors.membersNumber = "Members number cannot be more than 10.";
-//     }
-
-//     if (!values.maxTeam) {
-//         errors.maxTeam = "Max team number is required.";
-//     } else if (Number(values.maxTeam) < 2) {
-//         errors.maxTeam = "Max team number cannot be less than 2.";
-//     }
-
-//     if (values.price && Number(values.price) < 0) {
-//         errors.price = "Price cannot be less than 0.";
-//     }
-
-//     if (!values.description) {
-//         errors.description = "Description is required.";
-//     } else if (values.description.length < 100) {
-//         errors.description = "Description must be at least 100 characters.";
-//     } else if (values.description.length > 500) {
-//         errors.description = "Description must be no more than 500 characters.";
-//     }
 
 //     return errors;
 // }

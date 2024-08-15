@@ -61,7 +61,6 @@ export interface ISecondStepError {
     membersNumber: string;
     maxTeam: string;
     price: string;
-    urlAvatar: string;
     award: string;
     description: string;
 }
