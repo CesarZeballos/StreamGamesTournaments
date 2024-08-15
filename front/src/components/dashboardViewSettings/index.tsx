@@ -51,11 +51,11 @@ export const DashboardViewSettings = () => {
 
             {isFormVisible && <ChangesForm />}
         </div>
-            {user?.role === "user" && (
+            {/* {user?.role === "user" && (
                 <button className="buttonPrimary mt-4" onClick={upgradeAcount}>
                     Upgrade to organizer
                 </button>
-            )}
+            )} */}
             </div>
         </div>
     )
