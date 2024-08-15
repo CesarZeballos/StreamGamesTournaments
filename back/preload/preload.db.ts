@@ -10,7 +10,6 @@ export class preloadData {
 	async clearTables() {
 		await this.prisma.$transaction([
 			// Primero, eliminar registros en UserTeamRequest
-			this.prisma.userTeamRequest.deleteMany({}),
 
 			// Luego, eliminar registros en UserTeams
 			this.prisma.userTeams.deleteMany({}),
