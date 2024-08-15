@@ -1,7 +1,6 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	Param,
 	ParseUUIDPipe,
@@ -9,15 +8,7 @@ import {
 	Put,
 	Query,
 } from '@nestjs/common';
-import {
-	ApiTags,
-	ApiOperation,
-	ApiResponse,
-	ApiParam,
-	ApiQuery,
-	ApiBody,
-	ApiProperty,
-} from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { TeamsService } from './teams.service';
 import {
 	CreateTeamDto,
@@ -28,7 +19,7 @@ import {
 @ApiTags('Teams')
 @Controller('teams')
 export class TeamsController {
-	constructor(private readonly teamsService: TeamsService) { }
+	constructor(private readonly teamsService: TeamsService) {}
 
 	@Get()
 	async getAllTeams(

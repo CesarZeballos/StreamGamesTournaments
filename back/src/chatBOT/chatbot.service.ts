@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { SessionsClient } from '@google-cloud/dialogflow';
-import { v4 as uuidv4 } from 'uuid';
-import { google } from 'googleapis';
 
 @Injectable()
 export class ChatbotService {
@@ -9,10 +7,8 @@ export class ChatbotService {
 	private projectId: string;
 
 	constructor() {
-		// Configura el cliente con las variables de entorno
 		this.projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
 
-		// Crea un cliente de autenticación a partir de las variables de entorno
 		this.sessionClient = new SessionsClient({
 			credentials: {
 				private_key: process.env.GOOGLE_PRIVATE_KEY.replace(

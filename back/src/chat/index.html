@@ -285,7 +285,7 @@
 		</div>
 
 		<script>
-			const socket = io('http://localhost:3001'); // Cambia esto a tu URL de Socket.IO
+			const socket = io('http://localhost:3001');
 
 			const privateMessages = document.getElementById('privateMessages');
 			const globalMessages = document.getElementById('globalMessages');
@@ -300,10 +300,9 @@
 				document.getElementById('sendGlobalButton');
 
 			async function loadMessages() {
-				const senderId = 'user13'; // Cambia esto según sea necesario
-				const receiverId = 'user14'; // Cambia esto según sea necesario
+				const senderId = 'user13';
+				const receiverId = 'user14';
 
-				// Recuperar mensajes privados
 				const privateResponse = await fetch(
 					`/historial/privateMessages?senderId=${senderId}&receiverId=${receiverId}`,
 				);
@@ -313,7 +312,6 @@
 				});
 				privateMessages.scrollTop = privateMessages.scrollHeight;
 
-				// Recuperar mensajes globales
 				const globalResponse = await fetch(`/historial/globalMessages`);
 				const globalMessagesData = await globalResponse.json();
 				globalMessagesData.forEach((msg) => {
@@ -323,7 +321,7 @@
 			}
 
 			window.onload = () => {
-				loadMessages(); // Cargar mensajes al iniciar
+				loadMessages();
 			};
 
 			socket.on('connect', () => {
@@ -332,12 +330,12 @@
 
 			socket.on('privateMessage', (message) => {
 				privateMessages.value += `Private Message from ${message.senderId}: ${message.content}\n`;
-				privateMessages.scrollTop = privateMessages.scrollHeight; // Desplazarse hacia abajo
+				privateMessages.scrollTop = privateMessages.scrollHeight;
 			});
 
 			socket.on('globalMessage', (message) => {
 				globalMessages.value += `Global Message from ${message.nickname}: ${message.content}\n`;
-				globalMessages.scrollTop = globalMessages.scrollHeight; // Desplazarse hacia abajo
+				globalMessages.scrollTop = globalMessages.scrollHeight;
 			});
 
 			async function sendMessage(isPrivate) {
@@ -345,8 +343,8 @@
 					? privateMessageInput.value
 					: globalMessageInput.value;
 				if (isPrivate) {
-					const senderId = 'user13'; // Cambia esto según sea necesario
-					const receiverId = 'user14'; // Cambia esto según sea necesario
+					const senderId = 'user13';
+					const receiverId = 'user14';
 					socket.emit('sendPrivateMessage', {
 						senderId,
 						receiverId,
@@ -365,7 +363,7 @@
 					privateMessages.scrollTop = privateMessages.scrollHeight;
 					privateMessageInput.value = '';
 				} else {
-					const nickname = 'user4'; // Cambia esto según sea necesario
+					const nickname = 'user4';
 					socket.emit('sendGlobalMessage', {
 						nickname,
 						content: message,

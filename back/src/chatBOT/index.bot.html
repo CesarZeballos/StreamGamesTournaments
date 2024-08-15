@@ -137,10 +137,8 @@
 
 					if (message === '') return;
 
-					// Mostrar mensaje del usuario
 					appendMessage('user', message);
 
-					// Enviar mensaje al backend
 					const response = await fetch(
 						'http://localhost:3001/chatbot/message',
 						{
@@ -154,9 +152,8 @@
 						const result = await response.json();
 						const botMessage =
 							result.fulfillmentText ||
-							'No se recibió respuesta del bot'; // Ajusta esto según la estructura de tu respuesta
+							'No se recibió respuesta del bot';
 
-						// Mostrar respuesta del bot
 						appendMessage('bot', botMessage);
 					} else {
 						appendMessage(
@@ -165,7 +162,6 @@
 						);
 					}
 
-					// Limpiar campo de entrada
 					userInput.value = '';
 				});
 
@@ -175,7 +171,7 @@
 				messageElement.className = sender + '-message';
 				messageElement.textContent = message;
 				messagesDiv.appendChild(messageElement);
-				messagesDiv.scrollTop = messagesDiv.scrollHeight; // Desplazar hacia abajo
+				messagesDiv.scrollTop = messagesDiv.scrollHeight;
 			}
 		</script>
 	</body>
