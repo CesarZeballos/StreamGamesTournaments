@@ -9,6 +9,7 @@ import { DashboardView } from "../dashboardView";
 import DashboardTournamentForm from "../dashboardTournamentForm";
 import UsersArea from "../Areas/UsersArea";
 import TournamentsArea from "../Areas/TournamentsArea";
+import GamesArea from "../Areas/GamesArea";
 import { DashboardViewGameForm } from "../dashboardViewGameForm";
 import { DashboardViewNotification } from "../dashboardViewNotifications";
 import { DashboardViewOrganizerTournaments } from "../dashboardViewOrganizerTournaments";
@@ -32,6 +33,8 @@ export const DashboardSelector: React.FC = () => {
                 {section === 'users' && <UsersArea/>}
                 {section === 'torunamentsAdmin' && <TournamentsArea/>}
                 {section === 'createGame' && <DashboardViewGameForm />}
+
+                {section === 'games' && <GamesArea/>}
             </div>
     )
 }

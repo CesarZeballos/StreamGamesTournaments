@@ -2,7 +2,8 @@ import { IFiltersProp } from "@/interfaces/interfaceRedux"
 import { fetchUsers } from "@/utils/fetchUser"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { setRootFilters, setRunFilters } from "../slices/tournamentSlice"
-import { fetchGames, fetchUploadFile } from "@/utils/fetchTournaments"
+import { fetchUploadFile } from "@/utils/fetchTournaments"
+import { fetchGames} from "@/utils/fetchGames";
 import { IGame } from "@/interfaces/interfaceTournaments"
 
 

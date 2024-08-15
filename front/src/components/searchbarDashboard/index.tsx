@@ -42,6 +42,7 @@ export const SearchBarDashboard: React.FC = () => {
                 <h1 className="heading5 text-lightViolet">Admin options</h1>
                 <button className="buttonSecondary" onClick={() => handleViewClick("users")}>Users</button>
                 <button className="buttonSecondary" onClick={() => handleViewClick("torunamentsAdmin")}>Tournament graphs</button>
+                <button className="buttonSecondary" onClick={() => handleViewClick("games")}>Games</button>
                 <button className="buttonPrimary" onClick={() => handleViewClick("createGame")}>Create game</button>
             </div>}
 

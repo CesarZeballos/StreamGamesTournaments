@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	ConflictException,
 	HttpException,
 	HttpStatus,
@@ -89,19 +90,20 @@ export class GamesService {
 	async updateGame(
 		id: string,
 		updateData: UpdateGameDto,
-	): Promise<UpdateGameDto> {
+	  ): Promise<UpdateGameDto> {
 		const game = await this.prisma.game.findUnique({ where: { id: id } });
-
 		if (!game)
-			throw new NotFoundException(`¡Juego con id: ${id} no existe!`);
-
+		  throw new NotFoundException(`¡Juego con id: ${id} no existe!`);
+		if (updateData.state !== undefined && typeof updateData.state !== 'boolean') {
+		  throw new BadRequestException('El estado del juego debe ser un valor booleano');
+		}
+	  
 		const updateGame = await this.prisma.game.update({
-			where: { id },
-			data: updateData,
+		  where: { id },
+		  data: updateData,
 		});
-
 		return updateGame;
-	}
+}
 
 	async deleteGame(id: string): Promise<Game> {
 		try {

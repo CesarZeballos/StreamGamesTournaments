@@ -36,4 +36,12 @@ export class CreateGameDto {
 	description: string;
 }
 
-export class UpdateGameDto extends PartialType(CreateGameDto) { }
+export class UpdateGameDto extends PartialType(CreateGameDto) {
+	@ApiPropertyOptional({
+	  description: 'El estado del juego',
+	  example: false,
+	})
+	@IsBoolean()
+	@IsOptional()
+	state?: boolean;
+}
